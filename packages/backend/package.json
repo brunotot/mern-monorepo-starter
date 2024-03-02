@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run compile:ts",
     "compile:ts": "tsc",
-    "service": "node ./dist/index.js"
+    "start": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
