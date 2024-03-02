@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run dev --prefix packages/backend",
     "start:backend": "cd packages/backend && npm run start",
-    "build:backend": "cd packages/backend && npm run build"
+    "build:backend": "cd packages/backend && npm run build",
+    "start:frontend": "cd packages/frontend && npm run start",
+    "build:frontend": "cd packages/frontend && npm run build"
   },
   "keywords": [],
   "author": "",
