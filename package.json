@@ -7,10 +7,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run dev --prefix packages/backend",
-    "start:backend": "cd packages/backend && npm run start",
-    "build:backend": "cd packages/backend && npm run build",
-    "start:frontend": "cd packages/frontend && npm run start",
-    "build:frontend": "cd packages/frontend && npm run build"
+    "backend:start": "cd packages/backend && npm run start",
+    "backend:build": "cd packages/backend && npm run build",
+    "frontend:start": "cd packages/frontend && npm run start",
+    "frontend:build": "cd packages/frontend && npm run build"
   },
   "keywords": [],
   "author": "",
