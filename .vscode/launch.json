@@ -9,6 +9,7 @@
       "preLaunchTask": "tsc: build - packages/backend/tsconfig.json",
       "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"],
       "sourceMaps": true,
+      "outputCapture": "std",
       "runtimeArgs": [
         "--no-warnings",
         "--loader",

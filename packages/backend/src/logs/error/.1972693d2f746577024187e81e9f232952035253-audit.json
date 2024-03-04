@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/logs/error/.1972693d2f746577024187e81e9f232952035253-audit.json",
+    "files": [
+        {
+            "date": 1709391048798,
+            "name": "/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/logs/error/2024-03-02.log",
+            "hash": "d1db767690e44245e1b9595ff23d70f51ad9ea9825eb23c66acc75a22f3abfd0"
+        },
+        {
+            "date": 1709457893692,
+            "name": "/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/logs/error/2024-03-03.log",
+            "hash": "80a7a43a4e2d0ed0a631feaa8c20d8a0a33c7946c75c006da23499df0f2a9ac0"
+        }
+    ],
+    "hashType": "sha256"
+}
