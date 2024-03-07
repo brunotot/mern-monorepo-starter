@@ -1,57 +1,44 @@
 import Bottle from "bottlejs";
-import { UserController } from "../controllers/UserController";
-import { UserRepositoryImpl } from "../infrastructure/repository/impl/UserRepositoryImpl";
-import { UserRoute } from "../routes/impl/UserRoute";
-import {
-  Class,
-  DependencySchema,
-  ServiceData,
-  ServiceName,
-} from "../typings/bottlejs.typings";
+import { getMetadata } from "../decorators/Autowired";
+import { InjectionItem, getInjectionItems } from "../decorators/Injectable";
 
 const bottle = new Bottle();
 const container = bottle.container;
 
-export const SERVICE_SCHEMA = {
-  userRoute: UserRoute,
-  userRepository: UserRepositoryImpl,
-  userController: UserController,
-} as const satisfies Record<string, Class>;
-
-export const DEPENDENCY_SCHEMA: DependencySchema = {
-  userRoute: ["userController"],
-  userController: ["userRepository"],
-};
-
-export function inject<K extends keyof typeof SERVICE_SCHEMA>(
-  name: K
-): InstanceType<(typeof SERVICE_SCHEMA)[K]> {
-  return container[name];
+export function inject<T>(name: string): T {
+  return container[name] as T;
 }
 
-export function initializeDI() {
-  function sortServiceDataList(data: ServiceData[]): ServiceData[] {
-    return [...data].sort(([nameA, , ...depsA], [nameB, , ...depsB]) => {
-      if (depsA.length === 0) return -1;
-      if (depsB.length === 0) return 1;
-      if (depsA.includes(nameB)) return 1;
-      if (depsB.includes(nameA)) return -1;
+export function initializeDI2() {
+  const injectionItems = getInjectionItems();
+
+  const dependencySchema: Record<string, string[]> = injectionItems.reduce(
+    (acc, { name, class: Class }) => {
+      const deps = getMetadata(Class).dependencies ?? [];
+      return { ...acc, [name]: deps };
+    },
+    {}
+  );
+
+  function sortInjectionItems(
+    items: InjectionItem[],
+    dependencySchema: Record<string, string[]>
+  ) {
+    return [...items].sort(({ name: nameA }, { name: nameB }) => {
+      if (dependencySchema[nameA].length === 0) return -1;
+      if (dependencySchema[nameB].length === 0) return 1;
+      if (dependencySchema[nameA].includes(nameB)) return 1;
+      if (dependencySchema[nameB].includes(nameA)) return -1;
       return 0;
     });
   }
 
-  function buildServiceDataList(): ServiceData[] {
-    return Object.entries(SERVICE_SCHEMA).map(([key, value]) => {
-      const deps =
-        DEPENDENCY_SCHEMA?.[key as keyof typeof DEPENDENCY_SCHEMA] ?? [];
-      return [key as ServiceName, value, ...deps];
-    });
-  }
+  const sortedInjectionItems = sortInjectionItems(
+    injectionItems,
+    dependencySchema
+  );
 
-  const serviceDataList = buildServiceDataList();
-  const sortedServiceDataList = sortServiceDataList(serviceDataList);
-
-  sortedServiceDataList.forEach(([name, Class, ...deps]) => {
-    bottle.service(name, Class, ...deps);
+  sortedInjectionItems.forEach(({ name, class: Class }) => {
+    bottle.service(name, Class, ...dependencySchema[name]);
   });
 }

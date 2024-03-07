@@ -1,46 +1,34 @@
 import Bottle from "bottlejs";
-import { UserController } from "../controllers/UserController";
-import { UserRepositoryImpl } from "../infrastructure/repository/impl/UserRepositoryImpl";
-import { UserRoute } from "../routes/impl/UserRoute";
+import { getMetadata } from "../decorators/Autowired";
+import { getInjectionItems } from "../decorators/Injectable";
 const bottle = new Bottle();
 const container = bottle.container;
-export const SERVICE_SCHEMA = {
-    userRoute: UserRoute,
-    userRepository: UserRepositoryImpl,
-    userController: UserController,
-};
-export const DEPENDENCY_SCHEMA = {
-    userRoute: ["userController"],
-    userController: ["userRepository"],
-};
 export function inject(name) {
     return container[name];
 }
-export function initializeDI() {
-    function sortServiceDataList(data) {
-        return [...data].sort(([nameA, , ...depsA], [nameB, , ...depsB]) => {
-            if (depsA.length === 0)
+export function initializeDI2() {
+    const injectionItems = getInjectionItems();
+    const dependencySchema = injectionItems.reduce((acc, { name, class: Class }) => {
+        var _a;
+        const deps = (_a = getMetadata(Class).dependencies) !== null && _a !== void 0 ? _a : [];
+        return Object.assign(Object.assign({}, acc), { [name]: deps });
+    }, {});
+    function sortInjectionItems(items, dependencySchema) {
+        return [...items].sort(({ name: nameA }, { name: nameB }) => {
+            if (dependencySchema[nameA].length === 0)
                 return -1;
-            if (depsB.length === 0)
+            if (dependencySchema[nameB].length === 0)
                 return 1;
-            if (depsA.includes(nameB))
+            if (dependencySchema[nameA].includes(nameB))
                 return 1;
-            if (depsB.includes(nameA))
+            if (dependencySchema[nameB].includes(nameA))
                 return -1;
             return 0;
         });
     }
-    function buildServiceDataList() {
-        return Object.entries(SERVICE_SCHEMA).map(([key, value]) => {
-            var _a;
-            const deps = (_a = DEPENDENCY_SCHEMA === null || DEPENDENCY_SCHEMA === void 0 ? void 0 : DEPENDENCY_SCHEMA[key]) !== null && _a !== void 0 ? _a : [];
-            return [key, value, ...deps];
-        });
-    }
-    const serviceDataList = buildServiceDataList();
-    const sortedServiceDataList = sortServiceDataList(serviceDataList);
-    sortedServiceDataList.forEach(([name, Class, ...deps]) => {
-        bottle.service(name, Class, ...deps);
+    const sortedInjectionItems = sortInjectionItems(injectionItems, dependencySchema);
+    sortedInjectionItems.forEach(({ name, class: Class }) => {
+        bottle.service(name, Class, ...dependencySchema[name]);
     });
 }
 //# sourceMappingURL=bottlejs.config.js.map

@@ -18,16 +18,17 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { databaseConnect } from "./config";
 import { getVar } from "./config/vars.config";
+import { getRouter } from "./decorators/Route";
 import { logger, stream } from "./utils/logger";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 export class App {
-    constructor(routes) {
+    constructor() {
         this.app = express();
         this.env = getVar("NODE_ENV") || "development";
         this.port = getVar("PORT") || 3000;
         this.connectToDatabase();
         this.initializeMiddlewares();
-        this.initializeRoutes(routes);
+        this.initializeRoutes();
         this.initializeSwagger();
         //this.initializeErrorHandling();
     }
@@ -60,11 +61,8 @@ export class App {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
     }
-    initializeRoutes(routes) {
-        routes.forEach((route) => {
-            route.setupEndpoints();
-            this.app.use("/", route.router);
-        });
+    initializeRoutes() {
+        this.app.use("/", getRouter());
     }
     initializeSwagger() {
         const specs = swaggerJSDoc({

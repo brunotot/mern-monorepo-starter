@@ -1,12 +1,16 @@
 import { App } from "./App";
-import { initializeDI, inject } from "./config";
+import { initializeDI2 } from "./config";
+import "./config/registered-instances";
 
-initializeDI();
+// @ts-expect-error
+Symbol.metadata ??= Symbol("Symbol.metadata");
 
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception:", err);
 });
 
-const app = new App([inject("userRoute")]);
+initializeDI2();
+
+const app = new App();
 
 app.listen();

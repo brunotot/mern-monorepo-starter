@@ -9,7 +9,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { databaseConnect } from "./config";
 import { getVar } from "./config/vars.config";
-import { Route } from "./routes/Route";
+import { getRouter } from "./decorators/Route";
 import { logger, stream } from "./utils/logger";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 
@@ -18,14 +18,14 @@ export class App {
   public env: string;
   public port: string | number;
 
-  constructor(routes: Route[]) {
+  constructor() {
     this.app = express();
     this.env = getVar("NODE_ENV") || "development";
     this.port = getVar("PORT") || 3000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
-    this.initializeRoutes(routes);
+    this.initializeRoutes();
     this.initializeSwagger();
     //this.initializeErrorHandling();
   }
@@ -63,11 +63,8 @@ export class App {
     this.app.use(cookieParser());
   }
 
-  private initializeRoutes(routes: Route[]) {
-    routes.forEach((route) => {
-      route.setupEndpoints();
-      this.app.use("/", route.router);
-    });
+  private initializeRoutes() {
+    this.app.use("/", getRouter());
   }
 
   private initializeSwagger() {
