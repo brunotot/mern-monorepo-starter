@@ -1,21 +1,28 @@
 {
   "name": "monorepo-mern-railway-starter",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "monorepo-mern-railway-starter description",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run dev --prefix packages/backend",
+    "root:clean": "sh ./scripts/clean-install.sh",
     "backend:start": "cd packages/backend && npm run start",
     "backend:build": "cd packages/backend && npm run build",
     "frontend:start": "cd packages/frontend && npm run start",
-    "frontend:build": "cd packages/frontend && npm run build"
+    "frontend:build": "cd packages/frontend && npm run build",
+    "build:docs": "typedoc --options typedoc/typedoc.json && npm run sanitize-docs --silent",
+    "sanitize-docs": "bash typedoc/scripts/typedoc-sanitize.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.12",
+    "typedoc-material-theme": "^1.0.2",
+    "typedoc-plugin-custom-tags": "^1.0.2",
+    "typedoc-plugin-remove-references": "^0.0.6"
   }
 }

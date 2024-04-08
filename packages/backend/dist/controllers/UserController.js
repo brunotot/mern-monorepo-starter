@@ -47,30 +47,34 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
 };
 import { Autowired } from "../decorators/Autowired";
 import { Controller } from "../decorators/Controller";
-import { Route } from "../decorators/Route";
+import { GetMapping } from "../decorators/GetMapping";
+import { PostMapping } from "../decorators/PostMapping";
+import { Use } from "../decorators/Use";
+import { User } from "../form/UserForm";
+import { validateForm } from "../middleware/validateForm";
 let UserController = (() => {
     let _classDecorators = [Controller("/users")];
     let _classDescriptor;
     let _classExtraInitializers = [];
     let _classThis;
     let _instanceExtraInitializers = [];
-    let _userRepository_decorators;
-    let _userRepository_initializers = [];
+    let _userService_decorators;
+    let _userService_initializers = [];
     let _findAll_decorators;
     let _create_decorators;
     var UserController = _classThis = class {
         constructor() {
-            this.userRepository = (__runInitializers(this, _instanceExtraInitializers), __runInitializers(this, _userRepository_initializers, void 0));
+            this.userService = (__runInitializers(this, _instanceExtraInitializers), __runInitializers(this, _userService_initializers, void 0));
         }
         findAll(_req, res) {
             return __awaiter(this, void 0, void 0, function* () {
-                const users = yield this.userRepository.findAll();
+                const users = yield this.userService.findAll();
                 res.json(users);
             });
         }
         create(req, res) {
             return __awaiter(this, void 0, void 0, function* () {
-                const user = yield this.userRepository.create(req.body);
+                const user = yield this.userService.create(req.body);
                 res.status(201).json(user);
             });
         }
@@ -78,12 +82,12 @@ let UserController = (() => {
     __setFunctionName(_classThis, "UserController");
     (() => {
         const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
-        _userRepository_decorators = [Autowired()];
-        _findAll_decorators = [Route({ method: "get" })];
-        _create_decorators = [Route({ method: "post" })];
+        _userService_decorators = [Autowired()];
+        _findAll_decorators = [GetMapping()];
+        _create_decorators = [Use(validateForm(User)), PostMapping()];
         __esDecorate(_classThis, null, _findAll_decorators, { kind: "method", name: "findAll", static: false, private: false, access: { has: obj => "findAll" in obj, get: obj => obj.findAll }, metadata: _metadata }, null, _instanceExtraInitializers);
         __esDecorate(_classThis, null, _create_decorators, { kind: "method", name: "create", static: false, private: false, access: { has: obj => "create" in obj, get: obj => obj.create }, metadata: _metadata }, null, _instanceExtraInitializers);
-        __esDecorate(null, null, _userRepository_decorators, { kind: "field", name: "userRepository", static: false, private: false, access: { has: obj => "userRepository" in obj, get: obj => obj.userRepository, set: (obj, value) => { obj.userRepository = value; } }, metadata: _metadata }, _userRepository_initializers, _instanceExtraInitializers);
+        __esDecorate(null, null, _userService_decorators, { kind: "field", name: "userService", static: false, private: false, access: { has: obj => "userService" in obj, get: obj => obj.userService, set: (obj, value) => { obj.userService = value; } }, metadata: _metadata }, _userService_initializers, _instanceExtraInitializers);
         __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
         UserController = _classThis = _classDescriptor.value;
         if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });

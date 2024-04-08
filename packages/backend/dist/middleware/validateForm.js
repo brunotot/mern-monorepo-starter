@@ -6,7 +6,6 @@ export function validateForm(clazz) {
         const body = req.body;
         const result = form.validate(body);
         if (!result.valid) {
-            console.log(result);
             return res.status(400).json(result);
         }
         next();

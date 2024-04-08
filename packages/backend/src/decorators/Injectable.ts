@@ -1,52 +1,25 @@
-import { createClassDecorator } from "@tsvdec/core";
-import { inject } from "../config";
+import { createClassDecorator } from "@tsvdec/decorators";
+import { InjectionMetaService } from "../meta/InjectionMetaService";
 import { Class } from "../utils/types";
 
-export type InjectionItem = {
-  name: string;
-  class: Class;
-};
+const injectionClasses: Class[] = [];
 
-const injectionItems: InjectionItem[] = [];
-
-export function getInjectionItems() {
-  return injectionItems;
+export function getInjectionClasses() {
+  return injectionClasses;
 }
 
-export function getInjectionItem(nameOrClass: string | Class): InjectionItem {
-  const item = injectionItems.find(
-    ({ name, class: clazz }) => name === nameOrClass || clazz === nameOrClass
-  );
+export type ClassDecoratorSupplier = (context: DecoratorContext) => void;
 
-  if (!item) {
-    throw new Error(
-      `No injection item found for ${nameOrClass} of type ${typeof nameOrClass}`
-    );
-  }
-
-  return item;
-}
-
-export function getInjectionInstance<C extends Class>(
-  clazz: C
-): InstanceType<C> {
-  const serviceName = getInjectionItem(clazz).name;
-  return inject<InstanceType<C>>(serviceName);
-}
-
-function addInjectionItem(target: Class, name: string) {
-  injectionItems.push({ class: target, name });
-}
-
-export type InjectableMetadata = Record<string, any>;
-
-export function Injectable<This extends Class>() {
-  return createClassDecorator<This>((meta, baseClass, context) => {
-    const name = normalizeTargetName(baseClass.name);
-    addInjectionItem(baseClass, name);
-    // @ts-expect-error
-    context.metadata ??= {};
-    context.metadata.injectionName ??= name;
+export function Injectable<This extends Class>(
+  supplier?: ClassDecoratorSupplier
+) {
+  return createClassDecorator<This>(({ clazz: constructor, meta }) => {
+    const context = meta.context;
+    const constructorName: string = constructor.name;
+    const targetName = normalizeTargetName(constructorName);
+    InjectionMetaService.from(context).setName(targetName);
+    injectionClasses.push(constructor);
+    supplier?.(context);
   });
 }
 

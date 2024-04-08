@@ -24,6 +24,11 @@
             "date": 1709679963935,
             "name": "/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/logs/error/2024-03-06.log",
             "hash": "5252bdceefb651b58dbb6588794561fe705eab794442ce2eacc35a272e788d6e"
+        },
+        {
+            "date": 1709894669762,
+            "name": "/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/logs/error/2024-03-08.log",
+            "hash": "438c5cc98c9218ad546ea2026164aa74aa54c5132bba7ed8bb54d499494736da"
         }
     ],
     "hashType": "sha256"

@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tsvdec/core": "^2.0.4",
+    "@tsvdec/core": "^2.0.11",
+    "@tsvdec/decorators": "^1.0.7",
     "bottlejs": "^2.0.1",
     "express": "^4.18.2",
     "mongoose": "^8.2.0",

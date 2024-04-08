@@ -7,25 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Router } from "express";
+import { createMethodDecorator } from "@tsvdec/decorators";
 import { inject } from "../config";
-const router = Router();
-export function getRouter() {
-    return router;
-}
-const addRoute = (requestRoute) => {
-    const { method, path, middlewares, handler } = requestRoute;
-    const fullPath = `${path}`;
-    const pipeline = middlewares ? [...middlewares, handler] : [handler];
-    router[method](fullPath, ...pipeline);
-};
+import { InjectionMetaService } from "../meta/InjectionMetaService";
+import { RoutesMetaService, } from "../meta/RoutesMetaService";
 export function Route(props) {
-    return function (target, context) {
+    return createMethodDecorator(({ target, meta }) => {
+        const context = meta.context;
         function handler(req, res) {
             return __awaiter(this, void 0, void 0, function* () {
-                const containerName = context.metadata.injectionName;
                 try {
-                    return yield target.call(inject(containerName), req, res);
+                    InjectionMetaService.from(context).value.name;
+                    const container = InjectionMetaService.from(context).value.name;
+                    const _this = inject(container);
+                    return yield target.call(_this, req, res);
                 }
                 catch (error) {
                     const message = error.message;
@@ -37,8 +32,8 @@ export function Route(props) {
                 }
             });
         }
-        addRoute(Object.assign(Object.assign({}, props), { handler }));
+        RoutesMetaService.from(context).addRoute(Object.assign(Object.assign({}, props), { name: String(context.name), middlewares: [], handler }));
         return handler;
-    };
+    });
 }
 //# sourceMappingURL=Route.js.map

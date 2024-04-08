@@ -1,0 +1,9 @@
+2024-03-08 12:04:25 error: uncaughtException: listen EADDRINUSE: address already in use :::3000
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1740:16)
+    at listenInCluster (node:net:1788:12)
+    at Server.listen (node:net:1876:7)
+    at Function.listen (/home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/node_modules/.pnpm/express@4.18.2/node_modules/express/lib/application.js:635:24)
+    at App.listen (file:///home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/App.ts:34:14)
+    at file:///home/bruno/Desktop/private/dev/typescript/monorepo-mern-railway-starter/packages/backend/src/index.ts:16:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:194:25)

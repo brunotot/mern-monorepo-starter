@@ -1,20 +1,21 @@
 import Bottle from "bottlejs";
-import { getMetadata } from "../decorators/Autowired";
-import { getInjectionItems } from "../decorators/Injectable";
+import { getInjectionClasses } from "../decorators/Injectable";
+import { InjectionMetaService } from "../meta/InjectionMetaService";
 const bottle = new Bottle();
 const container = bottle.container;
 export function inject(name) {
     return container[name];
 }
 export function initializeDI2() {
-    const injectionItems = getInjectionItems();
-    const dependencySchema = injectionItems.reduce((acc, { name, class: Class }) => {
-        var _a;
-        const deps = (_a = getMetadata(Class).dependencies) !== null && _a !== void 0 ? _a : [];
-        return Object.assign(Object.assign({}, acc), { [name]: deps });
+    const injectionClasses = getInjectionClasses();
+    const dependencySchema = injectionClasses.reduce((acc, Class) => {
+        const { name, dependencies = [] } = InjectionMetaService.from(Class).value;
+        return Object.assign(Object.assign({}, acc), { [name]: dependencies });
     }, {});
-    function sortInjectionItems(items, dependencySchema) {
-        return [...items].sort(({ name: nameA }, { name: nameB }) => {
+    function sortInjectionClasses(classes, dependencySchema) {
+        return [...classes].sort((classA, classB) => {
+            const { name: nameA } = InjectionMetaService.from(classA).value;
+            const { name: nameB } = InjectionMetaService.from(classB).value;
             if (dependencySchema[nameA].length === 0)
                 return -1;
             if (dependencySchema[nameB].length === 0)
@@ -26,8 +27,9 @@ export function initializeDI2() {
             return 0;
         });
     }
-    const sortedInjectionItems = sortInjectionItems(injectionItems, dependencySchema);
-    sortedInjectionItems.forEach(({ name, class: Class }) => {
+    const sortedInjectionClasses = sortInjectionClasses(injectionClasses, dependencySchema);
+    sortedInjectionClasses.forEach((Class) => {
+        const name = InjectionMetaService.from(Class).value.name;
         bottle.service(name, Class, ...dependencySchema[name]);
     });
 }

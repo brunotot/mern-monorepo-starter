@@ -1,8 +1,12 @@
 import { getDirname } from "cross-dirname";
+import { config } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
-import { join } from "path";
+import path, { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
+config({
+    path: path.join(getDirname(), "../../", `.env.${process.env.NODE_ENV || "development"}.local`),
+});
 if (!process.env.LOG_DIR) {
     throw new Error("LOG_DIR is not defined");
 }

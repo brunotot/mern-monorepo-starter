@@ -1,0 +1,1 @@
+{"version":3,"file":"GetMapping.js","sourceRoot":"","sources":["../../src/decorators/GetMapping.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAE,MAAM,SAAS,CAAC;AAEhC,MAAM,UAAU,UAAU,CAAgC,OAAe,EAAE;IACzE,OAAO,KAAK,CAAW;QACrB,MAAM,EAAE,KAAK;QACb,IAAI;KACL,CAAC,CAAC;AACL,CAAC"}

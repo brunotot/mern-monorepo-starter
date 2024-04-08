@@ -1,33 +1,17 @@
-import { createClassDecorator } from "@tsvdec/core";
-import { inject } from "../config";
-const injectionItems = [];
-export function getInjectionItems() {
-    return injectionItems;
+import { createClassDecorator } from "@tsvdec/decorators";
+import { InjectionMetaService } from "../meta/InjectionMetaService";
+const injectionClasses = [];
+export function getInjectionClasses() {
+    return injectionClasses;
 }
-export function getInjectionItem(nameOrClass) {
-    const item = injectionItems.find(({ name, class: clazz }) => name === nameOrClass || clazz === nameOrClass);
-    if (!item) {
-        throw new Error(`No injection item found for ${nameOrClass} of type ${typeof nameOrClass}`);
-    }
-    return item;
-}
-export function getInjectionInstance(clazz) {
-    const serviceName = getInjectionItem(clazz).name;
-    return inject(serviceName);
-}
-function addInjectionItem(target, name) {
-    injectionItems.push({ class: target, name });
-}
-export function Injectable(metadata) {
-    return createClassDecorator((meta, baseClass, context) => {
-        var _a, _b;
-        var _c;
-        const name = normalizeTargetName(baseClass.name);
-        addInjectionItem(baseClass, name);
-        // @ts-expect-error
-        (_a = context.metadata) !== null && _a !== void 0 ? _a : (context.metadata = {});
-        (_b = (_c = context.metadata).injectionName) !== null && _b !== void 0 ? _b : (_c.injectionName = name);
-        context.metadata.injectionMetadata = metadata !== null && metadata !== void 0 ? metadata : {};
+export function Injectable(supplier) {
+    return createClassDecorator(({ clazz: constructor, meta }) => {
+        const context = meta.context;
+        const constructorName = constructor.name;
+        const targetName = normalizeTargetName(constructorName);
+        InjectionMetaService.from(context).setName(targetName);
+        injectionClasses.push(constructor);
+        supplier === null || supplier === void 0 ? void 0 : supplier(context);
     });
 }
 function normalizeTargetName(targetName) {

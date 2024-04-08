@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, { Router } from "express";
 import helmet from "helmet";
 import hpp from "hpp";
 import morgan from "morgan";
@@ -18,7 +18,8 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { databaseConnect } from "./config";
 import { getVar } from "./config/vars.config";
-import { getRouter } from "./decorators/Route";
+import { getInjectionClasses } from "./decorators/Injectable";
+import { RoutesMetaService } from "./meta/RoutesMetaService";
 import { logger, stream } from "./utils/logger";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 export class App {
@@ -62,7 +63,16 @@ export class App {
         this.app.use(cookieParser());
     }
     initializeRoutes() {
-        this.app.use("/", getRouter());
+        getInjectionClasses().forEach((clazz) => {
+            const router = Router();
+            const { basePath, routes } = RoutesMetaService.from(clazz).value;
+            routes.forEach(({ method, path = "", middlewares, handler }) => {
+                const fullPath = `${basePath}${path}`;
+                const pipeline = middlewares ? [...middlewares, handler] : [handler];
+                router[method](fullPath, ...pipeline);
+            });
+            this.app.use("/", router);
+        });
     }
     initializeSwagger() {
         const specs = swaggerJSDoc({

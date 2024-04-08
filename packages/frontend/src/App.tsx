@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import LightModeIcon from "@mui/icons-material/LightMode";
+import {} from "@mui/lab";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Paper,
+  Switch,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import "./App.css";
+import { Layout } from "./core/layout/Layout";
+import { SidebarProvider } from "./core/layout/Layout/impl/SidebarLayout/SidebarProvider";
+import { LocalizationProvider } from "./core/localization/components/LocalizationProvider";
+import "./core/localization/i18n";
+import ThemeBorderRadiusSlider from "./core/theme/components/ThemeBorderRadiusSlider";
+import ThemeProvider from "./core/theme/components/ThemeProvider";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const ThemeShowcaseComponent: React.FC = () => {
+  const { t } = useTranslation();
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Paper
+      elevation={3}
+      sx={{
+        padding: "16px",
+        margin: "16px",
+        textAlign: "center",
+        borderRadius: "var(--mui-shape-borderRadius)",
+      }}
+    >
+      <Card
+        sx={{
+          margin: "16px",
+          borderRadius: "var(--mui-shape-borderRadius)",
+        }}
+      >
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {t("test")}
+          </Typography>
+          <Typography variant="body2" style={{ marginBottom: "16px" }}>
+            Check out how the theme changes are applied.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "16px", marginBottom: "16px" }}
+          >
+            Press Me
+          </Button>
+          <Switch
+            checked={true}
+            onChange={() => {
+              /* Handle theme toggle */
+            }}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <IconButton aria-label="toggle theme" color="primary">
+            <LightModeIcon />
+          </IconButton>
+        </CardContent>
+      </Card>
+    </Paper>
+  );
+};
 
-export default App
+export function App() {
+  return (
+    <LocalizationProvider>
+      <ThemeProvider>
+        <SidebarProvider>
+          <Layout variant="SidebarLayout">
+            <Box
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+              gap={2}
+            >
+              <ThemeBorderRadiusSlider />
+            </Box>
+            <ThemeShowcaseComponent />
+          </Layout>
+        </SidebarProvider>
+      </ThemeProvider>
+    </LocalizationProvider>
+  );
+}

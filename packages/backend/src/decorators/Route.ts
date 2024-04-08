@@ -1,55 +1,25 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { createMethodDecorator } from "@tsvdec/decorators";
+import { Request, Response } from "express";
 import { inject } from "../config";
+import { InjectionMetaService } from "../meta/InjectionMetaService";
+import {
+  RequestMappingProps,
+  RouteHandler,
+  RoutesMetaService,
+} from "../meta/RoutesMetaService";
 
-export type RouteMethod =
-  | "get"
-  | "post"
-  | "put"
-  | "delete"
-  | "patch"
-  | "options"
-  | "head";
+export function Route<This, Fn extends RouteHandler>(
+  props: Omit<RequestMappingProps, "name" | "middlewares">
+) {
+  return createMethodDecorator<This, Fn>(({ target, meta }) => {
+    const context = meta.context;
 
-export type RouteMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => void;
-
-export type RouteHandler = (req: Request, res: Response) => Promise<void>;
-
-export type RequestMappingProps = {
-  method: RouteMethod;
-  path?: string;
-  middlewares?: Array<RouteMiddleware>;
-};
-
-const router = Router();
-
-export function getRouter() {
-  return router;
-}
-
-export type RequestRoute = RequestMappingProps & { handler: RouteHandler };
-
-const addRoute = (requestRoute: RequestRoute) => {
-  const { method, path, middlewares, handler } = requestRoute;
-  const fullPath = `${path}`;
-  const pipeline = middlewares ? [...middlewares, handler] : [handler];
-  router[method](fullPath, ...pipeline);
-};
-
-export function Route<
-  This,
-  Fn extends (req: Request, res: Response) => Promise<void>
->(props: RequestMappingProps) {
-  return function (target: Fn, context: ClassMethodDecoratorContext<This, Fn>) {
-    const methodName = context.name;
-    const containerName: string = context.metadata!.injectionName as string;
-
-    async function handler(req: Request, res: Response): Promise<void> {
+    async function handler(req: Request, res: Response) {
       try {
-        return await target.call(inject(containerName), req, res);
+        InjectionMetaService.from(context).value.name;
+        const container = InjectionMetaService.from(context).value.name;
+        const _this = inject(container);
+        return await target.call(_this, req, res);
       } catch (error: any) {
         const message: string = error.message;
         const [, ...stack] = error.stack
@@ -60,7 +30,13 @@ export function Route<
       }
     }
 
-    addRoute({ ...props, handler });
-    return handler;
-  };
+    RoutesMetaService.from(context).addRoute({
+      ...props,
+      name: String(context.name),
+      middlewares: [],
+      handler,
+    });
+
+    return handler as Fn;
+  });
 }
