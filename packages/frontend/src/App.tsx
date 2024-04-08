@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import "./App.css";
 import { Layout } from "./core/layout/Layout";
 import { SidebarProvider } from "./core/layout/Layout/impl/SidebarLayout/SidebarProvider";
+import { LayoutProvider } from "./core/layout/LayoutProvider";
 import { LocalizationProvider } from "./core/localization/components/LocalizationProvider";
 import "./core/localization/i18n";
 import ThemeBorderRadiusSlider from "./core/theme/components/ThemeBorderRadiusSlider";
@@ -72,19 +73,22 @@ export function App() {
   return (
     <LocalizationProvider>
       <ThemeProvider>
-        <SidebarProvider>
-          <Layout variant="SidebarLayout">
-            <Box
-              display="flex"
-              alignItems="center"
-              flexDirection="column"
-              gap={2}
-            >
-              <ThemeBorderRadiusSlider />
-            </Box>
-            <ThemeShowcaseComponent />
-          </Layout>
-        </SidebarProvider>
+        <LayoutProvider>
+          <SidebarProvider>
+            <Layout>
+              <Box
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+                marginTop={4}
+                gap={2}
+              >
+                <ThemeBorderRadiusSlider />
+              </Box>
+              <ThemeShowcaseComponent />
+            </Layout>
+          </SidebarProvider>
+        </LayoutProvider>
       </ThemeProvider>
     </LocalizationProvider>
   );

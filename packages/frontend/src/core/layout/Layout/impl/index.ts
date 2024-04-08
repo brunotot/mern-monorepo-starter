@@ -11,3 +11,7 @@ export const LayoutComponent = {
 } as const satisfies Record<string, (props: LayoutProps) => JSX.Element>;
 
 export type LayoutVariant = keyof typeof LayoutComponent;
+
+export const LayoutVariantCollection = Object.keys(
+  LayoutComponent
+) as LayoutVariant[];

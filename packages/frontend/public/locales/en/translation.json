@@ -2,7 +2,7 @@
   "test": "Test EN",
   "setDarkMode": "Dark mode",
   "setLightMode": "Light mode",
-  "systemLanguage": "Language",
+  "systemLanguage": "Select language",
   "appTheme": "Theme",
   "borderRadius": "Border radius",
   "doSearch": "Search",
@@ -24,5 +24,8 @@
   "user": "User",
   "rolesAndPermissions": "Roles & Permissions",
   "list": "List",
-  "view": "View"
+  "view": "View",
+  "systemLayout": "Layout",
+  "systemLayoutSidebar": "Sidebar view",
+  "systemLayoutHorizontal": "Horizontal view"
 }

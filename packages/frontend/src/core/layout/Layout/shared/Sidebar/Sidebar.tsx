@@ -19,12 +19,14 @@ export function Sidebar({ width = 300, open, onClose }: SidebarProps) {
       sx={{
         width,
         flexShrink: 0,
+        position: matchesDesktop ? "relative" : undefined, //imp
         "& .MuiDrawer-paper": {
           width,
           boxSizing: "border-box",
           background: "var(--mui-palette-background-default)",
           borderWidth: 0,
           scrollbarGutter: "stable",
+          position: matchesDesktop ? "absolute" : undefined, //imp
         },
       }}
     >

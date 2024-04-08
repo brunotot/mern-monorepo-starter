@@ -24,7 +24,7 @@ import { useNavData } from "./useNavData";
       onClick={() => {}}
     >
       {icon && (
-        <ListItemIcon sx={{ minWidth: "2.125rem" }}>{icon}</ListItemIcon>
+        <ListItemIcon>{icon}</ListItemIcon>
       )}
       <ListItemText primary={label} />
     </ListItemButton>
@@ -81,11 +81,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
           selected={item.label === "Account Settings"}
           onClick={handleClick}
         >
-          {item.icon && (
-            <ListItemIcon sx={{ minWidth: "2.125rem" }}>
-              {item.icon}
-            </ListItemIcon>
-          )}
+          {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
           <ListItemText primary={item.label} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
@@ -108,9 +104,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
       selected={item.label === "Account Settings"}
       onClick={() => {}}
     >
-      {item.icon && (
-        <ListItemIcon sx={{ minWidth: "2.125rem" }}>{item.icon}</ListItemIcon>
-      )}
+      {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
       <ListItemText primary={item.label} />
     </ListItemButton>
   );

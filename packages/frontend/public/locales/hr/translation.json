@@ -2,7 +2,7 @@
   "test": "Test HR",
   "setDarkMode": "Tamni način rada",
   "setLightMode": "Svijetli način rada",
-  "systemLanguage": "Jezik",
+  "systemLanguage": "Odaberi jezik",
   "appTheme": "Tema",
   "borderRadius": "Radijus ruba",
   "doSearch": "Pretraži",
@@ -24,5 +24,8 @@
   "user": "Korisnik",
   "rolesAndPermissions": "Uloge i Dozvole",
   "list": "Lista",
-  "view": "Pregled"
+  "view": "Pregled",
+  "systemLayout": "Izgled",
+  "systemLayoutSidebar": "Dizajn sa bočnom trakom",
+  "systemLayoutHorizontal": "Horizontalni dizajn"
 }

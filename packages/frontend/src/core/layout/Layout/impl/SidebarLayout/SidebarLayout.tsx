@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { LayoutProps } from "../../Layout";
 import { Header } from "../../shared/Header/Header";
@@ -11,7 +11,7 @@ export function SidebarLayout({ children }: LayoutProps) {
   const sidebarWidth = 300;
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Container maxWidth="xl" sx={{ display: "flex", height: "100%" }}>
       <Sidebar
         width={sidebarWidth}
         open={matchesDesktop || sidebarOpen}
@@ -19,17 +19,18 @@ export function SidebarLayout({ children }: LayoutProps) {
       />
 
       <Box
-        marginLeft={matchesDesktop ? `${sidebarWidth}px` : undefined}
+        //marginLeft={matchesDesktop ? `${sidebarWidth}px` : undefined}
         component="main"
         display="flex"
         flexDirection="column"
         flexGrow={1}
+        //paddingBlock="0.75rem"
         gap={4}
       >
         <Header />
 
         {children}
       </Box>
-    </Box>
+    </Container>
   );
 }

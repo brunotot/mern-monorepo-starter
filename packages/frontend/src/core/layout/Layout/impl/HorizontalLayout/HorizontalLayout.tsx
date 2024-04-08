@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { LayoutProps } from "../../Layout";
 import { Header } from "../../shared/Header";
 import { HorizontalNavigation } from "./HorizontalNavigation";
@@ -9,28 +9,37 @@ export function HorizontalLayout({ children }: LayoutProps) {
   // const sidebarWidth = 300;
 
   return (
-    <Box display="flex" flexDirection="column">
-      {/*<Sidebar
+    <>
+      <Box display="flex" flexDirection="column" boxShadow={4}>
+        <Header
+          borderBottom
+          maxWidth="xl"
+          backgroundColor="var(--mui-palette-background-paper)"
+        />
+        <HorizontalNavigation
+          maxWidth="xl"
+          backgroundColor="var(--mui-palette-background-paper)"
+        />
+      </Box>
+      <Container maxWidth="xl" sx={{ display: "flex" }}>
+        {/*<Sidebar
         width={sidebarWidth}
         open={matchesDesktop || sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />*/}
 
-      <Box
-        //marginLeft={matchesDesktop ? `${sidebarWidth}px` : undefined}
-        component="main"
-        display="flex"
-        flexDirection="column"
-        flexGrow={1}
-        gap={4}
-      >
-        <Box display="flex" flexDirection="column">
-          <Header />
-          <HorizontalNavigation />
+        <Box
+          //marginLeft={matchesDesktop ? `${sidebarWidth}px` : undefined}
+          component="main"
+          display="flex"
+          flexDirection="column"
+          flexGrow={1}
+          //paddingBlock="0.75rem"
+          gap={4}
+        >
+          {children}
         </Box>
-
-        {children}
-      </Box>
-    </Box>
+      </Container>
+    </>
   );
 }

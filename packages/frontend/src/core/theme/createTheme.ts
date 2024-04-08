@@ -77,6 +77,13 @@ export function buildBaseThemeConfig(
           },
         },
       },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            minWidth: "2.125rem",
+          },
+        },
+      },
     },
   };
 }
