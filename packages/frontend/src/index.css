@@ -11,39 +11,3 @@
   display: flex;
   flex-direction: column;
 }
-
-@media (max-width: 678px) {
-  #root {
-    /*padding-inline: 0.5rem;*/
-  }
-}
-
-/* This styles the scrollbar track */
-::-webkit-scrollbar {
-  width: 10px; /* scrollbar width */
-  background-color: var(
-    --mui-palette-background-default
-  ); /* scrollbar track color */
-}
-
-/* This styles the scrollbar handle */
-::-webkit-scrollbar-thumb {
-  background-color: var(
-    --mui-palette-background-paper
-  ); /* scrollbar handle color */
-  border-radius: 5px; /* scrollbar handle border radius */
-  border: 2px solid var(--mui-palette-background-paper); /* scrollbar handle border - same as track color */
-}
-
-/* This styles the scrollbar handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(
-    --mui-palette-grey-600
-  ); /* scrollbar handle color on hover */
-}
-
-/* For Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f5f5f5; /* thumb and track color */
-}

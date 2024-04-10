@@ -25,9 +25,8 @@ export function SidebarLayout({ children }: LayoutProps) {
         flexDirection="column"
         flexGrow={1}
         //paddingBlock="0.75rem"
-        gap={4}
       >
-        <Header />
+        <Header sx={{ paddingTop: 1.5 }} />
 
         {children}
       </Box>

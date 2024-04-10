@@ -33,6 +33,8 @@ function HorizontalNavItem({
 }: HorizontalNavItemProps) {
   const hasChildren = "children" in item && item.children;
   const children = item?.children ?? [];
+  const isMainNavButton = dropdownPosition.anchorY === "bottom";
+  const borderRadius = isMainNavButton ? 8 : undefined;
 
   if (hasChildren) {
     return (
@@ -43,17 +45,14 @@ function HorizontalNavItem({
             sx={{
               flexGrow: 0,
               backgroundColor: popupState.isOpen ? "action.hover" : undefined,
+              borderRadius,
             }}
             {...hoverProps}
           >
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
             <ListItemText primary={item.label} />
             <ListItemIcon sx={{ minWidth: 0 }}>
-              {dropdownPosition.anchorY === "bottom" ? (
-                <ExpandMore />
-              ) : (
-                <ChevronRight />
-              )}
+              {isMainNavButton ? <ExpandMore /> : <ChevronRight />}
             </ListItemIcon>
           </ListItemButton>
         )}
@@ -75,7 +74,7 @@ function HorizontalNavItem({
   }
 
   return (
-    <ListItemButton sx={{ flexGrow: 0 }}>
+    <ListItemButton sx={{ flexGrow: 0, borderRadius }}>
       {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
       <ListItemText primary={item.label} />
     </ListItemButton>
@@ -94,9 +93,9 @@ export function HorizontalNavigation({
   const navData = useNavData();
 
   return (
-    <Box sx={{ backgroundColor }}>
+    <Box sx={{ backgroundColor }} paddingBlock={0.75}>
       <Container maxWidth={maxWidth}>
-        <List component={Stack} direction="row">
+        <List dense component={Stack} direction="row">
           {navData.map((item, index) => (
             <Fragment key={index}>
               <HorizontalNavItem item={item} />

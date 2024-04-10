@@ -8,28 +8,10 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import { NavItem } from "./navigation";
+import { NavItem, NavItemSingle } from "./navigation";
 import { useNavData } from "./useNavData";
-
-/*function SidebarNavItem({ icon, label }: SidebarNavItemProps) {
-  return (
-    <ListItemButton
-      sx={{
-        paddingLeft: "1.5rem",
-        borderTopRightRadius: "2rem",
-        borderBottomRightRadius: "2rem",
-      }}
-      selected={label === "Account Settings"}
-      onClick={() => {}}
-    >
-      {icon && (
-        <ListItemIcon>{icon}</ListItemIcon>
-      )}
-      <ListItemText primary={label} />
-    </ListItemButton>
-  );
-}*/
 
 export type SidebarNavItemProps = {
   item: NavItem;
@@ -38,11 +20,15 @@ export type SidebarNavItemProps = {
 
 function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const hasChildren = "children" in item && item.children;
-  const dropdown = item?.dropdown ?? "menu";
-  const renderChildrenPersistent = hasChildren && dropdown === "persistent";
-  const renderChildrenMenu = hasChildren && dropdown === "menu";
-  const children = item?.children ?? [];
+  const variant = item?.variant ?? "single";
+  const renderChildrenPersistent = hasChildren && variant === "group";
+  const renderChildrenMenu = hasChildren && variant === "menu";
+  const children = hasChildren ? item.children : [];
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
 
   const handleClick = () => {
     setOpen(!open);
@@ -94,6 +80,8 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
+  const itemSingle = item as NavItemSingle;
+
   return (
     <ListItemButton
       sx={{
@@ -101,11 +89,11 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
         borderTopRightRadius: "2rem",
         borderBottomRightRadius: "2rem",
       }}
-      selected={item.label === "Account Settings"}
-      onClick={() => {}}
+      selected={location.pathname === itemSingle.path}
+      onClick={() => navigate(itemSingle.path)}
     >
-      {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-      <ListItemText primary={item.label} />
+      {itemSingle.icon && <ListItemIcon>{itemSingle.icon}</ListItemIcon>}
+      <ListItemText primary={itemSingle.label} />
     </ListItemButton>
   );
 }
@@ -114,7 +102,7 @@ export function SidebarNavContent() {
   const navData = useNavData();
 
   return (
-    <List sx={{ paddingRight: "1.75rem !important" }}>
+    <List dense sx={{ paddingRight: "1.75rem !important" }}>
       {navData.map((item, index) => (
         <SidebarNavItem key={index} item={item} />
       ))}

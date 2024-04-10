@@ -10,11 +10,12 @@ export function HorizontalLayout({ children }: LayoutProps) {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" boxShadow={4}>
+      <Box display="flex" flexDirection="column" boxShadow={2}>
         <Header
           borderBottom
           maxWidth="xl"
           backgroundColor="var(--mui-palette-background-paper)"
+          sx={{ paddingBlock: 1.5 }}
         />
         <HorizontalNavigation
           maxWidth="xl"
