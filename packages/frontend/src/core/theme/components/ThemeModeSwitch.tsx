@@ -13,9 +13,9 @@ export function ThemeModeSwitch() {
   };
 
   return (
-    <Tooltip title={isDarkMode ? t("setLightMode") : t("setDarkMode")}>
+    <Tooltip title={isDarkMode ? t("setDarkMode") : t("setLightMode")}>
       <IconButton onClick={handleToggle}>
-        {isDarkMode ? <LightMode /> : <DarkMode />}
+        {isDarkMode ? <DarkMode /> : <LightMode />}
       </IconButton>
     </Tooltip>
   );

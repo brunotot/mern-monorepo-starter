@@ -7,6 +7,9 @@ export function buildBaseThemeConfig(
   _schema: ThemeColorSchema
 ): Omit<ThemeOptions, "palette"> {
   return {
+    shape: {
+      borderRadius: 24,
+    },
     typography: {
       fontFamily: [
         "Inter",

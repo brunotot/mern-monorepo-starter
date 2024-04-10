@@ -1,32 +1,34 @@
 import { ReactNode } from "react";
 import { Role, User } from "../types/User";
 
-export type NavItemAnchorSecure = Role[] | ((user: User) => boolean | Role[]);
+export type NavigationItemAnchorSecure =
+  | Role[]
+  | ((user: User) => boolean | Role[]);
 
-export type NavItemRender = {
+export type NavigationItemRender = {
   icon?: ReactNode;
   label: string;
 };
 
-export type NavItemAnchor = {
+export type NavigationItemAnchor = {
   path: string;
-  secure?: NavItemAnchorSecure;
+  secure?: NavigationItemAnchorSecure;
 };
 
-export type NavItemChildren = {
-  children: NavItem[];
+export type NavigationItemChildren = {
+  children: NavigationItem[];
 };
 
-export type NavItemSingle = NavItemRender &
-  NavItemAnchor & {
+export type NavigationItemSingle = NavigationItemRender &
+  NavigationItemAnchor & {
     variant?: "single";
   };
 
-export type NavItemMultiple = NavItemRender &
-  NavItemChildren & {
+export type NavigationItemMultiple = NavigationItemRender &
+  NavigationItemChildren & {
     variant: "group" | "menu";
   };
 
-export type NavItem = NavItemSingle | NavItemMultiple;
+export type NavigationItem = NavigationItemSingle | NavigationItemMultiple;
 
-export type NavItemList = NavItem[];
+export type NavigationData = NavigationItem[];

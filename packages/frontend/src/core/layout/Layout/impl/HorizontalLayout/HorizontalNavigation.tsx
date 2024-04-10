@@ -14,11 +14,11 @@ import {
   ButtonHoverMenu,
   OriginPosition,
 } from "../../../../components/ButtonHoverMenu";
-import { NavItem } from "../../../../router/navigation";
-import { useNavData } from "../../../../router/useNavData";
+import { useNavigationData } from "../../../../hooks/useNavigationData";
+import { NavigationItem } from "../../../../router/navigation";
 
 export type HorizontalNavItemProps = {
-  item: NavItem;
+  item: NavigationItem;
   dropdownPosition?: OriginPosition;
 };
 
@@ -32,7 +32,7 @@ function HorizontalNavItem({
   },
 }: HorizontalNavItemProps) {
   const hasChildren = "children" in item && item.children;
-  const children = item?.children ?? [];
+  const children = hasChildren ? item.children : [];
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 8 : undefined;
 
@@ -90,7 +90,7 @@ export function HorizontalNavigation({
   backgroundColor,
   maxWidth = false,
 }: HorizontalNavigationProps) {
-  const navData = useNavData();
+  const navData = useNavigationData();
 
   return (
     <Box sx={{ backgroundColor }} paddingBlock={0.75}>

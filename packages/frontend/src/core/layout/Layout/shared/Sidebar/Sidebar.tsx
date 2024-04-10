@@ -1,5 +1,5 @@
 import { Drawer, useMediaQuery } from "@mui/material";
-import { SidebarNavContent } from "../../../../router/SidebarNavContent";
+import { SidebarNavContent } from "../../impl/SidebarLayout/SidebarNavContent";
 import { SidebarNavLogo } from "./components/SidebarNavLogo";
 
 export type SidebarProps = {

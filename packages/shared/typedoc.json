@@ -1,5 +1,5 @@
 {
   "extends": ["../../typedoc/typedoc.base.json"],
-  "entryPoints": ["src/export.ts"],
+  "entryPoints": ["src/index.ts"],
   "name": "shared"
 }

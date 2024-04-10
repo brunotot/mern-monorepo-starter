@@ -1,6 +1,5 @@
 import { LightMode } from "@mui/icons-material";
 import {
-  Box,
   Button,
   Card,
   CardContent,
@@ -10,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import ThemeBorderRadiusSlider from "../theme/components/ThemeBorderRadiusSlider";
 
 const ThemeShowcaseComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -63,15 +61,6 @@ const ThemeShowcaseComponent: React.FC = () => {
 export function HomePage() {
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        flexDirection="column"
-        marginTop={4}
-        gap={2}
-      >
-        <ThemeBorderRadiusSlider />
-      </Box>
       <ThemeShowcaseComponent />
     </>
   );

@@ -5,6 +5,7 @@ import {
   createContext,
   useState,
 } from "react";
+import { makeContextHook } from "../hooks";
 
 export type SidebarContextValue = {
   sidebarOpen: boolean;
@@ -15,6 +16,8 @@ export type SidebarContextValue = {
 export const SidebarContext = createContext<SidebarContextValue | undefined>(
   undefined
 );
+
+export const useSidebarContext = makeContextHook(SidebarContext);
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

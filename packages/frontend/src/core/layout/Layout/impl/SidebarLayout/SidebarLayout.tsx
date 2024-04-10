@@ -1,11 +1,11 @@
 import { Box, Container } from "@mui/material";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { LayoutProps } from "../../Layout";
+import { useSidebarContext } from "../../../../provider/SidebarProvider";
+import { LayoutRendererProps } from "../../LayoutRenderer";
 import { Header } from "../../shared/Header/Header";
 import { Sidebar } from "../../shared/Sidebar";
-import { useSidebarContext } from "./useSidebarContext";
 
-export function SidebarLayout({ children }: LayoutProps) {
+export function SidebarLayout({ children }: LayoutRendererProps) {
   const { sidebarOpen, setSidebarOpen } = useSidebarContext();
   const matchesDesktop = useMediaQuery("(min-width:678px)");
   const sidebarWidth = 300;

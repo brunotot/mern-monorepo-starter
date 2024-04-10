@@ -10,11 +10,14 @@ import {
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import { NavItem, NavItemSingle } from "./navigation";
-import { useNavData } from "./useNavData";
+import { useNavigationData } from "../../../../hooks/useNavigationData";
+import {
+  NavigationItem,
+  NavigationItemSingle,
+} from "../../../../router/navigation";
 
 export type SidebarNavItemProps = {
-  item: NavItem;
+  item: NavigationItem;
   indent?: number;
 };
 
@@ -27,8 +30,6 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  console.log(location);
 
   const handleClick = () => {
     setOpen(!open);
@@ -80,7 +81,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  const itemSingle = item as NavItemSingle;
+  const itemSingle = item as NavigationItemSingle;
 
   return (
     <ListItemButton
@@ -99,7 +100,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
 }
 
 export function SidebarNavContent() {
-  const navData = useNavData();
+  const navData = useNavigationData();
 
   return (
     <List dense sx={{ paddingRight: "1.75rem !important" }}>

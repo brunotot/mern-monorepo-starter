@@ -1,7 +1,8 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { ReactNode, createContext } from "react";
-import i18n from "../i18n";
-import { Locale } from "../index";
+import { makeContextHook } from "../hooks";
+import i18n from "../localization/i18n";
+import { Locale } from "../localization/index";
 
 export type LocalizationContextValue = {
   locale: Locale;
@@ -12,6 +13,8 @@ export type LocalizationContextValue = {
 export const LocalizationContext = createContext<
   LocalizationContextValue | undefined
 >(undefined);
+
+export const useLocalizationContext = makeContextHook(LocalizationContext);
 
 export function LocalizationProvider({ children }: { children: ReactNode }) {
   const [locale, setStorageLocale] = useLocalStorage<Locale>("locale", "en");

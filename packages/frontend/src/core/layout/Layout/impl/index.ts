@@ -1,4 +1,4 @@
-import { LayoutProps } from "../Layout";
+import { LayoutRendererProps } from "../LayoutRenderer";
 import { HorizontalLayout } from "./HorizontalLayout";
 import { SidebarLayout } from "./SidebarLayout";
 
@@ -8,7 +8,10 @@ export * from "./SidebarLayout";
 export const LayoutComponent = {
   SidebarLayout,
   HorizontalLayout,
-} as const satisfies Record<string, (props: LayoutProps) => JSX.Element>;
+} as const satisfies Record<
+  string,
+  (props: LayoutRendererProps) => JSX.Element
+>;
 
 export type LayoutVariant = keyof typeof LayoutComponent;
 

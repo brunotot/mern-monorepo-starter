@@ -2,7 +2,7 @@ import { Translate } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { IconButtonSelect } from "../../components/IconButtonSelect/IconButtonSelect";
-import { useLocalizationContext } from "../hooks/useLocalizationContext";
+import { useLocalizationContext } from "../../provider/LocalizationProvider";
 import { Locale } from "../index";
 
 function getLocaleNativeName(locale: Locale) {

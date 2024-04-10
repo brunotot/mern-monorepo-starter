@@ -3,8 +3,9 @@ import { Experimental_CssVarsProvider as ThemeProvider } from "@mui/material/sty
 import { StylesProvider } from "@mui/styles";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { ReactNode, createContext, useMemo } from "react";
-import { DEFAULT_COLOR_SCHEMA_NAME } from "../colors";
-import { ThemeCreatorConfig, createTheme } from "../createTheme";
+import { makeContextHook } from "../hooks";
+import { DEFAULT_COLOR_SCHEMA_NAME } from "../theme/colors";
+import { ThemeCreatorConfig, createTheme } from "../theme/createTheme";
 
 export type ThemeContextValue = {
   themeConfig: ThemeCreatorConfig;
@@ -14,6 +15,8 @@ export type ThemeContextValue = {
 export const ThemeContext = createContext<ThemeContextValue | undefined>(
   undefined
 );
+
+export const useThemeContext = makeContextHook(ThemeContext);
 
 export default function ThemeProviderWrapper({
   children,

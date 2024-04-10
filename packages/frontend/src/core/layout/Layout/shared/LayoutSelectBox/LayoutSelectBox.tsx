@@ -1,7 +1,7 @@
 import { TableChart, ViewSidebar } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useLayoutContext } from "../../../useLayoutContext";
+import { useLayoutContext } from "../../../../provider/LayoutProvider";
 
 /*export function LayoutSelectBox() {
   const { t } = useTranslation();
@@ -37,12 +37,12 @@ export function LayoutSelectBox() {
     <Tooltip
       title={
         isHorizontalLayout
-          ? t("systemLayoutSidebar")
-          : t("systemLayoutHorizontal")
+          ? t("systemLayoutHorizontal")
+          : t("systemLayoutSidebar")
       }
     >
       <IconButton onClick={handleToggle}>
-        {isHorizontalLayout ? <ViewSidebar /> : <TableChart />}
+        {isHorizontalLayout ? <TableChart /> : <ViewSidebar />}
       </IconButton>
     </Tooltip>
   );

@@ -1,45 +1,36 @@
-import { Outlet, createBrowserRouter, useRouteError } from "react-router-dom";
-import { BaseLayout } from "../../App";
-import { LoginPage } from "../pages/LoginPage";
-import { SecuredPage } from "../pages/SecuredPage";
+import { createBrowserRouter } from "react-router-dom";
+import { HomePage } from "../pages/Home/HomePage";
+import { LoginPage } from "../pages/Login/LoginPage";
+import { RootErrorPage } from "../pages/Root/RootErrorPage";
+import { RootLayoutPage } from "../pages/Root/RootLayoutPage";
+import { Status404Page } from "../pages/Status404";
 import ProtectedRoute from "./ProtectedRoute";
-
-export function RootErrorBoundary() {
-  const error = useRouteError() as Error;
-  return (
-    <div>
-      <h1>Uh oh, something went terribly wrong 😩</h1>
-      <pre>{error.message || JSON.stringify(error)}</pre>
-      <button onClick={() => (window.location.href = "/")}>
-        Click here to reload the app
-      </button>
-    </div>
-  );
-}
 
 const router = createBrowserRouter([
   {
-    element: <BaseLayout />,
-    errorElement: <RootErrorBoundary />,
+    element: <RootLayoutPage />,
+    errorElement: <RootErrorPage />,
     children: [
       {
         path: "/",
-        element: <Outlet />,
-        errorElement: <RootErrorBoundary />,
-        children: [
-          {
-            path: "secured",
-            element: (
-              <ProtectedRoute>
-                <SecuredPage />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "login",
-            element: <LoginPage />,
-          },
-        ],
+        //element: <HomePage />,
+        Component: HomePage,
+      },
+      {
+        path: "secured",
+        element: (
+          <ProtectedRoute>
+            <div>Secured page</div>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "*",
+        element: <Status404Page />,
       },
     ],
   },

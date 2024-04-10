@@ -13,9 +13,9 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LocaleSelectBox } from "../../../../localization/components/LocaleSelectBox";
-import { SidebarNavContent } from "../../../../router/SidebarNavContent";
 import { ThemeModeSwitch } from "../../../../theme";
 import { useSidebarContext } from "../../impl";
+import { SidebarNavContent } from "../../impl/SidebarLayout/SidebarNavContent";
 import { FuzzySearch } from "../FuzzySearch/FuzzySearch";
 import { LayoutSelectBox } from "../LayoutSelectBox/LayoutSelectBox";
 

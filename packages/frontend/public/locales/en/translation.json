@@ -2,7 +2,7 @@
   "test": "Test EN",
   "setDarkMode": "Dark mode",
   "setLightMode": "Light mode",
-  "systemLanguage": "Select language",
+  "systemLanguage": "Language",
   "appTheme": "Theme",
   "borderRadius": "Border radius",
   "doSearch": "Search",

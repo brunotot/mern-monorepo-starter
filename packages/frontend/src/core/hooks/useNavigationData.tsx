@@ -12,9 +12,9 @@ import {
   TextIncrease,
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { NavItemList } from "./navigation";
+import { NavigationData } from "../router/navigation";
 
-export function useNavData(): NavItemList {
+export function useNavigationData(): NavigationData {
   const { t } = useTranslation();
 
   return [

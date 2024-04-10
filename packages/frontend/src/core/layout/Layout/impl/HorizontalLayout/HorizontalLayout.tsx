@@ -1,9 +1,9 @@
 import { Box, Container } from "@mui/material";
-import { LayoutProps } from "../../Layout";
+import { LayoutRendererProps } from "../../LayoutRenderer";
 import { Header } from "../../shared/Header";
 import { HorizontalNavigation } from "./HorizontalNavigation";
 
-export function HorizontalLayout({ children }: LayoutProps) {
+export function HorizontalLayout({ children }: LayoutRendererProps) {
   // const { sidebarOpen, setSidebarOpen } = useSidebarContext();
   // const matchesDesktop = useMediaQuery("(min-width:678px)");
   // const sidebarWidth = 300;
