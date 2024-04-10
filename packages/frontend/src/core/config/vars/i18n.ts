@@ -3,6 +3,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
+export type Locale = "hr" | "en";
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -14,4 +16,4 @@ i18n
     },
   });
 
-export default i18n;
+export const VAR_I18N = i18n;

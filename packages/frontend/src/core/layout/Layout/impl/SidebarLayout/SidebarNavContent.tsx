@@ -8,16 +8,17 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import { useNavigationData } from "../../../../hooks/useNavigationData";
 import {
-  NavigationItem,
-  NavigationItemSingle,
-} from "../../../../router/navigation";
+  $AppConfig,
+  NavigationRoute,
+  NavigationRouteSingle,
+} from "../../../../config";
 
 export type SidebarNavItemProps = {
-  item: NavigationItem;
+  item: NavigationRoute;
   indent?: number;
 };
 
@@ -26,10 +27,12 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const variant = item?.variant ?? "single";
   const renderChildrenPersistent = hasChildren && variant === "group";
   const renderChildrenMenu = hasChildren && variant === "menu";
-  const children = hasChildren ? item.children : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const children: NavigationRoute[] = (hasChildren ? item.children : []) as any;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     setOpen(!open);
@@ -47,7 +50,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
           }}
           textAlign="left"
         >
-          {item.icon} {item.label}
+          {item.icon} {item.label(t)}
         </Divider>
         {children.map((subItem, subIndex) => (
           <SidebarNavItem key={subIndex} item={subItem} indent={indent} />
@@ -65,11 +68,10 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
             borderTopRightRadius: "2rem",
             borderBottomRightRadius: "2rem",
           }}
-          selected={item.label === "Account Settings"}
           onClick={handleClick}
         >
           {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-          <ListItemText primary={item.label} />
+          <ListItemText primary={item.label(t)} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={open} timeout="auto" unmountOnExit>
@@ -81,7 +83,11 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  const itemSingle = item as NavigationItemSingle;
+  const itemSingle = item as NavigationRouteSingle;
+
+  if (itemSingle.hidden === true) {
+    return <></>;
+  }
 
   return (
     <ListItemButton
@@ -94,13 +100,13 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
       onClick={() => navigate(itemSingle.path)}
     >
       {itemSingle.icon && <ListItemIcon>{itemSingle.icon}</ListItemIcon>}
-      <ListItemText primary={itemSingle.label} />
+      <ListItemText primary={itemSingle.label(t)} />
     </ListItemButton>
   );
 }
 
 export function SidebarNavContent() {
-  const navData = useNavigationData();
+  const navData = $AppConfig.navigationRoutes;
 
   return (
     <List dense sx={{ paddingRight: "1.75rem !important" }}>

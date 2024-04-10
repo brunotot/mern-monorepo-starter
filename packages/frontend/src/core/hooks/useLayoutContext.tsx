@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { Dispatch, ReactNode, SetStateAction, createContext } from "react";
-import { makeContextHook } from "../hooks";
 import { LayoutVariant } from "../layout/Layout/impl";
+import { makeContextHook } from "./makeContextHook";
 
 export type LayoutContextValue = {
   layout: LayoutVariant;

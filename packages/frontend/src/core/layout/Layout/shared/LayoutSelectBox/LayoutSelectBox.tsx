@@ -1,7 +1,7 @@
 import { TableChart, ViewSidebar } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useLayoutContext } from "../../../../provider/LayoutProvider";
+import { useLayoutContext } from "../../../../hooks/useLayoutContext";
 
 /*export function LayoutSelectBox() {
   const { t } = useTranslation();

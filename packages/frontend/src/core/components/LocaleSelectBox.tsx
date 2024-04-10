@@ -1,9 +1,9 @@
 import { Translate } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { IconButtonSelect } from "../../components/IconButtonSelect/IconButtonSelect";
-import { useLocalizationContext } from "../../provider/LocalizationProvider";
-import { Locale } from "../index";
+import { Locale } from "../config";
+import { useLocalizationContext } from "../hooks/useLocalizationContext";
+import { IconButtonSelect } from "./IconButtonSelect/IconButtonSelect";
 
 function getLocaleNativeName(locale: Locale) {
   const name: string = new Intl.DisplayNames([locale], {

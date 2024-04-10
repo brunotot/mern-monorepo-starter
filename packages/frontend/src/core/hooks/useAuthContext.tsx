@@ -3,21 +3,19 @@ import {
   Dispatch,
   PropsWithChildren,
   SetStateAction,
-  useContext,
   useState,
 } from "react";
-
 import { User } from "../types/User";
+import { makeContextHook } from "./makeContextHook";
 
-export type AuthContextProps = {
+export type AuthContextValue = {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
 };
 
-const AuthContext = createContext<AuthContextProps>({
-  user: null,
-  setUser: () => {},
-});
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+export const useAuthContext = makeContextHook(AuthContext);
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
@@ -27,14 +25,4 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuthContext() {
-  const context = useContext(AuthContext);
-
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-
-  return context;
 }

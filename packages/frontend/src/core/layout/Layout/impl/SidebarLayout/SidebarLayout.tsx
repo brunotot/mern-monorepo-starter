@@ -1,6 +1,6 @@
 import { Box, Container } from "@mui/material";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useSidebarContext } from "../../../../provider/SidebarProvider";
+import { useSidebarContext } from "../../../../hooks/useSidebarContext";
 import { LayoutRendererProps } from "../../LayoutRenderer";
 import { Header } from "../../shared/Header/Header";
 import { Sidebar } from "../../shared/Sidebar";

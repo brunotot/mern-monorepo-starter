@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useLayoutContext } from "../../provider/LayoutProvider";
+import { useLayoutContext } from "../../hooks/useLayoutContext";
 import { LayoutComponent, LayoutVariant } from "./impl";
 
 export type LayoutRendererProps = { children: ReactNode };

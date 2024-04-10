@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
+import { SidebarProvider } from "../../hooks";
+import AuthProvider from "../../hooks/useAuthContext";
+import { LayoutProvider } from "../../hooks/useLayoutContext";
+import { LocalizationProvider } from "../../hooks/useLocalizationContext";
+import ThemeProvider from "../../hooks/useThemeContext";
 import { LayoutRenderer } from "../../layout/Layout";
-import { SidebarProvider } from "../../layout/Layout/impl";
-import AuthProvider from "../../provider/AuthProvider";
-import { LayoutProvider } from "../../provider/LayoutProvider";
-import { LocalizationProvider } from "../../provider/LocalizationProvider";
-import ThemeProvider from "../../provider/ThemeProvider";
 
 export function RootLayoutPage() {
   return (

@@ -10,15 +10,15 @@ import {
   Stack,
 } from "@mui/material";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ButtonHoverMenu,
   OriginPosition,
 } from "../../../../components/ButtonHoverMenu";
-import { useNavigationData } from "../../../../hooks/useNavigationData";
-import { NavigationItem } from "../../../../router/navigation";
+import { $AppConfig, NavigationRoute } from "../../../../config";
 
 export type HorizontalNavItemProps = {
-  item: NavigationItem;
+  item: NavigationRoute;
   dropdownPosition?: OriginPosition;
 };
 
@@ -31,8 +31,10 @@ function HorizontalNavItem({
     transformX: "left",
   },
 }: HorizontalNavItemProps) {
+  const { t } = useTranslation();
   const hasChildren = "children" in item && item.children;
-  const children = hasChildren ? item.children : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const children: NavigationRoute[] = (hasChildren ? item.children : []) as any;
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 8 : undefined;
 
@@ -50,7 +52,7 @@ function HorizontalNavItem({
             {...hoverProps}
           >
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-            <ListItemText primary={item.label} />
+            <ListItemText primary={item.label(t)} />
             <ListItemIcon sx={{ minWidth: 0 }}>
               {isMainNavButton ? <ExpandMore /> : <ChevronRight />}
             </ListItemIcon>
@@ -76,7 +78,7 @@ function HorizontalNavItem({
   return (
     <ListItemButton sx={{ flexGrow: 0, borderRadius }}>
       {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-      <ListItemText primary={item.label} />
+      <ListItemText primary={item.label(t)} />
     </ListItemButton>
   );
 }
@@ -90,7 +92,7 @@ export function HorizontalNavigation({
   backgroundColor,
   maxWidth = false,
 }: HorizontalNavigationProps) {
-  const navData = useNavigationData();
+  const navData = $AppConfig.navigationRoutes;
 
   return (
     <Box sx={{ backgroundColor }} paddingBlock={0.75}>

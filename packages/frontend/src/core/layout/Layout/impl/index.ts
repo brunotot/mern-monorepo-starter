@@ -5,6 +5,8 @@ import { SidebarLayout } from "./SidebarLayout";
 export * from "./HorizontalLayout";
 export * from "./SidebarLayout";
 
+export type LayoutVariant = keyof typeof LayoutComponent;
+
 export const LayoutComponent = {
   SidebarLayout,
   HorizontalLayout,
@@ -12,8 +14,6 @@ export const LayoutComponent = {
   string,
   (props: LayoutRendererProps) => JSX.Element
 >;
-
-export type LayoutVariant = keyof typeof LayoutComponent;
 
 export const LayoutVariantCollection = Object.keys(
   LayoutComponent

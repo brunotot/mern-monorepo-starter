@@ -5,7 +5,7 @@ import {
   createContext,
   useState,
 } from "react";
-import { makeContextHook } from "../hooks";
+import { makeContextHook } from "./makeContextHook";
 
 export type SidebarContextValue = {
   sidebarOpen: boolean;

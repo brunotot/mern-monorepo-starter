@@ -28,8 +28,8 @@ import {
 } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { SidebarNavLogo } from "../../layout/Layout/shared/Sidebar/components/SidebarNavLogo";
-import { useAuthContext } from "../../provider/AuthProvider";
 
 interface State {
   password: string;

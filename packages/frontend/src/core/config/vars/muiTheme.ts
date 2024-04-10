@@ -1,6 +1,9 @@
 import { PaletteMode, PaletteOptions, ThemeOptions } from "@mui/material";
-import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
-import { ColorSchemaData, ColorSchemaName, ThemeColorSchema } from "./colors";
+import {
+  CssVarsTheme,
+  Theme,
+  experimental_extendTheme as extendTheme,
+} from "@mui/material/styles";
 
 export function buildBaseThemeConfig(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -8,7 +11,7 @@ export function buildBaseThemeConfig(
 ): Omit<ThemeOptions, "palette"> {
   return {
     shape: {
-      borderRadius: 24,
+      borderRadius: 8,
     },
     typography: {
       fontFamily: [
@@ -92,7 +95,7 @@ export function buildBaseThemeConfig(
 }
 
 export type ThemeCreatorConfig = {
-  colorSchemaName: ColorSchemaName;
+  colors: ThemeColorSchema;
 };
 
 function buildBasePalette(
@@ -149,8 +152,7 @@ function buildBasePalette(
   };
 }
 
-export function createTheme(config: ThemeCreatorConfig) {
-  const schema = ColorSchemaData[config.colorSchemaName];
+export function createTheme({ colors: schema }: ThemeCreatorConfig) {
   return extendTheme({
     ...buildBaseThemeConfig(schema),
     colorSchemes: {
@@ -159,3 +161,27 @@ export function createTheme(config: ThemeCreatorConfig) {
     },
   });
 }
+
+export type MuiTheme = Omit<Theme, "palette" | "applyStyles"> & CssVarsTheme;
+
+export type ThemeColorSchema = {
+  primary: string;
+  secondary: string;
+  success: string;
+  warning: string;
+  error: string;
+  info: string;
+};
+
+export const AquaDarkColorSchema: ThemeColorSchema = {
+  primary: "#9155FD",
+  secondary: "#8A8D93",
+  success: "#56CA00",
+  warning: "#FFB400",
+  error: "#FF4C51",
+  info: "#16B1FF",
+};
+
+export const VAR_MUI_THEME: MuiTheme = createTheme({
+  colors: AquaDarkColorSchema,
+});
