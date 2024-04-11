@@ -12,4 +12,5 @@ export class AppConfig {
   }
 }
 
+/** @hidden */
 export const $AppConfig = new AppConfig();

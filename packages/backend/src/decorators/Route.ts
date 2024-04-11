@@ -7,6 +7,8 @@ import {
   RouteHandler,
   RoutesMetaService,
 } from "../meta/RoutesMetaService";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { TODO } from "../utils";
 
 export function Route<This, Fn extends RouteHandler>(
   props: Omit<RequestMappingProps, "name" | "middlewares">
@@ -20,7 +22,7 @@ export function Route<This, Fn extends RouteHandler>(
         const container = InjectionMetaService.from(context).value.name;
         const _this = inject(container);
         return await target.call(_this, req, res);
-      } catch (error: any) {
+      } catch (error: TODO) {
         const message: string = error.message;
         const [, ...stack] = error.stack
           .split("\n")

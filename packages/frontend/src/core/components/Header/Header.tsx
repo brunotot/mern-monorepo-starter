@@ -2,22 +2,18 @@ import { Menu } from "@mui/icons-material";
 import {
   Box,
   Breakpoint,
-  Button,
   Container,
   IconButton,
-  SwipeableDrawer,
   SxProps,
   Theme,
   useMediaQuery,
 } from "@mui/material";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LocaleSelectBox } from "../../../../components/LocaleSelectBox";
-import { ThemeModeSwitch } from "../../../../components/ThemeModeSwitch";
-import { useSidebarContext } from "../../../../hooks";
-import { SidebarNavContent } from "../../impl/SidebarLayout/SidebarNavContent";
+import { useSidebarContext } from "../../hooks";
 import { FuzzySearch } from "../FuzzySearch/FuzzySearch";
-import { LayoutSelectBox } from "../LayoutSelectBox/LayoutSelectBox";
+import { LayoutToggleButton } from "../LayoutToggleButton/LayoutToggleButton";
+import { LocaleSelectButton } from "../LocaleSelectButton";
+import { ThemeModeToggleButton } from "../ThemeModeToggleButton";
 
 export type MuiSxProps = SxProps<Theme>;
 
@@ -38,8 +34,6 @@ export function Header({
   const { setSidebarOpen } = useSidebarContext();
   const { t } = useTranslation();
 
-  const [bottomOpen, setBottomOpen] = useState(false);
-
   return (
     <Box
       component="header"
@@ -54,15 +48,6 @@ export function Header({
         maxWidth={maxWidth}
         sx={{ paddingInline: maxWidth === false ? "0 !important" : undefined }}
       >
-        <SwipeableDrawer
-          anchor="bottom"
-          open={bottomOpen}
-          onClose={() => setBottomOpen(false)}
-          onOpen={() => setBottomOpen(true)}
-        >
-          <SidebarNavContent />
-        </SwipeableDrawer>
-
         <Box display="flex" alignItems="center" gap={1} sx={sx}>
           {!matchesDesktop && (
             <IconButton onClick={() => setSidebarOpen((prev) => !prev)}>
@@ -70,24 +55,14 @@ export function Header({
             </IconButton>
           )}
 
-          <Box>
-            <Button
-              onClick={() => setBottomOpen(true)}
-              variant="contained"
-              color="primary"
-            >
-              BOTTOM
-            </Button>
-          </Box>
-
           <Box flexGrow={1}>
             <FuzzySearch placeholder={t("doSearch")} />
           </Box>
 
           <Box display="flex" alignItems="center">
-            <ThemeModeSwitch />
-            <LocaleSelectBox />
-            <LayoutSelectBox />
+            <ThemeModeToggleButton />
+            <LocaleSelectButton />
+            <LayoutToggleButton />
           </Box>
         </Box>
       </Container>

@@ -15,7 +15,8 @@ import {
   $AppConfig,
   NavigationRoute,
   NavigationRouteSingle,
-} from "../../../../config";
+  isAnyRouteActive,
+} from "../../../config";
 
 export type SidebarNavItemProps = {
   item: NavigationRoute;
@@ -67,6 +68,9 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
             paddingLeft: `calc(1.5rem + ${indent}rem)`,
             borderTopRightRadius: "2rem",
             borderBottomRightRadius: "2rem",
+            backgroundColor: isAnyRouteActive(children)
+              ? "var(--mui-palette-action-hover)"
+              : undefined,
           }}
           onClick={handleClick}
         >
@@ -105,7 +109,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   );
 }
 
-export function SidebarNavContent() {
+export function SidebarNavigation() {
   const navData = $AppConfig.navigationRoutes;
 
   return (

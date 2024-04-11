@@ -1,9 +1,9 @@
 import { Translate } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Locale } from "../config";
-import { useLocalizationContext } from "../hooks/useLocalizationContext";
-import { IconButtonSelect } from "./IconButtonSelect/IconButtonSelect";
+import { Locale } from "../../config";
+import { useLocalizationContext } from "../../hooks/useLocalizationContext";
+import { IconButtonSelect } from "../IconButtonSelect/IconButtonSelect";
 
 function getLocaleNativeName(locale: Locale) {
   const name: string = new Intl.DisplayNames([locale], {
@@ -12,7 +12,7 @@ function getLocaleNativeName(locale: Locale) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-export function LocaleSelectBox() {
+export function LocaleSelectButton() {
   const { t } = useTranslation();
   const { locale, setLocale } = useLocalizationContext();
 

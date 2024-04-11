@@ -3,7 +3,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { useColorScheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
-export function ThemeModeSwitch() {
+export function ThemeModeToggleButton() {
   const { t } = useTranslation();
   const { mode, setMode } = useColorScheme();
   const isDarkMode = mode === "dark";

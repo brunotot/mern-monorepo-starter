@@ -4,10 +4,11 @@ import {
   Theme,
   experimental_extendTheme as extendTheme,
 } from "@mui/material/styles";
+//import { MuiThemeColors } from ".";
 
 export function buildBaseThemeConfig(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _schema: ThemeColorSchema
+  _schema: MuiThemeColors
 ): Omit<ThemeOptions, "palette"> {
   return {
     shape: {
@@ -30,22 +31,19 @@ export function buildBaseThemeConfig(
       ].join(","),
     },
     components: {
-      // Override for TextField
       MuiTextField: {
         defaultProps: {
-          size: "small", // Set default size to 'small'
+          size: "small",
         },
       },
-      // Override for Button
       MuiButton: {
         defaultProps: {
-          //size: "small", // Set default size to 'small'
+          // size: "small",
         },
       },
-      // Override for FormControl or components under FormControl like Select
       MuiFormControl: {
         defaultProps: {
-          size: "small", // Set default size to 'small'
+          size: "small",
         },
       },
       MuiMenu: {
@@ -78,6 +76,10 @@ export function buildBaseThemeConfig(
                 textTransform: "uppercase",
                 color: "var(--mui-palette-action-active)",
                 fontSize: "0.75rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                flexWrap: "nowrap",
               },
             },
           },
@@ -90,16 +92,38 @@ export function buildBaseThemeConfig(
           },
         },
       },
+      MuiDrawer: {
+        defaultProps: {
+          sx: {
+            flexShrink: 0,
+          },
+        },
+        styleOverrides: {
+          paper: {
+            background: "var(--mui-palette-background-default)",
+            borderWidth: 0,
+            scrollbarGutter: "stable",
+          },
+        },
+      },
+      /*MuiSwipeableDrawer: {
+        defaultProps: {
+          sx: {
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              background: "var(--mui-palette-background-default)",
+              borderWidth: 0,
+              scrollbarGutter: "stable",
+            },
+          }
+        },
+      },*/
     },
   };
 }
 
-export type ThemeCreatorConfig = {
-  colors: ThemeColorSchema;
-};
-
 function buildBasePalette(
-  schema: ThemeColorSchema,
+  schema: MuiThemeColors,
   mode: PaletteMode
 ): PaletteOptions {
   const lightColor = "58, 53, 65";
@@ -152,19 +176,13 @@ function buildBasePalette(
   };
 }
 
-export function createTheme({ colors: schema }: ThemeCreatorConfig) {
-  return extendTheme({
-    ...buildBaseThemeConfig(schema),
-    colorSchemes: {
-      dark: { palette: buildBasePalette(schema, "dark") },
-      light: { palette: buildBasePalette(schema, "light") },
-    },
-  });
-}
+export type MuiThemeConfig = {
+  colors: MuiThemeColors;
+};
 
 export type MuiTheme = Omit<Theme, "palette" | "applyStyles"> & CssVarsTheme;
 
-export type ThemeColorSchema = {
+export type MuiThemeColors = {
   primary: string;
   secondary: string;
   success: string;
@@ -173,15 +191,23 @@ export type ThemeColorSchema = {
   info: string;
 };
 
-export const AquaDarkColorSchema: ThemeColorSchema = {
-  primary: "#9155FD",
-  secondary: "#8A8D93",
-  success: "#56CA00",
-  warning: "#FFB400",
-  error: "#FF4C51",
-  info: "#16B1FF",
-};
+function createTheme({ colors }: MuiThemeConfig) {
+  return extendTheme({
+    ...buildBaseThemeConfig(colors),
+    colorSchemes: {
+      dark: { palette: buildBasePalette(colors, "dark") },
+      light: { palette: buildBasePalette(colors, "light") },
+    },
+  });
+}
 
 export const VAR_MUI_THEME: MuiTheme = createTheme({
-  colors: AquaDarkColorSchema,
+  colors: {
+    primary: "#9155FD",
+    secondary: "#8A8D93",
+    success: "#56CA00",
+    warning: "#FFB400",
+    error: "#FF4C51",
+    info: "#16B1FF",
+  },
 });

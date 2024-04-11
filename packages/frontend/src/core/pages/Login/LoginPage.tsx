@@ -28,15 +28,13 @@ import {
 } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Logo } from "../../components/Logo";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { SidebarNavLogo } from "../../layout/Layout/shared/Sidebar/components/SidebarNavLogo";
 
 interface State {
   password: string;
   showPassword: boolean;
 }
-
-export type ContentWidth = "full" | "boxed";
 
 type ThemeConfig = {
   mode: PaletteMode;
@@ -45,7 +43,7 @@ type ThemeConfig = {
   disableRipple: boolean;
   navigationSize: number;
   menuTextTruncate: boolean;
-  contentWidth: ContentWidth;
+  contentWidth: "full" | "boxed";
   responsiveFontSizes: boolean;
 };
 
@@ -112,7 +110,7 @@ export function LoginPage() {
               justifyContent: "center",
             }}
           >
-            <SidebarNavLogo />
+            <Logo />
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography

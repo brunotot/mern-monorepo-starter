@@ -8,11 +8,11 @@ export type LocalizationContextValue = {
   setLocale: (locale: Locale) => Promise<void>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const LocalizationContext = createContext<
-  LocalizationContextValue | undefined
->(undefined);
+const LocalizationContext = createContext<LocalizationContextValue | undefined>(
+  undefined
+);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLocalizationContext = makeContextHook(LocalizationContext);
 
 export function LocalizationProvider({ children }: { children: ReactNode }) {

@@ -2,8 +2,9 @@ import { createMethodDecorator } from "@tsvdec/decorators";
 import { ClientSession, startSession } from "mongoose";
 import { inject } from "../config";
 import { InjectionMetaService } from "../meta/InjectionMetaService";
+import { TODO } from "../utils";
 
-function isClientSession(obj: any): obj is ClientSession {
+function isClientSession(obj: TODO): obj is ClientSession {
   return (
     obj != null &&
     typeof obj === "object" &&
@@ -13,13 +14,10 @@ function isClientSession(obj: any): obj is ClientSession {
   );
 }
 
-export function Transactional<
-  This,
-  Fn extends (...args: any[]) => Promise<any>
->() {
+export function Transactional() {
   return createMethodDecorator(({ target: fn, meta }) => {
     const context = meta.context;
-    const replacementMethod = async function (...args: any[]) {
+    const replacementMethod = async function (...args: TODO[]) {
       const lastArg = args.at(-1);
       const isTransactionActive = isClientSession(lastArg);
       const session = isTransactionActive ? lastArg : await startSession();

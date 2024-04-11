@@ -1,9 +1,10 @@
 import { ConnectOptions, Document, connect, set } from "mongoose";
+import { TODO } from "../utils";
 import { getVar } from "./../config/vars.config";
 
-export type InferMongoId<T> = "_id" extends keyof T ? T["_id"] : any;
+export type InferMongoId<T> = "_id" extends keyof T ? T["_id"] : TODO;
 
-export type Entity<T> = Document<InferMongoId<T>, {}, T>;
+export type Entity<T> = Document<InferMongoId<T>, TODO, T>;
 
 export const databaseConnect = async () => {
   const dbConfig = {

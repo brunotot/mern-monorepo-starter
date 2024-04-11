@@ -1,5 +1,5 @@
 import { CssBaseline } from "@mui/material";
-import { Experimental_CssVarsProvider as ThemeProvider } from "@mui/material/styles";
+import { Experimental_CssVarsProvider as MuiThemeProvider } from "@mui/material/styles";
 import { StylesProvider } from "@mui/styles";
 import { ReactNode, createContext, useState } from "react";
 import { $AppConfig } from "../config";
@@ -11,17 +11,12 @@ export type ThemeContextValue = {
   setTheme: (theme: MuiTheme) => void;
 };
 
-export const ThemeContext = createContext<ThemeContextValue | undefined>(
-  undefined
-);
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeContext = makeContextHook(ThemeContext);
 
-export default function ThemeProviderWrapper({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, _setTheme] = useState<MuiTheme>($AppConfig.muiTheme);
 
   const setTheme = (diff: Partial<MuiTheme>) => {
@@ -31,10 +26,10 @@ export default function ThemeProviderWrapper({
   return (
     <StylesProvider injectFirst>
       <ThemeContext.Provider value={{ theme, setTheme }}>
-        <ThemeProvider theme={theme}>
+        <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <>{children}</>
-        </ThemeProvider>
+        </MuiThemeProvider>
       </ThemeContext.Provider>
     </StylesProvider>
   );

@@ -11,11 +11,17 @@ import {
 } from "@mui/material";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   ButtonHoverMenu,
   OriginPosition,
-} from "../../../../components/ButtonHoverMenu";
-import { $AppConfig, NavigationRoute } from "../../../../config";
+} from "../../../components/ButtonHoverMenu";
+import {
+  $AppConfig,
+  NavigationRoute,
+  NavigationRouteSingle,
+  isAnyRouteActive,
+} from "../../../config";
 
 export type HorizontalNavItemProps = {
   item: NavigationRoute;
@@ -32,6 +38,7 @@ function HorizontalNavItem({
   },
 }: HorizontalNavItemProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const hasChildren = "children" in item && item.children;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const children: NavigationRoute[] = (hasChildren ? item.children : []) as any;
@@ -39,14 +46,22 @@ function HorizontalNavItem({
   const borderRadius = isMainNavButton ? 8 : undefined;
 
   if (hasChildren) {
+    const isAnyRouteActiveInGroup = isAnyRouteActive(children);
     return (
       <ButtonHoverMenu
         position={dropdownPosition}
         renderButton={(hoverProps, popupState) => (
           <ListItemButton
+            selected={isMainNavButton ? isAnyRouteActiveInGroup : undefined}
             sx={{
               flexGrow: 0,
-              backgroundColor: popupState.isOpen ? "action.hover" : undefined,
+              backgroundColor: popupState.isOpen
+                ? "action.hover"
+                : isAnyRouteActiveInGroup
+                ? isMainNavButton
+                  ? undefined
+                  : "var(--mui-palette-action-hover)"
+                : undefined,
               borderRadius,
             }}
             {...hoverProps}
@@ -75,8 +90,18 @@ function HorizontalNavItem({
     );
   }
 
+  const itemSingle = item as NavigationRouteSingle;
+
+  if (itemSingle.hidden === true) {
+    return <></>;
+  }
+
   return (
-    <ListItemButton sx={{ flexGrow: 0, borderRadius }}>
+    <ListItemButton
+      sx={{ flexGrow: 0, borderRadius }}
+      selected={location.pathname === itemSingle.path}
+      onClick={() => navigate(itemSingle.path)}
+    >
       {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
       <ListItemText primary={item.label(t)} />
     </ListItemButton>

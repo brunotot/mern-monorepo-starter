@@ -12,11 +12,11 @@ export type SidebarContextValue = {
   setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SidebarContext = createContext<SidebarContextValue | undefined>(
+const SidebarContext = createContext<SidebarContextValue | undefined>(
   undefined
 );
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSidebarContext = makeContextHook(SidebarContext);
 
 export function SidebarProvider({ children }: { children: ReactNode }) {

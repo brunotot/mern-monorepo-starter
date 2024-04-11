@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run dev --prefix packages/backend",
     "root:clean": "sh ./scripts/clean-install.sh",
+    "lint": "npx eslint .",
     "backend:start": "cd packages/backend && npm run start",
     "backend:build": "cd packages/backend && npm run build",
     "frontend:start": "cd packages/frontend && npm run start",

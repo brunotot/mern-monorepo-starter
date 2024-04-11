@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TODO = any;
 
-export type Class<T = {}> = new (...args: any[]) => T;
+export type Class<T = TODO> = new (...args: TODO[]) => T;

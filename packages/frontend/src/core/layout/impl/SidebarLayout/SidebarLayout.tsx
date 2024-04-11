@@ -1,9 +1,10 @@
 import { Box, Container } from "@mui/material";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useSidebarContext } from "../../../../hooks/useSidebarContext";
+import { Footer } from "../../../components/Footer";
+import { Header } from "../../../components/Header";
+import { Sidebar } from "../../../components/Sidebar";
+import { useSidebarContext } from "../../../hooks";
 import { LayoutRendererProps } from "../../LayoutRenderer";
-import { Header } from "../../shared/Header/Header";
-import { Sidebar } from "../../shared/Sidebar";
 
 export function SidebarLayout({ children }: LayoutRendererProps) {
   const { sidebarOpen, setSidebarOpen } = useSidebarContext();
@@ -16,19 +17,13 @@ export function SidebarLayout({ children }: LayoutRendererProps) {
         width={sidebarWidth}
         open={matchesDesktop || sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        onOpen={() => setSidebarOpen(true)}
       />
 
-      <Box
-        //marginLeft={matchesDesktop ? `${sidebarWidth}px` : undefined}
-        component="main"
-        display="flex"
-        flexDirection="column"
-        flexGrow={1}
-        //paddingBlock="0.75rem"
-      >
+      <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
         <Header sx={{ paddingTop: 1.5 }} />
-
         {children}
+        <Footer />
       </Box>
     </Container>
   );

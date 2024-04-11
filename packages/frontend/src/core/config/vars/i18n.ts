@@ -1,9 +1,11 @@
-import i18n from "i18next";
+import i18n, { TFunction } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
 export type Locale = "hr" | "en";
+
+export type I18nTranslateFn = TFunction<"translation", undefined>;
 
 i18n
   .use(Backend)

@@ -1,12 +1,10 @@
 import * as MuiIcons from "@mui/icons-material";
-import { TFunction } from "i18next";
 import { ReactNode } from "react";
 import { RouteObject } from "react-router-dom";
 import { HomePage, LoginPage } from "../../pages";
 import { Status404Page } from "../../pages/Status404";
 import { Role, User } from "../../types";
-
-export type I18nTranslateFn = TFunction<"translation", undefined>;
+import { I18nTranslateFn } from "./i18n";
 
 export type NavigationRouteAnchorSecure =
   | Role[]
@@ -40,6 +38,15 @@ export type NavigationRouteMultiple = NavigationRouteRender &
 export type NavigationRoute = NavigationRouteSingle | NavigationRouteMultiple;
 
 export type NavigationRoutes = NavigationRoute[];
+
+export function isAnyRouteActive(children: NavigationRoute[]): boolean {
+  return children.some((child) => {
+    if ("children" in child) {
+      return isAnyRouteActive(child.children as NavigationRoute[]);
+    }
+    return location.pathname === child.path;
+  });
+}
 
 export function convertToRoutes(data: NavigationRoutes): RouteObject[] {
   const routes: RouteObject[] = [];

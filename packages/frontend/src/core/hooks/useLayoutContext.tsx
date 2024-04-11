@@ -1,6 +1,6 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { Dispatch, ReactNode, SetStateAction, createContext } from "react";
-import { LayoutVariant } from "../layout/Layout/impl";
+import { LayoutVariant } from "../layout";
 import { makeContextHook } from "./makeContextHook";
 
 export type LayoutContextValue = {
@@ -8,11 +8,9 @@ export type LayoutContextValue = {
   setLayout: Dispatch<SetStateAction<LayoutVariant>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const LayoutContext = createContext<LayoutContextValue | undefined>(
-  undefined
-);
+const LayoutContext = createContext<LayoutContextValue | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLayoutContext = makeContextHook(LayoutContext);
 
 export function LayoutProvider({ children }: { children: ReactNode }) {

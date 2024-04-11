@@ -1,3 +1,3 @@
-export const RoleList = ["admin", "user"] as const;
+export const Roles = ["admin", "user"] as const;
 
-export type Role = (typeof RoleList)[number];
+export type Role = (typeof Roles)[number];
