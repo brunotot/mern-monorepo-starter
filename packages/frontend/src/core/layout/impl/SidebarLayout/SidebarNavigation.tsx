@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import {
-  $AppConfig,
+  $FrontendAppConfig,
   NavigationRoute,
   NavigationRouteSingle,
   isAnyRouteActive,
@@ -29,7 +29,9 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const variant = item?.variant ?? "single";
   const renderChildrenPersistent = hasChildren && variant === "group";
   const renderChildrenMenu = hasChildren && variant === "menu";
-  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const children: NavigationRoute[] = (
+    hasChildren ? item.children : []
+  ) as TODO;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -110,7 +112,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
 }
 
 export function SidebarNavigation() {
-  const navData = $AppConfig.navigationRoutes;
+  const navData = $FrontendAppConfig.navigationRoutes;
 
   return (
     <List dense sx={{ paddingRight: "1.75rem !important" }}>

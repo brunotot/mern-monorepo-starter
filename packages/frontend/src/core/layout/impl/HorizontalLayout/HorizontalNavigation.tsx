@@ -18,7 +18,7 @@ import {
   OriginPosition,
 } from "../../../components/ButtonHoverMenu";
 import {
-  $AppConfig,
+  $FrontendAppConfig,
   NavigationRoute,
   NavigationRouteSingle,
   isAnyRouteActive,
@@ -119,7 +119,7 @@ export function HorizontalNavigation({
   backgroundColor,
   maxWidth = false,
 }: HorizontalNavigationProps) {
-  const navData = $AppConfig.navigationRoutes;
+  const navData = $FrontendAppConfig.navigationRoutes;
 
   return (
     <Box sx={{ backgroundColor }} paddingBlock={0.75}>

@@ -1,8 +1,8 @@
-import type { NextFunction, Request, Response } from "express";
 import { $BackendAppConfig, AllowedOrigin } from "../config";
+import { ExpressMiddleware } from "./types";
 
-export function credentials() {
-  return function (req: Request, res: Response, next: NextFunction) {
+export function withCredentials(): ExpressMiddleware {
+  return (req, res, next) => {
     const origin = req.headers.origin;
     if (
       origin &&

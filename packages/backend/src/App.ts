@@ -12,7 +12,7 @@ import { $BackendAppConfig } from "./config/BackendAppConfig";
 import { logger, stream } from "./config/logger/logger";
 import { getInjectionClasses } from "./decorators/Injectable";
 import { RoutesMetaService } from "./meta/RoutesMetaService";
-import { credentials } from "./middleware/credentials";
+import { withCredentials } from "./middleware/withCredentials";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 
 export class App {
@@ -58,7 +58,7 @@ export class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan($BackendAppConfig.env.LOG_FORMAT, { stream }));
-    this.app.use(credentials());
+    this.app.use(withCredentials());
     this.app.use(
       cors({
         origin: $BackendAppConfig.env.ORIGIN,

@@ -1,10 +1,10 @@
 import { TODO } from "@org/shared";
-import type { NextFunction, Request, Response } from "express";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import { $BackendAppConfig } from "../config";
+import { ExpressMiddleware } from "./types";
 
-export function verifyJWT() {
-  return function (req: Request, res: Response, next: NextFunction) {
+export function withJwt(): ExpressMiddleware {
+  return (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     const authHeaderSanitized = Array.isArray(authHeader)
       ? authHeader[0]

@@ -2,7 +2,7 @@ import { CssBaseline } from "@mui/material";
 import { Experimental_CssVarsProvider as MuiThemeProvider } from "@mui/material/styles";
 import { StylesProvider } from "@mui/styles";
 import { ReactNode, createContext, useState } from "react";
-import { $AppConfig } from "../config";
+import { $FrontendAppConfig } from "../config";
 import { MuiTheme } from "../config/vars/muiTheme";
 import { makeContextHook } from "./makeContextHook";
 
@@ -17,7 +17,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 export const useThemeContext = makeContextHook(ThemeContext);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, _setTheme] = useState<MuiTheme>($AppConfig.muiTheme);
+  const [theme, _setTheme] = useState<MuiTheme>($FrontendAppConfig.muiTheme);
 
   const setTheme = (diff: Partial<MuiTheme>) => {
     _setTheme((prev) => ({ ...prev, ...diff }));

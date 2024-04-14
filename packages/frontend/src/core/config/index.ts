@@ -1,2 +1,2 @@
-export * from "./AppConfig";
+export * from "./FrontendAppConfig";
 export * from "./vars";

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { $AppConfig, convertToRoutes } from "./core/config/index";
+import { $FrontendAppConfig, convertToRoutes } from "./core/config/index";
 import { RootErrorPage, RootLayoutPage } from "./core/pages/index";
 import "./main.css";
 
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
   {
     element: <RootLayoutPage />,
     errorElement: <RootErrorPage />,
-    children: convertToRoutes($AppConfig.navigationRoutes),
+    children: convertToRoutes($FrontendAppConfig.navigationRoutes),
   },
 ]);
 
