@@ -44,10 +44,7 @@ export function Header({
           : undefined,
       }}
     >
-      <Container
-        maxWidth={maxWidth}
-        sx={{ paddingInline: maxWidth === false ? "0 !important" : undefined }}
-      >
+      <Container maxWidth={maxWidth} sx={{ paddingInline: "0 !important" }}>
         <Box display="flex" alignItems="center" gap={1} sx={sx}>
           {!matchesDesktop && (
             <IconButton onClick={() => setSidebarOpen((prev) => !prev)}>

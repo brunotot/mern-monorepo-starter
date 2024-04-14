@@ -23,7 +23,7 @@ export function Layout({ children }: PropsWithChildren) {
         sx={{
           display: "flex",
           height: "100%",
-          paddingInline: isHorizontal ? "0 !important" : undefined,
+          paddingInline: "0 !important",
         }}
       >
         <Sidebar
@@ -44,8 +44,11 @@ export function Layout({ children }: PropsWithChildren) {
           flexGrow={1}
         >
           <Header
-            maxWidth={isHorizontal ? "xl" : undefined}
-            sx={{ paddingTop: 1.5, paddingBottom: 1.5 }}
+            maxWidth={isHorizontal ? "xl" : false}
+            sx={{
+              paddingTop: 1.5,
+              paddingBottom: 1.5,
+            }}
             backgroundColor={
               isHorizontal ? "var(--mui-palette-background-paper)" : undefined
             }
@@ -60,7 +63,12 @@ export function Layout({ children }: PropsWithChildren) {
               isHorizontal ? "var(--mui-palette-background-paper)" : undefined
             }
           />
-          {children}
+          <Container
+            maxWidth={isHorizontal ? "xl" : false}
+            sx={{ paddingInline: isHorizontal ? undefined : "0 !important" }}
+          >
+            {children}
+          </Container>
           <Footer />
         </Box>
       </Container>
