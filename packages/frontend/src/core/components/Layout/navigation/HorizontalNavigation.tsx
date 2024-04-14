@@ -14,15 +14,12 @@ import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
-  ButtonHoverMenu,
-  OriginPosition,
-} from "../../../components/ButtonHoverMenu";
-import {
   $FrontendAppConfig,
   NavigationRoute,
   NavigationRouteSingle,
   isAnyRouteActive,
 } from "../../../config";
+import { ButtonHoverMenu, OriginPosition } from "../../ButtonHoverMenu";
 
 export type HorizontalNavItemProps = {
   item: NavigationRoute;
@@ -113,17 +110,32 @@ function HorizontalNavItem({
 export type HorizontalNavigationProps = {
   backgroundColor?: string;
   maxWidth?: false | Breakpoint;
+  paddingInline?: number;
+  hidden?: boolean;
 };
 
 export function HorizontalNavigation({
   backgroundColor,
   maxWidth = false,
+  paddingInline,
+  hidden = false,
 }: HorizontalNavigationProps) {
   const navData = $FrontendAppConfig.navigationRoutes;
+  const computedPaddingInline =
+    paddingInline === undefined ? undefined : `${paddingInline}0 !important`;
 
   return (
-    <Box sx={{ backgroundColor }} paddingBlock={0.75}>
-      <Container maxWidth={maxWidth}>
+    <Box
+      sx={{
+        backgroundColor,
+        display: hidden ? "none" : undefined,
+      }}
+      paddingBlock={0.75}
+    >
+      <Container
+        sx={{ paddingInline: computedPaddingInline }}
+        maxWidth={maxWidth}
+      >
         <List dense component={Stack} direction="row">
           {navData.map((item, index) => (
             <Fragment key={index}>

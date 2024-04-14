@@ -1,2 +1,2 @@
-export * from "./HorizontalLayout";
 export * from "./HorizontalNavigation";
+export * from "./SidebarNavigation";

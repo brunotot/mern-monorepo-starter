@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
+import { Layout } from "../../components/Layout/Layout";
 import { SidebarProvider } from "../../hooks";
 import { AuthProvider } from "../../hooks/useAuthContext";
 import { LayoutProvider } from "../../hooks/useLayoutContext";
 import { LocalizationProvider } from "../../hooks/useLocalizationContext";
 import { ThemeProvider } from "../../hooks/useThemeContext";
-import { LayoutRenderer } from "../../layout";
 
 export function RootLayoutPage() {
   return (
@@ -13,9 +13,9 @@ export function RootLayoutPage() {
         <ThemeProvider>
           <LayoutProvider>
             <SidebarProvider>
-              <LayoutRenderer>
+              <Layout>
                 <Outlet />
-              </LayoutRenderer>
+              </Layout>
             </SidebarProvider>
           </LayoutProvider>
         </ThemeProvider>
