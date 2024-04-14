@@ -9,6 +9,7 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
+import { TODO } from "@org/shared";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -40,8 +41,9 @@ function HorizontalNavItem({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const hasChildren = "children" in item && item.children;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const children: NavigationRoute[] = (hasChildren ? item.children : []) as any;
+  const children: NavigationRoute[] = (
+    hasChildren ? item.children : []
+  ) as TODO;
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 8 : undefined;
 

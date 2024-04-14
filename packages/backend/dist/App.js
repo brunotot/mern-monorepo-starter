@@ -7,27 +7,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Router } from "express";
 import helmet from "helmet";
 import hpp from "hpp";
+import { connect, set } from "mongoose";
 import morgan from "morgan";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { databaseConnect } from "./config";
-import { getVar } from "./config/vars.config";
+import { $BackendAppConfig } from "./config/BackendAppConfig";
 import { getInjectionClasses } from "./decorators/Injectable";
 import { RoutesMetaService } from "./meta/RoutesMetaService";
+import { credentials } from "./middleware/credentials";
 import { logger, stream } from "./utils/logger";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 export class App {
     constructor() {
         this.app = express();
-        this.env = getVar("NODE_ENV") || "development";
-        this.port = getVar("PORT") || 3000;
-        this.connectToDatabase();
+        this.env = $BackendAppConfig.env.NODE_ENV;
+        this.port = $BackendAppConfig.env.PORT;
+        this.databaseConnect();
         this.initializeMiddlewares();
         this.initializeRoutes();
         this.initializeSwagger();
@@ -44,16 +56,21 @@ export class App {
     getServer() {
         return this.app;
     }
-    connectToDatabase() {
+    databaseConnect() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield databaseConnect();
+            const _a = $BackendAppConfig.databaseConnectionParams, { dbHost, dbPort, dbName } = _a, restOptions = __rest(_a, ["dbHost", "dbPort", "dbName"]);
+            const mongoUri = `mongodb://${dbHost}:${dbPort}`;
+            if ($BackendAppConfig.env.NODE_ENV !== "production")
+                set("debug", true);
+            yield connect(mongoUri, Object.assign({ dbName }, restOptions));
         });
     }
     initializeMiddlewares() {
-        this.app.use(morgan(getVar("LOG_FORMAT"), { stream }));
+        this.app.use(morgan($BackendAppConfig.env.LOG_FORMAT, { stream }));
+        this.app.use(credentials());
         this.app.use(cors({
-            origin: getVar("ORIGIN"),
-            credentials: getVar("CREDENTIALS") === "true",
+            origin: $BackendAppConfig.env.ORIGIN,
+            credentials: $BackendAppConfig.env.CREDENTIALS === "true",
         }));
         this.app.use(hpp());
         this.app.use(helmet());
@@ -61,6 +78,8 @@ export class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
+        //Should be specified at endpoint level.
+        //this.app.use(verifyJWT());
     }
     initializeRoutes() {
         getInjectionClasses().forEach((clazz) => {

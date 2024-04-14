@@ -8,7 +8,7 @@ import {
   RoutesMetaService,
 } from "../meta/RoutesMetaService";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { TODO } from "../utils";
+import { TODO } from "@org/shared";
 
 export function Route<This, Fn extends RouteHandler>(
   props: Omit<RequestMappingProps, "name" | "middlewares">

@@ -1,7 +1,7 @@
+import { Class } from "@org/shared";
 import Bottle from "bottlejs";
-import { getInjectionClasses } from "../decorators/Injectable";
-import { InjectionMetaService } from "../meta/InjectionMetaService";
-import { Class } from "../utils/types";
+import { getInjectionClasses } from "../../decorators/Injectable";
+import { InjectionMetaService } from "../../meta/InjectionMetaService";
 
 const bottle = new Bottle();
 const container = bottle.container;
@@ -10,7 +10,7 @@ export function inject<T>(name: string): T {
   return container[name] as T;
 }
 
-export function initializeDI2() {
+export function iocStartup() {
   const injectionClasses = getInjectionClasses();
 
   const dependencySchema: Record<string, string[]> = injectionClasses.reduce(

@@ -4,27 +4,28 @@ import cors from "cors";
 import express, { Router } from "express";
 import helmet from "helmet";
 import hpp from "hpp";
+import { connect, set } from "mongoose";
 import morgan from "morgan";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { databaseConnect } from "./config";
-import { getVar } from "./config/vars.config";
+import { $BackendAppConfig } from "./config/BackendAppConfig";
+import { logger, stream } from "./config/logger/logger";
 import { getInjectionClasses } from "./decorators/Injectable";
 import { RoutesMetaService } from "./meta/RoutesMetaService";
-import { logger, stream } from "./utils/logger";
+import { credentials } from "./middleware/credentials";
 //import { ErrorMiddleware } from "@middlewares/error.middleware";
 
 export class App {
   public app: express.Application;
   public env: string;
-  public port: string | number;
+  public port: string;
 
   constructor() {
     this.app = express();
-    this.env = getVar("NODE_ENV") || "development";
-    this.port = getVar("PORT") || 3000;
+    this.env = $BackendAppConfig.env.NODE_ENV;
+    this.port = $BackendAppConfig.env.PORT;
 
-    this.connectToDatabase();
+    this.databaseConnect();
     this.initializeMiddlewares();
     this.initializeRoutes();
     this.initializeSwagger();
@@ -44,16 +45,24 @@ export class App {
     return this.app;
   }
 
-  private async connectToDatabase() {
-    await databaseConnect();
+  private async databaseConnect() {
+    const { dbHost, dbPort, dbName, ...restOptions } =
+      $BackendAppConfig.databaseConnectionParams;
+    const mongoUri = `mongodb://${dbHost}:${dbPort}`;
+    if ($BackendAppConfig.env.NODE_ENV !== "production") set("debug", true);
+    await connect(mongoUri, {
+      dbName,
+      ...restOptions,
+    });
   }
 
   private initializeMiddlewares() {
-    this.app.use(morgan(getVar("LOG_FORMAT"), { stream }));
+    this.app.use(morgan($BackendAppConfig.env.LOG_FORMAT, { stream }));
+    this.app.use(credentials());
     this.app.use(
       cors({
-        origin: getVar("ORIGIN"),
-        credentials: getVar("CREDENTIALS") === "true",
+        origin: $BackendAppConfig.env.ORIGIN,
+        credentials: $BackendAppConfig.env.CREDENTIALS === "true",
       })
     );
     this.app.use(hpp());
@@ -62,6 +71,8 @@ export class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    //Should be specified at endpoint level.
+    //this.app.use(verifyJWT());
   }
 
   private initializeRoutes() {

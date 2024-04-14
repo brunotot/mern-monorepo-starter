@@ -33,6 +33,7 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
     return useValue ? value : void 0;
 };
 import { Required } from "@tsvdec/core";
+import { Role } from "../config/vars/userRoles";
 let User = (() => {
     var _a;
     let _instanceExtraInitializers = [];
@@ -47,6 +48,8 @@ let User = (() => {
                 this.username = (__runInitializers(this, _instanceExtraInitializers), __runInitializers(this, _username_initializers, ""));
                 this.password = __runInitializers(this, _password_initializers, "");
                 this.email = __runInitializers(this, _email_initializers, "");
+                this.roles = [Role.USER];
+                this.refreshToken = [];
             }
         },
         (() => {

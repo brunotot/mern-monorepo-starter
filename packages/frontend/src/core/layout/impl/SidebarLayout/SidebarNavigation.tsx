@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { TODO } from "@org/shared";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,8 +29,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const variant = item?.variant ?? "single";
   const renderChildrenPersistent = hasChildren && variant === "group";
   const renderChildrenMenu = hasChildren && variant === "menu";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const children: NavigationRoute[] = (hasChildren ? item.children : []) as any;
+  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,9 +1,11 @@
 {
-  "name": "shared",
+  "name": "@org/shared",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "rm -rf dist && npm run compile:ts",
+    "compile:ts": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,7 +1,7 @@
 //import { Form, Types } from "@tsvdec/core";
+import { TODO } from "@org/shared";
 import { Form } from "@tsvdec/core";
 import type { NextFunction, Request, Response } from "express";
-import { TODO } from "../utils";
 
 export function validateForm(clazz: new (...args: TODO[]) => TODO) {
   return function (req: Request, res: Response, next: NextFunction) {

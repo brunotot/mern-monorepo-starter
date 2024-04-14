@@ -19,7 +19,10 @@ export type RouteMiddleware = (
   next: NextFunction
 ) => void;
 
-export type RouteHandler = (req: Request, res: Response) => Promise<void>;
+export type RouteHandler = (
+  req: Request,
+  res: Response
+) => Promise<void | Response>;
 
 export type RouteMiddlewareHandler = (
   req: Request,

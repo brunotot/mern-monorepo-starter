@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Backend",
-      "program": "${workspaceFolder}/packages/backend/src/index.ts",
+      "program": "${workspaceFolder}/packages/backend/src/main.ts",
       "preLaunchTask": "pnpm run backend:build",
       "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"],
       "sourceMaps": true,

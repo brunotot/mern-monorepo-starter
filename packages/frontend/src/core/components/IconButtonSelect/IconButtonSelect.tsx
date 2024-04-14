@@ -1,4 +1,5 @@
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { TODO } from "@org/shared";
 import { useMemo, useState } from "react";
 
 export type IconButtonSelectProps<Item = unknown, Value = Item> = {
@@ -28,8 +29,7 @@ export function IconButtonSelect<const Item = unknown, const Value = Item>({
 }: IconButtonSelectProps<Item, Value>) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClickListItem = (event: any) => {
+  const handleClickListItem = (event: TODO) => {
     setAnchorEl(event.currentTarget);
   };
 

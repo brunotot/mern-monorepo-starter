@@ -1,4 +1,5 @@
 import { Box, TextField } from "@mui/material";
+import { TODO } from "@org/shared";
 
 export type InputRangeProps = {
   value: number;
@@ -24,8 +25,7 @@ export function InputRange({
   const largestAbsLimit = Math.max(Math.abs(min), Math.abs(max));
   const maxTextWidth = unitChars + String(largestAbsLimit).length;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSliderChange = (e: any) => {
+  const handleSliderChange = (e: TODO) => {
     onChange(Number(e.target.value));
   };
 

@@ -1,4 +1,3 @@
-//import { Form, Types } from "@tsvdec/core";
 import { Form } from "@tsvdec/core";
 export function validateForm(clazz) {
     return function (req, res, next) {

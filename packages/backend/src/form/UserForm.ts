@@ -1,4 +1,5 @@
 import { Required } from "@tsvdec/core";
+import { Role } from "../config/vars/userRoles";
 
 export class User {
   @Required()
@@ -9,4 +10,7 @@ export class User {
 
   @Required()
   email: string = "";
+
+  roles: Role[] = [Role.USER];
+  refreshToken: string[] = [];
 }

@@ -10,6 +10,7 @@ export function Autowired() {
         const context = meta.context;
         const fieldName = String(context.name);
         InjectionMetaService.from(context).addDependency(fieldName);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return function (_value) {
             return inject(fieldName);
         };

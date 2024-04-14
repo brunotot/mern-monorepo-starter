@@ -45,6 +45,7 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
 };
+import { Role } from "../config";
 import { Autowired } from "../decorators/Autowired";
 import { Controller } from "../decorators/Controller";
 import { GetMapping } from "../decorators/GetMapping";
@@ -52,6 +53,8 @@ import { PostMapping } from "../decorators/PostMapping";
 import { Use } from "../decorators/Use";
 import { User } from "../form/UserForm";
 import { validateForm } from "../middleware/validateForm";
+import { verifyJWT } from "../middleware/verifyJWT";
+import { verifyRoles } from "../middleware/verifyRoles";
 let UserController = (() => {
     let _classDecorators = [Controller("/users")];
     let _classDescriptor;
@@ -83,7 +86,7 @@ let UserController = (() => {
     (() => {
         const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
         _userService_decorators = [Autowired()];
-        _findAll_decorators = [GetMapping()];
+        _findAll_decorators = [Use(verifyJWT(), verifyRoles(Role.ADMIN)), GetMapping()];
         _create_decorators = [Use(validateForm(User)), PostMapping()];
         __esDecorate(_classThis, null, _findAll_decorators, { kind: "method", name: "findAll", static: false, private: false, access: { has: obj => "findAll" in obj, get: obj => obj.findAll }, metadata: _metadata }, null, _instanceExtraInitializers);
         __esDecorate(_classThis, null, _create_decorators, { kind: "method", name: "create", static: false, private: false, access: { has: obj => "create" in obj, get: obj => obj.create }, metadata: _metadata }, null, _instanceExtraInitializers);

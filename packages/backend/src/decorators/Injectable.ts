@@ -1,6 +1,6 @@
+import { Class } from "@org/shared";
 import { createClassDecorator } from "@tsvdec/decorators";
 import { InjectionMetaService } from "../meta/InjectionMetaService";
-import { Class } from "../utils/types";
 
 const injectionClasses: Class[] = [];
 
