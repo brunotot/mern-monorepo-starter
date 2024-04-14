@@ -1,1 +1,0 @@
-{"version":3,"file":"PostMapping.js","sourceRoot":"","sources":["../../src/decorators/PostMapping.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAE,MAAM,SAAS,CAAC;AAEhC,MAAM,UAAU,WAAW,CAAgC,OAAe,EAAE;IAC1E,OAAO,KAAK,CAAW;QACrB,MAAM,EAAE,MAAM;QACd,IAAI;KACL,CAAC,CAAC;AACL,CAAC"}
