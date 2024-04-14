@@ -1,9 +1,10 @@
-import { App } from "./App";
-import { initializeDI, inject } from "./config";
-initializeDI();
-process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exception:", err);
-});
-const app = new App([inject("userRoute")]);
-app.listen();
+export * from "./config";
+export * from "./controllers";
+export * from "./decorators";
+export * from "./domain";
+export * from "./form";
+export * from "./infrastructure";
+export * from "./meta";
+export * from "./middleware";
+export * from "./utils";
 //# sourceMappingURL=index.js.map

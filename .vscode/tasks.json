@@ -2,13 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "typescript",
-      "tsconfig": "tsconfig.json",
-      "problemMatcher": ["$tsc"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "label": "pnpm run backend:build",
+      "type": "shell",
+      "group": "build",
+      "command": "pnpm run backend:build",
+      "problemMatcher": [],
+      "detail": "cd packages/backend && pnpm run build"
     }
   ]
 }

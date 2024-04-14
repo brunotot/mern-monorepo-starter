@@ -1,28 +1,31 @@
-import { inject } from "../config";
-import { RouteHandler } from "../routes/Route";
+import { Request, Response } from "express";
+import { Role } from "../config";
+import { Autowired } from "../decorators/Autowired";
+import { Controller } from "../decorators/Controller";
+import { GetMapping } from "../decorators/GetMapping";
+import { PostMapping } from "../decorators/PostMapping";
+import { Use } from "../decorators/Use";
+import { User } from "../form/UserForm";
+import { UserService } from "../infrastructure/service/UserService";
+import { validateForm } from "../middleware/validateForm";
+import { verifyJWT } from "../middleware/verifyJWT";
+import { verifyRoles } from "../middleware/verifyRoles";
 
+@Controller("/users")
 export class UserController {
-  public userRepository = inject("userRepository");
+  @Autowired() userService: UserService;
 
-  constructor() {}
+  @Use(verifyJWT(), verifyRoles(Role.ADMIN))
+  @GetMapping()
+  async findAll(_req: Request, res: Response) {
+    const users = await this.userService.findAll();
+    res.json(users);
+  }
 
-  findAll: RouteHandler = async (req, res) => {
-    try {
-      const users = await this.userRepository.findAll();
-      res.json(users);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  };
-
-  create: RouteHandler = async (req, res) => {
-    try {
-      const user = await this.userRepository.create(req.body);
-      res.status(201).json(user);
-    } catch (error) {
-      console.error("Error creating user:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  };
+  @Use(validateForm(User))
+  @PostMapping()
+  async create(req: Request, res: Response) {
+    const user = await this.userService.create(req.body);
+    res.status(201).json(user);
+  }
 }

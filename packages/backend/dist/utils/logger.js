@@ -3,10 +3,8 @@ import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
-if (!process.env.LOG_DIR) {
-    throw new Error("LOG_DIR is not defined");
-}
-const logDir = join(getDirname(), process.env.LOG_DIR);
+import { $BackendAppConfig } from "../config/BackendAppConfig";
+const logDir = join(getDirname(), $BackendAppConfig.env.LOG_DIR);
 if (!existsSync(logDir)) {
     mkdirSync(logDir);
 }
