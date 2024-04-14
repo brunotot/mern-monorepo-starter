@@ -1,7 +1,7 @@
 export * as $Components from "./components";
+export * as $Layout from "./components/Layout";
 export * as $Config from "./config";
 export * as $Hooks from "./hooks";
-export * as $Layout from "./layout";
 export * as $Pages from "./pages";
 export * as $Types from "./types";
 

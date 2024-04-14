@@ -1,37 +1,53 @@
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
-import { SidebarNavigation } from "../../layout";
-import { Logo } from "../Logo";
+import { ReactNode } from "react";
 
 export type SidebarProps = {
   width?: number;
   open: boolean;
   onClose: () => void;
   onOpen: () => void;
+  hidden?: boolean;
+  children: ReactNode;
 };
 
-export function Sidebar({ width = 300, open, onClose, onOpen }: SidebarProps) {
+export function Sidebar({
+  hidden = false,
+  width = 300,
+  open,
+  onClose,
+  onOpen,
+  children,
+}: SidebarProps) {
   const matchesDesktop = useMediaQuery("(min-width:678px)");
   const computedAnchor = matchesDesktop ? "left" : "bottom";
-  const computedWidth = matchesDesktop ? width : "100%";
+
+  const paperWidth = matchesDesktop ? width : "100%";
+  const drawerWidth = hidden ? 0 : paperWidth;
+  const drawerPosition = matchesDesktop ? "relative" : undefined;
+  const paperPosition = matchesDesktop ? "absolute" : undefined;
+  const drawerVariant = hidden
+    ? "temporary"
+    : matchesDesktop
+    ? "permanent"
+    : "temporary";
 
   return (
     <SwipeableDrawer
-      open={open}
+      open={!hidden && open}
       anchor={computedAnchor}
       onOpen={onOpen}
       onClose={onClose}
-      variant={matchesDesktop ? "permanent" : "temporary"}
+      variant={drawerVariant}
       sx={{
-        width: computedWidth,
-        position: matchesDesktop ? "relative" : undefined,
+        width: drawerWidth,
+        position: drawerPosition,
         "& .MuiDrawer-paper": {
-          width: computedWidth,
-          position: matchesDesktop ? "absolute" : undefined, //imp
+          width: paperWidth,
+          position: paperPosition,
         },
       }}
     >
-      <Logo />
-      <SidebarNavigation />
+      {children}
     </SwipeableDrawer>
   );
 }

@@ -1,6 +1,6 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { ReactNode, createContext } from "react";
-import { $AppConfig, Locale } from "../config";
+import { $FrontendAppConfig, Locale } from "../config";
 import { makeContextHook } from "./makeContextHook";
 
 export type LocalizationContextValue = {
@@ -19,7 +19,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const [locale, setStorageLocale] = useLocalStorage<Locale>("locale", "en");
 
   const setLocale = async (locale: Locale) => {
-    await $AppConfig.i18n.changeLanguage(locale);
+    await $FrontendAppConfig.i18n.changeLanguage(locale);
     setStorageLocale(locale);
   };
 
