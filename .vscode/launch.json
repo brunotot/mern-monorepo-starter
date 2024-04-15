@@ -8,6 +8,7 @@
       "program": "${workspaceFolder}/packages/backend/src/main.ts",
       "preLaunchTask": "pnpm run backend:build",
       "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"],
+      "envFile": "${workspaceFolder}/packages/backend/.env.development.local",
       "sourceMaps": true,
       "outputCapture": "std",
       "stopOnEntry": false,

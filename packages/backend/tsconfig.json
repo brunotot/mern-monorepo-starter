@@ -11,6 +11,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@org/shared": ["../shared/src"],
+      "@org/shared/*": ["../shared/src/*"]
+    }
   }
 }

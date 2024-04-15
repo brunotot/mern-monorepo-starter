@@ -24,6 +24,7 @@
   "devDependencies": {
     "husky": "^9.0.11",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.8",
     "typedoc": "^0.25.12",
     "typedoc-material-theme": "^1.0.2",
     "typedoc-plugin-custom-tags": "^1.0.2",
