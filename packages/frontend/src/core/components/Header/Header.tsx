@@ -45,7 +45,13 @@ export function Header({
       }}
     >
       <Container maxWidth={maxWidth} sx={{ paddingInline: "0 !important" }}>
-        <Box display="flex" alignItems="center" gap={1} sx={sx}>
+        <Box
+          display="flex"
+          alignItems="center"
+          paddingInline={matchesDesktop ? "1rem" : 0}
+          gap={1}
+          sx={sx}
+        >
           {!matchesDesktop && (
             <IconButton onClick={() => setSidebarOpen((prev) => !prev)}>
               <Menu />
@@ -59,7 +65,7 @@ export function Header({
           <Box display="flex" alignItems="center">
             <ThemeModeToggleButton />
             <LocaleSelectButton />
-            <LayoutToggleButton />
+            {matchesDesktop && <LayoutToggleButton />}
           </Box>
         </Box>
       </Container>

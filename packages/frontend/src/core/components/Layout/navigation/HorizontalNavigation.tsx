@@ -54,6 +54,7 @@ function HorizontalNavItem({
             selected={isMainNavButton ? isAnyRouteActiveInGroup : undefined}
             sx={{
               flexGrow: 0,
+              whiteSpace: "nowrap",
               backgroundColor: popupState.isOpen
                 ? "action.hover"
                 : isAnyRouteActiveInGroup
@@ -97,7 +98,7 @@ function HorizontalNavItem({
 
   return (
     <ListItemButton
-      sx={{ flexGrow: 0, borderRadius }}
+      sx={{ flexGrow: 0, borderRadius, whiteSpace: "nowrap" }}
       selected={location.pathname === itemSingle.path}
       onClick={() => navigate(itemSingle.path)}
     >
@@ -110,19 +111,15 @@ function HorizontalNavItem({
 export type HorizontalNavigationProps = {
   backgroundColor?: string;
   maxWidth?: false | Breakpoint;
-  paddingInline?: number;
   hidden?: boolean;
 };
 
 export function HorizontalNavigation({
   backgroundColor,
   maxWidth = false,
-  paddingInline,
   hidden = false,
 }: HorizontalNavigationProps) {
   const navData = $FrontendAppConfig.navigationRoutes;
-  const computedPaddingInline =
-    paddingInline === undefined ? undefined : `${paddingInline}0 !important`;
 
   return (
     <Box
@@ -132,10 +129,7 @@ export function HorizontalNavigation({
       }}
       paddingBlock={0.75}
     >
-      <Container
-        sx={{ paddingInline: computedPaddingInline }}
-        maxWidth={maxWidth}
-      >
+      <Container sx={{ paddingInline: `0 !important` }} maxWidth={maxWidth}>
         <List dense component={Stack} direction="row">
           {navData.map((item, index) => (
             <Fragment key={index}>

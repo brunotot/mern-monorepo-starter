@@ -11,9 +11,9 @@ import { SidebarNavigation } from "./navigation/SidebarNavigation";
 
 export function Layout({ children }: PropsWithChildren) {
   const { layout } = useLayoutContext();
-  const isHorizontal = layout === "HorizontalLayout";
-  const { sidebarOpen, setSidebarOpen } = useSidebarContext();
   const matchesDesktop = useMediaQuery("(min-width:678px)");
+  const isHorizontal = matchesDesktop && layout === "HorizontalLayout";
+  const { sidebarOpen, setSidebarOpen } = useSidebarContext();
   const sidebarWidth = 300;
 
   return (
@@ -56,8 +56,7 @@ export function Layout({ children }: PropsWithChildren) {
           />
 
           <HorizontalNavigation
-            hidden={!isHorizontal}
-            paddingInline={0}
+            hidden={!isHorizontal || !matchesDesktop}
             maxWidth={isHorizontal ? "xl" : false}
             backgroundColor={
               isHorizontal ? "var(--mui-palette-background-paper)" : undefined

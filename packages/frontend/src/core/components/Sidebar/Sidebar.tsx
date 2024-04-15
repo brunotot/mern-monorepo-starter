@@ -31,6 +31,12 @@ export function Sidebar({
     ? "permanent"
     : "temporary";
 
+  const bottomPadding = 150;
+  const paperMaxHeight = matchesDesktop
+    ? undefined
+    : `calc(100% - ${bottomPadding}px)`;
+  const paperTop = matchesDesktop ? undefined : bottomPadding;
+
   return (
     <SwipeableDrawer
       open={!hidden && open}
@@ -44,6 +50,8 @@ export function Sidebar({
         "& .MuiDrawer-paper": {
           width: paperWidth,
           position: paperPosition,
+          maxHeight: paperMaxHeight,
+          top: paperTop,
         },
       }}
     >
