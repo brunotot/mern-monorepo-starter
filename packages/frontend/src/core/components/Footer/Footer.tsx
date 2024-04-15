@@ -1,4 +1,4 @@
-import { Box, Breakpoint, Container, Typography } from "@mui/material";
+import { Box, Breakpoint, Container, Link, Typography } from "@mui/material";
 import { MuiSxProps } from "../Header";
 
 export type FooterProps = {
@@ -20,7 +20,20 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
         sx={{ paddingInline: maxWidth === false ? "0 !important" : undefined }}
       >
         <Box display="flex" alignItems="center" justifyContent="center">
-          <Typography>Demo App © {new Date().getFullYear()}</Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={0.5}
+            alignItems="center"
+          >
+            <Link
+              href="https://brunotot.github.io/monorepo-mern-railway-starter/"
+              target="_blank"
+            >
+              TypeDoc source
+            </Link>
+            <Typography>Demo App © {new Date().getFullYear()}</Typography>
+          </Box>
         </Box>
       </Container>
     </Box>
