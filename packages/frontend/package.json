@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prepare": "pnpm run interface",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "serve -s dist"
+    "start": "serve -s dist",
+    "interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/@types/resources.d.ts"
   },
   "dependencies": {
-    "@org/shared": "file:../shared/src",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.14",
@@ -19,6 +20,8 @@
     "@mui/material": "^5.15.14",
     "@mui/styles": "^5.15.14",
     "@mui/x-tree-view": "^7.0.0",
+    "@org/shared": "file:../shared/src",
+    "@preact/signals-react": "^2.0.1",
     "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.6.8",
     "i18next": "^23.10.1",
@@ -31,6 +34,7 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "@preact/signals-react-transform": "^0.3.1",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
@@ -39,6 +43,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "i18next-resources-for-ts": "^1.5.0",
     "locize-cli": "^8.0.0",
     "serve": "^14.2.1",
     "typescript": "^5.2.2",

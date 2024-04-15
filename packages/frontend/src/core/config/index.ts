@@ -1,2 +1,3 @@
-export * from "./FrontendAppConfig";
-export * from "./vars";
+import "./i18n";
+
+export * from "./i18n";

@@ -1,15 +1,18 @@
+import "./core/config";
+import "./main.css";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { $FrontendAppConfig, convertToRoutes } from "./core/config/index";
-import { RootErrorPage, RootLayoutPage } from "./core/pages/index";
-import "./main.css";
+import { AppProvider } from "./core";
+import { RootErrorPage } from "./pages";
+import { routes } from "./routes";
 
 const router = createBrowserRouter([
   {
-    element: <RootLayoutPage />,
+    element: <AppProvider />,
     errorElement: <RootErrorPage />,
-    children: convertToRoutes($FrontendAppConfig.navigationRoutes),
+    children: routes,
   },
 ]);
 

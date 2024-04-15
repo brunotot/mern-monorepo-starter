@@ -1,6 +1,6 @@
+import { VAR_USER_ROLES } from "@org/shared";
 import { VAR_ALLOWED_ORIGINS } from "./vars/allowedOrigins";
 import { DatabaseConnectionParams } from "./vars/databaseConnectionParams";
-import { VAR_USER_ROLES } from "./vars/userRoles";
 import { VAR_ZOD_ENVIRONMENT } from "./vars/zodEnvironment";
 
 export class BackendAppConfig {

@@ -13,13 +13,16 @@
     "backend:build": "cd packages/backend && npm run build",
     "frontend:start": "cd packages/frontend && npm run start",
     "frontend:build": "cd packages/frontend && npm run build",
+    "frontend:interface": "cd packages/frontend && npm run interface",
     "build:docs": "typedoc --options typedoc/typedoc.json && npm run sanitize-docs --silent",
-    "sanitize-docs": "bash typedoc/scripts/typedoc-sanitize.sh"
+    "sanitize-docs": "bash typedoc/scripts/typedoc-sanitize.sh",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "husky": "^9.0.11",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.12",
     "typedoc-material-theme": "^1.0.2",

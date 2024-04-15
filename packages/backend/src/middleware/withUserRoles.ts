@@ -1,5 +1,5 @@
+import { Role } from "@org/shared";
 import type { NextFunction, Request, Response } from "express";
-import { Role } from "../config/vars/userRoles";
 import { ExpressMiddleware } from "./types";
 
 export function withUserRoles(...allowedRoles: Role[]): ExpressMiddleware {

@@ -1,5 +1,5 @@
+import { Role } from "@org/shared";
 import mongoose from "mongoose";
-import { Role } from "../config/vars/userRoles";
 import type { User } from "../form/UserForm";
 
 const userSchema = new mongoose.Schema<User>({

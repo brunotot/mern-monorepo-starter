@@ -1,5 +1,5 @@
+import { Role } from "@org/shared";
 import { Request, Response } from "express";
-import { Role } from "../config";
 import { Autowired } from "../decorators/Autowired";
 import { Controller } from "../decorators/Controller";
 import { GetMapping } from "../decorators/GetMapping";

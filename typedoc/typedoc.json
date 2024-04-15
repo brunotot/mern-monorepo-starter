@@ -1,7 +1,7 @@
 {
   "extends": ["./typedoc.base.json"],
   "entryPoints": ["../packages/*"],
-  "name": "Demo app",
+  "name": "Demo App",
   "entryPointStrategy": "packages",
   "includeVersion": false,
   "excludeInternal": true,
