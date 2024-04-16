@@ -6,10 +6,10 @@ import helmet from "helmet";
 import hpp from "hpp";
 import { connect, set } from "mongoose";
 import morgan from "morgan";
-import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { $BackendAppConfig } from "./config/BackendAppConfig";
 import { logger, stream } from "./config/logger/logger";
+import { swaggerSpec } from "./config/swagger";
 import { getInjectionClasses } from "./decorators/Injectable";
 import { RoutesMetaService } from "./meta/RoutesMetaService";
 import { withCredentials } from "./middleware/withCredentials";
@@ -89,18 +89,12 @@ export class App {
   }
 
   private initializeSwagger() {
-    const specs = swaggerJSDoc({
-      swaggerDefinition: {
-        openapi: "3.0.0",
-        info: {
-          title: "REST API",
-          version: "1.0.0",
-          description: "Example docs",
-        },
-      },
-      apis: ["swagger.yaml"],
+    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.app.get("/api-docs.json", (req, res) => {
+      res.setHeader("Content-Type", "application/json");
+      res.send(swaggerSpec);
     });
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+    logger.info(`Docs available at http://localhost:${this.port}/api-docs`);
   }
 
   /*private initializeErrorHandling() {

@@ -5,14 +5,14 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "build": "rm -rf dist && npm run compile:ts",
-    "compile:ts": "tsc && pnpm run tsc-alias",
+    "build": "rm -rf dist && npm run compile:ts && cp package.json dist/backend",
+    "compile:ts": "tsc && npm run tsc-alias",
     "start": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
     "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Bruno Tot",
+  "license": "MIT",
   "dependencies": {
     "@org/shared": "^0.0.1",
     "@tsvdec/core": "^2.0.11",

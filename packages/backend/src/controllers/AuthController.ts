@@ -8,6 +8,15 @@ import User from "../domain/MongoUser";
 
 @Controller("/auth")
 export class AuthController {
+  /**
+   * @openapi
+   * /auth/login:
+   *  post:
+   *    description: Login to the application
+   *    responses:
+   *      200:
+   *        description: Returns an access token
+   */
   @PostMapping("/login")
   async login(req: Request, res: Response) {
     const cookies = req.cookies;

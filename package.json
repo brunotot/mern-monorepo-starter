@@ -5,22 +5,19 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev --prefix packages/backend",
-    "root:clean": "sh ./scripts/clean-install.sh",
-    "lint": "npx eslint .",
-    "backend:start": "cd packages/backend && npm run start",
-    "backend:build": "cd packages/backend && npm run build",
-    "frontend:start": "cd packages/frontend && npm run start",
-    "frontend:build": "cd packages/frontend && npm run build",
-    "frontend:interface": "cd packages/frontend && npm run interface",
-    "build:docs": "typedoc --options typedoc/typedoc.json && npm run sanitize-docs --silent",
-    "sanitize-docs": "bash typedoc/scripts/typedoc-sanitize.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "root:test": "echo \"Error: no test specified\" && exit 1",
+    "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
+    "root:lint": "npx eslint .",
+    "backend:start": "npm run start --prefix packages/backend",
+    "backend:build": "npm run build --prefix packages/backend",
+    "frontend:dev": "npm run dev --prefix packages/frontend",
+    "frontend:start": "npm run start --prefix packages/frontend",
+    "frontend:build": "npm run build --prefix packages/frontend",
+    "frontend:interface": "npm run interface --prefix packages/frontend"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Bruno Tot",
+  "license": "MIT",
   "devDependencies": {
     "husky": "^9.0.11",
     "ts-node": "^10.9.2",
@@ -29,5 +26,16 @@
     "typedoc-material-theme": "^1.0.2",
     "typedoc-plugin-custom-tags": "^1.0.2",
     "typedoc-plugin-remove-references": "^0.0.6"
-  }
+  },
+  "keywords": [
+    "monorepo",
+    "starter",
+    "template",
+    "mern",
+    "railway",
+    "react",
+    "mongodb",
+    "express",
+    "node"
+  ]
 }

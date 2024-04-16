@@ -6,3 +6,4 @@ export * from "./vars";
 
 export * from "./ioc";
 export * from "./logger";
+export * from "./swagger";

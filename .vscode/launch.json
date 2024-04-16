@@ -2,24 +2,86 @@
   "version": "2.0.0",
   "configurations": [
     {
+      "name": "🖥 Launch Backend",
       "type": "node",
       "request": "launch",
-      "name": "Launch Backend",
       "program": "${workspaceFolder}/packages/backend/src/main.ts",
-      "preLaunchTask": "pnpm run backend:build",
+      "preLaunchTask": "npm: backend:build",
       "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"],
       "envFile": "${workspaceFolder}/packages/backend/.env.development.local",
       "sourceMaps": true,
       "outputCapture": "std",
-      "stopOnEntry": false,
       "console": "integratedTerminal",
+      "stopOnEntry": false,
+      //"internalConsoleOptions": "openOnSessionStart",
       "runtimeVersion": "21.7.0",
       "runtimeArgs": [
         "--no-warnings",
         "--loader",
         "ts-node/esm",
         "--experimental-specifier-resolution=node"
-      ]
+      ],
+      "presentation": { "group": "1" }
+    },
+    {
+      "name": "🖼️ Launch Frontend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "frontend:dev"],
+      "runtimeVersion": "21.7.0",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false,
+      "presentation": { "group": "1" }
+    },
+    {
+      "name": "🔎 Launch ESLint",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "root:lint"],
+      "runtimeVersion": "21.7.0",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false,
+      "presentation": { "group": "1" }
+    },
+    {
+      "name": "🧪 Launch tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "root:test"],
+      "runtimeVersion": "21.7.0",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false,
+      "presentation": { "group": "1" }
+    },
+    {
+      "name": "🌎 Generate i18n.d.ts",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "frontend:interface"],
+      "runtimeVersion": "21.7.0",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false,
+      "presentation": { "group": "2" }
+    },
+    {
+      "name": "📝 Generate docs",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "root:typedoc"],
+      "runtimeVersion": "21.7.0",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false,
+      "presentation": { "group": "2" }
     }
   ]
 }
