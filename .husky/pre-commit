@@ -1,1 +1,7 @@
-exit 0
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+#pnpm run build
+#pnpm run build:docs:dev
+npm run root:test
+npx lint-staged
