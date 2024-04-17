@@ -1,5 +1,5 @@
 import { Entity } from "../../config";
-import { User } from "../../form/UserForm";
+import { User } from "../../domain";
 
 export interface UserRepository {
   findAll: () => Promise<Entity<User>[]>;

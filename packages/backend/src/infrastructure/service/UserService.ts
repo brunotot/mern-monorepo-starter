@@ -1,4 +1,4 @@
-import { User } from "../../form/UserForm";
+import { User } from "../../domain";
 
 export interface UserService {
   findAll: () => Promise<User[]>;

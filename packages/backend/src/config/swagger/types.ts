@@ -1,3 +1,4 @@
+import { TODO } from "@org/shared";
 import HttpStatus from "http-status";
 import swaggerJsdoc from "swagger-jsdoc";
 
@@ -53,10 +54,7 @@ export type SwaggerPath = {
   responses?: SwaggerResponse;
 };
 
-export type SwaggerPaths = Record<
-  string,
-  Partial<Record<SwaggerRequestMapping, SwaggerPath>>
->;
+export type SwaggerPaths = Record<string, Partial<Record<SwaggerRequestMapping, SwaggerPath>>>;
 
 export type SwaggerRequestMapping =
   | "put"
@@ -77,16 +75,9 @@ export type SwaggerResponse = Partial<
   >
 >;
 
-export type SwaggerEntitySchema = {
-  $ref?: string;
-  type?: string;
-  format?: string;
-};
+export type SwaggerEntitySchema = TODO;
 
-export type SwaggerRequestContent = Record<
-  string,
-  { schema: SwaggerEntitySchema }
->;
+export type SwaggerRequestContent = Record<string, { schema: SwaggerEntitySchema }>;
 
 export type SwaggerRequestBody = {
   description?: string;

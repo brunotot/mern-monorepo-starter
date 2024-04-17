@@ -1,8 +1,8 @@
 import { Entity } from "../../../config";
 import { Injectable } from "../../../decorators/Injectable";
 import { Transactional } from "../../../decorators/Transactional";
-import MongoUser from "../../../domain/MongoUser";
-import { User } from "../../../form/UserForm";
+import { User } from "../../../domain";
+import MongoUser from "../../../domain/UserDomain";
 import { UserRepository } from "../UserRepository";
 
 @Injectable()

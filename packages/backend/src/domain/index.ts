@@ -1,1 +1,2 @@
-export * from "./MongoUser";
+export * from "./UserDomain";
+export * from "./buildMongoEntity";

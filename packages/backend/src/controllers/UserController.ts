@@ -16,7 +16,7 @@ import { withUserRoles } from "../middleware/withUserRoles";
 export class UserController {
   @Autowired() userService: UserService;
 
-  @Use(withJwt(), withUserRoles(Role.ADMIN))
+  @Use(withJwt(), withUserRoles(Role.enum.ADMIN))
   @GetMapping("", {
     description: "Get all users",
     summary: "Get all users",

@@ -1,19 +1,59 @@
+import { generateSchema } from "@anatine/zod-openapi";
 import { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import HttpStatus from "http-status";
 import jwt, { VerifyErrors } from "jsonwebtoken";
+import z from "zod";
 import { $BackendAppConfig } from "../config/BackendAppConfig";
-import { Controller, PostMapping } from "../decorators";
-import User from "../domain/MongoUser";
+import { Controller, PostMapping, Use } from "../decorators";
+import UserDomain from "../domain/UserDomain";
+import { withValidatedBody } from "../middleware";
+
+const LoginForm = z.object({
+  username: z.string(),
+  password: z.string(),
+});
+type LoginForm = z.infer<typeof LoginForm>;
+
+/**
+ *
+ * Recursively iterate over keys of generated and its children values if object and convert all keys which are "type" from array of strings to just a string on zeroth index in array
+ */
+function _generateSchema(schema: TODO): TODO {
+  const generated = generateSchema(schema);
+  const iterate = (obj: TODO) => {
+    for (const key in obj) {
+      if (key === "type") {
+        obj[key] = obj[key][0];
+      } else if (typeof obj[key] === "object") {
+        iterate(obj[key]);
+      }
+    }
+  };
+  iterate(generated);
+  return generated;
+}
+
+function buildRequestBody(schema: TODO) {
+  return {
+    content: {
+      "application/json": {
+        schema: _generateSchema(schema),
+      },
+    },
+  };
+}
 
 @Controller("/auth", {
   description: "Authentication",
 })
 export class AuthController {
+  @Use(withValidatedBody(LoginForm))
   @PostMapping("/login", {
     description: "Login user",
     summary: "Login user",
+    requestBody: buildRequestBody(LoginForm),
     responses: {
       [HttpStatus.OK]: {
         description: "Access token",
@@ -31,11 +71,9 @@ export class AuthController {
 
     const { username, password } = req.body;
     if (!username || !password)
-      return res
-        .status(400)
-        .json({ message: "Username and password are required." });
+      return res.status(400).json({ message: "Username and password are required." });
 
-    const foundUser = await User.findOne({ username: username }).exec();
+    const foundUser = await UserDomain.findOne({ username: username }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized
     // evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
@@ -50,18 +88,18 @@ export class AuthController {
           },
         },
         $BackendAppConfig.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
+        { expiresIn: "15m" },
       );
       const newRefreshToken = jwt.sign(
         { username: foundUser.username },
         $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" }
+        { expiresIn: "7d" },
       );
 
       // Changed to let keyword
       let newRefreshTokenArray = !cookies?.jwt
         ? foundUser.refreshToken
-        : foundUser.refreshToken.filter((rt) => rt !== cookies.jwt);
+        : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
 
       if (cookies?.jwt) {
         /* 
@@ -71,7 +109,7 @@ export class AuthController {
                     3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
                 */
         const refreshToken = cookies.jwt;
-        const foundToken = await User.findOne({ refreshToken }).exec();
+        const foundToken = await UserDomain.findOne({ refreshToken }).exec();
 
         // Detected refresh token reuse!
         if (!foundToken) {
@@ -122,7 +160,7 @@ export class AuthController {
     const refreshToken = cookies.jwt;
 
     // Is refreshToken in db?
-    const foundUser = await User.findOne({ refreshToken }).exec();
+    const foundUser = await UserDomain.findOne({ refreshToken }).exec();
     if (!foundUser) {
       res.clearCookie("jwt", {
         httpOnly: true,
@@ -133,9 +171,7 @@ export class AuthController {
     }
 
     // Delete refreshToken in db
-    foundUser.refreshToken = foundUser.refreshToken.filter(
-      (rt) => rt !== refreshToken
-    );
+    foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result = await foundUser.save();
     // console.log(result);
@@ -165,7 +201,7 @@ export class AuthController {
     const refreshToken = cookies.jwt;
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
 
-    const foundUser = await User.findOne({ refreshToken }).exec();
+    const foundUser = await UserDomain.findOne({ refreshToken }).exec();
 
     // Detected refresh token reuse!
     if (!foundUser) {
@@ -175,20 +211,18 @@ export class AuthController {
         async (err: VerifyErrors | null, decoded: TODO) => {
           if (err) return res.sendStatus(403); //Forbidden
           // Delete refresh tokens of hacked user
-          const hackedUser = await User.findOne({
+          const hackedUser = await UserDomain.findOne({
             username: decoded.username,
           }).exec();
           hackedUser!.refreshToken;
           hackedUser!.refreshToken = [];
           await hackedUser!.save();
-        }
+        },
       );
       return res.sendStatus(403); //Forbidden
     }
 
-    const newRefreshTokenArray = foundUser.refreshToken.filter(
-      (rt) => rt !== refreshToken
-    );
+    const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
 
     // evaluate jwt
     jwt.verify(
@@ -200,8 +234,7 @@ export class AuthController {
           foundUser.refreshToken = [...newRefreshTokenArray];
           await foundUser.save();
         }
-        if (err || foundUser.username !== decoded.username)
-          return res.sendStatus(403);
+        if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
 
         // Refresh token was still valid
         const roles = Object.values(foundUser.roles);
@@ -213,13 +246,13 @@ export class AuthController {
             },
           },
           $BackendAppConfig.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "15m" }
+          { expiresIn: "15m" },
         );
 
         const newRefreshToken = jwt.sign(
           { username: foundUser.username },
           $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: "7d" }
+          { expiresIn: "7d" },
         );
         // Saving refreshToken with current user
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
@@ -234,7 +267,7 @@ export class AuthController {
         });
 
         res.json({ accessToken });
-      }
+      },
     );
   }
 }
