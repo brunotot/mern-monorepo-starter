@@ -8,7 +8,10 @@ export function getInjectionClasses() {
   return injectionClasses;
 }
 
-export type ClassDecoratorSupplier = (context: DecoratorContext) => void;
+export type ClassDecoratorSupplier = (
+  context: DecoratorContext,
+  constructor: Class
+) => void;
 
 export function Injectable<This extends Class>(
   supplier?: ClassDecoratorSupplier
@@ -19,7 +22,7 @@ export function Injectable<This extends Class>(
     const targetName = normalizeTargetName(constructorName);
     InjectionMetaService.from(context).setName(targetName);
     injectionClasses.push(constructor);
-    supplier?.(context);
+    supplier?.(context, constructor);
   });
 }
 

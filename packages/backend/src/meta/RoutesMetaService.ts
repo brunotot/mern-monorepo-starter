@@ -3,6 +3,7 @@ import {
   ClassMetadataInjectType,
 } from "@tsvdec/decorators";
 import { NextFunction, Request, Response } from "express";
+import { SwaggerPath } from "../config";
 
 export type RouteMethod =
   | "get"
@@ -37,7 +38,10 @@ export type RequestMappingProps = {
   middlewares: Array<RouteMiddleware>;
 };
 
-export type RequestRoute = RequestMappingProps & { handler: RouteHandler };
+export type RequestRoute = RequestMappingProps & {
+  handler: RouteHandler;
+  swagger?: SwaggerPath;
+};
 
 export type RoutesMetaItem = {
   basePath: string;

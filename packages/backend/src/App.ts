@@ -7,9 +7,8 @@ import hpp from "hpp";
 import { connect, set } from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
-import { $BackendAppConfig } from "./config/BackendAppConfig";
-import { logger, stream } from "./config/logger/logger";
-import { swaggerSpec } from "./config/swagger";
+import { $BackendAppConfig, startupLog, stream } from "./config";
+import { $SwaggerManager } from "./config/swagger";
 import { getInjectionClasses } from "./decorators/Injectable";
 import { RoutesMetaService } from "./meta/RoutesMetaService";
 import { withCredentials } from "./middleware/withCredentials";
@@ -19,11 +18,15 @@ export class App {
   public app: express.Application;
   public env: string;
   public port: string;
+  public swaggerPath: string;
+  public url: string;
 
   constructor() {
     this.app = express();
     this.env = $BackendAppConfig.env.NODE_ENV;
     this.port = $BackendAppConfig.env.PORT;
+    this.swaggerPath = "api-docs";
+    this.url = `http://localhost:${this.port}`;
 
     this.databaseConnect();
     this.initializeMiddlewares();
@@ -34,10 +37,14 @@ export class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`=================================`);
+      startupLog({
+        title: "Express app started!",
+        data: {
+          "🏠 Env": this.env,
+          "🚀 App": this.url,
+          "📝 Swagger": `${this.url}/${this.swaggerPath}`,
+        },
+      });
     });
   }
 
@@ -89,12 +96,16 @@ export class App {
   }
 
   private initializeSwagger() {
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    this.app.get("/api-docs.json", (req, res) => {
+    const swaggerSpec = $SwaggerManager.buildSpec();
+    this.app.use(
+      `/${this.swaggerPath}`,
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec)
+    );
+    this.app.get(`/${this.swaggerPath}.json`, (_req, res) => {
       res.setHeader("Content-Type", "application/json");
       res.send(swaggerSpec);
     });
-    logger.info(`Docs available at http://localhost:${this.port}/api-docs`);
   }
 
   /*private initializeErrorHandling() {

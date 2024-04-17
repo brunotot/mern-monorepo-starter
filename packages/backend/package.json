@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rm -rf dist && npm run compile:ts && cp package.json dist/backend",
     "compile:ts": "tsc && npm run tsc-alias",
-    "start": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
+    "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
     "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "bcrypt": "^5.1.1",
     "bottlejs": "^2.0.1",
     "express": "^4.18.2",
+    "http-status": "^1.7.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.0",
     "swagger-jsdoc": "^6.2.8",

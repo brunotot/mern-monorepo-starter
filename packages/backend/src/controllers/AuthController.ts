@@ -1,23 +1,31 @@
 import { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import HttpStatus from "http-status";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import { $BackendAppConfig } from "../config/BackendAppConfig";
 import { Controller, PostMapping } from "../decorators";
 import User from "../domain/MongoUser";
 
-@Controller("/auth")
+@Controller("/auth", {
+  description: "Authentication",
+})
 export class AuthController {
-  /**
-   * @openapi
-   * /auth/login:
-   *  post:
-   *    description: Login to the application
-   *    responses:
-   *      200:
-   *        description: Returns an access token
-   */
-  @PostMapping("/login")
+  @PostMapping("/login", {
+    description: "Login user",
+    summary: "Login user",
+    responses: {
+      [HttpStatus.OK]: {
+        description: "Access token",
+      },
+      [HttpStatus.UNAUTHORIZED]: {
+        description: "Unauthorized",
+      },
+      [HttpStatus.BAD_REQUEST]: {
+        description: "Bad request",
+      },
+    },
+  })
   async login(req: Request, res: Response) {
     const cookies = req.cookies;
 
@@ -97,7 +105,15 @@ export class AuthController {
     }
   }
 
-  @PostMapping("/logout")
+  @PostMapping("/logout", {
+    description: "Logout user",
+    summary: "Logout user",
+    responses: {
+      [HttpStatus.NO_CONTENT]: {
+        description: "No content",
+      },
+    },
+  })
   async logout(req: Request, res: Response) {
     // On client, also delete the accessToken
 
@@ -128,7 +144,21 @@ export class AuthController {
     res.sendStatus(204);
   }
 
-  @PostMapping("/refresh")
+  @PostMapping("/refresh", {
+    description: "Refresh access token",
+    summary: "Refresh access token",
+    responses: {
+      [HttpStatus.OK]: {
+        description: "New access",
+      },
+      [HttpStatus.FORBIDDEN]: {
+        description: "Forbidden",
+      },
+      [HttpStatus.UNAUTHORIZED]: {
+        description: "Unauthorized",
+      },
+    },
+  })
   async refresh(req: Request, res: Response) {
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(401);

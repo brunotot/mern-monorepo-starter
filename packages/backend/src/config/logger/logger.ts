@@ -67,4 +67,54 @@ const stream = {
   },
 };
 
-export { logger, stream };
+type StartupLogProps = {
+  title: string;
+  data: Record<string, string>;
+  padding?: number;
+  kvSeparator?: string;
+};
+
+function startupLog({
+  title,
+  data,
+  kvSeparator = " : ",
+  padding = 2,
+}: StartupLogProps) {
+  const center = (text: string, length: number) => {
+    const remainingSpace = length - text.length;
+    const leftBorderCount = Math.floor(remainingSpace / 2);
+    const rightBorderCount = remainingSpace - leftBorderCount;
+    const left = " ".repeat(leftBorderCount);
+    const right = " ".repeat(rightBorderCount);
+    return `${left}${text}${right}`;
+  };
+
+  const spacer = " ".repeat(padding);
+  const hrY = kvSeparator;
+
+  const keyValueLengths = Object.entries(data).map(
+    ([key, value]) => key.length + hrY.length + value.length
+  );
+  const containerWidth =
+    Math.max(title.length, ...keyValueLengths) + padding * 2;
+  const maxKeyLength = Math.max(...Object.keys(data).map((key) => key.length));
+
+  const hrX = `${"-".repeat(containerWidth)}`;
+
+  const content = Object.entries(data).map(([key, value]) => {
+    const keyPadding = " ".repeat(maxKeyLength - key.length);
+    const text = `${key}${keyPadding}${hrY}${value}`;
+    const remainder = " ".repeat(
+      containerWidth - text.length - spacer.length * 2
+    );
+    return `|${spacer}${text}${remainder}${spacer}|`;
+  });
+
+  logger.info(`┌${hrX}┐`);
+  logger.info(`|${center(title, containerWidth)}|`);
+  logger.info(`├${hrX}┤`);
+  content.forEach((text) => logger.info(text));
+  logger.info(`└${hrX}┘`);
+}
+
+export { StartupLogProps, logger, startupLog, stream };

@@ -47,6 +47,7 @@ function parseZodEnvironmentSchema<const T extends z.ZodObject<TODO>>(
 
 export const VAR_ZOD_ENVIRONMENT = parseZodEnvironmentSchema(
   z.object({
+    PACKAGE_JSON_VERSION: z.string().default("?.?.?"),
     NODE_ENV: z.string().default("development"),
     PORT: z.string().default("8080"),
     LOG_FORMAT: z.string().default("dev"),

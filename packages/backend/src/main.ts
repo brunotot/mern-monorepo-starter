@@ -9,5 +9,3 @@ process.on("uncaughtException", (err) => {
 const app = new App();
 
 app.listen();
-
-// Dummy comment

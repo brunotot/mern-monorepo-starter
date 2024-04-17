@@ -13,14 +13,12 @@
       "outputCapture": "std",
       "console": "integratedTerminal",
       "stopOnEntry": false,
+      "autoAttachChildProcesses": true,
       //"internalConsoleOptions": "openOnSessionStart",
+
       "runtimeVersion": "21.7.0",
-      "runtimeArgs": [
-        "--no-warnings",
-        "--loader",
-        "ts-node/esm",
-        "--experimental-specifier-resolution=node"
-      ],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "backend:start"],
       "presentation": { "group": "1" }
     },
     {
