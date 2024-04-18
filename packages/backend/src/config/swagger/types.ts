@@ -2,13 +2,13 @@ import { TODO } from "@org/shared";
 import HttpStatus from "http-status";
 import swaggerJsdoc from "swagger-jsdoc";
 
-type HttpStatusConverter<T> = {
+export type HttpStatusConverter<T> = {
   [K in keyof T]: T[K] extends number ? T[K] : never;
 };
 
-type HttpStatusMain = Purify<HttpStatusConverter<typeof HttpStatus>>;
+export type HttpStatusMain = Purify<HttpStatusConverter<typeof HttpStatus>>;
 
-type HttpStatusNumeric = Values<HttpStatusMain>;
+export type HttpStatusNumeric = Values<HttpStatusMain>;
 
 /**
  * A type that extracts the values from the properties of an object type `T`.

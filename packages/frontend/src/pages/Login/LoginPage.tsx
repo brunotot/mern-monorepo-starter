@@ -1,11 +1,4 @@
-import {
-  Facebook,
-  GitHub,
-  Google,
-  Twitter,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { Facebook, GitHub, Google, Twitter, Visibility, VisibilityOff } from "@mui/icons-material";
 
 import {
   Box,
@@ -78,10 +71,9 @@ export function LoginPage() {
   // ** Hook
   const theme = useTheme();
 
-  const handleChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -112,21 +104,14 @@ export function LoginPage() {
             <Logo />
           </Box>
           <Box sx={{ mb: 6 }}>
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: 600, marginBottom: 1.5 }}
-            >
+            <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
             <Typography variant="body2">
               Please sign-in to your account and start the adventure
             </Typography>
           </Box>
-          <form
-            noValidate
-            autoComplete="off"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
             <TextField
               autoFocus
               fullWidth
@@ -176,7 +161,7 @@ export function LoginPage() {
               variant="contained"
               sx={{ marginBottom: 7 }}
               onClick={() => {
-                sigUser.value = { id: 1, roles: [Role.USER] };
+                sigUser.value = { id: 1, roles: [Role.enum.USER] };
                 navigate(from, { replace: true });
               }}
             >
@@ -228,10 +213,8 @@ export function LoginPage() {
                 >
                   <GitHub
                     sx={{
-                      color: (theme) =>
-                        theme.palette.mode === "light"
-                          ? "#272727"
-                          : theme.palette.grey[300],
+                      color: theme =>
+                        theme.palette.mode === "light" ? "#272727" : theme.palette.grey[300],
                     }}
                   />
                 </IconButton>
