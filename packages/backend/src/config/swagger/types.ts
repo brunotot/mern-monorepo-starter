@@ -67,7 +67,7 @@ export type SwaggerRequestMapping =
 
 export type SwaggerResponse = Partial<
   Record<
-    HttpStatusNumeric,
+    HttpStatusNumeric | "ERROR",
     {
       description?: string;
       content?: SwaggerRequestContent;

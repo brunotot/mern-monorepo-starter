@@ -1,7 +1,3 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
 
-export type ExpressMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => void;
+export type ExpressMiddleware = RequestHandler;

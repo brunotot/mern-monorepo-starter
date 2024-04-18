@@ -8,14 +8,9 @@ export function getInjectionClasses() {
   return injectionClasses;
 }
 
-export type ClassDecoratorSupplier = (
-  context: DecoratorContext,
-  constructor: Class
-) => void;
+export type ClassDecoratorSupplier = (context: DecoratorContext, constructor: Class) => void;
 
-export function Injectable<This extends Class>(
-  supplier?: ClassDecoratorSupplier
-) {
+export function Injectable<This extends Class>(supplier?: ClassDecoratorSupplier) {
   return createClassDecorator<This>(({ clazz: constructor, meta }) => {
     const context = meta.context;
     const constructorName: string = constructor.name;
@@ -32,7 +27,6 @@ function normalizeTargetName(targetName: string) {
   const targetNameSanitized = targetName.endsWith(commonSuffix)
     ? targetName.slice(0, targetNameLength - commonSuffix.length)
     : targetName;
-  const uncapitalize = (str: string) =>
-    str.charAt(0).toLowerCase() + str.slice(1);
+  const uncapitalize = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
   return uncapitalize(targetNameSanitized);
 }

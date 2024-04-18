@@ -1,6 +1,6 @@
 import { TODO } from "@org/shared";
-import { Autowired } from "../../../decorators/Autowired";
-import { Injectable } from "../../../decorators/Injectable";
+import { Autowired } from "../../../decorators/@Autowired";
+import { Injectable } from "../../../decorators/@Injectable";
 import { User } from "../../../domain";
 import { UserRepository } from "../../repository";
 import { UserService } from "../UserService";

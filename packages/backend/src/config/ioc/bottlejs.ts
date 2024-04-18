@@ -1,6 +1,6 @@
 import { Class } from "@org/shared";
 import Bottle from "bottlejs";
-import { getInjectionClasses } from "../../decorators/Injectable";
+import { getInjectionClasses } from "../../decorators/@Injectable";
 import { InjectionMetaService } from "../../meta/InjectionMetaService";
 
 const bottle = new Bottle();
@@ -13,19 +13,12 @@ export function inject<T>(name: string): T {
 export function iocStartup() {
   const injectionClasses = getInjectionClasses();
 
-  const dependencySchema: Record<string, string[]> = injectionClasses.reduce(
-    (acc, Class) => {
-      const { name, dependencies = [] } =
-        InjectionMetaService.from(Class).value;
-      return { ...acc, [name]: dependencies };
-    },
-    {}
-  );
+  const dependencySchema: Record<string, string[]> = injectionClasses.reduce((acc, Class) => {
+    const { name, dependencies = [] } = InjectionMetaService.from(Class).value;
+    return { ...acc, [name]: dependencies };
+  }, {});
 
-  function sortInjectionClasses(
-    classes: Class[],
-    dependencySchema: Record<string, string[]>
-  ) {
+  function sortInjectionClasses(classes: Class[], dependencySchema: Record<string, string[]>) {
     return [...classes].sort((classA, classB) => {
       const { name: nameA } = InjectionMetaService.from(classA).value;
       const { name: nameB } = InjectionMetaService.from(classB).value;
@@ -37,12 +30,9 @@ export function iocStartup() {
     });
   }
 
-  const sortedInjectionClasses = sortInjectionClasses(
-    injectionClasses,
-    dependencySchema
-  );
+  const sortedInjectionClasses = sortInjectionClasses(injectionClasses, dependencySchema);
 
-  sortedInjectionClasses.forEach((Class) => {
+  sortedInjectionClasses.forEach(Class => {
     const name = InjectionMetaService.from(Class).value.name;
     bottle.service(name, Class, ...dependencySchema[name]);
   });

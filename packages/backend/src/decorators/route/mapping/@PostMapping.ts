@@ -1,6 +1,6 @@
-import { SwaggerPath } from "../config";
-import { RouteHandler } from "../meta/RoutesMetaService";
-import { Route } from "./route/Route";
+import { SwaggerPath } from "../../../config";
+import { RouteHandler } from "../../../meta/RoutesMetaService";
+import { Route } from "../@Route";
 
 export function PostMapping<This, Fn extends RouteHandler>(
   path: string = "",

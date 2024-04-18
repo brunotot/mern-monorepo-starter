@@ -20,17 +20,15 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
         sx={{ paddingInline: maxWidth === false ? "0 !important" : undefined }}
       >
         <Box display="flex" alignItems="center" justifyContent="center">
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={0.5}
-            alignItems="center"
-          >
+          <Box display="flex" flexDirection="column" gap={0.5} alignItems="center">
+            <Link href="https://brunotot.github.io/monorepo-mern-railway-starter/" target="_blank">
+              TypeDoc source
+            </Link>
             <Link
-              href="https://brunotot.github.io/monorepo-mern-railway-starter/"
+              href="https://monorepo-mern-railway-starter-backend.up.railway.app/api-docs/"
               target="_blank"
             >
-              TypeDoc source
+              Swagger API
             </Link>
             <Typography>Demo App © {new Date().getFullYear()}</Typography>
           </Box>

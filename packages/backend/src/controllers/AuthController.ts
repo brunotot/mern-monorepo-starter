@@ -1,4 +1,3 @@
-import { generateSchema } from "@anatine/zod-openapi";
 import { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
@@ -9,6 +8,7 @@ import { $BackendAppConfig } from "../config/BackendAppConfig";
 import { Controller, PostMapping, Use } from "../decorators";
 import UserDomain from "../domain/UserDomain";
 import { withValidatedBody } from "../middleware";
+import { buildSwaggerBody } from "../swagger/SwaggerRequestBody";
 
 const LoginForm = z.object({
   username: z.string(),
@@ -16,34 +16,11 @@ const LoginForm = z.object({
 });
 type LoginForm = z.infer<typeof LoginForm>;
 
-/**
- *
- * Recursively iterate over keys of generated and its children values if object and convert all keys which are "type" from array of strings to just a string on zeroth index in array
- */
-function _generateSchema(schema: TODO): TODO {
-  const generated = generateSchema(schema);
-  const iterate = (obj: TODO) => {
-    for (const key in obj) {
-      if (key === "type") {
-        obj[key] = obj[key][0];
-      } else if (typeof obj[key] === "object") {
-        iterate(obj[key]);
-      }
-    }
-  };
-  iterate(generated);
-  return generated;
-}
+const LoginResponse = z.object({
+  accessToken: z.string(),
+});
 
-function buildRequestBody(schema: TODO) {
-  return {
-    content: {
-      "application/json": {
-        schema: _generateSchema(schema),
-      },
-    },
-  };
-}
+type LoginResponse = z.infer<typeof LoginResponse>;
 
 @Controller("/auth", {
   description: "Authentication",
@@ -53,28 +30,27 @@ export class AuthController {
   @PostMapping("/login", {
     description: "Login user",
     summary: "Login user",
-    requestBody: buildRequestBody(LoginForm),
+    requestBody: buildSwaggerBody(LoginForm),
     responses: {
       [HttpStatus.OK]: {
         description: "Access token",
-      },
-      [HttpStatus.UNAUTHORIZED]: {
-        description: "Unauthorized",
-      },
-      [HttpStatus.BAD_REQUEST]: {
-        description: "Bad request",
+        content: buildSwaggerBody(LoginResponse).content,
       },
     },
   })
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response<TODO>) {
     const cookies = req.cookies;
 
     const { username, password } = req.body;
-    if (!username || !password)
-      return res.status(400).json({ message: "Username and password are required." });
+    if (!username || !password) {
+      res.sendError(422, "Username and password are required.");
+    }
 
     const foundUser = await UserDomain.findOne({ username: username }).exec();
-    if (!foundUser) return res.sendStatus(401); //Unauthorized
+    if (!foundUser) {
+      res.sendError(401);
+    } //Unauthorized
+
     // evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
@@ -137,9 +113,9 @@ export class AuthController {
       });
 
       // Send authorization roles and access token to user
-      res.json({ accessToken });
+      return res.json({ accessToken: accessToken });
     } else {
-      res.sendStatus(401);
+      res.sendError(401);
     }
   }
 

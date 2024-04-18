@@ -1,11 +1,11 @@
 import { Role } from "@org/shared";
 import { Request, Response } from "express";
 import HttpStatus from "http-status";
-import { Autowired } from "../decorators/Autowired";
-import { Controller } from "../decorators/Controller";
-import { GetMapping } from "../decorators/GetMapping";
-import { PostMapping } from "../decorators/PostMapping";
-import { Use } from "../decorators/Use";
+import { Autowired } from "../decorators/@Autowired";
+import { Controller } from "../decorators/@Controller";
+import { Use } from "../decorators/@Use";
+import { GetMapping } from "../decorators/route/mapping/@GetMapping";
+import { PostMapping } from "../decorators/route/mapping/@PostMapping";
 import { UserService } from "../infrastructure/service/UserService";
 import { withJwt } from "../middleware/withJwt";
 import { withUserRoles } from "../middleware/withUserRoles";
@@ -23,6 +23,11 @@ export class UserController {
     responses: {
       [HttpStatus.OK]: {
         description: "List of users",
+        content: {
+          "": {
+            schema: {},
+          },
+        },
       },
     },
   })
