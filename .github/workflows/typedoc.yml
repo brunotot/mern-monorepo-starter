@@ -1,4 +1,4 @@
-name: Publish TypeDoc-generated docs
+name: MERN Sample App - TypeDoc [GH Pages]
 
 on:
   push:
