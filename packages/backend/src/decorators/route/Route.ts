@@ -1,25 +1,18 @@
 import { createMethodDecorator } from "@tsvdec/decorators";
 import { Request, Response } from "express";
-import { inject } from "../config";
-import { InjectionMetaService } from "../meta/InjectionMetaService";
-import {
-  RequestMappingProps,
-  RouteHandler,
-  RoutesMetaService,
-} from "../meta/RoutesMetaService";
+import { inject } from "../../config";
+import { InjectionMetaService } from "../../meta/InjectionMetaService";
+import { RequestMappingProps, RouteHandler, RoutesMetaService } from "../../meta/RoutesMetaService";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { TODO } from "@org/shared";
 import HttpStatus from "http-status";
-import { SwaggerPath } from "../config";
+import { SwaggerPath } from "../../config";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
 };
 
-export function Route<This, Fn extends RouteHandler>({
-  swagger = {},
-  ...props
-}: RouteProps) {
+export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }: RouteProps) {
   return createMethodDecorator<This, Fn>(({ target, meta }) => {
     const context = meta.context;
     //const name = String(context.name!);
@@ -31,9 +24,7 @@ export function Route<This, Fn extends RouteHandler>({
         return await target.call(_this, req, res);
       } catch (error: TODO) {
         const message: string = error.message;
-        const [, ...stack] = error.stack
-          .split("\n")
-          .map((line: string) => line.trim());
+        const [, ...stack] = error.stack.split("\n").map((line: string) => line.trim());
         const response = { message, stack };
         res.status(500).send(response);
       }

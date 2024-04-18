@@ -13,7 +13,7 @@ if (!existsSync(logDir)) {
 
 // Define log format
 const logFormat = winston.format.printf(
-  ({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`
+  ({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`,
 );
 
 /*
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
     winston.format.timestamp({
       format: "YYYY-MM-DD HH:mm:ss",
     }),
-    logFormat
+    logFormat,
   ),
   transports: [
     // debug log setting
@@ -54,11 +54,8 @@ const logger = winston.createLogger({
 
 logger.add(
   new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.splat(),
-      winston.format.colorize()
-    ),
-  })
+    format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+  }),
 );
 
 const stream = {
@@ -74,12 +71,7 @@ type StartupLogProps = {
   kvSeparator?: string;
 };
 
-function startupLog({
-  title,
-  data,
-  kvSeparator = " : ",
-  padding = 2,
-}: StartupLogProps) {
+function startupLog({ title, data, kvSeparator = " : ", padding = 2 }: StartupLogProps) {
   const center = (text: string, length: number) => {
     const remainingSpace = length - text.length;
     const leftBorderCount = Math.floor(remainingSpace / 2);
@@ -93,27 +85,24 @@ function startupLog({
   const hrY = kvSeparator;
 
   const keyValueLengths = Object.entries(data).map(
-    ([key, value]) => key.length + hrY.length + value.length
+    ([key, value]) => key.length + hrY.length + value.length,
   );
-  const containerWidth =
-    Math.max(title.length, ...keyValueLengths) + padding * 2;
-  const maxKeyLength = Math.max(...Object.keys(data).map((key) => key.length));
+  const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
+  const maxKeyLength = Math.max(...Object.keys(data).map(key => key.length));
 
-  const hrX = `${"-".repeat(containerWidth)}`;
+  const hrX = `${"─".repeat(containerWidth)}`;
 
   const content = Object.entries(data).map(([key, value]) => {
     const keyPadding = " ".repeat(maxKeyLength - key.length);
     const text = `${key}${keyPadding}${hrY}${value}`;
-    const remainder = " ".repeat(
-      containerWidth - text.length - spacer.length * 2
-    );
-    return `|${spacer}${text}${remainder}${spacer}|`;
+    const remainder = " ".repeat(containerWidth - text.length - spacer.length * 2);
+    return `│${spacer}${text}${remainder}${spacer}│`;
   });
 
   logger.info(`┌${hrX}┐`);
-  logger.info(`|${center(title, containerWidth)}|`);
+  logger.info(`│${center(title, containerWidth)}│`);
   logger.info(`├${hrX}┤`);
-  content.forEach((text) => logger.info(text));
+  content.forEach(text => logger.info(text));
   logger.info(`└${hrX}┘`);
 }
 
