@@ -1,3 +1,9 @@
+import "./logger";
+
+// ADD
+
+export * from "./zod";
+
 // BackendAppConfig must be imported first in order to be used in other files.
 export * from "./BackendAppConfig";
 export * from "./swagger";

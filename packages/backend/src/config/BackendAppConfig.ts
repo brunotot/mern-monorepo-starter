@@ -9,6 +9,15 @@ export class BackendAppConfig {
   public databaseConnectionParams: DatabaseConnectionParams;
   public userRoles = VAR_USER_ROLES;
 
+  public get url() {
+    const domain =
+      this.env.NODE_ENV === "production"
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+        : "http://localhost";
+
+    return `${domain}:${this.env.PORT}`;
+  }
+
   constructor() {
     // NOOP
   }

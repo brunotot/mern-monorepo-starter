@@ -4,11 +4,14 @@ import { TODO } from "@org/shared";
 import { createMethodDecorator } from "@tsvdec/decorators";
 import { Request, Response } from "express";
 import HttpStatus from "http-status";
-import { HttpStatusNumeric, SwaggerPath, inject } from "../../config";
-import { ErrorResponse, ErrorResponseContent } from "../../errors/ResponseError";
-import { InjectionMetaService } from "../../meta/InjectionMetaService";
-import { RequestMappingProps, RouteHandler, RoutesMetaService } from "../../meta/RoutesMetaService";
-import { buildSwaggerBody } from "../../swagger";
+import { HttpStatusNumeric, SwaggerPath, buildSwaggerBody, inject } from "../../config";
+import { ErrorResponse, ErrorResponseContent } from "../../infrastructure/errors/ResponseError";
+import { InjectionDecoratorManager } from "../managers/InjectionDecoratorManager";
+import {
+  RequestMappingProps,
+  RouteDecoratorManager,
+  RouteHandler,
+} from "../managers/RouteDecoratorManager";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
@@ -39,7 +42,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
 
     async function handler(req: Request, res: Response) {
       try {
-        const container = InjectionMetaService.from(context).value.name;
+        const container = InjectionDecoratorManager.from(context).value.name;
         const _this = inject(container);
         return await target.call(_this, req, res);
       } catch (error: TODO) {
@@ -57,7 +60,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
       }
     }
 
-    RoutesMetaService.from(context).addRoute({
+    RouteDecoratorManager.from(context).addRoute({
       ...props,
       name: String(context.name),
       middlewares: [],
@@ -76,7 +79,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
           [HttpStatus.INTERNAL_SERVER_ERROR]: {
             description: HttpStatus["500_MESSAGE"],
           },
-          ERROR: {
+          default: {
             description:
               "This response is used across all API endpoints to provide a standardized error payload whenever an error occurs. It ensures consistent error handling and format throughout the API.",
             content: buildSwaggerBody(ErrorResponseContent).content,

@@ -1,8 +1,11 @@
-export * from "./config";
+/**
+ * @packageDocumentation This package provides a set of decorators, domain, infrastructure, and web components for building a backend application.
+ */
 
-export * from "./controllers";
+import "./@types";
+
+export * from "./config";
 export * from "./decorators";
 export * from "./domain";
 export * from "./infrastructure";
-export * from "./meta";
-export * from "./middleware";
+export * from "./web";

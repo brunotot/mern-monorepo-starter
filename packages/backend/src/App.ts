@@ -1,112 +1,67 @@
-import compression from "compression";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import express, { Router } from "express";
-import helmet from "helmet";
-import hpp from "hpp";
-import { connect, set } from "mongoose";
-import morgan from "morgan";
-import swaggerUi from "swagger-ui-express";
-import { $BackendAppConfig, startupLog, stream } from "./config";
-import { $SwaggerManager } from "./config/swagger";
-import { getInjectionClasses } from "./decorators/@Injectable";
-import { RoutesMetaService } from "./meta/RoutesMetaService";
-import { withAugmentedResponse } from "./middleware/withAugmentedResponse";
-import { withCredentials } from "./middleware/withCredentials";
-//import { ErrorMiddleware } from "@middlewares/error.middleware";
+import { $BackendAppConfig, mongoConnect, registerSwagger, startupLog } from "@config";
+import { registerRoutes } from "@decorators";
+import { GLOBAL_MIDDLEWARES } from "@infrastructure";
+import express from "express";
 
 export class App {
-  public app: express.Application;
-  public env: string;
-  public port: string;
-  public swaggerPath: string;
-  public url: string;
+  public readonly app: express.Application;
+  public readonly env: string;
+  public readonly port: string;
+  public readonly swaggerPath: string;
+  public readonly url: string;
 
   constructor() {
+    this.#initializeUncaughtExceptionHandler();
+
     this.app = express();
     this.env = $BackendAppConfig.env.NODE_ENV;
     this.port = $BackendAppConfig.env.PORT;
     this.swaggerPath = "api-docs";
-    this.url = `http://localhost:${this.port}`;
+    this.url = $BackendAppConfig.url;
 
-    this.databaseConnect();
-    this.initializeMiddlewares();
-    this.initializeRoutes();
-    this.initializeSwagger();
-    //this.initializeErrorHandling();
+    this.#initializeDatabase();
+    this.#initializeMiddlewares();
+    this.#initializeRoutes();
+    this.#initializeSwagger();
   }
 
   public listen() {
     this.app.listen(this.port, () => {
       startupLog({
-        title: "Express app started!",
+        title: `[Express] MERN Sample App v${$BackendAppConfig.env.PACKAGE_JSON_VERSION}`,
         data: {
-          "🏠 Env": this.env,
+          "🟢 NodeJS": process.version,
+          "📦 Database": $BackendAppConfig.databaseConnectionParams.dbName,
           "🚀 App": this.url,
           "📝 Swagger": `${this.url}/${this.swaggerPath}`,
+          "🆔 PID": `${process.pid}`,
+          "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
+          "🏠 Env": this.env,
+          "📅 Started": new Date().toLocaleString(),
         },
       });
     });
   }
 
-  public getServer() {
-    return this.app;
+  async #initializeDatabase() {
+    await mongoConnect();
   }
 
-  private async databaseConnect() {
-    const { dbHost, dbPort, dbName, ...restOptions } = $BackendAppConfig.databaseConnectionParams;
-    const mongoUri = `mongodb://${dbHost}:${dbPort}`;
-    if ($BackendAppConfig.env.NODE_ENV !== "production") set("debug", true);
-    await connect(mongoUri, {
-      dbName,
-      ...restOptions,
+  #initializeMiddlewares() {
+    GLOBAL_MIDDLEWARES.forEach(middleware => this.app.use(middleware));
+  }
+
+  #initializeRoutes() {
+    registerRoutes(this.app);
+  }
+
+  #initializeSwagger() {
+    registerSwagger(this.app, this.swaggerPath);
+  }
+
+  #initializeUncaughtExceptionHandler() {
+    process.on("uncaughtException", err => {
+      console.error("Uncaught Exception:", err);
     });
   }
-
-  private initializeMiddlewares() {
-    this.app.use(morgan($BackendAppConfig.env.LOG_FORMAT, { stream }));
-    this.app.use(withCredentials());
-    this.app.use(
-      cors({
-        origin: $BackendAppConfig.env.ORIGIN,
-        credentials: $BackendAppConfig.env.CREDENTIALS === "true",
-      }),
-    );
-    this.app.use(hpp());
-    this.app.use(helmet());
-    this.app.use(compression());
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(cookieParser());
-    this.app.use(withAugmentedResponse());
-    //Should be specified at endpoint level.
-    //this.app.use(verifyJWT());
-  }
-
-  private initializeRoutes() {
-    getInjectionClasses().forEach(clazz => {
-      const router = Router();
-      const { basePath, routes } = RoutesMetaService.from(clazz).value;
-      routes.forEach(({ method, path = "", middlewares, handler }) => {
-        const fullPath = `${basePath}${path}`;
-        const pipeline = middlewares ? [...middlewares, handler] : [handler];
-        // @ts-expect-error Unknown
-        router[method](fullPath, ...pipeline);
-      });
-      this.app.use("/", router);
-    });
-  }
-
-  private initializeSwagger() {
-    const swaggerSpec = $SwaggerManager.buildSpec();
-    this.app.use(`/${this.swaggerPath}`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    this.app.get(`/${this.swaggerPath}.json`, (_req, res) => {
-      res.setHeader("Content-Type", "application/json");
-      res.send(swaggerSpec);
-    });
-  }
-
-  /*private initializeErrorHandling() {
-    this.app.use(ErrorMiddleware);
-  }*/
 }

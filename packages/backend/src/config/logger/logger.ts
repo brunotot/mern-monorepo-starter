@@ -83,12 +83,13 @@ function startupLog({ title, data, kvSeparator = " : ", padding = 2 }: StartupLo
 
   const spacer = " ".repeat(padding);
   const hrY = kvSeparator;
-
-  const keyValueLengths = Object.entries(data).map(
-    ([key, value]) => key.length + hrY.length + value.length,
-  );
-  const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
   const maxKeyLength = Math.max(...Object.keys(data).map(key => key.length));
+
+  const keyValueLengths = Object.values(data).map(
+    value => maxKeyLength + hrY.length + value.length,
+  );
+
+  const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
 
   const hrX = `${"─".repeat(containerWidth)}`;
 

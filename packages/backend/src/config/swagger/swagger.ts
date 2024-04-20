@@ -1,14 +1,11 @@
 import { Class } from "@org/shared";
 import swaggerJsdoc from "swagger-jsdoc";
 //import PackageJson from "./../../../package.json";
+import express from "express";
+import swaggerUi from "swagger-ui-express";
+import { RouteDecoratorManager } from "../../decorators/managers";
 import { $BackendAppConfig } from "../BackendAppConfig";
-import { RoutesMetaService } from "./../../meta";
-import {
-  SwaggerDefinition,
-  SwaggerPath,
-  SwaggerRequestMapping,
-  SwaggerTag,
-} from "./types";
+import { SwaggerDefinition, SwaggerPath, SwaggerRequestMapping, SwaggerTag } from "./types";
 
 const DEFAULT_SWAGGER_DEFINITION: SwaggerDefinition = {
   openapi: "3.0.0",
@@ -63,29 +60,25 @@ export class SwaggerManager {
   }
 
   registerTag(tagData: SwaggerTag & { constructor: Class }) {
-    if (this.tags.some((t) => t.name === tagData.name)) return;
+    if (this.tags.some(t => t.name === tagData.name)) return;
     const { constructor, ...tag } = tagData;
     this.controllerClasses.push(constructor);
     this.tags.push(tag);
   }
 
-  registerPath(
-    path: string,
-    requestMapping: SwaggerRequestMapping,
-    data: SwaggerPath
-  ) {
+  #registerPath(path: string, requestMapping: SwaggerRequestMapping, data: SwaggerPath) {
     if (!this.definition.paths[path]) this.definition.paths[path] = {};
     this.definition.paths[path][requestMapping] = data;
   }
 
   #registerPaths() {
-    $SwaggerManager.controllerClasses.forEach((controllerClass) => {
-      const meta = RoutesMetaService.from(controllerClass).value;
-      meta.routes.forEach((route) => {
+    this.controllerClasses.forEach(controllerClass => {
+      const meta = RouteDecoratorManager.from(controllerClass).value;
+      meta.routes.forEach(route => {
         const fullPath = `${meta.basePath}${route.path}`;
         const swagger = route.swagger ?? {};
         swagger.tags = [String(controllerClass.name)];
-        $SwaggerManager.registerPath(fullPath, route.method, swagger);
+        this.#registerPath(fullPath, route.method, swagger);
       });
     });
   }
@@ -97,3 +90,12 @@ export class SwaggerManager {
 }
 
 export const $SwaggerManager = new SwaggerManager();
+
+export function registerSwagger(app: express.Application, path: string) {
+  const swaggerSpec = $SwaggerManager.buildSpec();
+  app.use(`/${path}`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get(`/${path}.json`, (_req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+  });
+}
