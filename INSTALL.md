@@ -73,9 +73,9 @@ Create a new project by clicking on `+ New Project` or by clicking on this [link
 4. choose your forked repository from the dropdown list
 5. open the created service and navigate to `Settings` tab
 6. under **Build** section, add the custom build command
-   - `pnpm run backend:build`
+   - `npm run backend:build`
 7. under **Deploy** section, add the custom deploy command
-   - `pnpm run backend:start`
+   - `npm run backend:start`
 8. under **Variables** tab, add the following environment variables
 
    - ACCESS_TOKEN_SECRET: accessTokenSecret
