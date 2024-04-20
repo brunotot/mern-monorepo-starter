@@ -1,7 +1,6 @@
 import { Class } from "@org/shared";
-import swaggerJsdoc from "swagger-jsdoc";
-//import PackageJson from "./../../../package.json";
 import express from "express";
+import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { RouteDecoratorManager } from "../../decorators/managers";
 import { $BackendAppConfig } from "../BackendAppConfig";

@@ -4,6 +4,9 @@
   "description": "monorepo-mern-railway-starter description",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "pnpm": ">=8.15.7"
+  },
   "scripts": {
     "prepare": "husky",
     "root:test": "echo \"Error: no test specified\"",
