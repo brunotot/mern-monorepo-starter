@@ -1,11 +1,13 @@
-import { OpenApiZodAny, generateSchema } from "@anatine/zod-openapi";
-import { TODO } from "@org/shared";
-import { SchemaObject } from "openapi3-ts/oas31";
+import type { OpenApiZodAny } from "@anatine/zod-openapi";
+import { generateSchema } from "@anatine/zod-openapi";
+import type { TODO } from "@org/shared";
+import type { SchemaObject } from "openapi3-ts/oas31";
+import type { AnyZodObject } from "zod";
 
 /**
  * Recursively iterate over keys of generated and its children values if object and convert all keys which are "type" from array of strings to just a string on zeroth index in array
  */
-function generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
+export function generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
   const generated = generateSchema(schema);
   const iterate = (obj: TODO) => {
     for (const key in obj) {
@@ -20,11 +22,15 @@ function generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
   return generated;
 }
 
-export function buildSwaggerBody(schema: TODO) {
+export function buildSwaggerBody(schema: AnyZodObject) {
+  const description = schema.description;
+
   return {
     content: {
       "application/json": {
-        schema: generateSwaggerSchema(schema),
+        schema: description
+          ? { $ref: `#/components/schemas/${description}` }
+          : generateSwaggerSchema(schema),
       },
     },
   };

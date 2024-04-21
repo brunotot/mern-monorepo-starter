@@ -16,16 +16,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@config": ["./src/config"],
-      "@config/*": ["./src/config/*"],
-      "@decorators": ["./src/decorators"],
-      "@decorators/*": ["./src/decorators/*"],
-      "@domain": ["./src/domain"],
-      "@domain/*": ["./src/domain/*"],
-      "@infrastructure": ["./src/infrastructure"],
-      "@infrastructure/*": ["./src/infrastructure/*"],
-      "@web": ["./src/web"],
-      "@web/*": ["./src/web/*"],
+      "@internal": ["./src/internal"],
+      "@types": ["./src/@types"],
       "@org/shared": ["../shared/src"],
       "@org/shared/*": ["../shared/src/*"]
     }

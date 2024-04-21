@@ -11,7 +11,7 @@
     "prepare": "husky",
     "root:test": "echo \"Error: no test specified\"",
     "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
-    "root:lint": "npx eslint .",
+    "root:lint": "npx eslint . --fix",
     "backend:start": "npm run start --prefix packages/backend",
     "backend:build": "npm run build --prefix packages/backend",
     "frontend:dev": "npm run dev --prefix packages/frontend",

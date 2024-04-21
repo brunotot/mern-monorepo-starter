@@ -1,4 +1,4 @@
-import { HttpStatusNumeric } from "../config";
+import type { HttpStatusNumeric } from "@internal";
 
 declare global {
   namespace Express {
@@ -8,6 +8,9 @@ declare global {
         details?: string,
         metadata?: Record<string, unknown>,
       ) => never;
+    }
+    export interface Request {
+      decoratorContext: DecoratorContext;
     }
   }
 }

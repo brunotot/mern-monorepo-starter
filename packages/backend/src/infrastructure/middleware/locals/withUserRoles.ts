@@ -1,5 +1,5 @@
-import { Role } from "@org/shared";
-import { RequestHandler } from "express";
+import type { Role } from "@org/shared";
+import type { RequestHandler } from "express";
 
 export function withUserRoles(...allowedRoles: Role[]): RequestHandler {
   return function (req, res, next) {

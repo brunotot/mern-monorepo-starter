@@ -1,4 +1,5 @@
-import { ClassMetadataEntry, ClassMetadataInjectType } from "@tsvdec/decorators";
+import type { ClassMetadataInjectType } from "@tsvdec/decorators";
+import { ClassMetadataEntry } from "@tsvdec/decorators";
 
 export type InjectionMetaItem = {
   name: string;

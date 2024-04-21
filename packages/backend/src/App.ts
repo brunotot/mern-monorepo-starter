@@ -1,7 +1,13 @@
-import { $BackendAppConfig, mongoConnect, registerSwagger, startupLog } from "@config";
-import { registerRoutes } from "@decorators";
-import { GLOBAL_MIDDLEWARES } from "@infrastructure";
 import express from "express";
+
+import {
+  GLOBAL_MIDDLEWARES,
+  VAR_ZOD_ENVIRONMENT,
+  mongoConnect,
+  registerRoutes,
+  registerSwagger,
+  startupLog,
+} from "@internal";
 
 export class App {
   public readonly app: express.Application;
@@ -11,13 +17,19 @@ export class App {
   public readonly url: string;
 
   constructor() {
-    this.#initializeUncaughtExceptionHandler();
-
     this.app = express();
-    this.env = $BackendAppConfig.env.NODE_ENV;
-    this.port = $BackendAppConfig.env.PORT;
+    this.env = VAR_ZOD_ENVIRONMENT.NODE_ENV;
+    this.port = VAR_ZOD_ENVIRONMENT.PORT;
     this.swaggerPath = "api-docs";
-    this.url = $BackendAppConfig.url;
+    function buildUrl() {
+      const domain =
+        VAR_ZOD_ENVIRONMENT.NODE_ENV === "production"
+          ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+          : "http://localhost";
+
+      return `${domain}:${VAR_ZOD_ENVIRONMENT.PORT}`;
+    }
+    this.url = buildUrl();
 
     this.#initializeDatabase();
     this.#initializeMiddlewares();
@@ -28,15 +40,14 @@ export class App {
   public listen() {
     this.app.listen(this.port, () => {
       startupLog({
-        title: `[Express] MERN Sample App v${$BackendAppConfig.env.PACKAGE_JSON_VERSION}`,
+        title: `[Express] MERN Sample App v${VAR_ZOD_ENVIRONMENT.PACKAGE_JSON_VERSION}`,
         data: {
           "🟢 NodeJS": process.version,
-          "📦 Database": $BackendAppConfig.databaseConnectionParams.dbName,
-          "🚀 App": this.url,
-          "📝 Swagger": `${this.url}/${this.swaggerPath}`,
+          "🏠 Env": this.env,
+          "🚀 Port": this.port,
+          "📝 Swagger": `/${this.swaggerPath}`,
           "🆔 PID": `${process.pid}`,
           "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
-          "🏠 Env": this.env,
           "📅 Started": new Date().toLocaleString(),
         },
       });
@@ -57,11 +68,5 @@ export class App {
 
   #initializeSwagger() {
     registerSwagger(this.app, this.swaggerPath);
-  }
-
-  #initializeUncaughtExceptionHandler() {
-    process.on("uncaughtException", err => {
-      console.error("Uncaught Exception:", err);
-    });
   }
 }

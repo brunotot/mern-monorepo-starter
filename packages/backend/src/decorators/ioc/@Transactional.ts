@@ -1,8 +1,8 @@
-import { TODO } from "@org/shared";
+import { InjectionDecoratorManager, inject } from "@internal";
+import type { TODO } from "@org/shared";
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { ClientSession, startSession } from "mongoose";
-import { inject } from "../../config";
-import { InjectionDecoratorManager } from "../managers/InjectionDecoratorManager";
+import type { ClientSession } from "mongoose";
+import { startSession } from "mongoose";
 
 function isClientSession(obj: TODO): obj is ClientSession {
   return (

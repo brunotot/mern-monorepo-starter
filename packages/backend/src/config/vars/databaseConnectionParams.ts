@@ -1,6 +1,8 @@
-import { TODO } from "@org/shared";
-import { ConnectOptions, Document, connect, set } from "mongoose";
-import { $BackendAppConfig } from "../BackendAppConfig";
+import type { TODO } from "@org/shared";
+import type { ConnectOptions, Document } from "mongoose";
+import { connect, set } from "mongoose";
+
+import { VAR_ZOD_ENVIRONMENT } from "@internal";
 
 export type InferMongoId<T> = "_id" extends keyof T ? T["_id"] : TODO;
 
@@ -12,20 +14,18 @@ export type DatabaseConnectionParams = {
   dbName: string;
 } & Omit<ConnectOptions, "dbName">;
 
-export const VAR_DATABASE_CONNECTION_PARAMS: DatabaseConnectionParams = {
-  dbHost: $BackendAppConfig.env.DB_HOST,
-  dbPort: $BackendAppConfig.env.DB_PORT,
-  dbName: $BackendAppConfig.env.DB_DATABASE,
+const VAR_DATABASE_CONNECTION_PARAMS: DatabaseConnectionParams = {
+  dbHost: VAR_ZOD_ENVIRONMENT.DB_HOST,
+  dbPort: VAR_ZOD_ENVIRONMENT.DB_PORT,
+  dbName: VAR_ZOD_ENVIRONMENT.DB_DATABASE,
 };
 
 export async function mongoConnect() {
-  const { dbHost, dbPort, dbName, ...restOptions } = $BackendAppConfig.databaseConnectionParams;
+  const { dbHost, dbPort, dbName, ...restOptions } = VAR_DATABASE_CONNECTION_PARAMS;
   const mongoUri = `mongodb://${dbHost}:${dbPort}`;
-  if ($BackendAppConfig.env.NODE_ENV !== "production") set("debug", true);
+  if (VAR_ZOD_ENVIRONMENT.NODE_ENV !== "production") set("debug", true);
   await connect(mongoUri, {
     dbName,
     ...restOptions,
   });
 }
-
-$BackendAppConfig.databaseConnectionParams = VAR_DATABASE_CONNECTION_PARAMS;

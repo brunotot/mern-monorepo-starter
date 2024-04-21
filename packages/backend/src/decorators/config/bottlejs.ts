@@ -1,10 +1,31 @@
-import { Class } from "@org/shared";
 import Bottle from "bottlejs";
-import { getInjectionClasses } from "../../decorators/ioc/@Injectable";
-import { InjectionDecoratorManager } from "../../decorators/managers/InjectionDecoratorManager";
+import type express from "express";
+import { Router } from "express";
+
+import { InjectionDecoratorManager, RouteDecoratorManager } from "@internal";
+import type { Class } from "@org/shared";
 
 const bottle = new Bottle();
 const container = bottle.container;
+
+const injectionClasses: Class[] = [];
+
+export function getInjectionClasses() {
+  return injectionClasses;
+}
+
+export function registerRoutes(app: express.Application) {
+  getInjectionClasses().forEach(clazz => {
+    const router = Router();
+    const { basePath, routes } = RouteDecoratorManager.from(clazz).value;
+    routes.forEach(({ method, path = "", middlewares, handler }) => {
+      const fullPath = `${basePath}${path}`;
+      const pipeline = middlewares ? [...middlewares, handler] : [handler];
+      router[method](fullPath, ...pipeline);
+    });
+    app.use("/", router);
+  });
+}
 
 export function inject<T>(name: string): T {
   return container[name] as T;
@@ -37,3 +58,5 @@ export function iocStartup() {
     bottle.service(name, Class, ...dependencySchema[name]);
   });
 }
+
+iocStartup();

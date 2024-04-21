@@ -1,6 +1,6 @@
-import { SwaggerPath } from "../../../config";
-import { RouteHandler } from "../../managers/RouteDecoratorManager";
-import { Route } from "../@Route";
+import type { RouteHandler } from "@internal";
+import { Route } from "@internal";
+import type { SwaggerPath } from "@types";
 
 export function PatchMapping<This, Fn extends RouteHandler>(
   path: string = "",

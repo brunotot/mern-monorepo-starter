@@ -1,6 +1,5 @@
+import { inject, InjectionDecoratorManager } from "@internal";
 import { createFieldDecorator } from "@tsvdec/decorators";
-import { inject } from "../../config";
-import { InjectionDecoratorManager } from "../managers/InjectionDecoratorManager";
 
 /**
  * @remarks ONLY WORKS WITH CURRENT HOTFIX OF @tsvdec/core

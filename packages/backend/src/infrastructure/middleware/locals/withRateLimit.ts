@@ -1,5 +1,6 @@
-import { RequestHandler } from "express";
-import { Options, rateLimit } from "express-rate-limit";
+import type { RequestHandler } from "express";
+import type { Options } from "express-rate-limit";
+import { rateLimit } from "express-rate-limit";
 
 export type ExpressRateLimitOptions = Partial<Options>;
 

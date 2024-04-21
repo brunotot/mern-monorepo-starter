@@ -1,4 +1,4 @@
-import { User } from "../../domain";
+import type { User } from "@internal";
 
 export interface UserService {
   findAll: () => Promise<User[]>;

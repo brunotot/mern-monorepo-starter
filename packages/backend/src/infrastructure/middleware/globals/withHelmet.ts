@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/helmet|npm specifics}
  */
 
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 import helmet from "helmet";
 
 export function withHelmet(): RequestHandler {

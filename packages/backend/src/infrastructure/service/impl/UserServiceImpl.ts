@@ -1,9 +1,7 @@
-import { TODO } from "@org/shared";
-import { Autowired } from "../../../decorators/ioc/@Autowired";
-import { Injectable } from "../../../decorators/ioc/@Injectable";
-import { User } from "../../../domain";
-import { UserRepository } from "../../repository";
-import { UserService } from "../UserService";
+import type { TODO } from "@org/shared";
+
+import type { User, UserRepository, UserService } from "@internal";
+import { Autowired, Injectable } from "@internal";
 
 @Injectable()
 export class UserServiceImpl implements UserService {

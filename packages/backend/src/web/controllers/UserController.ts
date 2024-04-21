@@ -1,9 +1,20 @@
 import { Role } from "@org/shared";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 
-import { Autowired, Controller, GetMapping, PostMapping, Use } from "@decorators";
-import { UserService, withJwt, withUserRoles } from "@infrastructure";
+import type { UserService } from "@internal";
+import {
+  Autowired,
+  Controller,
+  GetMapping,
+  PageableResponse,
+  PostMapping,
+  Use,
+  buildSwaggerBody,
+  userDomain,
+  withJwt,
+  withUserRoles,
+} from "@internal";
 
 @Controller("/users", {
   description: "User management",
@@ -18,17 +29,14 @@ export class UserController {
     responses: {
       [HttpStatus.OK]: {
         description: "List of users",
-        content: {
-          "": {
-            schema: {},
-          },
-        },
+        content: buildSwaggerBody(PageableResponse(userDomain.zod)).content,
       },
     },
   })
   async findAll(_req: Request, res: Response) {
     const users = await this.userService.findAll();
-    res.json(users);
+    const pageableResponse = users;
+    res.json(pageableResponse);
   }
 
   @PostMapping("", {

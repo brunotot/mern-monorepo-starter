@@ -2,16 +2,20 @@
 import { TODO } from "@org/shared";
 
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import HttpStatus from "http-status";
-import { HttpStatusNumeric, SwaggerPath, buildSwaggerBody, inject } from "../../config";
-import { ErrorResponse, ErrorResponseContent } from "../../infrastructure/errors/ResponseError";
-import { InjectionDecoratorManager } from "../managers/InjectionDecoratorManager";
+
+import type { HttpStatusNumeric, SwaggerPath } from "@types";
+
+import type { RequestMappingProps, RouteHandler } from "@internal";
 import {
-  RequestMappingProps,
+  ErrorResponse,
+  InjectionDecoratorManager,
   RouteDecoratorManager,
-  RouteHandler,
-} from "../managers/RouteDecoratorManager";
+  buildSwaggerBody,
+  errorLogDomain,
+  inject,
+} from "@internal";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
@@ -47,6 +51,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
         return await target.call(_this, req, res);
       } catch (error: TODO) {
         if (error instanceof ErrorResponse) {
+          await new errorLogDomain.db(error.content).save();
           return res.status(error.content.status).json(error.content);
         }
 
@@ -82,7 +87,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
           default: {
             description:
               "This response is used across all API endpoints to provide a standardized error payload whenever an error occurs. It ensures consistent error handling and format throughout the API.",
-            content: buildSwaggerBody(ErrorResponseContent).content,
+            content: buildSwaggerBody(errorLogDomain.zod).content,
           },
         },
       },

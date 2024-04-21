@@ -2,16 +2,16 @@
  * @packageDocumentation Middleware which augments the response object with a custom method to send error responses.
  */
 
-import { RequestHandler } from "express";
-import { HttpStatusNumeric } from "../../../config";
-import { ErrorResponse } from "../../errors/ResponseError";
+import type { RequestHandler } from "express";
 
-export function withAugmentedResponse(): RequestHandler {
+import { ErrorResponse } from "@internal";
+import type { HttpStatusNumeric } from "@types";
+
+export function withExpressOverrides(): RequestHandler {
   return (req, res, next) => {
-    // @ts-expect-error TypeScript doesn't know about this property yet
     res.sendError = function (
       status: HttpStatusNumeric,
-      details: string,
+      details: string = "Unknown",
       metadata: Record<string, unknown> = {},
     ): never {
       throw new ErrorResponse(req, status, details, metadata);
@@ -21,4 +21,4 @@ export function withAugmentedResponse(): RequestHandler {
 }
 
 /** @hidden */
-export const withAugmentedResponseMiddleware = withAugmentedResponse();
+export const withExpressOverridesMiddleware = withExpressOverrides();

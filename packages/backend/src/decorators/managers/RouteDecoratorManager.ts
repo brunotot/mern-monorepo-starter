@@ -1,6 +1,7 @@
-import { ClassMetadataEntry, ClassMetadataInjectType } from "@tsvdec/decorators";
-import { NextFunction, Request, Response } from "express";
-import { SwaggerPath } from "../../config";
+import type { ClassMetadataInjectType } from "@tsvdec/decorators";
+import { ClassMetadataEntry } from "@tsvdec/decorators";
+import type { SwaggerPath } from "@types";
+import type { NextFunction, Request, Response } from "express";
 
 export type RouteMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 

@@ -11,5 +11,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "ignorePatterns": ["node_modules/", "dist/", "logger.js", "docs/"],
-  "rules": {}
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "error"
+  }
 }

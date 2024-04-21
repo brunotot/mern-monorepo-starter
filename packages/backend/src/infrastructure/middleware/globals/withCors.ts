@@ -4,14 +4,14 @@
  * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
  */
 
+import { VAR_ZOD_ENVIRONMENT } from "@internal";
 import cors from "cors";
-import { RequestHandler } from "express";
-import { $BackendAppConfig } from "../../../config";
+import type { RequestHandler } from "express";
 
 export function withCors(): RequestHandler {
   return cors({
-    origin: $BackendAppConfig.env.ORIGIN,
-    credentials: $BackendAppConfig.env.CREDENTIALS === "true",
+    origin: VAR_ZOD_ENVIRONMENT.ORIGIN,
+    credentials: VAR_ZOD_ENVIRONMENT.CREDENTIALS === "true",
   });
 }
 

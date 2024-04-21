@@ -1,4 +1,12 @@
-import "./config";
+process.on("uncaughtException", err => {
+  console.error("There was an uncaught error", err);
+  process.exit(1); // mandatory (as per the Node.js docs)
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  process.exit(1); // mandatory (as per the Node.js docs)
+});
 
 import { App } from "./App";
 

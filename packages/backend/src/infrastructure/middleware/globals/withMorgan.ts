@@ -3,12 +3,12 @@
  * @see {@link https://www.npmjs.com/package/morgan|npm specifics}
  */
 
-import { RequestHandler } from "express";
+import { VAR_ZOD_ENVIRONMENT, stream } from "@internal";
+import type { RequestHandler } from "express";
 import morgan from "morgan";
-import { $BackendAppConfig, stream } from "../../../config";
 
 export function withMorgan(): RequestHandler {
-  return morgan($BackendAppConfig.env.LOG_FORMAT, { stream });
+  return morgan(VAR_ZOD_ENVIRONMENT.LOG_FORMAT, { stream });
 }
 
 /** @hidden */

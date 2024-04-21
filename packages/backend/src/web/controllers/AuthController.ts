@@ -1,22 +1,34 @@
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import HttpStatus from "http-status";
-import jwt, { VerifyErrors } from "jsonwebtoken";
-import z from "zod";
+import type { VerifyErrors } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import { z } from "zod";
 
-import { $BackendAppConfig, buildSwaggerBody } from "@config";
-import { Autowired, Controller, PostMapping, Use } from "@decorators";
-import { UserRepository, withValidatedBody } from "@infrastructure";
+import type { UserRepository } from "@internal";
+import {
+  Autowired,
+  Controller,
+  PostMapping,
+  Use,
+  VAR_ZOD_ENVIRONMENT,
+  buildSwaggerBody,
+  withValidatedBody,
+} from "@internal";
 
 const LoginForm = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(1),
+  password: z.string().min(1),
 });
+
 type LoginForm = z.infer<typeof LoginForm>;
 
 const LoginResponse = z.object({
-  accessToken: z.string(),
+  accessToken: z.string().openapi({
+    example:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNjI5MjIwNjI5LCJleHAiOjE2MjkyMjA3Mjl9.1",
+  }),
 });
 
 type LoginResponse = z.infer<typeof LoginResponse>;
@@ -44,7 +56,7 @@ export class AuthController {
 
     const { username, password } = req.body;
     if (!username || !password) {
-      res.sendError(422, "Username and password are required.");
+      res.sendError(400, "Username and password are required.");
     }
 
     const foundUser = await this.userRepository.findOne({ username: username });
@@ -64,12 +76,12 @@ export class AuthController {
             roles: roles,
           },
         },
-        $BackendAppConfig.env.ACCESS_TOKEN_SECRET,
+        VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" },
       );
       const newRefreshToken = jwt.sign(
         { username: foundUser.username },
-        $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
+        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" },
       );
 
@@ -178,7 +190,7 @@ export class AuthController {
     if (!foundUser) {
       jwt.verify(
         refreshToken,
-        $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
+        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
         async (err: VerifyErrors | null, decoded: TODO) => {
           if (err) return res.sendError(403); //Forbidden
           // Delete refresh tokens of hacked user
@@ -196,7 +208,7 @@ export class AuthController {
     // evaluate jwt
     jwt.verify(
       refreshToken,
-      $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
+      VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
       async (err: VerifyErrors | null, decoded: TODO) => {
         if (err) {
           // expired refresh token
@@ -214,13 +226,13 @@ export class AuthController {
               roles: roles,
             },
           },
-          $BackendAppConfig.env.ACCESS_TOKEN_SECRET,
+          VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
           { expiresIn: "15m" },
         );
 
         const newRefreshToken = jwt.sign(
           { username: foundUser.username },
-          $BackendAppConfig.env.REFRESH_TOKEN_SECRET,
+          VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
           { expiresIn: "7d" },
         );
         // Saving refreshToken with current user

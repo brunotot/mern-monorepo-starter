@@ -4,7 +4,7 @@
  */
 
 import cookieParser from "cookie-parser";
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 export function withCookieParser(): RequestHandler {
   return cookieParser();

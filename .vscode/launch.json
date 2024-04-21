@@ -20,6 +20,7 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "backend:start"],
       "presentation": { "group": "1" }
+      //"runtimeArgs": ["--loader", "ts-node/esm", "--experimental-specifier-resolution=node"]
     },
     {
       "name": "🖼️ Launch Frontend",

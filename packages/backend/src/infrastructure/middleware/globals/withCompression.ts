@@ -4,7 +4,7 @@
  */
 
 import compression from "compression";
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 export function withCompression(): RequestHandler {
   return compression();

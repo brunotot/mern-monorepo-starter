@@ -1,6 +1,7 @@
-import { TODO } from "@org/shared";
-import HttpStatus from "http-status";
-import swaggerJsdoc from "swagger-jsdoc";
+import type HttpStatus from "http-status";
+import type { oas31 } from "openapi3-ts";
+import type { ReferenceObject, SchemaObject } from "openapi3-ts/oas31";
+import type swaggerJsdoc from "swagger-jsdoc";
 
 export type HttpStatusConverter<T> = {
   [K in keyof T]: T[K] extends number ? T[K] : never;
@@ -75,9 +76,9 @@ export type SwaggerResponse = Partial<
   >
 >;
 
-export type SwaggerEntitySchema = TODO;
+export type SwaggerSchemaObject = SchemaObject | ReferenceObject;
 
-export type SwaggerRequestContent = Record<string, { schema: SwaggerEntitySchema }>;
+export type SwaggerRequestContent = Record<string, { schema: SwaggerSchemaObject }>;
 
 export type SwaggerRequestBody = {
   description?: string;
@@ -88,4 +89,5 @@ export type SwaggerRequestBody = {
 export type SwaggerDefinition = swaggerJsdoc.SwaggerDefinition & {
   tags: SwaggerTag[];
   paths: SwaggerPaths;
+  components: oas31.ComponentsObject;
 };

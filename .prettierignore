@@ -1,2 +1,5 @@
 .eslintrc
 docs/
+./packages/backend/src/internal.ts
+packages/backend/src/**/index.ts
+**/internal.ts
