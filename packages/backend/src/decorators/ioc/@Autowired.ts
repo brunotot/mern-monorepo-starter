@@ -1,4 +1,4 @@
-import { inject, InjectionDecoratorManager } from "@internal";
+import { Bottle, InjectionDecoratorManager } from "@internal";
 import { createFieldDecorator } from "@tsvdec/decorators";
 
 /**
@@ -12,7 +12,7 @@ export function Autowired<This, Value>() {
     InjectionDecoratorManager.from(context).addDependency(fieldName);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return function (_value: Value) {
-      return inject<Value>(fieldName);
+      return Bottle.getInstance().inject<Value>(fieldName);
     };
   });
 }

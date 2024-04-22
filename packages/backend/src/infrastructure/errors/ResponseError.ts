@@ -2,11 +2,11 @@ import type { Request } from "express";
 import HttpStatus from "http-status";
 
 import type { ErrorLog } from "@internal";
-import type { HttpStatusNumeric } from "@types";
+import type { HttpStatusNumeric } from "@internal";
 
 export class ErrorResponse extends Error {
   stack: string | undefined;
-  content: ErrorLog;
+  content: Omit<ErrorLog, "_id">;
 
   constructor(
     req: Request,
@@ -24,7 +24,7 @@ export class ErrorResponse extends Error {
     status: HttpStatusNumeric,
     details: string = "Unknown",
     metadata: Record<string, unknown> = {},
-  ): ErrorLog {
+  ): Omit<ErrorLog, "_id"> {
     return {
       status: status,
       details: details,

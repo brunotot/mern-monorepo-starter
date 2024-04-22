@@ -4,50 +4,35 @@ import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-import { z } from "zod";
 
-import type { UserRepository } from "@internal";
+import type { Environment, UserRepository } from "@internal";
 import {
   Autowired,
   Controller,
+  LoginForm,
   PostMapping,
+  Swagger,
   Use,
-  VAR_ZOD_ENVIRONMENT,
-  buildSwaggerBody,
   withValidatedBody,
+  LoginResponseDto,
 } from "@internal";
-
-const LoginForm = z.object({
-  username: z.string().min(1),
-  password: z.string().min(1),
-});
-
-type LoginForm = z.infer<typeof LoginForm>;
-
-const LoginResponse = z.object({
-  accessToken: z.string().openapi({
-    example:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNjI5MjIwNjI5LCJleHAiOjE2MjkyMjA3Mjl9.1",
-  }),
-});
-
-type LoginResponse = z.infer<typeof LoginResponse>;
 
 @Controller("/auth", {
   description: "Authentication",
 })
 export class AuthController {
+  @Autowired() environment: Environment;
   @Autowired() userRepository: UserRepository;
 
   @Use(withValidatedBody(LoginForm))
   @PostMapping("/login", {
     description: "Login user",
     summary: "Login user",
-    requestBody: buildSwaggerBody(LoginForm),
+    requestBody: Swagger.getInstance().buildSwaggerBody(LoginForm),
     responses: {
       [HttpStatus.OK]: {
         description: "Access token",
-        content: buildSwaggerBody(LoginResponse).content,
+        content: Swagger.getInstance().buildSwaggerBody(LoginResponseDto).content,
       },
     },
   })
@@ -76,12 +61,12 @@ export class AuthController {
             roles: roles,
           },
         },
-        VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
+        this.environment.vars.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" },
       );
       const newRefreshToken = jwt.sign(
         { username: foundUser.username },
-        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
+        this.environment.vars.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" },
       );
 
@@ -115,7 +100,7 @@ export class AuthController {
 
       // Saving refreshToken with current user
       foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-      await foundUser.save();
+      await this.userRepository.updateOne(foundUser);
 
       // Creates Secure Cookie with refresh token
       res.cookie("jwt", newRefreshToken, {
@@ -162,8 +147,7 @@ export class AuthController {
     // Delete refreshToken in db
     foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const result = await foundUser.save();
-    // console.log(result);
+    await this.userRepository.updateOne(foundUser);
 
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
     res.sendStatus(204);
@@ -190,14 +174,14 @@ export class AuthController {
     if (!foundUser) {
       jwt.verify(
         refreshToken,
-        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
+        this.environment.vars.REFRESH_TOKEN_SECRET,
         async (err: VerifyErrors | null, decoded: TODO) => {
           if (err) return res.sendError(403); //Forbidden
           // Delete refresh tokens of hacked user
           const filters = { username: decoded.username };
           const hackedUser = await this.userRepository.findOne(filters);
           hackedUser!.refreshToken = [];
-          await this.userRepository.save(hackedUser!);
+          await this.userRepository.updateOne(hackedUser!);
         },
       );
       return res.sendError(403); //Forbidden
@@ -208,12 +192,12 @@ export class AuthController {
     // evaluate jwt
     jwt.verify(
       refreshToken,
-      VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
+      this.environment.vars.REFRESH_TOKEN_SECRET,
       async (err: VerifyErrors | null, decoded: TODO) => {
         if (err) {
           // expired refresh token
           foundUser.refreshToken = [...newRefreshTokenArray];
-          await foundUser.save();
+          await this.userRepository.updateOne(foundUser);
         }
         if (err || foundUser.username !== decoded.username) return res.sendError(403);
 
@@ -226,18 +210,18 @@ export class AuthController {
               roles: roles,
             },
           },
-          VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
+          this.environment.vars.ACCESS_TOKEN_SECRET,
           { expiresIn: "15m" },
         );
 
         const newRefreshToken = jwt.sign(
           { username: foundUser.username },
-          VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
+          this.environment.vars.REFRESH_TOKEN_SECRET,
           { expiresIn: "7d" },
         );
         // Saving refreshToken with current user
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-        await foundUser.save();
+        await this.userRepository.updateOne(foundUser);
 
         // Creates Secure Cookie with refresh token
         res.cookie("jwt", newRefreshToken, {

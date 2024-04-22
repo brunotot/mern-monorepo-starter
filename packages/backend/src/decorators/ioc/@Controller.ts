@@ -1,6 +1,6 @@
-import { Injectable, RouteDecoratorManager, registerTag } from "@internal";
+import { Injectable, RouteDecoratorManager, Swagger } from "@internal";
 import type { Class } from "@org/shared";
-import type { SwaggerTag } from "@types";
+import type { SwaggerTag } from "@internal";
 
 export function Controller<This extends Class>(
   basePath: string,
@@ -8,7 +8,7 @@ export function Controller<This extends Class>(
 ) {
   return Injectable<This>((context, constructor) => {
     const swaggerTagName = String(context.name!);
-    registerTag({
+    Swagger.getInstance().registerTag({
       constructor,
       name: swaggerTagName,
       ...swaggerTag,

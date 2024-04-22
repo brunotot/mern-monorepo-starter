@@ -1,13 +1,5 @@
+import { Bottle, Environment, GLOBAL_MIDDLEWARES, Logger, MongoClient, Swagger } from "@internal";
 import express from "express";
-
-import {
-  GLOBAL_MIDDLEWARES,
-  VAR_ZOD_ENVIRONMENT,
-  mongoConnect,
-  registerRoutes,
-  registerSwagger,
-  startupLog,
-} from "@internal";
 
 export class App {
   public readonly app: express.Application;
@@ -16,31 +8,35 @@ export class App {
   public readonly swaggerPath: string;
   public readonly url: string;
 
+  private environment = Environment.getInstance();
+  private logger = Logger.getInstance();
+  private mongoClient = MongoClient.getInstance();
+
   constructor() {
     this.app = express();
-    this.env = VAR_ZOD_ENVIRONMENT.NODE_ENV;
-    this.port = VAR_ZOD_ENVIRONMENT.PORT;
+    this.env = this.environment.vars.NODE_ENV;
+    this.port = this.environment.vars.PORT;
     this.swaggerPath = "api-docs";
-    function buildUrl() {
+    const buildUrl = () => {
       const domain =
-        VAR_ZOD_ENVIRONMENT.NODE_ENV === "production"
+        this.environment.vars.NODE_ENV === "production"
           ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
           : "http://localhost";
 
-      return `${domain}:${VAR_ZOD_ENVIRONMENT.PORT}`;
-    }
+      return `${domain}:${this.environment.vars.PORT}`;
+    };
     this.url = buildUrl();
 
     this.#initializeDatabase();
-    this.#initializeMiddlewares();
+    this.#initializeGlobalMiddlewares();
     this.#initializeRoutes();
     this.#initializeSwagger();
   }
 
   public listen() {
     this.app.listen(this.port, () => {
-      startupLog({
-        title: `[Express] MERN Sample App v${VAR_ZOD_ENVIRONMENT.PACKAGE_JSON_VERSION}`,
+      this.logger.table({
+        title: `[Express] MERN Sample App v${this.environment.vars.PACKAGE_JSON_VERSION}`,
         data: {
           "🟢 NodeJS": process.version,
           "🏠 Env": this.env,
@@ -55,18 +51,18 @@ export class App {
   }
 
   async #initializeDatabase() {
-    await mongoConnect();
+    await this.mongoClient.connect();
   }
 
-  #initializeMiddlewares() {
+  #initializeGlobalMiddlewares() {
     GLOBAL_MIDDLEWARES.forEach(middleware => this.app.use(middleware));
   }
 
   #initializeRoutes() {
-    registerRoutes(this.app);
+    Bottle.getInstance().registerRoutes(this.app);
   }
 
   #initializeSwagger() {
-    registerSwagger(this.app, this.swaggerPath);
+    Swagger.getInstance().registerSwagger(this.app, this.swaggerPath);
   }
 }

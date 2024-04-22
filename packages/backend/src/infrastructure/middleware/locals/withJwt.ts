@@ -1,4 +1,4 @@
-import { VAR_ZOD_ENVIRONMENT } from "@internal";
+import { Environment } from "@internal";
 import type { TODO } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { VerifyErrors } from "jsonwebtoken";
@@ -13,7 +13,7 @@ export function withJwt(): RequestHandler {
     // console.log(token);
     jwt.verify(
       token,
-      VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
+      Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
       (err: VerifyErrors | null, decoded: TODO) => {
         if (err) return res.sendStatus(403); //invalid token
         res.locals.user = decoded.UserInfo.username;

@@ -3,12 +3,13 @@
  * @see {@link https://www.npmjs.com/package/morgan|npm specifics}
  */
 
-import { VAR_ZOD_ENVIRONMENT, stream } from "@internal";
+import { Environment, Logger } from "@internal";
 import type { RequestHandler } from "express";
 import morgan from "morgan";
 
 export function withMorgan(): RequestHandler {
-  return morgan(VAR_ZOD_ENVIRONMENT.LOG_FORMAT, { stream });
+  const stream = Logger.getInstance().stream;
+  return morgan(Environment.getInstance().vars.LOG_FORMAT, { stream });
 }
 
 /** @hidden */

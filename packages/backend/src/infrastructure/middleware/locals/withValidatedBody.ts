@@ -4,7 +4,8 @@ import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
 
-import { errorLogDomain, ErrorResponse } from "@internal";
+import type { ErrorLogRepository } from "@internal";
+import { Bottle, ErrorResponse } from "@internal";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
   return async (req, res, next) => {
@@ -81,9 +82,11 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
       const errorResponse = new ErrorResponse(req, 400, "Request body validation error", {
         errors: formattedErrors,
       });
-      const errorContent = errorResponse.content;
-      await new errorLogDomain.db(errorContent).save();
-      res.status(errorContent.status).json(errorContent);
+      const errorLogRepository =
+        Bottle.getInstance().inject<ErrorLogRepository>("ErrorLogRepository");
+      const content = errorResponse.content;
+      await errorLogRepository.insertOne(content);
+      res.status(content.status).json(content);
     }
   };
 }

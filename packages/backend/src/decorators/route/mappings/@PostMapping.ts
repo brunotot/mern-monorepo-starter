@@ -1,6 +1,6 @@
 import type { RouteHandler } from "@internal";
 import { Route } from "@internal";
-import type { SwaggerPath } from "@types";
+import type { SwaggerPath } from "@internal";
 
 export function PostMapping<This, Fn extends RouteHandler>(
   path: string = "",

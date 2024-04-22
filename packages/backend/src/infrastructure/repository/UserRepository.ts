@@ -1,8 +1,8 @@
-import type { Entity, User, userDomain } from "@internal";
+import type { User } from "@internal";
 
 export interface UserRepository {
-  findOne: (filters: Parameters<typeof userDomain.db.findOne>[0]) => Promise<Entity<User> | null>;
-  findAll: () => Promise<Entity<User>[]>;
-  create: (user: User) => Promise<Entity<User>>;
-  save: (user: User) => Promise<Entity<User>>;
+  findOne: (filters: Partial<User>) => Promise<User | null>;
+  findAll: () => Promise<User[]>;
+  insertOne: (user: Omit<User, "_id">) => Promise<User>;
+  updateOne: (user: User) => Promise<User>;
 }

@@ -9,7 +9,7 @@
     "compile:ts": "tsc && npm run tsc-alias",
     "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
     "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "dependency-test": "npx madge --circular --extensions ts ./src/index.ts"
+    "dependency-test": "npx madge --image graph.png --extensions ts ./src/index.ts"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -25,6 +25,7 @@
     "express-rate-limit": "^7.2.0",
     "http-status": "^1.7.4",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.5.0",
     "mongoose": "^8.3.2",
     "openapi3-ts": "^4.3.1",
     "swagger-jsdoc": "^6.2.8",

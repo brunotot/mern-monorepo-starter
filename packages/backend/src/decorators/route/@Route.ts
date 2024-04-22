@@ -5,17 +5,9 @@ import { createMethodDecorator } from "@tsvdec/decorators";
 import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 
-import type { HttpStatusNumeric, SwaggerPath } from "@types";
-
-import type { RequestMappingProps, RouteHandler } from "@internal";
-import {
-  ErrorResponse,
-  InjectionDecoratorManager,
-  RouteDecoratorManager,
-  buildSwaggerBody,
-  errorLogDomain,
-  inject,
-} from "@internal";
+import type { ErrorLogRepository, RequestMappingProps, RouteHandler } from "@internal";
+import { Bottle, ErrorLog, ErrorResponse, RouteDecoratorManager, Swagger } from "@internal";
+import type { HttpStatusNumeric, SwaggerPath } from "@internal";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
@@ -46,22 +38,17 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
 
     async function handler(req: Request, res: Response) {
       try {
-        const container = InjectionDecoratorManager.from(context).value.name;
-        const _this = inject(container);
-        return await target.call(_this, req, res);
+        return await target.call(Bottle.getInstance().inject(context), req, res);
       } catch (error: TODO) {
-        if (error instanceof ErrorResponse) {
-          await new errorLogDomain.db(error.content).save();
-          return res.status(error.content.status).json(error.content);
-        }
-
-        const fallbackErrorContent = new ErrorResponse(
-          req,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-          error.message,
-        ).content;
-
-        return res.status(fallbackErrorContent.status).json(fallbackErrorContent);
+        const errorResponse =
+          error instanceof ErrorResponse
+            ? error
+            : new ErrorResponse(req, HttpStatus.INTERNAL_SERVER_ERROR, error.message);
+        const errorContent = errorResponse.content;
+        const errorLogRepository =
+          Bottle.getInstance().inject<ErrorLogRepository>("ErrorLogRepository");
+        await errorLogRepository.insertOne(errorContent);
+        return res.status(errorContent.status).json(errorContent);
       }
     }
 
@@ -87,7 +74,7 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
           default: {
             description:
               "This response is used across all API endpoints to provide a standardized error payload whenever an error occurs. It ensures consistent error handling and format throughout the API.",
-            content: buildSwaggerBody(errorLogDomain.zod).content,
+            content: Swagger.getInstance().buildSwaggerBody(ErrorLog).content,
           },
         },
       },

@@ -12,6 +12,6 @@ export class UserServiceImpl implements UserService {
   }
 
   async create(user: User): Promise<User> {
-    return this.userRepository.create(user) as TODO;
+    return this.userRepository.insertOne(user) as TODO;
   }
 }

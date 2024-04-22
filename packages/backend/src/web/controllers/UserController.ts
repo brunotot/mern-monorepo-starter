@@ -7,11 +7,11 @@ import {
   Autowired,
   Controller,
   GetMapping,
-  PageableResponse,
+  PageableResponseDto,
   PostMapping,
+  Swagger,
   Use,
-  buildSwaggerBody,
-  userDomain,
+  User,
   withJwt,
   withUserRoles,
 } from "@internal";
@@ -29,7 +29,7 @@ export class UserController {
     responses: {
       [HttpStatus.OK]: {
         description: "List of users",
-        content: buildSwaggerBody(PageableResponse(userDomain.zod)).content,
+        content: Swagger.getInstance().buildSwaggerBody(PageableResponseDto(User)).content,
       },
     },
   })

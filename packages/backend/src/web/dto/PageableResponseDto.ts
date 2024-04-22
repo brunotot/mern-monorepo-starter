@@ -1,7 +1,7 @@
-import { registerSchema } from "@internal";
+import { Swagger } from "@internal";
 import z from "zod";
 
-const BasePageableResponse = z
+const BasePageableResponseDto = z
   .object({
     content: z.array(z.any()),
     totalPages: z.number().openapi({ example: 75 }),
@@ -11,10 +11,10 @@ const BasePageableResponse = z
   })
   .describe("PageableResponse");
 
-registerSchema("PageableResponse", BasePageableResponse);
+Swagger.getInstance().registerSchema("PageableResponseDto", BasePageableResponseDto);
 
-export function PageableResponse<T extends z.ZodType>(schema: T) {
-  return BasePageableResponse.extend({
+export function PageableResponseDto<T extends z.ZodType>(schema: T) {
+  return BasePageableResponseDto.extend({
     // @ts-expect-error We know shape is a valid property
     content: z.array(schema).openapi({ items: schema.shape }),
   }).describe("");

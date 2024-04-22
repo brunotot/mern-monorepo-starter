@@ -2,7 +2,7 @@
   "git.ignoreLimitWarning": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "always",
+    "source.organizeImports": "never",
     "source.addMissingImports": "always"
   },
   "terminal.integrated.profiles.linux": {

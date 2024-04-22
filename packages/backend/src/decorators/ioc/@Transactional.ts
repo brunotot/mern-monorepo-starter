@@ -1,4 +1,4 @@
-import { InjectionDecoratorManager, inject } from "@internal";
+import { Bottle, InjectionDecoratorManager } from "@internal";
 import type { TODO } from "@org/shared";
 import { createMethodDecorator } from "@tsvdec/decorators";
 import type { ClientSession } from "mongoose";
@@ -24,7 +24,7 @@ export function Transactional() {
       !isTransactionActive && session.startTransaction();
       try {
         const container = InjectionDecoratorManager.from(context).value.name;
-        const _this = inject(container);
+        const _this = Bottle.getInstance().inject(container);
         const result = isTransactionActive
           ? await fn.call(_this, ...args)
           : await fn.call(_this, ...args, session);
