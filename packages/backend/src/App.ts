@@ -17,15 +17,11 @@ export class App {
     this.env = this.environment.vars.NODE_ENV;
     this.port = this.environment.vars.PORT;
     this.swaggerPath = "api-docs";
-    const buildUrl = () => {
-      const domain =
-        this.environment.vars.NODE_ENV === "production"
-          ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-          : "http://localhost";
-
-      return `${domain}:${this.environment.vars.PORT}`;
-    };
-    this.url = buildUrl();
+    const domain =
+      this.env === "production"
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+        : "http://localhost";
+    this.url = `${domain}:${this.port}`;
 
     this.#initializeDatabase();
     this.#initializeGlobalMiddlewares();

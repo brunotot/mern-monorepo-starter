@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import type HttpStatus from "http-status";
 import type { oas31 } from "openapi3-ts";
 import type { ReferenceObject, SchemaObject } from "openapi3-ts/oas31";
-import type { AnyZodObject } from "zod";
+import type z from "zod";
 
 import { Environment } from "./Environment";
 import { RouteDecoratorManager } from "./RouteDecoratorManager";
@@ -58,7 +58,7 @@ export class Swagger {
     };
   }
 
-  public buildSwaggerBody(schema: AnyZodObject) {
+  public buildSwaggerBody(schema: z.AnyZodObject) {
     const description = schema.description;
 
     return {
@@ -72,7 +72,7 @@ export class Swagger {
     };
   }
 
-  public registerSchema(name: string, schema: OpenApiZodAny) {
+  public registerSchema(name: string, schema: z.AnyZodObject) {
     const description = name;
     if (!description) throw new Error("Schema must have a description");
     this.definition.components.schemas![description] = this.#generateSwaggerSchema(schema);
