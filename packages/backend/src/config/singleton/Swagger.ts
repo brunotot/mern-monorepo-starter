@@ -4,10 +4,10 @@ import type { Class, TODO } from "@org/shared";
 import type express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import type { AnyZodObject } from "zod";
 import type HttpStatus from "http-status";
 import type { oas31 } from "openapi3-ts";
 import type { ReferenceObject, SchemaObject } from "openapi3-ts/oas31";
+import type { AnyZodObject } from "zod";
 
 import { Environment } from "./Environment";
 import { RouteDecoratorManager } from "./RouteDecoratorManager";
@@ -72,21 +72,6 @@ export class Swagger {
     };
   }
 
-  #generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
-    const generated = generateSchema(schema);
-    const iterate = (obj: TODO) => {
-      for (const key in obj) {
-        if (key === "type" && Array.isArray(obj[key]) && obj[key].length === 1) {
-          obj[key] = obj[key][0];
-        } else if (typeof obj[key] === "object") {
-          iterate(obj[key]);
-        }
-      }
-    };
-    iterate(generated);
-    return generated;
-  }
-
   public registerSchema(name: string, schema: OpenApiZodAny) {
     const description = name;
     if (!description) throw new Error("Schema must have a description");
@@ -129,6 +114,21 @@ export class Swagger {
   #registerPath(path: string, requestMapping: SwaggerRequestMapping, data: SwaggerPath) {
     if (!this.definition.paths[path]) this.definition.paths[path] = {};
     this.definition.paths[path][requestMapping] = data;
+  }
+
+  #generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
+    const generated = generateSchema(schema);
+    const iterate = (obj: TODO) => {
+      for (const key in obj) {
+        if (key === "type" && Array.isArray(obj[key]) && obj[key].length === 1) {
+          obj[key] = obj[key][0];
+        } else if (typeof obj[key] === "object") {
+          iterate(obj[key]);
+        }
+      }
+    };
+    iterate(generated);
+    return generated;
   }
 }
 

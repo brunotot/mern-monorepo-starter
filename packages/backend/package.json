@@ -8,8 +8,7 @@
     "build": "rm -rf dist && npm run compile:ts",
     "compile:ts": "tsc && npm run tsc-alias",
     "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
-    "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "dependency-test": "npx madge --image graph.png --extensions ts ./src/index.ts"
+    "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -21,15 +20,25 @@
     "@tsvdec/decorators": "^1.0.7",
     "bcrypt": "^5.1.1",
     "bottlejs": "^2.0.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-dirname": "^0.1.0",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-rate-limit": "^7.2.0",
+    "helmet": "^7.1.0",
+    "hpp": "^0.2.3",
     "http-status": "^1.7.4",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.2",
+    "morgan": "^1.10.0",
     "openapi3-ts": "^4.3.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -44,18 +53,7 @@
     "@types/node": "^20.11.22",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "cross-dirname": "^0.1.0",
-    "dotenv": "^16.4.5",
-    "helmet": "^7.1.0",
-    "hpp": "^0.2.3",
-    "madge": "^7.0.0",
-    "morgan": "^1.10.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "typescript": "^5.3.3"
   }
 }

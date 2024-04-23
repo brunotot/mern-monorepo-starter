@@ -1,6 +1,6 @@
-import type { RouteHandler } from "@internal";
+import type { RouteHandler, SwaggerPath } from "@internal";
+
 import { Route } from "@internal";
-import type { SwaggerPath } from "@internal";
 
 export function OptionsMapping<This, Fn extends RouteHandler>(
   path: string = "",

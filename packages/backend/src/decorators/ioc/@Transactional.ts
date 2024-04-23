@@ -1,8 +1,9 @@
-import { Bottle, InjectionDecoratorManager } from "@internal";
 import type { TODO } from "@org/shared";
-import { createMethodDecorator } from "@tsvdec/decorators";
 import type { ClientSession } from "mongoose";
+
 import { startSession } from "mongoose";
+import { createMethodDecorator } from "@tsvdec/decorators";
+import { Bottle, InjectionDecoratorManager } from "@internal";
 
 function isClientSession(obj: TODO): obj is ClientSession {
   return (

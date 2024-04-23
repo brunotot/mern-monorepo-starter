@@ -1,6 +1,7 @@
-import { Injectable, RouteDecoratorManager, Swagger } from "@internal";
 import type { Class } from "@org/shared";
 import type { SwaggerTag } from "@internal";
+
+import { Injectable, RouteDecoratorManager, Swagger } from "@internal";
 
 export function Controller<This extends Class>(
   basePath: string,

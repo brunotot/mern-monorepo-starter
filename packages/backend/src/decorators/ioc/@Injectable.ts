@@ -1,7 +1,7 @@
-import { createClassDecorator } from "@tsvdec/decorators";
-
-import { Bottle, InjectionDecoratorManager } from "@internal";
 import type { Class, TODO } from "@org/shared";
+
+import { createClassDecorator } from "@tsvdec/decorators";
+import { Bottle, InjectionDecoratorManager } from "@internal";
 
 export type ClassDecoratorSupplier = (context: DecoratorContext, constructor: Class) => void;
 

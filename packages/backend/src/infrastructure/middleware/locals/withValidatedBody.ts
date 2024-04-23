@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { TODO } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
@@ -12,8 +11,8 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
     try {
       schema.parse(req.body);
       next();
-    } catch (e: TODO) {
-      const issues = e.issues as ZodIssue[];
+    } catch (e) {
+      const issues = (e as TODO).issues as ZodIssue[];
       const formatPath = (path: (string | number)[]) => {
         const maxIndex = path.length - 1;
         return path.reduce((acc, curr, i) => {

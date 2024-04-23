@@ -1,6 +1,7 @@
 import type { UserRepository } from "@internal";
-import { MongoRepository, Repository, Transactional, User } from "@internal";
+
 import { ObjectId } from "mongodb";
+import { MongoRepository, Repository, Transactional, User } from "@internal";
 
 @Repository(User)
 export class UserRepositoryImpl extends MongoRepository<User> implements UserRepository {

@@ -13,11 +13,11 @@ process.on("unhandledRejection", (reason, promise) => {
   process.exit(1); // mandatory (as per the Node.js docs)
 });
 
-//import { App } from "./App";
+import { App } from "./App";
 
 function main() {
-  //const app = new App();
-  //app.listen();
+  const app = new App();
+  app.listen();
 }
 
 main();

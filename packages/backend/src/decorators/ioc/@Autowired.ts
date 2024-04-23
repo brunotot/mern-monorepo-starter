@@ -1,5 +1,6 @@
-import { Bottle, InjectionDecoratorManager } from "@internal";
 import { createFieldDecorator } from "@tsvdec/decorators";
+
+import { Bottle, InjectionDecoratorManager } from "@internal";
 
 /**
  * @remarks ONLY WORKS WITH CURRENT HOTFIX OF @tsvdec/core

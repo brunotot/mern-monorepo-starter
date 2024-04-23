@@ -1,13 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { TODO } from "@org/shared";
-
-import { createMethodDecorator } from "@tsvdec/decorators";
+import type { TODO } from "@org/shared";
 import type { Request, Response } from "express";
-import HttpStatus from "http-status";
+import type {
+  ErrorLogRepository,
+  RequestMappingProps,
+  RouteHandler,
+  HttpStatusNumeric,
+  SwaggerPath,
+} from "@internal";
 
-import type { ErrorLogRepository, RequestMappingProps, RouteHandler } from "@internal";
+import HttpStatus from "http-status";
+import { createMethodDecorator } from "@tsvdec/decorators";
 import { Bottle, ErrorLog, ErrorResponse, RouteDecoratorManager, Swagger } from "@internal";
-import type { HttpStatusNumeric, SwaggerPath } from "@internal";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
@@ -31,7 +34,8 @@ function getRouteErrorStatuses(routeFnSource: string): HttpStatusNumeric[] {
   return [...statusCodesSet] as HttpStatusNumeric[];
 }
 
-export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }: RouteProps) {
+export function Route<This, Fn extends RouteHandler>(props: RouteProps) {
+  const swagger = props.swagger ?? {};
   return createMethodDecorator<This, Fn>(({ target, meta }) => {
     const context = meta.context;
     const routeErrorStatuses = getRouteErrorStatuses(target.toString());
@@ -39,11 +43,11 @@ export function Route<This, Fn extends RouteHandler>({ swagger = {}, ...props }:
     async function handler(req: Request, res: Response) {
       try {
         return await target.call(Bottle.getInstance().inject(context), req, res);
-      } catch (error: TODO) {
+      } catch (error) {
         const errorResponse =
           error instanceof ErrorResponse
             ? error
-            : new ErrorResponse(req, HttpStatus.INTERNAL_SERVER_ERROR, error.message);
+            : new ErrorResponse(req, HttpStatus.INTERNAL_SERVER_ERROR, (error as TODO).message);
         const errorContent = errorResponse.content;
         const errorLogRepository =
           Bottle.getInstance().inject<ErrorLogRepository>("ErrorLogRepository");

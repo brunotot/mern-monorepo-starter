@@ -1,9 +1,11 @@
 import { ObjectId } from "mongodb";
 import z from "zod";
 
+import { Swagger } from "@internal";
+
 export const ErrorLog = z
   .object({
-    _id: z.instanceof(ObjectId),
+    _id: z.instanceof(ObjectId).openapi({ example: "507f1f77bcf86cd799439011" }),
     details: z.string().min(0).openapi({
       example: "Request body validation error",
     }),
@@ -19,18 +21,17 @@ export const ErrorLog = z
     timestamp: z.string().openapi({
       example: "2024-01-01T00:00:00.000Z",
     }),
-    metadata: z
-      .record(z.string(), z.any())
-
-      .openapi({
-        example: {
-          errors: [
-            "[password] String must contain at least 1 character(s)",
-            "[username] String must contain at least 1 character(s)",
-          ],
-        },
-      }),
+    metadata: z.record(z.string(), z.any()).openapi({
+      example: {
+        errors: [
+          "[password] String must contain at least 1 character(s)",
+          "[username] String must contain at least 1 character(s)",
+        ],
+      },
+    }),
   })
   .describe("ErrorLog");
+
+Swagger.getInstance().registerSchema("ErrorLog", ErrorLog);
 
 export type ErrorLog = z.infer<typeof ErrorLog>;

@@ -51,7 +51,11 @@ export class App {
   }
 
   async #initializeDatabase() {
-    await this.mongoClient.connect();
+    try {
+      await this.mongoClient.connect();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   #initializeGlobalMiddlewares() {
