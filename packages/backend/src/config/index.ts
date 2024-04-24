@@ -10,7 +10,3 @@ Environment.getInstance();
 // Swagger: initialize Swagger with default values
 import { Swagger } from "./singleton/Swagger";
 Swagger.getInstance();
-
-// Bottle: load IOC
-import { Bottle } from "./singleton/Bottle";
-Bottle.getInstance().iocStartup();

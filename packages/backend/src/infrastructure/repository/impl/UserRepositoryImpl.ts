@@ -1,4 +1,4 @@
-import type { UserRepository } from "@internal";
+import type { UserPageableResponseDto, UserRepository } from "@internal";
 
 import { z } from "zod";
 import { ObjectId } from "mongodb";
@@ -22,13 +22,38 @@ export class UserRepositoryImpl extends MongoRepository<User> implements UserRep
     return await this.collection.findOne(filters);
   }
 
-  async paginate() {
+  // prettier-ignore
+  async pagination() {
     // TODO
-    //const options = PaginationOptions.parse({});
-    //const { page, limit, search, order } = options;
-    //const skip = page * limit;
-    //const result = await this.collection.find().sort(order).skip(skip).limit(limit).toArray();
-    //this.collection.aggregate();
+    const options = PaginationOptions.parse({});
+    const { page, limit/*, search, order*/ } = options;
+    const skip = page * limit;
+    
+    const aggregation = this.collection.aggregate([
+      { $facet: { data: [{ $skip: skip }, { $limit: limit }] } },
+      { $count: "totalElements" },
+      {
+        $project: {
+          _id: 0,
+          data: "$data",
+          totalElements: "$totalElements",
+          //totalPages: { $ceil: { $divide: ["$totalElements", limit] } },
+          rowsPerPage: `${limit}`,
+          page: `${page}`,
+        }
+      }
+    ]);
+
+    try {
+      const otherResult = await this.collection.find().toArray();
+      console.log(otherResult);
+    } catch (err) {
+      console.log(err);
+    }
+
+    const arrayResult = await aggregation.toArray();
+
+    return arrayResult[0] as UserPageableResponseDto;
   }
 
   async findAll(): Promise<User[]> {

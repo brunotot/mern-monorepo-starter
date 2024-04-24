@@ -16,9 +16,7 @@ import {
   withUserRoles,
 } from "@internal";
 
-@Controller("/users", {
-  description: "User management",
-})
+@Controller("/users", { description: "User management" })
 export class UserController {
   @Autowired() userService: UserService;
 
@@ -37,6 +35,12 @@ export class UserController {
     const users = await this.userService.findAll();
     const pageableResponse = users;
     res.json(pageableResponse);
+  }
+
+  @GetMapping("/pagination")
+  async pagination(_req: Request, res: Response) {
+    const paginatedResult = await this.userService.pagination();
+    res.json(paginatedResult);
   }
 
   @PostMapping("", {

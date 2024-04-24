@@ -82,7 +82,7 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
         errors: formattedErrors,
       });
       const errorLogRepository =
-        Bottle.getInstance().inject<ErrorLogRepository>("ErrorLogRepository");
+        Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
       const content = errorResponse.content;
       await errorLogRepository.insertOne(content);
       res.status(content.status).json(content);

@@ -3,7 +3,7 @@ import z from "zod";
 
 const BasePageableResponseDto = z
   .object({
-    content: z.array(z.any()),
+    data: z.array(z.any()),
     totalPages: z.number().openapi({ example: 75 }),
     totalElements: z.number().openapi({ example: 741 }),
     rowsPerPage: z.number().openapi({ example: 10 }),
@@ -16,6 +16,6 @@ Swagger.getInstance().registerSchema("PageableResponseDto", BasePageableResponse
 export function PageableResponseDto<T extends z.ZodType>(schema: T) {
   return BasePageableResponseDto.extend({
     // @ts-expect-error We know shape is a valid property
-    content: z.array(schema).openapi({ items: schema.shape }),
+    data: z.array(schema).openapi({ items: schema.shape }),
   }).describe("");
 }

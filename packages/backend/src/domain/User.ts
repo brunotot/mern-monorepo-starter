@@ -2,7 +2,7 @@ import { Role } from "@org/shared";
 import { ObjectId } from "mongodb";
 import z from "zod";
 
-import { Swagger } from "@internal";
+import { Swagger, PageableResponseDto } from "@internal";
 
 export const User = z
   .object({
@@ -16,5 +16,9 @@ export const User = z
   .describe("User");
 
 Swagger.getInstance().registerSchema("User", User);
+
+export const UserPageableResponseDto = PageableResponseDto(User);
+
+export type UserPageableResponseDto = z.infer<typeof UserPageableResponseDto>;
 
 export type User = z.infer<typeof User>;

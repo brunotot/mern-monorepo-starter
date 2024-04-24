@@ -50,7 +50,7 @@ export function Route<This, Fn extends RouteHandler>(props: RouteProps) {
             : new ErrorResponse(req, HttpStatus.INTERNAL_SERVER_ERROR, (error as TODO).message);
         const errorContent = errorResponse.content;
         const errorLogRepository =
-          Bottle.getInstance().inject<ErrorLogRepository>("ErrorLogRepository");
+          Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
         await errorLogRepository.insertOne(errorContent);
         return res.status(errorContent.status).json(errorContent);
       }
