@@ -3,12 +3,10 @@ import type { Db, Document as MongoDocument } from "mongodb";
 
 import { Environment, MongoClient } from "@config";
 import { type PaginationResult } from "@domain";
-import {
-  type PaginationOptions,
-  type PaginableRepository,
-  buildMatchPipeline,
-  buildSortPipeline,
-} from "@infrastructure";
+import { buildSortPipeline } from "@infrastructure/mongodb/sort";
+import { buildMatchPipeline } from "@infrastructure/mongodb/match";
+import { type PaginableRepository } from "@infrastructure/repository/interface/PaginableRepository";
+import { type PaginationOptions } from "@infrastructure/repository/impl/UserRepositoryImpl";
 
 export abstract class MongoRepository<T extends MongoDocument> implements PaginableRepository<T> {
   readonly #db: Db;

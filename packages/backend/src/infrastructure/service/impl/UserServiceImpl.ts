@@ -1,8 +1,10 @@
 import type { TODO } from "@org/shared";
 
 import type { PaginationResult, User } from "@domain";
-import type { PaginationOptions, UserRepository, UserService } from "@infrastructure";
 import { Autowired, Injectable } from "@decorators";
+import { type PaginationOptions } from "@infrastructure/repository/impl/UserRepositoryImpl";
+import { type UserRepository } from "@infrastructure/repository/interface/UserRepository";
+import { type UserService } from "@infrastructure/service/UserService";
 
 @Injectable()
 export class UserServiceImpl implements UserService {

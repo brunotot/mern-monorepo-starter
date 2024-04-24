@@ -1,7 +1,9 @@
 import { Repository /*, Transactional*/ } from "@decorators";
 import { ErrorLog } from "@domain";
-import { type ErrorLogRepository, MongoRepository } from "@infrastructure";
 import { ObjectId } from "mongodb";
+
+import { MongoRepository } from "@infrastructure/repository/MongoRepository";
+import { type ErrorLogRepository } from "@infrastructure/repository/interface/ErrorLogRepository";
 
 @Repository(ErrorLog)
 export class ErrorLogRepositoryImpl

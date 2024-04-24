@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import z from "zod";
 
 import { Swagger } from "@config";
-import { PageableResponseDto } from "@domain";
+import { PageableResponseDto } from "@domain/PageableResponseDto";
 
 export const User = z
   .object({

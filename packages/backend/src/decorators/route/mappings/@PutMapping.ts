@@ -1,5 +1,5 @@
 import type { RouteHandler, SwaggerPath } from "@config";
-import { Route } from "@decorators";
+import { Route } from "@decorators/route/@Route";
 
 export function PutMapping<This, Fn extends RouteHandler>(
   path: string = "",

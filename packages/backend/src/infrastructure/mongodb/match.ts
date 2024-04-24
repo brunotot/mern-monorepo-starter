@@ -1,11 +1,7 @@
 import type { TODO } from "@org/shared";
 
-import {
-  type MongoSearch,
-  type MongoFilters,
-  buildFilterConditions,
-  buildSearchCondition,
-} from "@infrastructure";
+import { type MongoSearch, buildSearchCondition } from "@infrastructure/mongodb/search";
+import { type MongoFilters, buildFilterConditions } from "@infrastructure/mongodb/filters";
 
 export type MongoMatch = {
   search: MongoSearch;

@@ -2,7 +2,7 @@ import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decora
 import type { NextFunction, Request, Response } from "express";
 
 // @backend
-import type { SwaggerPath } from "@config";
+import type { SwaggerPath } from "@config/singleton/Swagger";
 
 export type RouteMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 

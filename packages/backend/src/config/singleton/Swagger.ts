@@ -11,7 +11,8 @@ import type z from "zod";
 import type { Class, TODO } from "@org/shared";
 
 // @backend
-import { Environment, RouteDecoratorManager } from "@config";
+import { Environment } from "@config/singleton/Environment";
+import { RouteDecoratorManager } from "@config/singleton/RouteDecoratorManager";
 
 export class Swagger {
   private static instance: Swagger;

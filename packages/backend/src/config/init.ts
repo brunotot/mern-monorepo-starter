@@ -1,8 +1,8 @@
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
 import { z } from "zod";
 
-import { Environment } from "./singleton/Environment";
-import { Swagger } from "./singleton/Swagger";
+import { Environment } from "@config/singleton/Environment";
+import { Swagger } from "@config/singleton/Swagger";
 
 extendZodWithOpenApi(z);
 Environment.getInstance();

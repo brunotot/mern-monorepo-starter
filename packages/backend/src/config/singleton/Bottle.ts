@@ -5,7 +5,8 @@ import { type Class } from "@org/shared";
 // @backend
 //import { InjectionDecoratorManager } from "./InjectionDecoratorManager";
 //import { RouteDecoratorManager } from "./RouteDecoratorManager";
-import { InjectionDecoratorManager, RouteDecoratorManager } from "@config";
+import { InjectionDecoratorManager } from "@config/singleton/InjectionDecoratorManager";
+import { RouteDecoratorManager } from "@config/singleton/RouteDecoratorManager";
 
 export class Bottle {
   private static instance: Bottle;

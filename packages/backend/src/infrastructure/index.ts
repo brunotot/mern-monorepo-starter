@@ -2,7 +2,6 @@ export * from "./repository/interface/PaginableRepository";
 export * from "./mongodb/search";
 export * from "./mongodb/sort";
 export * from "./mongodb/filters";
-export * from "./errors/ResponseError";
 export * from "./repository/MongoRepository";
 export * from "./mongodb/match";
 export * from "./repository/interface/UserRepository";

@@ -14,7 +14,8 @@ import {
   type RouteHandler,
 } from "@config";
 import { ErrorLog } from "@domain";
-import { type ErrorLogRepository, ErrorResponse } from "@infrastructure";
+import { type ErrorLogRepository } from "@infrastructure";
+import { ErrorResponse } from "@errors";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;

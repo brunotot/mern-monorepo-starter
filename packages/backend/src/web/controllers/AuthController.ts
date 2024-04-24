@@ -6,7 +6,8 @@ import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 
 import { Environment, Swagger } from "@config";
-import { LoginForm, LoginResponseDto } from "@web";
+import { LoginForm } from "@web/form/LoginForm";
+import { LoginResponseDto } from "@web/dto/LoginResponseDto";
 import { type UserRepository, withValidatedBody } from "@infrastructure";
 import { Autowired, Controller, Use, PostMapping } from "@decorators";
 

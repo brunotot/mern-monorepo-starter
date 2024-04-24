@@ -4,7 +4,7 @@
 
 import type { RequestHandler } from "express";
 
-import { ErrorResponse } from "@infrastructure";
+import { ErrorResponse } from "@errors";
 import type { HttpStatusNumeric } from "@config";
 
 export function withExpressOverrides(): RequestHandler {
