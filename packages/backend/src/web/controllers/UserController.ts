@@ -2,20 +2,16 @@ import { Role } from "@org/shared";
 import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 
-import type { PaginationOptions, UserService } from "@internal";
+import { Swagger } from "@config";
 import {
-  Autowired,
-  Controller,
-  GetMapping,
-  PageableResponseDto,
-  PostMapping,
-  Swagger,
-  Use,
-  User,
+  type PaginationOptions,
   withJwt,
   withPaginableParams,
   withUserRoles,
-} from "@internal";
+  type UserService,
+} from "@infrastructure";
+import { Autowired, Controller, Use, PostMapping, GetMapping } from "@decorators";
+import { PageableResponseDto, User } from "@domain";
 
 @Controller("/users", { description: "User management" })
 export class UserController {

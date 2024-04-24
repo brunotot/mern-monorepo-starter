@@ -1,7 +1,13 @@
-import type { MongoFilters, MongoSearch, MongoSort, UserRepository } from "@internal";
-
 import { ObjectId } from "mongodb";
-import { MongoRepository, Repository, User } from "@internal";
+import {
+  MongoRepository,
+  type MongoFilters,
+  type MongoSearch,
+  type MongoSort,
+  type UserRepository,
+} from "@infrastructure";
+import { Repository } from "@decorators";
+import { User } from "@domain";
 
 export type PaginationOptions = Partial<{
   filters: MongoFilters;

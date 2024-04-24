@@ -1,6 +1,4 @@
-import type { OpenApiZodAny } from "@anatine/zod-openapi";
-import { generateSchema } from "@anatine/zod-openapi";
-import type { Class, TODO } from "@org/shared";
+import { type OpenApiZodAny, generateSchema } from "@anatine/zod-openapi";
 import type express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -9,8 +7,11 @@ import type { oas31 } from "openapi3-ts";
 import type { ReferenceObject, SchemaObject } from "openapi3-ts/oas31";
 import type z from "zod";
 
-import { Environment } from "./Environment";
-import { RouteDecoratorManager } from "./RouteDecoratorManager";
+// @shared
+import type { Class, TODO } from "@org/shared";
+
+// @backend
+import { Environment, RouteDecoratorManager } from "@config";
 
 export class Swagger {
   private static instance: Swagger;

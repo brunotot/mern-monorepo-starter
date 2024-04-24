@@ -16,8 +16,11 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@internal": ["./src/internal"],
-      "@types": ["./src/@types"],
+      "@config": ["./src/config/index"],
+      "@decorators": ["./src/decorators/index"],
+      "@domain": ["./src/domain/index"],
+      "@infrastructure": ["./src/infrastructure/index"],
+      "@web": ["./src/web/index"],
       "@org/shared": ["../shared/src"],
       "@org/shared/*": ["../shared/src/*"]
     }

@@ -1,5 +1,6 @@
-import { Bottle, Environment, GLOBAL_MIDDLEWARES, Logger, MongoClient, Swagger } from "@internal";
 import express from "express";
+import { Bottle, Environment, Logger, MongoClient, Swagger } from "@config";
+import { GLOBAL_MIDDLEWARES } from "@infrastructure";
 
 export class App {
   public readonly app: express.Application;

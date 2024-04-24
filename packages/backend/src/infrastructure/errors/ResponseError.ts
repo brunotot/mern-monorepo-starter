@@ -1,8 +1,8 @@
 import type { Request } from "express";
 import HttpStatus from "http-status";
 
-import type { ErrorLog } from "@internal";
-import type { HttpStatusNumeric } from "@internal";
+import type { HttpStatusNumeric } from "@config";
+import type { ErrorLog } from "@domain";
 
 export class ErrorResponse extends Error {
   stack: string | undefined;

@@ -5,7 +5,8 @@ import { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
 
-import { Environment } from "./Environment";
+// @backend
+import { Environment } from "@config";
 
 export class Logger {
   private static instance: Logger;

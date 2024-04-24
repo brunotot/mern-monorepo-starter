@@ -1,7 +1,5 @@
-import type { TODO } from "@org/shared";
-
-import type { ClassMetadataInjectType } from "@tsvdec/decorators";
-import { ClassMetadataEntry } from "@tsvdec/decorators";
+import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decorators";
+import { type TODO } from "@org/shared";
 
 export type InjectionMetaItem = {
   name: string;

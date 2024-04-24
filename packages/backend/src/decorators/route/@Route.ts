@@ -1,16 +1,20 @@
 import type { TODO } from "@org/shared";
 import type { Request, Response } from "express";
-import type {
-  ErrorLogRepository,
-  RequestMappingProps,
-  RouteHandler,
-  HttpStatusNumeric,
-  SwaggerPath,
-} from "@internal";
-
 import HttpStatus from "http-status";
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { Bottle, ErrorLog, ErrorResponse, Logger, RouteDecoratorManager, Swagger } from "@internal";
+
+import {
+  Bottle,
+  Logger,
+  RouteDecoratorManager,
+  Swagger,
+  type SwaggerPath,
+  type HttpStatusNumeric,
+  type RequestMappingProps,
+  type RouteHandler,
+} from "@config";
+import { ErrorLog } from "@domain";
+import { type ErrorLogRepository, ErrorResponse } from "@infrastructure";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;

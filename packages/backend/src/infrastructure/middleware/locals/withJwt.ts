@@ -1,4 +1,4 @@
-import { Environment } from "@internal";
+import { Environment } from "@config";
 import type { TODO } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { VerifyErrors } from "jsonwebtoken";

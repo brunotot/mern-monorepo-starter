@@ -1,6 +1,6 @@
 import type { RequestHandler, Request } from "express";
 
-import type { MongoSort, PaginationOptions } from "@internal";
+import type { MongoSort, PaginationOptions } from "@infrastructure";
 
 function buildPaginationOptions(req: Request): PaginationOptions {
   const query = req.query;

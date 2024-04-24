@@ -8,7 +8,8 @@
     "build": "rm -rf dist && npm run compile:ts",
     "compile:ts": "tsc && npm run tsc-alias",
     "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
-    "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
+    "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "dependency-test": "npm run build && npx madge --image graph.png --extensions js ./dist/backend/src/index.js"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -53,6 +54,7 @@
     "@types/node": "^20.11.22",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
+    "madge": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

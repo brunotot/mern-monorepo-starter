@@ -1,10 +1,11 @@
-import type { Class } from "@org/shared";
+import { type default as express, Router } from "express";
 import { default as BottleJs } from "bottlejs";
-import type express from "express";
-import { Router } from "express";
+import { type Class } from "@org/shared";
 
-import { InjectionDecoratorManager } from "./InjectionDecoratorManager";
-import { RouteDecoratorManager } from "./RouteDecoratorManager";
+// @backend
+//import { InjectionDecoratorManager } from "./InjectionDecoratorManager";
+//import { RouteDecoratorManager } from "./RouteDecoratorManager";
+import { InjectionDecoratorManager, RouteDecoratorManager } from "@config";
 
 export class Bottle {
   private static instance: Bottle;

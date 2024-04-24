@@ -1,8 +1,7 @@
 import type { MethodDecoratorDef } from "@tsvdec/decorators";
-import type { RouteHandler, RouteMiddlewareHandler } from "@internal";
-
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { RouteDecoratorManager } from "@internal";
+
+import { RouteDecoratorManager, type RouteHandler, type RouteMiddlewareHandler } from "@config";
 
 export function Use<This, Fn extends RouteHandler>(
   ...handlers: RouteMiddlewareHandler[]

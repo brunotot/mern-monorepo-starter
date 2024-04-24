@@ -3,8 +3,8 @@ import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
 
-import type { ErrorLogRepository } from "@internal";
-import { Bottle, ErrorResponse } from "@internal";
+import { type ErrorLogRepository, ErrorResponse } from "@infrastructure";
+import { Bottle } from "@config";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
   return async (req, res, next) => {

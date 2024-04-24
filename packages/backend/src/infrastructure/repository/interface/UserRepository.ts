@@ -1,4 +1,5 @@
-import { type PaginableRepository, type User } from "@internal";
+import { type User } from "@domain";
+import { type PaginableRepository } from "@infrastructure";
 
 export interface UserRepository extends PaginableRepository<User> {
   findOne: (filters: Partial<User>) => Promise<User | null>;

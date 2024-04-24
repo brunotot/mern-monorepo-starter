@@ -1,6 +1,6 @@
 // import "@tsvdec/decorators";
 //! TODO: Uncomment if any errors from library
-
+import "./internal";
 import "./config";
 
 process.on("uncaughtException", err => {

@@ -1,12 +1,9 @@
-// Zod: adds openapi() method to Zod objects
-import { extendZodWithOpenApi } from "@anatine/zod-openapi";
-import { z } from "zod";
-extendZodWithOpenApi(z);
+export * from "./singleton/Bottle";
+export * from "./singleton/Environment";
+export * from "./singleton/InjectionDecoratorManager";
+export * from "./singleton/Logger";
+export * from "./singleton/MongoClient";
+export * from "./singleton/RouteDecoratorManager";
+export * from "./singleton/Swagger";
 
-// Environment: loads and validates environment variables
-import { Environment } from "./singleton/Environment";
-Environment.getInstance();
-
-// Swagger: initialize Swagger with default values
-import { Swagger } from "./singleton/Swagger";
-Swagger.getInstance();
+import "./init";

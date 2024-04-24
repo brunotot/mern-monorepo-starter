@@ -5,23 +5,15 @@ import HttpStatus from "http-status";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 
-import type { Environment, UserRepository } from "@internal";
-import {
-  Autowired,
-  Controller,
-  LoginForm,
-  PostMapping,
-  Swagger,
-  Use,
-  withValidatedBody,
-  LoginResponseDto,
-} from "@internal";
+import { Environment, Swagger } from "@config";
+import { LoginForm, LoginResponseDto } from "@web";
+import { type UserRepository, withValidatedBody } from "@infrastructure";
+import { Autowired, Controller, Use, PostMapping } from "@decorators";
 
 @Controller("/auth", {
   description: "Authentication",
 })
 export class AuthController {
-  @Autowired() environment: Environment;
   @Autowired() userRepository: UserRepository;
 
   @Use(withValidatedBody(LoginForm))
@@ -61,12 +53,12 @@ export class AuthController {
             roles: roles,
           },
         },
-        this.environment.vars.ACCESS_TOKEN_SECRET,
+        Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" },
       );
       const newRefreshToken = jwt.sign(
         { username: foundUser.username },
-        this.environment.vars.REFRESH_TOKEN_SECRET,
+        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" },
       );
 
@@ -174,7 +166,7 @@ export class AuthController {
     if (!foundUser) {
       jwt.verify(
         refreshToken,
-        this.environment.vars.REFRESH_TOKEN_SECRET,
+        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
         async (err: VerifyErrors | null, decoded: TODO) => {
           if (err) return res.sendError(403); //Forbidden
           // Delete refresh tokens of hacked user
@@ -192,7 +184,7 @@ export class AuthController {
     // evaluate jwt
     jwt.verify(
       refreshToken,
-      this.environment.vars.REFRESH_TOKEN_SECRET,
+      Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
       async (err: VerifyErrors | null, decoded: TODO) => {
         if (err) {
           // expired refresh token
@@ -210,13 +202,13 @@ export class AuthController {
               roles: roles,
             },
           },
-          this.environment.vars.ACCESS_TOKEN_SECRET,
+          Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
           { expiresIn: "15m" },
         );
 
         const newRefreshToken = jwt.sign(
           { username: foundUser.username },
-          this.environment.vars.REFRESH_TOKEN_SECRET,
+          Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
           { expiresIn: "7d" },
         );
         // Saving refreshToken with current user

@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import z from "zod";
 
-import { Swagger } from "@internal";
+import { Swagger } from "@config";
 
 export const ErrorLog = z
   .object({

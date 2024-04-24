@@ -1,7 +1,8 @@
 import type { Class } from "@org/shared";
 import type z from "zod";
 
-import { Injectable, InjectionDecoratorManager } from "@internal";
+import { InjectionDecoratorManager } from "@config";
+import { Injectable } from "@decorators";
 
 export function Repository<This extends Class>(zodSchema: z.AnyZodObject) {
   const modelName = zodSchema.description;

@@ -2,7 +2,8 @@ import { Role } from "@org/shared";
 import { ObjectId } from "mongodb";
 import z from "zod";
 
-import { Swagger, PageableResponseDto } from "@internal";
+import { Swagger } from "@config";
+import { PageableResponseDto } from "@domain";
 
 export const User = z
   .object({

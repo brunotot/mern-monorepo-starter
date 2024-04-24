@@ -1,5 +1,6 @@
-import type { ErrorLogRepository } from "@internal";
-import { ErrorLog, MongoRepository, Repository /*, Transactional*/ } from "@internal";
+import { Repository /*, Transactional*/ } from "@decorators";
+import { ErrorLog } from "@domain";
+import { type ErrorLogRepository, MongoRepository } from "@infrastructure";
 import { ObjectId } from "mongodb";
 
 @Repository(ErrorLog)

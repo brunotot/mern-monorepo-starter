@@ -4,8 +4,8 @@
 
 import type { RequestHandler } from "express";
 
-import { ErrorResponse } from "@internal";
-import type { HttpStatusNumeric } from "@internal";
+import { ErrorResponse } from "@infrastructure";
+import type { HttpStatusNumeric } from "@config";
 
 export function withExpressOverrides(): RequestHandler {
   return (req, res, next) => {

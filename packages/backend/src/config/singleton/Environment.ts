@@ -1,8 +1,8 @@
-import type { TODO } from "@org/shared";
 import { getDirname } from "cross-dirname";
 import dotenv from "dotenv";
 import path from "path";
 import z from "zod";
+import type { TODO } from "@org/shared";
 
 export class Environment {
   private static instance: Environment;

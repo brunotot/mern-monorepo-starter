@@ -1,4 +1,5 @@
-import { type PaginationOptions, type PaginationResult, type User } from "@internal";
+import { type PaginationOptions } from "@infrastructure";
+import { type PaginationResult, type User } from "@domain";
 
 export interface UserService {
   search: (options?: PaginationOptions) => Promise<PaginationResult<User>>;

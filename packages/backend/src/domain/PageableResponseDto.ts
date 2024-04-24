@@ -1,5 +1,6 @@
-import { Swagger } from "@internal";
 import z from "zod";
+
+import { Swagger } from "@config";
 
 const BasePageableResponseDto = z
   .object({

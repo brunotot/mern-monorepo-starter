@@ -1,4 +1,4 @@
-import type { HttpStatusNumeric } from "@internal";
+import type { HttpStatusNumeric } from "@";
 
 declare global {
   namespace Express {

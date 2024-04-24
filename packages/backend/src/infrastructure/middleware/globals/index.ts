@@ -9,7 +9,7 @@ import {
   withJsonParserMiddleware,
   withMorganMiddleware,
   withUrlEncodedMiddleware
-} from "@internal";
+} from "@infrastructure";
 
 export const GLOBAL_MIDDLEWARES = [
   withMorganMiddleware,

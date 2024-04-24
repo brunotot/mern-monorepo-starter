@@ -1,7 +1,8 @@
 import type { MongoClientOptions } from "mongodb";
 import { MongoClient as MongoClientNative } from "mongodb";
 
-import { Environment } from "./Environment";
+// @backend
+import { Environment } from "@config";
 
 function buildMongoUri(): string {
   // TODO: DB_DATABASE is unnecessary.
