@@ -68,4 +68,5 @@ export * from "./infrastructure/middleware/locals/withJwt";
 export * from "./infrastructure/middleware/locals/withRateLimit";
 export * from "./infrastructure/middleware/locals/withUserRoles";
 export * from "./infrastructure/middleware/locals/withValidatedBody";
+export * from "./infrastructure/middleware/locals/withPaginableParams";
 export * from "./infrastructure/middleware/globals/index";
