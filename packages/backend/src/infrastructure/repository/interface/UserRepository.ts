@@ -1,7 +1,6 @@
-import type { User, UserPageableResponseDto } from "@internal";
+import { type PaginableRepository, type User } from "@internal";
 
-export interface UserRepository {
-  pagination: () => Promise<UserPageableResponseDto>;
+export interface UserRepository extends PaginableRepository<User> {
   findOne: (filters: Partial<User>) => Promise<User | null>;
   findAll: () => Promise<User[]>;
   insertOne: (user: Omit<User, "_id">) => Promise<User>;

@@ -15,6 +15,7 @@ function isClientSession(obj: TODO): obj is ClientSession {
   );
 }
 
+// TODO: Not working properly, fix later
 export function Transactional() {
   return createMethodDecorator(({ target: fn, meta }) => {
     const context = meta.context;

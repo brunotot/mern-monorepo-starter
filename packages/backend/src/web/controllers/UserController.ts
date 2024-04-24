@@ -2,7 +2,7 @@ import { Role } from "@org/shared";
 import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 
-import type { UserService } from "@internal";
+import type { MongoSort, PaginationOptions, UserService } from "@internal";
 import {
   Autowired,
   Controller,
@@ -38,8 +38,29 @@ export class UserController {
   }
 
   @GetMapping("/pagination")
-  async pagination(_req: Request, res: Response) {
-    const paginatedResult = await this.userService.pagination();
+  async pagination(req: Request, res: Response) {
+    const buildPaginationOptions = (req: Request): PaginationOptions => {
+      const query = req.query;
+      const page = query.page ? parseInt(query.page as string) : 0;
+      const limit = query.limit ? parseInt(query.limit as string) : 10;
+      const sort = query.sort
+        ? (query.sort as string).split(",").map(value => value.split("|"))
+        : [];
+      const textSearch = (query.search as string) ?? "";
+      return {
+        filters: {},
+        sort: sort as MongoSort,
+        page,
+        limit,
+        search: {
+          fields: ["username", "email"],
+          regex: textSearch,
+        },
+      };
+    };
+
+    const paginationOptions = buildPaginationOptions(req);
+    const paginatedResult = await this.userService.search(paginationOptions);
     res.json(paginatedResult);
   }
 

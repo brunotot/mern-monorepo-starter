@@ -19,3 +19,11 @@ export function PageableResponseDto<T extends z.ZodType>(schema: T) {
     data: z.array(schema).openapi({ items: schema.shape }),
   }).describe("");
 }
+
+export type PaginationResult<T> = {
+  data: T[];
+  totalPages: number;
+  totalElements: number;
+  rowsPerPage: number;
+  page: number;
+};

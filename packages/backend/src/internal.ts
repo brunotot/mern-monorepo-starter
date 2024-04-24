@@ -1,3 +1,11 @@
+export * from "./infrastructure/repository/interface/PaginableRepository";
+
+/* @mongodb */
+export * from "./infrastructure/mongodb/search";
+export * from "./infrastructure/mongodb/sort";
+export * from "./infrastructure/mongodb/filters";
+export * from "./infrastructure/mongodb/match";
+
 /* @config */
 export * from "./config/singleton/Bottle";
 export * from "./config/singleton/Environment";
@@ -39,8 +47,8 @@ export * from "./decorators/route/middleware/@Use";
 /* @infrastructure */
 export * from "./infrastructure/errors/ResponseError";
 export * from "./infrastructure/repository/MongoRepository";
-export * from "./infrastructure/repository/UserRepository";
-export * from "./infrastructure/repository/ErrorLogRepository";
+export * from "./infrastructure/repository/interface/UserRepository";
+export * from "./infrastructure/repository/interface/ErrorLogRepository";
 export * from "./infrastructure/repository/impl/UserRepositoryImpl";
 export * from "./infrastructure/repository/impl/ErrorLogRepositoryImpl";
 export * from "./infrastructure/service/UserService";

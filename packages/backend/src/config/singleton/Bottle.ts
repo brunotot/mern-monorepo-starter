@@ -68,8 +68,23 @@ export class Bottle {
     const sortedInjectionClasses = sortInjectionClasses(injectionClasses, dependencySchema);
 
     sortedInjectionClasses.forEach(Class => {
-      const name = InjectionDecoratorManager.from(Class).value.name;
-      this.bottle.service(name, Class, ...dependencySchema[name]);
+      const manager = InjectionDecoratorManager.from(Class);
+      const decoration = manager.value;
+      const name = decoration.name;
+      const constructorParams = decoration.constructorParams;
+      if (constructorParams.length > 0) {
+        this.bottle.factory(name, container => {
+          const instance = new Class(...constructorParams);
+          const dependencies = dependencySchema[name];
+          dependencies.forEach(dependencyName => {
+            const dependencyInstance = container[dependencyName];
+            instance[dependencyName] = dependencyInstance;
+          });
+          return instance;
+        });
+      } else {
+        this.bottle.service(name, Class, ...dependencySchema[name]);
+      }
     });
   }
 }

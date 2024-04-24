@@ -10,7 +10,7 @@ import type {
 
 import HttpStatus from "http-status";
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { Bottle, ErrorLog, ErrorResponse, RouteDecoratorManager, Swagger } from "@internal";
+import { Bottle, ErrorLog, ErrorResponse, Logger, RouteDecoratorManager, Swagger } from "@internal";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
   swagger?: SwaggerPath;
@@ -51,7 +51,11 @@ export function Route<This, Fn extends RouteHandler>(props: RouteProps) {
         const errorContent = errorResponse.content;
         const errorLogRepository =
           Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
-        await errorLogRepository.insertOne(errorContent);
+        try {
+          await errorLogRepository.insertOne(errorContent);
+        } catch (error) {
+          Logger.getInstance().logger.error("Error logging failed", error);
+        }
         return res.status(errorContent.status).json(errorContent);
       }
     }

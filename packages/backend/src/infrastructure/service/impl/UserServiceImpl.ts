@@ -1,14 +1,20 @@
 import type { TODO } from "@org/shared";
 
-import type { User, UserPageableResponseDto, UserRepository, UserService } from "@internal";
+import type {
+  PaginationOptions,
+  PaginationResult,
+  User,
+  UserRepository,
+  UserService,
+} from "@internal";
 import { Autowired, Injectable } from "@internal";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
   @Autowired() userRepository: UserRepository;
 
-  async pagination(): Promise<UserPageableResponseDto> {
-    return this.userRepository.pagination();
+  async search(options?: PaginationOptions): Promise<PaginationResult<User>> {
+    return this.userRepository.search(options);
   }
 
   async findAll(): Promise<User[]> {

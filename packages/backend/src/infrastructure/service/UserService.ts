@@ -1,7 +1,7 @@
-import type { User, UserPageableResponseDto } from "@internal";
+import { type PaginationOptions, type PaginationResult, type User } from "@internal";
 
 export interface UserService {
-  pagination: () => Promise<UserPageableResponseDto>;
+  search: (options?: PaginationOptions) => Promise<PaginationResult<User>>;
   findAll: () => Promise<User[]>;
   create: (user: User) => Promise<User>;
 }
