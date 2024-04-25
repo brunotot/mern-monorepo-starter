@@ -2,14 +2,19 @@ import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decora
 import type { NextFunction, Request, Response } from "express";
 import { type OperationObject } from "openapi3-ts/oas31";
 
+// rjeseno
 export type RouteMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 
+// rjeseno
 export type RouteMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 
+// rjeseno
 export type RouteHandler = (req: Request, res: Response) => Promise<void | Response>;
 
+// rjeseno
 export type RouteMiddlewareHandler = (req: Request, res: Response, next: NextFunction) => void;
 
+// rjeseno
 export type RequestMappingProps = {
   name: string;
   method: RouteMethod;

@@ -7,7 +7,7 @@ import type { OpenAPIObject, OperationObject, SchemaObject, TagObject } from "op
 import type z from "zod";
 import type { Class, TODO } from "@org/shared";
 import { Environment } from "@config/singleton/Environment";
-import { RouteDecoratorManager } from "@config/singleton/RouteDecoratorManager";
+import { RouteDecoratorManager, type RouteMethod } from "@config/singleton/RouteDecoratorManager";
 
 // Local types
 type Values<T> = T[keyof T];
@@ -17,7 +17,6 @@ type HttpResponseStatusRecord = Exclude<FilterNumbers<typeof HttpStatus>, never>
 
 /** 100 | 101 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226 | 300 | 301 | 302 | 303 | 304 | 305 | 306 | 307 | 308 | 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | ... 27 more ... | 511 */
 export type HttpResponseStatus = Values<HttpResponseStatusRecord>;
-export type HttpRequestMethod = "put" | "get" | "post" | "delete" | "patch" | "options" | "head";
 
 export class Swagger {
   private static instance: Swagger;
@@ -124,7 +123,7 @@ export class Swagger {
     return swaggerJsdoc({ definition: this.definition, apis: [] });
   }
 
-  #registerPath(path: string, requestMapping: HttpRequestMethod, data: OperationObject) {
+  #registerPath(path: string, requestMapping: RouteMethod, data: OperationObject) {
     if (!this.definition.paths![path]) this.definition!.paths![path] = {};
     this.definition.paths![path][requestMapping] = data;
   }

@@ -13,6 +13,8 @@ export * from "@models/factory/PageableResponseDto/index";
 export * from "@models/form/LoginForm";
 
 // @models/locals
+export * from "@models/locals/RouteMethod";
+export * from "@models/locals/RouteMiddleware";
 export * from "@models/locals/MongoFilters";
 export * from "@models/locals/MongoMatch";
 export * from "@models/locals/MongoSearch";
