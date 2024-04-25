@@ -1,4 +1,4 @@
-import { type User } from "@domain";
+import { type User } from "@models";
 import { type PaginableRepository } from "@infrastructure/repository/interface/PaginableRepository";
 
 export interface UserRepository extends PaginableRepository<User> {

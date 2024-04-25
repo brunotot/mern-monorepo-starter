@@ -1,8 +1,6 @@
 import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decorators";
 import type { NextFunction, Request, Response } from "express";
-
-// @backend
-import type { SwaggerPath } from "@config/singleton/Swagger";
+import { type OperationObject } from "openapi3-ts/oas31";
 
 export type RouteMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 
@@ -21,7 +19,7 @@ export type RequestMappingProps = {
 
 export type RequestRoute = RequestMappingProps & {
   handler: RouteHandler;
-  swagger?: SwaggerPath;
+  swagger?: OperationObject;
 };
 
 export type RoutesMetaItem = {

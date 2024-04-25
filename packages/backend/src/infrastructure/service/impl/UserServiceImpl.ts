@@ -1,8 +1,8 @@
 import type { TODO } from "@org/shared";
 
-import type { PaginationResult, User } from "@domain";
+import type { PaginationResult, User } from "@models";
 import { Autowired, Injectable } from "@decorators";
-import { type PaginationOptions } from "@infrastructure/repository/impl/UserRepositoryImpl";
+import { type PaginationOptions } from "@models";
 import { type UserRepository } from "@infrastructure/repository/interface/UserRepository";
 import { type UserService } from "@infrastructure/service/UserService";
 

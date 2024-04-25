@@ -2,11 +2,9 @@ import type { TODO } from "@org/shared";
 import type { Db, Document as MongoDocument } from "mongodb";
 
 import { Environment, MongoClient } from "@config";
-import { type PaginationResult } from "@domain";
-import { buildSortPipeline } from "@infrastructure/mongodb/sort";
-import { buildMatchPipeline } from "@infrastructure/mongodb/match";
+import { type PaginationOptions, type PaginationResult } from "@models";
 import { type PaginableRepository } from "@infrastructure/repository/interface/PaginableRepository";
-import { type PaginationOptions } from "@infrastructure/repository/impl/UserRepositoryImpl";
+import { buildMatchPipeline, buildSortPipeline } from "@utils";
 
 export abstract class MongoRepository<T extends MongoDocument> implements PaginableRepository<T> {
   readonly #db: Db;

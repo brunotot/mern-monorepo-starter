@@ -1,20 +1,9 @@
 import { ObjectId } from "mongodb";
 import { Repository } from "@decorators";
-import { User } from "@domain";
+import { User } from "@models";
 
 import { MongoRepository } from "@infrastructure/repository/MongoRepository";
 import { type UserRepository } from "@infrastructure/repository/interface/UserRepository";
-import { type MongoFilters } from "@infrastructure/mongodb/filters";
-import { type MongoSearch } from "@infrastructure/mongodb/search";
-import { type MongoSort } from "@infrastructure/mongodb/sort";
-
-export type PaginationOptions = Partial<{
-  filters: MongoFilters;
-  search: MongoSearch;
-  sort: MongoSort;
-  page: number;
-  limit: number;
-}>;
 
 @Repository(User)
 export class UserRepositoryImpl extends MongoRepository<User> implements UserRepository {

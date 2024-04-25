@@ -9,6 +9,7 @@ declare global {
         metadata?: Record<string, unknown>,
       ) => never;
     }
+
     export interface Request {
       decoratorContext: DecoratorContext;
     }

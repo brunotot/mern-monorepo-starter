@@ -10,7 +10,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["node_modules/", "dist/", "logger.js", "docs/", "generate-index.js"],
+  "ignorePatterns": ["node_modules/", "dist/", "logger.js", "docs/"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "error"
   }

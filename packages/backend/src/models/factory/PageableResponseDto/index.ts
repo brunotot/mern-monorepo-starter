@@ -10,15 +10,18 @@ const BasePageableResponseDto = z
     rowsPerPage: z.number().openapi({ example: 10 }),
     page: z.number().openapi({ example: 0 }),
   })
-  .describe("PageableResponse");
+  .describe("PageableResponseDto");
 
 Swagger.getInstance().registerSchema("PageableResponseDto", BasePageableResponseDto);
 
-export function PageableResponseDto<T extends z.ZodType>(schema: T) {
+export function PageableResponseDto<T extends z.AnyZodObject>(schema: T) {
   return BasePageableResponseDto.extend({
-    // @ts-expect-error We know shape is a valid property
-    data: z.array(schema).openapi({ items: schema.shape }),
-  }).describe("");
+    data: z.array(schema).openapi({
+      items: { ...Swagger.getInstance().getRefData(schema) },
+    }),
+  })
+    .describe("")
+    .openapi({ title: `${PageableResponseDto.name}(${schema.description})` });
 }
 
 export type PaginationResult<T> = {

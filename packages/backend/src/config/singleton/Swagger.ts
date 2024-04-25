@@ -3,16 +3,21 @@ import type express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import type HttpStatus from "http-status";
-import type { oas31 } from "openapi3-ts";
-import type { ReferenceObject, SchemaObject } from "openapi3-ts/oas31";
+import type { OpenAPIObject, OperationObject, SchemaObject, TagObject } from "openapi3-ts/oas31";
 import type z from "zod";
-
-// @shared
 import type { Class, TODO } from "@org/shared";
-
-// @backend
 import { Environment } from "@config/singleton/Environment";
 import { RouteDecoratorManager } from "@config/singleton/RouteDecoratorManager";
+
+// Local types
+type Values<T> = T[keyof T];
+type FilterNumbers<T> = { [K in keyof T]: T[K] extends number ? T[K] : never };
+type Exclude<T, E> = Pick<T, Values<{ [K in keyof T]: [T[K]] extends [E] ? never : K }>>;
+type HttpResponseStatusRecord = Exclude<FilterNumbers<typeof HttpStatus>, never>;
+
+/** 100 | 101 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226 | 300 | 301 | 302 | 303 | 304 | 305 | 306 | 307 | 308 | 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | ... 27 more ... | 511 */
+export type HttpResponseStatus = Values<HttpResponseStatusRecord>;
+export type HttpRequestMethod = "put" | "get" | "post" | "delete" | "patch" | "options" | "head";
 
 export class Swagger {
   private static instance: Swagger;
@@ -22,7 +27,7 @@ export class Swagger {
     return Swagger.instance;
   }
 
-  readonly definition: SwaggerDefinition;
+  readonly definition: OpenAPIObject;
   readonly controllerClasses: Class[];
 
   private constructor() {
@@ -77,14 +82,14 @@ export class Swagger {
   public registerSchema(name: string, schema: z.AnyZodObject) {
     const description = name;
     if (!description) throw new Error("Schema must have a description");
-    this.definition.components.schemas![description] = this.#generateSwaggerSchema(schema);
+    this.definition.components!.schemas![description] = this.#generateSwaggerSchema(schema);
   }
 
-  public registerTag(tagData: SwaggerTag & { constructor: Class }) {
-    if (this.definition.tags.some(t => t.name === tagData.name)) return;
+  public registerTag(tagData: TagObject & { constructor: Class }) {
+    if (this.definition.tags!.some(t => t.name === tagData.name)) return;
     const { constructor, ...tag } = tagData;
     this.controllerClasses.push(constructor);
-    this.definition.tags.push(tag);
+    this.definition.tags!.push(tag);
   }
 
   public registerSwagger(app: express.Application, path: string) {
@@ -94,6 +99,12 @@ export class Swagger {
       res.setHeader("Content-Type", "application/json");
       res.send(swaggerSpec);
     });
+  }
+
+  public getRefData(schema: z.AnyZodObject) {
+    const description = schema.description;
+    if (!description) throw new Error("Schema must have a description");
+    return { $ref: `#/components/schemas/${description}` };
   }
 
   #registerPaths() {
@@ -113,9 +124,9 @@ export class Swagger {
     return swaggerJsdoc({ definition: this.definition, apis: [] });
   }
 
-  #registerPath(path: string, requestMapping: SwaggerRequestMapping, data: SwaggerPath) {
-    if (!this.definition.paths[path]) this.definition.paths[path] = {};
-    this.definition.paths[path][requestMapping] = data;
+  #registerPath(path: string, requestMapping: HttpRequestMethod, data: OperationObject) {
+    if (!this.definition.paths![path]) this.definition!.paths![path] = {};
+    this.definition.paths![path][requestMapping] = data;
   }
 
   #generateSwaggerSchema(schema: OpenApiZodAny): SchemaObject {
@@ -133,94 +144,3 @@ export class Swagger {
     return generated;
   }
 }
-
-/** Types */
-
-export type HttpStatusConverter<T> = {
-  [K in keyof T]: T[K] extends number ? T[K] : never;
-};
-
-export type HttpStatusMain = Purify<HttpStatusConverter<typeof HttpStatus>>;
-
-/**
- * A type that extracts the values from the properties of an object type `T`.
- * @typeParam T - An object type.
- */
-export type Values<T> = T[keyof T];
-
-/**
- * A type that excludes properties with values of type `TExclude` from `TParent`.
- * @typeParam TParent - The parent type.
- * @typeParam TExclude - The type to exclude from `TParent`.
- */
-export type Exclude<TParent, TExclude> = Pick<
-  TParent,
-  Values<{
-    [Prop in keyof TParent]: [TParent[Prop]] extends [TExclude] ? never : Prop;
-  }>
->;
-
-export type HttpStatusNumeric = Values<HttpStatusMain>;
-
-/**
- * A type that removes properties with values of type `never` from `T`.
- * @typeParam T - The type to purify.
- */
-export type Purify<T> = Exclude<T, never>;
-
-export type SwaggerExternalDocs = {
-  description: string;
-  url: string;
-};
-
-export type SwaggerTag = {
-  name: string;
-  description?: string;
-  externalDocs?: SwaggerExternalDocs;
-};
-
-export type SwaggerPath = {
-  tags?: string[];
-  summary?: string;
-  description?: string;
-  operationId?: string;
-  requestBody?: SwaggerRequestBody;
-  responses?: SwaggerResponse;
-};
-
-export type SwaggerPaths = Record<string, Partial<Record<SwaggerRequestMapping, SwaggerPath>>>;
-
-export type SwaggerRequestMapping =
-  | "put"
-  | "get"
-  | "post"
-  | "delete"
-  | "patch"
-  | "options"
-  | "head";
-
-export type SwaggerResponse = Partial<
-  Record<
-    HttpStatusNumeric | "default",
-    {
-      description?: string;
-      content?: SwaggerRequestContent;
-    }
-  >
->;
-
-export type SwaggerSchemaObject = SchemaObject | ReferenceObject;
-
-export type SwaggerRequestContent = Record<string, { schema: SwaggerSchemaObject }>;
-
-export type SwaggerRequestBody = {
-  description?: string;
-  content?: SwaggerRequestContent;
-  required?: boolean;
-};
-
-export type SwaggerDefinition = swaggerJsdoc.SwaggerDefinition & {
-  tags: SwaggerTag[];
-  paths: SwaggerPaths;
-  components: oas31.ComponentsObject;
-};

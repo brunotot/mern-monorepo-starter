@@ -1,21 +1,13 @@
-import type { MongoClientOptions } from "mongodb";
-import { MongoClient as MongoClientNative } from "mongodb";
-
-// @backend
+import { type MongoClientOptions, MongoClient as MongoClientNative } from "mongodb";
 import { Environment } from "@config/singleton/Environment";
 
 function buildMongoUri(): string {
-  // TODO: DB_DATABASE is unnecessary.
   const { DB_HOST, DB_PORT } = Environment.getInstance().vars;
   return `mongodb://${DB_HOST}:${DB_PORT}`;
 }
 
 function buildMongoOptions(): MongoClientOptions {
-  return {
-    //useNewUrlParser: true,
-    //useUnifiedTopology: true,
-    //loggerLevel: 'debug' // This will log all MongoDB interactions}
-  };
+  return {} as MongoClientOptions;
 }
 
 export class MongoClient extends MongoClientNative {

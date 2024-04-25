@@ -1,5 +1,5 @@
 import { Repository /*, Transactional*/ } from "@decorators";
-import { ErrorLog } from "@domain";
+import { ErrorLog } from "@models";
 import { ObjectId } from "mongodb";
 
 import { MongoRepository } from "@infrastructure/repository/MongoRepository";

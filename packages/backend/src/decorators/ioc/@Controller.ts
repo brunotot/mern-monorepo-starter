@@ -1,11 +1,12 @@
 import type { Class } from "@org/shared";
 
-import { RouteDecoratorManager, Swagger, type SwaggerTag } from "@config";
+import { RouteDecoratorManager, Swagger } from "@config";
 import { Injectable } from "@decorators/ioc/@Injectable";
+import { type TagObject } from "openapi3-ts/oas31";
 
 export function Controller<This extends Class>(
   basePath: string,
-  swaggerTag: Omit<SwaggerTag, "name"> = {},
+  swaggerTag: Omit<TagObject, "name"> = {},
 ) {
   return Injectable<This>((context, constructor) => {
     const swaggerTagName = String(context.name!);

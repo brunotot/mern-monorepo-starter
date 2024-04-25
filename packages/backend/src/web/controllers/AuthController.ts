@@ -4,12 +4,10 @@ import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-
 import { Environment, Swagger } from "@config";
-import { LoginForm } from "@web/form/LoginForm";
-import { LoginResponseDto } from "@web/dto/LoginResponseDto";
 import { type UserRepository, withValidatedBody } from "@infrastructure";
 import { Autowired, Controller, Use, PostMapping } from "@decorators";
+import { LoginForm, LoginResponse } from "@models";
 
 @Controller("/auth", {
   description: "Authentication",
@@ -19,13 +17,14 @@ export class AuthController {
 
   @Use(withValidatedBody(LoginForm))
   @PostMapping("/login", {
-    description: "Login user",
-    summary: "Login user",
+    //description: "Login user",
+    summary:
+      "Login user. User is also required to be an admin. If the user is not an admin, a 401 error is returned.",
     requestBody: Swagger.getInstance().buildSwaggerBody(LoginForm),
     responses: {
       [HttpStatus.OK]: {
         description: "Access token",
-        content: Swagger.getInstance().buildSwaggerBody(LoginResponseDto).content,
+        content: Swagger.getInstance().buildSwaggerBody(LoginResponse).content,
       },
     },
   })
@@ -39,6 +38,8 @@ export class AuthController {
 
     const foundUser = await this.userRepository.findOne({ username: username });
     if (!foundUser) {
+      //res.sendResponse(404, "User not found", null);
+      //res.sendResponse(200, "Access token")
       res.sendError(401);
     } //Unauthorized
 
@@ -105,6 +106,7 @@ export class AuthController {
 
       // Send authorization roles and access token to user
       return res.json({ accessToken: accessToken });
+      //res.sendResponse(200, "LoginResponse", impl)
     } else {
       res.sendError(401);
     }

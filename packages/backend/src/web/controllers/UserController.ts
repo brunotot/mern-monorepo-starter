@@ -1,17 +1,10 @@
 import { Role } from "@org/shared";
 import type { Request, Response } from "express";
 import HttpStatus from "http-status";
-
 import { Swagger } from "@config";
-import {
-  type PaginationOptions,
-  withJwt,
-  withPaginableParams,
-  withUserRoles,
-  type UserService,
-} from "@infrastructure";
 import { Autowired, Controller, Use, PostMapping, GetMapping } from "@decorators";
-import { PageableResponseDto, User } from "@domain";
+import { type PaginationOptions, UserPageableResponseDto } from "@models";
+import { withJwt, withPaginableParams, withUserRoles, type UserService } from "@infrastructure";
 
 @Controller("/users", { description: "User management" })
 export class UserController {
@@ -24,7 +17,7 @@ export class UserController {
     responses: {
       [HttpStatus.OK]: {
         description: "List of users",
-        content: Swagger.getInstance().buildSwaggerBody(PageableResponseDto(User)).content,
+        content: Swagger.getInstance().buildSwaggerBody(UserPageableResponseDto).content,
       },
     },
   })
@@ -35,11 +28,20 @@ export class UserController {
   }
 
   @Use(withPaginableParams())
-  @GetMapping("/pagination")
+  @GetMapping("/pagination", {
+    parameters: [
+      {
+        in: "query",
+        name: "page",
+        schema: { type: "integer" },
+      },
+    ],
+  })
   async pagination(_req: Request, res: Response) {
     const paginationOptions = res.locals.paginationOptions as PaginationOptions;
     const paginatedResult = await this.userService.search(paginationOptions);
     res.json(paginatedResult);
+    //res.sendResponse(200, "UserPageableResponseDto", paginatedResult)
   }
 
   @PostMapping("", {

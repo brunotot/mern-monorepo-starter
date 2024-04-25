@@ -5,12 +5,12 @@
 import type { RequestHandler } from "express";
 
 import { ErrorResponse } from "@errors";
-import type { HttpStatusNumeric } from "@config";
+import type { HttpResponseStatus } from "@config";
 
 export function withExpressOverrides(): RequestHandler {
   return (req, res, next) => {
     res.sendError = function (
-      status: HttpStatusNumeric,
+      status: HttpResponseStatus,
       details: string = "Unknown",
       metadata: Record<string, unknown> = {},
     ): never {

@@ -8,20 +8,20 @@ import {
   Logger,
   RouteDecoratorManager,
   Swagger,
-  type SwaggerPath,
-  type HttpStatusNumeric,
+  type HttpResponseStatus,
   type RequestMappingProps,
   type RouteHandler,
 } from "@config";
-import { ErrorLog } from "@domain";
+import { ErrorLog } from "@models";
 import { type ErrorLogRepository } from "@infrastructure";
 import { ErrorResponse } from "@errors";
+import { type OperationObject } from "openapi3-ts/oas31";
 
 export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
-  swagger?: SwaggerPath;
+  swagger?: OperationObject;
 };
 
-function getRouteErrorStatuses(routeFnSource: string): HttpStatusNumeric[] {
+function getRouteErrorStatuses(routeFnSource: string): HttpResponseStatus[] {
   function extractErrorStatusCodes(input: string): string[] {
     const pattern = /res\.sendError\(\s*([\w.]+)\s*[),]/g;
     let matches: RegExpExecArray | null;
@@ -33,10 +33,10 @@ function getRouteErrorStatuses(routeFnSource: string): HttpStatusNumeric[] {
 
     return statusCodes;
   }
-  const statusCodesSet = new Set<HttpStatusNumeric>();
+  const statusCodesSet = new Set<HttpResponseStatus>();
   const statusCodes = extractErrorStatusCodes(routeFnSource);
   statusCodes.forEach(t => statusCodesSet.add(eval(t)));
-  return [...statusCodesSet] as HttpStatusNumeric[];
+  return [...statusCodesSet] as HttpResponseStatus[];
 }
 
 export function Route<This, Fn extends RouteHandler>(props: RouteProps) {

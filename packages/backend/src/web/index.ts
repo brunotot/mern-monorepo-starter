@@ -1,5 +1,3 @@
-
-export * from "./dto/LoginResponseDto";
-export * from "./form/LoginForm";
-export * from "./controllers/AuthController";
-export * from "./controllers/UserController";
+// @web/controllers
+export * from "@web/controllers/AuthController";
+export * from "@web/controllers/UserController";
