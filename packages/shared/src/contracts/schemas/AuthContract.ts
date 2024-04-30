@@ -30,8 +30,14 @@ export const AuthContract = initContract().router({
     summary: "Login user",
     description: "Login user",
     body: LoginForm,
+
     responses: {
       200: LoginResponse,
+      400: z.object({
+        message: z.string().openapi({
+          example: "TODO!!!",
+        }),
+      }),
       401: z.object({
         message: z.string().openapi({
           example: "TODO!!!",

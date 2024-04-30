@@ -1,3 +1,4 @@
+import { type Response } from "express";
 import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
 import type { VerifyErrors } from "jsonwebtoken";
@@ -13,95 +14,88 @@ export class AuthController {
 
   @Contract("Auth.login", withValidatedBody(LoginForm))
   async login(data: Input<"Auth.login">): Output<"Auth.login"> {
-    const { req, res } = data;
-    const cookies = req.cookies;
+    const {
+      req: { cookies },
+      res,
+      body: { username, password },
+    } = data;
 
-    const { username, password } = req.body;
+    //  Validation error. Needs refactor via decorators
     if (!username || !password) {
-      res.sendError(400, "Username and password are required.");
+      return {
+        status: 400,
+        body: { message: "Username and password are required." },
+      };
     }
 
-    const foundUser = await this.userRepository.findOne({ username: username });
+    const foundUser = await this.userRepository.findOne({ username });
+
+    // Unauthorized
     if (!foundUser) {
       return {
         status: 401,
         body: { message: "Unauthorized" },
       };
-    } //Unauthorized
+    }
 
-    // evaluate password
+    // Evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
-    if (match) {
-      const roles = Object.values(foundUser.roles).filter(Boolean);
-      // create JWTs
-      const accessToken = jwt.sign(
-        {
-          UserInfo: {
-            username: foundUser.username,
-            roles: roles,
-          },
-        },
-        Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" },
-      );
-      const newRefreshToken = jwt.sign(
-        { username: foundUser.username },
-        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" },
-      );
 
-      // Changed to let keyword
-      let newRefreshTokenArray = !cookies?.jwt
-        ? foundUser.refreshToken
-        : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
-
-      if (cookies?.jwt) {
-        /* 
-                Scenario added here: 
-                    1) User logs in but never uses RT and does not logout 
-                    2) RT is stolen
-                    3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
-                */
-        const refreshToken = cookies.jwt;
-        const foundToken = await this.userRepository.findOne({ refreshToken });
-
-        // Detected refresh token reuse!
-        if (!foundToken) {
-          // clear out ALL previous refresh tokens
-          newRefreshTokenArray = [];
-        }
-
-        res.clearCookie("jwt", {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-        });
-      }
-
-      // Saving refreshToken with current user
-      foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-      await this.userRepository.updateOne(foundUser);
-
-      // Creates Secure Cookie with refresh token
-      res.cookie("jwt", newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-
-      // Send authorization roles and access token to user
-
-      return {
-        status: 200,
-        body: { accessToken },
-      };
-    } else {
+    // Password invalid
+    if (!match) {
       return {
         status: 401,
         body: { message: "Unauthorized" },
       };
     }
+
+    const roles = Object.values(foundUser.roles).filter(Boolean);
+    // create JWTs
+    const accessToken = this.generateAccessToken(username, roles);
+    const newRefreshToken = this.generateRefreshToken(foundUser.username);
+
+    // Changed to let keyword
+    let newRefreshTokenArray = !cookies?.jwt
+      ? foundUser.refreshToken
+      : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
+
+    if (cookies?.jwt) {
+      /* 
+                Scenario added here: 
+                    1) User logs in but never uses RT and does not logout 
+                    2) RT is stolen
+                    3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
+                */
+      const refreshToken = cookies.jwt;
+      const foundToken = await this.userRepository.findOne({ refreshToken });
+
+      // Detected refresh token reuse!
+      if (!foundToken) {
+        /** Clear out **all** previous refresh tokens */
+        newRefreshTokenArray = [];
+      }
+
+      this.clearJwtCookie(res);
+    }
+
+    // Saving refreshToken with current user
+    foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+    await this.userRepository.updateOne(foundUser);
+
+    // Creates Secure Cookie with refresh token
+    res.cookie("jwt", newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // Send authorization roles and access token to user
+
+    return {
+      status: 200,
+      body: { accessToken },
+    };
   }
 
   @Contract("Auth.logout")
@@ -121,11 +115,7 @@ export class AuthController {
     // Is refreshToken in db?
     const foundUser = await this.userRepository.findOne({ refreshToken });
     if (!foundUser) {
-      res.clearCookie("jwt", {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-      });
+      this.clearJwtCookie(res);
       return {
         status: 204,
         body: undefined,
@@ -137,7 +127,7 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     await this.userRepository.updateOne(foundUser);
 
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+    this.clearJwtCookie(res);
     return {
       status: 204,
       body: undefined,
@@ -148,96 +138,87 @@ export class AuthController {
   async refresh(data: Input<"Auth.refresh">): Output<"Auth.refresh"> {
     const { req, res } = data;
     const cookies = req.cookies;
-    if (!cookies?.jwt)
-      return {
-        status: 403,
-        body: undefined,
-      };
-    const refreshToken = cookies.jwt;
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
 
-    const foundUser = await this.userRepository.findOne({ refreshToken });
-
-    // Detected refresh token reuse!
-    if (!foundUser) {
-      jwt.verify(
-        refreshToken,
-        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
-        async (err: VerifyErrors | null, decoded: TODO) => {
-          if (err) {
-            res.send({
-              status: 403,
-              body: undefined,
-            });
-          }
-          // Delete refresh tokens of hacked user
-          const filters = { username: decoded.username };
-          const hackedUser = await this.userRepository.findOne(filters);
-          hackedUser!.refreshToken = [];
-          await this.userRepository.updateOne(hackedUser!);
-        },
-      );
-
-      return {
-        status: 403,
-        body: undefined,
-      };
+    if (!cookies?.jwt) {
+      return { status: 403, body: undefined };
     }
 
+    const refreshToken = cookies.jwt;
+    this.clearJwtCookie(res);
+
+    let decoded: TODO;
+    try {
+      decoded = await this.verifyToken(
+        refreshToken,
+        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
+      );
+    } catch (error) {
+      return { status: 403, body: undefined }; // Handle token verification errors uniformly
+    }
+
+    const foundUser = await this.userRepository.findOne({ refreshToken });
+    if (!foundUser || foundUser.username !== decoded.username) {
+      return { status: 403, body: undefined }; // User not found, or username does not match token
+    }
+
+    // Update refresh tokens: remove the used one and possibly add new
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
+    foundUser.refreshToken = [...newRefreshTokenArray];
+    await this.userRepository.updateOne(foundUser);
 
-    // evaluate jwt
-    jwt.verify(
-      refreshToken,
-      Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
-      async (err: VerifyErrors | null, decoded: TODO) => {
-        if (err) {
-          // expired refresh token
-          foundUser.refreshToken = [...newRefreshTokenArray];
-          await this.userRepository.updateOne(foundUser);
-        }
-        if (err || foundUser.username !== decoded.username) return res.sendError(403);
+    // Generate new tokens
+    const accessToken = this.generateAccessToken(decoded.username, foundUser.roles);
+    const newRefreshToken = this.generateRefreshToken(decoded.username);
 
-        // Refresh token was still valid
-        const roles = Object.values(foundUser.roles);
-        const accessToken = jwt.sign(
-          {
-            UserInfo: {
-              username: decoded.username,
-              roles: roles,
-            },
-          },
-          Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
-          { expiresIn: "15m" },
-        );
+    // Persist the new refresh token with current user
+    foundUser.refreshToken.push(newRefreshToken);
+    await this.userRepository.updateOne(foundUser);
 
-        const newRefreshToken = jwt.sign(
-          { username: foundUser.username },
-          Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
-          { expiresIn: "7d" },
-        );
-        // Saving refreshToken with current user
-        foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-        await this.userRepository.updateOne(foundUser);
-
-        // Creates Secure Cookie with refresh token
-        res.cookie("jwt", newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
-        });
-
-        return {
-          status: 200,
-          body: { accessToken },
-        };
-      },
-    );
+    // Set new secure cookie with the new refresh token
+    this.setSecureCookie(res, newRefreshToken);
 
     return {
       status: 200,
-      body: { todo: "TODO" } as TODO,
+      body: { accessToken },
     };
+  }
+
+  private async verifyToken(token: string, secret: string): Promise<TODO> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, secret, (err: VerifyErrors | null, decoded: TODO) => {
+        if (err || !decoded) {
+          reject(new Error("Token verification failed"));
+        } else {
+          resolve(decoded);
+        }
+      });
+    });
+  }
+
+  private generateAccessToken(username: string, roles: string[]): string {
+    return jwt.sign(
+      { UserInfo: { username, roles } },
+      Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" },
+    );
+  }
+
+  private generateRefreshToken(username: string): string {
+    return jwt.sign({ username }, Environment.getInstance().vars.REFRESH_TOKEN_SECRET, {
+      expiresIn: "7d",
+    });
+  }
+
+  private clearJwtCookie(res: Response): void {
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+  }
+
+  private setSecureCookie(res: Response, token: string): void {
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
   }
 }

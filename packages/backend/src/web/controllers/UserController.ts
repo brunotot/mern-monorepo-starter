@@ -1,7 +1,7 @@
 import { Role, type TODO } from "@org/shared";
 import { Autowired, Contract, Injectable } from "@decorators";
 import { withJwt, withPaginableParams, withUserRoles, type UserService } from "@infrastructure";
-import { type Input, type Output } from "@models";
+import { type MongoSort, type Input, type Output } from "@models";
 
 @Injectable()
 export class UserController {
@@ -19,10 +19,19 @@ export class UserController {
   }
 
   @Contract("User.pagination", withPaginableParams())
-  async pagination(data: Input<"User.pagination">): Output<"User.pagination"> {
-    const res = data.res;
-    const paginationOptions = res.locals.paginationOptions;
-    const paginatedResult = (await this.userService.search(paginationOptions)) as TODO;
+  async pagination({ query }: Input<"User.pagination">): Output<"User.pagination"> {
+    // THIS!!!
+    const paginatedResult = (await this.userService.search({
+      filters: {},
+      sort: (query.sort ? query.sort.split(",").map(value => value.split("|")) : []) as MongoSort,
+      page: query.page,
+      limit: query.limit,
+      search: {
+        fields: ["username", "email"],
+        regex: query.search,
+      },
+    })) as TODO;
+
     return {
       status: 200,
       body: paginatedResult,

@@ -67,6 +67,12 @@ export const UserContract = initContract().router({
     method: "GET",
     summary: "Get all users",
     description: "Get all users",
+    query: z.object({
+      page: z.number().default(0),
+      limit: z.number().default(10),
+      sort: z.string().default(""),
+      search: z.string().default(""),
+    }),
     responses: {
       200: UserPageableResponseDto,
     },
