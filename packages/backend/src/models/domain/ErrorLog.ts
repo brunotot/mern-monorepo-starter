@@ -1,8 +1,6 @@
 import { ObjectId } from "mongodb";
 import z from "zod";
 
-import { Swagger } from "@config";
-
 export const ErrorLog = z
   .object({
     _id: z.instanceof(ObjectId).openapi({ example: "507f1f77bcf86cd799439011" }),
@@ -31,7 +29,5 @@ export const ErrorLog = z
     }),
   })
   .describe("ErrorLog");
-
-Swagger.getInstance().registerSchema("ErrorLog", ErrorLog);
 
 export type ErrorLog = z.infer<typeof ErrorLog>;

@@ -1,20 +1,14 @@
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { type AppRouteImplementation } from "@ts-rest/express";
-import { type AppRoute, type ServerInferResponses } from "@ts-rest/core";
 import { Bottle, ContractManager, Logger } from "@config";
-import { ContractName, ResolveContract, type TODO } from "@org/shared";
-import { ErrorLogRepository } from "@infrastructure";
+import { type ContractName, type TODO } from "@org/shared";
+import { type ErrorLogRepository } from "@infrastructure";
 import { ErrorResponse } from "@errors";
 import HttpStatus from "http-status";
+import { type RouteMiddleware, type RouteHandler } from "@models";
 
-export type Input<Name extends ContractName> = AppRouteImplementation<ResolveContract<Name>>;
-export type Output<Name extends ContractName> = Promise<
-  ServerInferResponses<ResolveContract<Name>>
->;
-export type RouteHandler2<Name extends ContractName> = (data: Input<Name>) => Output<Name>;
-
-export function Contract<const Name extends ContractName, This, Fn extends RouteHandler2<Name>>(
+export function Contract<const Name extends ContractName, This, Fn extends RouteHandler<Name>>(
   routeName: Name,
+  ...middleware: RouteMiddleware[]
 ) {
   return createMethodDecorator<This, Fn>(({ target, meta }) => {
     async function handler(data: TODO): Promise<TODO> {
@@ -43,7 +37,7 @@ export function Contract<const Name extends ContractName, This, Fn extends Route
       }
     }
 
-    ContractManager.getInstance().addRouter(routeName, handler);
+    ContractManager.getInstance().addRouter(routeName, handler, middleware);
 
     return handler as Fn;
   });

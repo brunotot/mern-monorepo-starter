@@ -219,6 +219,7 @@ function overrideTooltips() {
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function overrideRemoveViteModule() {
   const viteModule = document.querySelector(
     `li:has(> a[data-id="/modules/frontend_src_vite_env.html"])`,
@@ -232,6 +233,6 @@ window.onload = async function () {
   overrideTitle();
   overrideTooltips();
   await overrideCustomTags();
-  overrideRemoveViteModule();
+  //overrideRemoveViteModule();
   document.body.classList.add("show");
 };

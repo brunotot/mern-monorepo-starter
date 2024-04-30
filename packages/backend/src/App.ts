@@ -1,6 +1,10 @@
 import express from "express";
-import { Bottle, Environment, Logger, MongoClient, Swagger } from "@config";
+import * as swaggerUi from "swagger-ui-express";
+import { ContractManager, Environment, Logger, MongoClient } from "@config";
 import { GLOBAL_MIDDLEWARES } from "@infrastructure";
+import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
+import { generateOpenApi } from "@ts-rest/open-api";
+import { initServer, createExpressEndpoints } from "@ts-rest/express";
 
 export class App {
   public readonly app: express.Application;
@@ -60,10 +64,32 @@ export class App {
   }
 
   #initializeRoutes() {
-    Bottle.getInstance().registerRoutes(this.app);
+    const s = initServer();
+    const router = s.router(CONTRACTS, ContractManager.getInstance().getRouters());
+    suppressConsole(() => createExpressEndpoints(CONTRACTS, router, this.app));
   }
 
   #initializeSwagger() {
-    Swagger.getInstance().registerSwagger(this.app, this.swaggerPath);
+    const apiDoc: Parameters<typeof generateOpenApi>[1] = {
+      info: {
+        title: "REST API",
+        license: {
+          name: "MIT",
+          url: "https://spdx.org/licenses/MIT.html",
+        },
+        termsOfService: "http://swagger.io/terms/",
+        contact: {
+          email: "",
+          name: "",
+          url: "",
+        },
+        version: Environment.getInstance().vars.PACKAGE_JSON_VERSION,
+        description: "This is a dynamically generated Swagger API documentation",
+      },
+    };
+
+    const openApiDocument = generateOpenApi(CONTRACTS, apiDoc, { operationMapper });
+
+    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
   }
 }

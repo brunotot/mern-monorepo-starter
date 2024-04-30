@@ -1,16 +1,11 @@
-// contract.ts
-
-import { initContract } from "@ts-rest/core";
+import { initContract, ContractNoBody } from "@ts-rest/core";
 import { z } from "zod";
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
-import { ContractName } from ".";
+import { buildPathFn, buildRouteMetadata } from "../../utils";
 
 extendZodWithOpenApi(z);
-
-const c = initContract();
-
-const metadata = { openApiTags: ["AuthController"] };
-const buildPath = (path: string) => `/auth${path}`;
+const metadata = buildRouteMetadata("AuthController");
+const buildPath = buildPathFn("auth");
 
 export const LoginForm = z.object({
   username: z.string().min(1),
@@ -26,20 +21,10 @@ export const LoginResponse = z
   })
   .openapi({ title: "Access token" });
 
-/**
-   * 
-    description: "Refresh access token",
-    summary: "Refresh access token",
-    responses: {
-      [HttpStatus.OK]: {
-        description: "New access",
-      },
-    },
-   */
-
-export const AuthContract = c.router({
+export const AuthContract = initContract().router({
   login: {
     metadata,
+    strictStatusCodes: true,
     path: buildPath("/login"),
     method: "POST",
     summary: "Login user",
@@ -56,19 +41,19 @@ export const AuthContract = c.router({
   },
   logout: {
     metadata,
+    strictStatusCodes: true,
     path: buildPath("/logout"),
     method: "POST",
     body: z.object({}),
     summary: "Logout user",
     description: "Logout user",
     responses: {
-      204: z.void().openapi({
-        description: "No content",
-      }),
+      204: ContractNoBody,
     },
   },
   refresh: {
     metadata,
+    strictStatusCodes: true,
     path: buildPath("/refresh"),
     method: "POST",
     body: z.object({}),
@@ -76,6 +61,7 @@ export const AuthContract = c.router({
     description: "Refresh access token",
     responses: {
       200: LoginResponse,
+      403: ContractNoBody,
       401: z.object({
         message: z.string().openapi({
           example: "TODO!!!",

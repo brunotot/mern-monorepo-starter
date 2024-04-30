@@ -1,3 +1,4 @@
+import { type RouteMiddleware } from "@models";
 import { type ContractName, type TODO } from "@org/shared";
 
 export class ContractManager {
@@ -15,10 +16,10 @@ export class ContractManager {
     this.#routers = {};
   }
 
-  addRouter(name: ContractName, handler: TODO) {
+  addRouter(name: ContractName, handler: TODO, middleware: RouteMiddleware[]) {
     const [controllerName, functionName] = name.split(".");
     this.#routers[controllerName] ??= {};
-    this.#routers[controllerName][functionName] = handler;
+    this.#routers[controllerName][functionName] = { handler, middleware };
   }
 
   getRouters() {

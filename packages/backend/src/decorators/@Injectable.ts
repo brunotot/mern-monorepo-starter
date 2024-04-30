@@ -1,6 +1,6 @@
 import type { TODO } from "@org/shared";
 import { createClassDecorator } from "@tsvdec/decorators";
-import { Bottle, InjectionDecoratorManager } from "@config";
+import { Bottle, InjectableManager } from "@config";
 import { type ClassDecoratorSupplier } from "@models";
 
 export function Injectable<This extends new () => TODO>(supplier?: ClassDecoratorSupplier) {
@@ -8,7 +8,7 @@ export function Injectable<This extends new () => TODO>(supplier?: ClassDecorato
     const context = meta.context;
     const constructorName: string = constructor.name;
     const targetName = normalizeTargetName(constructorName);
-    InjectionDecoratorManager.from(context).setName(targetName);
+    InjectableManager.from(context).setName(targetName);
     Bottle.getInstance().injectionClasses.push(constructor);
     supplier?.(context, constructor);
   });

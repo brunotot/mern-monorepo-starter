@@ -1,12 +1,6 @@
-import { type default as express, Router } from "express";
 import { default as BottleJs } from "bottlejs";
 import { type Class } from "@org/shared";
-
-// @backend
-//import { InjectionDecoratorManager } from "./InjectionDecoratorManager";
-//import { RouteDecoratorManager } from "./RouteDecoratorManager";
-import { InjectionDecoratorManager } from "@config/singleton/InjectionDecoratorManager";
-import { RouteDecoratorManager } from "@config/singleton/RouteDecoratorManager";
+import { InjectableManager } from "@config/singleton/InjectableManager";
 
 export class Bottle {
   private static instance: Bottle;
@@ -26,24 +20,11 @@ export class Bottle {
     this.container = this.bottle.container;
   }
 
-  public registerRoutes(app: express.Application) {
-    this.injectionClasses.forEach(clazz => {
-      const router = Router();
-      const { basePath, routes } = RouteDecoratorManager.from(clazz).value;
-      routes.forEach(({ method, path = "", middlewares, handler }) => {
-        const fullPath = `${basePath}${path}`;
-        const pipeline = middlewares ? [...middlewares, handler] : [handler];
-        router[method](fullPath, ...pipeline);
-      });
-      app.use("/", router);
-    });
-  }
-
   public inject<T>(nameOrContext: string | DecoratorContext): T {
     if (typeof nameOrContext === "string") {
       return this.container[nameOrContext] as T;
     }
-    const containerName = InjectionDecoratorManager.from(nameOrContext).value.name;
+    const containerName = InjectableManager.from(nameOrContext).value.name;
     return this.container[containerName] as T;
   }
 
@@ -51,14 +32,14 @@ export class Bottle {
     const injectionClasses = this.injectionClasses;
 
     const dependencySchema: Record<string, string[]> = injectionClasses.reduce((acc, Class) => {
-      const { name, dependencies = [] } = InjectionDecoratorManager.from(Class).value;
+      const { name, dependencies = [] } = InjectableManager.from(Class).value;
       return { ...acc, [name]: dependencies };
     }, {});
 
     function sortInjectionClasses(classes: Class[], dependencySchema: Record<string, string[]>) {
       return [...classes].sort((classA, classB) => {
-        const { name: nameA } = InjectionDecoratorManager.from(classA).value;
-        const { name: nameB } = InjectionDecoratorManager.from(classB).value;
+        const { name: nameA } = InjectableManager.from(classA).value;
+        const { name: nameB } = InjectableManager.from(classB).value;
         if (dependencySchema[nameA].length === 0) return -1;
         if (dependencySchema[nameB].length === 0) return 1;
         if (dependencySchema[nameA].includes(nameB)) return 1;
@@ -70,7 +51,7 @@ export class Bottle {
     const sortedInjectionClasses = sortInjectionClasses(injectionClasses, dependencySchema);
 
     sortedInjectionClasses.forEach(Class => {
-      const manager = InjectionDecoratorManager.from(Class);
+      const manager = InjectableManager.from(Class);
       const decoration = manager.value;
       const name = decoration.name;
       const constructorParams = decoration.constructorParams;

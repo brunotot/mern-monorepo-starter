@@ -10,7 +10,6 @@ export function withJwt(): RequestHandler {
     const authHeaderSanitized = Array.isArray(authHeader) ? authHeader[0] : authHeader;
     if (!authHeaderSanitized?.startsWith("Bearer ")) return res.sendStatus(401);
     const token = authHeaderSanitized.split(" ")[1];
-    // console.log(token);
     jwt.verify(
       token,
       Environment.getInstance().vars.ACCESS_TOKEN_SECRET,

@@ -1,21 +1,19 @@
 import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
-import type { Request, Response } from "express";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { Environment } from "@config";
-import { type UserRepository, withValidatedBody } from "@infrastructure";
-import { Autowired, Controller, Use, PostMapping } from "@decorators";
-import { LoginForm } from "@models";
-import { AuthDocs } from "@web/swagger/AuthDocs";
+import { withValidatedBody, type UserRepository } from "@infrastructure";
+import { Autowired, Contract, Injectable } from "@decorators";
+import { LoginForm, type Input, type Output } from "@models";
 
-@Controller("/auth", { description: "Authentication" })
+@Injectable()
 export class AuthController {
   @Autowired() userRepository: UserRepository;
 
-  @Use(withValidatedBody(LoginForm))
-  @PostMapping("/login", AuthDocs.login)
-  async login(req: Request<unknown, unknown, LoginForm>, res: Response<TODO>) {
+  @Contract("Auth.login", withValidatedBody(LoginForm))
+  async login(data: Input<"Auth.login">): Output<"Auth.login"> {
+    const { req, res } = data;
     const cookies = req.cookies;
 
     const { username, password } = req.body;
@@ -25,9 +23,10 @@ export class AuthController {
 
     const foundUser = await this.userRepository.findOne({ username: username });
     if (!foundUser) {
-      //res.sendResponse(404, "User not found", null);
-      //res.sendResponse(200, "Access token")
-      res.sendError(401);
+      return {
+        status: 401,
+        body: { message: "Unauthorized" },
+      };
     } //Unauthorized
 
     // evaluate password
@@ -92,19 +91,31 @@ export class AuthController {
       });
 
       // Send authorization roles and access token to user
-      return res.json({ accessToken: accessToken });
-      //res.sendResponse(200, "LoginResponse", impl)
+
+      return {
+        status: 200,
+        body: { accessToken },
+      };
     } else {
-      res.sendError(401);
+      return {
+        status: 401,
+        body: { message: "Unauthorized" },
+      };
     }
   }
 
-  @PostMapping("/logout", AuthDocs.logout)
-  async logout(req: Request, res: Response) {
+  @Contract("Auth.logout")
+  async logout(data: Input<"Auth.logout">): Output<"Auth.logout"> {
+    const { req, res } = data;
+
     // On client, also delete the accessToken
 
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(204); //No content
+    if (!cookies?.jwt)
+      return {
+        status: 204,
+        body: undefined,
+      };
     const refreshToken = cookies.jwt;
 
     // Is refreshToken in db?
@@ -115,7 +126,10 @@ export class AuthController {
         sameSite: "none",
         secure: true,
       });
-      return res.sendStatus(204);
+      return {
+        status: 204,
+        body: undefined,
+      };
     }
 
     // Delete refreshToken in db
@@ -124,13 +138,21 @@ export class AuthController {
     await this.userRepository.updateOne(foundUser);
 
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-    res.sendStatus(204);
+    return {
+      status: 204,
+      body: undefined,
+    };
   }
 
-  @PostMapping("/refresh", AuthDocs.refresh)
-  async refresh(req: Request, res: Response) {
+  @Contract("Auth.refresh")
+  async refresh(data: Input<"Auth.refresh">): Output<"Auth.refresh"> {
+    const { req, res } = data;
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendError(401);
+    if (!cookies?.jwt)
+      return {
+        status: 403,
+        body: undefined,
+      };
     const refreshToken = cookies.jwt;
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
 
@@ -142,7 +164,12 @@ export class AuthController {
         refreshToken,
         Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
         async (err: VerifyErrors | null, decoded: TODO) => {
-          if (err) return res.sendError(403); //Forbidden
+          if (err) {
+            res.send({
+              status: 403,
+              body: undefined,
+            });
+          }
           // Delete refresh tokens of hacked user
           const filters = { username: decoded.username };
           const hackedUser = await this.userRepository.findOne(filters);
@@ -150,7 +177,11 @@ export class AuthController {
           await this.userRepository.updateOne(hackedUser!);
         },
       );
-      return res.sendError(403); //Forbidden
+
+      return {
+        status: 403,
+        body: undefined,
+      };
     }
 
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
@@ -197,8 +228,16 @@ export class AuthController {
           maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.json({ accessToken });
+        return {
+          status: 200,
+          body: { accessToken },
+        };
       },
     );
+
+    return {
+      status: 200,
+      body: { todo: "TODO" } as TODO,
+    };
   }
 }

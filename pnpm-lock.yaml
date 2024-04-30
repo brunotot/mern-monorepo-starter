@@ -295,6 +295,9 @@ importers:
       '@ts-rest/core':
         specifier: ^3.45.0
         version: 3.45.0(zod@3.23.4)
+      '@ts-rest/open-api':
+        specifier: ^3.45.0
+        version: 3.45.0(zod@3.23.4)
       zod:
         specifier: ^3.22.5
         version: 3.23.4

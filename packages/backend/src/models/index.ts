@@ -16,12 +16,9 @@ export * from "@models/form/LoginForm";
 export * from "@models/locals/HttpResponseStatus";
 export * from "@models/locals/ClassDecoratorSupplier";
 export * from "@models/locals/InjectionMetaItem"
-export * from "@models/locals/RouteProps"
 export * from "@models/locals/RequestMappingProps"
-export * from "@models/locals/RequestRoute";
 export * from "@models/locals/RouteMethod";
 export * from "@models/locals/RouteHandler";
-export * from "@models/locals/RoutesMetaItem";
 export * from "@models/locals/RouteMiddleware";
 export * from "@models/locals/MongoFilters";
 export * from "@models/locals/MongoMatch";

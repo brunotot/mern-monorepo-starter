@@ -2,9 +2,9 @@ import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decora
 import { type TODO } from "@org/shared";
 import { type InjectionMetaItem } from "@models";
 
-export class InjectionDecoratorManager extends ClassMetadataEntry<InjectionMetaItem> {
+export class InjectableManager extends ClassMetadataEntry<InjectionMetaItem> {
   static from(injection: ClassMetadataInjectType) {
-    return new InjectionDecoratorManager(injection);
+    return new InjectableManager(injection);
   }
 
   private constructor(injection: ClassMetadataInjectType) {

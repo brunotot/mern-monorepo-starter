@@ -1,6 +1,5 @@
 import z from "zod";
 
-import { Swagger } from "@config";
 
 const BasePageableResponseDto = z
   .object({
@@ -12,13 +11,10 @@ const BasePageableResponseDto = z
   })
   .describe("PageableResponseDto");
 
-Swagger.getInstance().registerSchema("PageableResponseDto", BasePageableResponseDto);
 
 export function PageableResponseDto<T extends z.AnyZodObject>(schema: T) {
   return BasePageableResponseDto.extend({
-    data: z.array(schema).openapi({
-      items: { ...Swagger.getInstance().getRefData(schema) },
-    }),
+    data: z.array(schema),
   })
     .describe("")
     .openapi({ title: `${PageableResponseDto.name}(${schema.description})` });

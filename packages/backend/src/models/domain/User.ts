@@ -2,8 +2,6 @@ import { Role } from "@org/shared";
 import { ObjectId } from "mongodb";
 import z from "zod";
 
-import { Swagger } from "@config";
-
 export const User = z
   .object({
     _id: z.instanceof(ObjectId),
@@ -14,7 +12,5 @@ export const User = z
     refreshToken: z.array(z.string()),
   })
   .describe("User");
-
-Swagger.getInstance().registerSchema("User", User);
 
 export type User = z.infer<typeof User>;
