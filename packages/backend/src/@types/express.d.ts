@@ -1,10 +1,10 @@
-import type { HttpStatusNumeric } from "@";
+import type { HttpResponseStatus } from "@models";
 
 declare global {
   namespace Express {
     export interface Response {
       sendError: (
-        httpStatus: HttpStatusNumeric,
+        httpStatus: HttpResponseStatus,
         details?: string,
         metadata?: Record<string, unknown>,
       ) => never;
