@@ -2,24 +2,11 @@ import type { TODO } from "@org/shared";
 import type { Request, Response } from "express";
 import HttpStatus from "http-status";
 import { createMethodDecorator } from "@tsvdec/decorators";
-
-import {
-  Bottle,
-  Logger,
-  RouteDecoratorManager,
-  Swagger,
-  type HttpResponseStatus,
-  type RequestMappingProps,
-  type RouteHandler,
-} from "@config";
+import { Bottle, Logger, RouteDecoratorManager, Swagger } from "@config";
 import { ErrorLog } from "@models";
 import { type ErrorLogRepository } from "@infrastructure";
 import { ErrorResponse } from "@errors";
-import { type OperationObject } from "openapi3-ts/oas31";
-
-export type RouteProps = Omit<RequestMappingProps, "name" | "middlewares"> & {
-  swagger?: OperationObject;
-};
+import type { RouteHandler, HttpResponseStatus, RouteProps } from "@models";
 
 function getRouteErrorStatuses(routeFnSource: string): HttpResponseStatus[] {
   function extractErrorStatusCodes(input: string): string[] {

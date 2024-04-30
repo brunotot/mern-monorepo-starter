@@ -1,34 +1,21 @@
 import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
 import type { Request, Response } from "express";
-import HttpStatus from "http-status";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-import { Environment, Swagger } from "@config";
+import { Environment } from "@config";
 import { type UserRepository, withValidatedBody } from "@infrastructure";
 import { Autowired, Controller, Use, PostMapping } from "@decorators";
-import { LoginForm, LoginResponse } from "@models";
+import { LoginForm } from "@models";
+import { AuthDocs } from "@web/swagger/AuthDocs";
 
-@Controller("/auth", {
-  description: "Authentication",
-})
+@Controller("/auth", { description: "Authentication" })
 export class AuthController {
   @Autowired() userRepository: UserRepository;
 
   @Use(withValidatedBody(LoginForm))
-  @PostMapping("/login", {
-    //description: "Login user",
-    summary:
-      "Login user. User is also required to be an admin. If the user is not an admin, a 401 error is returned.",
-    requestBody: Swagger.getInstance().buildSwaggerBody(LoginForm),
-    responses: {
-      [HttpStatus.OK]: {
-        description: "Access token",
-        content: Swagger.getInstance().buildSwaggerBody(LoginResponse).content,
-      },
-    },
-  })
-  async login(req: Request, res: Response<TODO>) {
+  @PostMapping("/login", AuthDocs.login)
+  async login(req: Request<unknown, unknown, LoginForm>, res: Response<TODO>) {
     const cookies = req.cookies;
 
     const { username, password } = req.body;
@@ -112,15 +99,7 @@ export class AuthController {
     }
   }
 
-  @PostMapping("/logout", {
-    description: "Logout user",
-    summary: "Logout user",
-    responses: {
-      [HttpStatus.NO_CONTENT]: {
-        description: "No content",
-      },
-    },
-  })
+  @PostMapping("/logout", AuthDocs.logout)
   async logout(req: Request, res: Response) {
     // On client, also delete the accessToken
 
@@ -148,15 +127,7 @@ export class AuthController {
     res.sendStatus(204);
   }
 
-  @PostMapping("/refresh", {
-    description: "Refresh access token",
-    summary: "Refresh access token",
-    responses: {
-      [HttpStatus.OK]: {
-        description: "New access",
-      },
-    },
-  })
+  @PostMapping("/refresh", AuthDocs.refresh)
   async refresh(req: Request, res: Response) {
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendError(401);

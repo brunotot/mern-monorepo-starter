@@ -3,9 +3,7 @@ function extractName(href) {
   const extension = "html";
   const prefixIndex = href.indexOf(prefix);
   const startIndex = href.indexOf(".", prefixIndex) + 1;
-  const hrefWithoutParams = href.includes("?")
-    ? href.substring(0, href.indexOf("?"))
-    : href;
+  const hrefWithoutParams = href.includes("?") ? href.substring(0, href.indexOf("?")) : href;
   const endIndex = hrefWithoutParams.length - extension.length - 1;
   return href.substring(startIndex, endIndex);
 }
@@ -19,19 +17,14 @@ function getNavMap() {
 function getNameHrefMap() {
   const navMap = getNavMap();
   const hrefList = Object.keys(navMap);
-  const nameHrefMap = hrefList.reduce(
-    (out, href) => ({ ...out, [extractName(href)]: href }),
-    {}
-  );
+  const nameHrefMap = hrefList.reduce((out, href) => ({ ...out, [extractName(href)]: href }), {});
   return nameHrefMap;
 }
 
 function search(query, nameHrefMap = getNameHrefMap()) {
   const lowercaseQuery = query.toLowerCase();
   const identifiers = Object.keys(nameHrefMap);
-  const results = identifiers.filter((id) =>
-    id.toLowerCase().includes(lowercaseQuery)
-  );
+  const results = identifiers.filter(id => id.toLowerCase().includes(lowercaseQuery));
   return results.reduce((out, id) => ({ ...out, [id]: nameHrefMap[id] }), {});
 }
 
@@ -58,7 +51,7 @@ function render(query) {
 }
 
 function configureSearchListener(searchInput) {
-  searchInput.addEventListener("input", (e) => {
+  searchInput.addEventListener("input", e => {
     const value = e.target.value;
     render(value);
   });
@@ -89,7 +82,7 @@ function generateCustomSearchInput() {
 }
 
 async function fetchUrlsAndMapResponses(hrefs) {
-  const fetchPromises = hrefs.map(async (href) => {
+  const fetchPromises = hrefs.map(async href => {
     try {
       const response = await fetch(href);
       if (!response.ok) {
@@ -114,7 +107,7 @@ async function fetchUrlsAndMapResponses(hrefs) {
 
 function getNavData() {
   const svgLinks = document.querySelectorAll(`a > svg[class="tsd-kind-icon"]`);
-  return [...svgLinks].map((svg) => ({
+  return [...svgLinks].map(svg => ({
     href: svg.parentElement.href,
     a: svg.parentElement,
   }));
@@ -122,10 +115,8 @@ function getNavData() {
 
 async function overrideCustomTags() {
   const navData = getNavData();
-  const result = await fetchUrlsAndMapResponses(
-    navData.map(({ href }) => href)
-  );
-  CUSTOM_TAGS.forEach((tag) => {
+  const result = await fetchUrlsAndMapResponses(navData.map(({ href }) => href));
+  CUSTOM_TAGS.forEach(tag => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const template =
       /*html*/
@@ -221,16 +212,26 @@ const CUSTOM_TAGS = [
 ];
 
 function overrideTooltips() {
-  [...document.querySelectorAll("a[href] > svg + span")].forEach((elem) => {
+  [...document.querySelectorAll("a[href] > svg + span")].forEach(elem => {
     const text = elem.textContent;
     const anchor = elem.parentElement;
     anchor.title = text;
   });
 }
 
+function overrideRemoveViteModule() {
+  const viteModule = document.querySelector(
+    `li:has(> a[data-id="/modules/frontend_src_vite_env.html"])`,
+  );
+  if (viteModule) {
+    viteModule.remove();
+  }
+}
+
 window.onload = async function () {
   overrideTitle();
   overrideTooltips();
   await overrideCustomTags();
+  overrideRemoveViteModule();
   document.body.classList.add("show");
 };

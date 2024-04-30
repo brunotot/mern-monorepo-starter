@@ -13,16 +13,10 @@ import { TODO } from "@org/shared";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  NavigationRoute,
-  NavigationRouteSingle,
-  VAR_NAVIGATION_ROUTES,
-  isAnyRouteActive,
-} from "../../../../routes";
-import {
-  ButtonHoverMenu,
-  OriginPosition,
-} from "../../navigation/ButtonHoverMenu";
+import { VAR_NAVIGATION_ROUTES } from "../../../../routes";
+import { ButtonHoverMenu, OriginPosition } from "../../navigation/ButtonHoverMenu";
+import { NavigationRoute, NavigationRouteSingle } from "../../../../models";
+import { isAnyRouteActive } from "../../../../utils";
 
 export type HorizontalNavItemProps = {
   item: NavigationRoute;
@@ -41,9 +35,7 @@ function HorizontalNavItem({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const hasChildren = "children" in item && item.children;
-  const children: NavigationRoute[] = (
-    hasChildren ? item.children : []
-  ) as TODO;
+  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 8 : undefined;
 
@@ -61,10 +53,10 @@ function HorizontalNavItem({
               backgroundColor: popupState.isOpen
                 ? "action.hover"
                 : isAnyRouteActiveInGroup
-                ? isMainNavButton
-                  ? undefined
-                  : "var(--mui-palette-action-hover)"
-                : undefined,
+                  ? isMainNavButton
+                    ? undefined
+                    : "var(--mui-palette-action-hover)"
+                  : undefined,
               borderRadius,
             }}
             {...hoverProps}

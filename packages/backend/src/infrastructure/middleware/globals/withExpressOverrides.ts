@@ -5,7 +5,7 @@
 import type { RequestHandler } from "express";
 
 import { ErrorResponse } from "@errors";
-import type { HttpResponseStatus } from "@config";
+import type { HttpResponseStatus } from "@models";
 
 export function withExpressOverrides(): RequestHandler {
   return (req, res, next) => {

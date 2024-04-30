@@ -5,5 +5,6 @@ export * from "./singleton/Logger";
 export * from "./singleton/MongoClient";
 export * from "./singleton/RouteDecoratorManager";
 export * from "./singleton/Swagger";
+export * from "./singleton/ContractManager";
 
 import "./init";

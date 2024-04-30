@@ -1,11 +1,6 @@
 import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decorators";
 import { type TODO } from "@org/shared";
-
-export type InjectionMetaItem = {
-  name: string;
-  dependencies: string[];
-  constructorParams: TODO[];
-};
+import { type InjectionMetaItem } from "@models";
 
 export class InjectionDecoratorManager extends ClassMetadataEntry<InjectionMetaItem> {
   static from(injection: ClassMetadataInjectType) {

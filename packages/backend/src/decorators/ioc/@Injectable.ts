@@ -1,9 +1,7 @@
-import type { Class, TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { createClassDecorator } from "@tsvdec/decorators";
-
 import { Bottle, InjectionDecoratorManager } from "@config";
-
-export type ClassDecoratorSupplier = (context: DecoratorContext, constructor: Class) => void;
+import { type ClassDecoratorSupplier } from "@models";
 
 export function Injectable<This extends new () => TODO>(supplier?: ClassDecoratorSupplier) {
   return createClassDecorator<This>(({ clazz: constructor, meta }) => {

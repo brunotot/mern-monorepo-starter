@@ -1,10 +1,11 @@
 import type { MethodDecoratorDef } from "@tsvdec/decorators";
 import { createMethodDecorator } from "@tsvdec/decorators";
 
-import { RouteDecoratorManager, type RouteHandler, type RouteMiddlewareHandler } from "@config";
+import { RouteDecoratorManager } from "@config";
+import type { RouteHandler, RouteMiddleware } from "@models";
 
 export function Use<This, Fn extends RouteHandler>(
-  ...handlers: RouteMiddlewareHandler[]
+  ...handlers: RouteMiddleware[]
 ): MethodDecoratorDef<This, Fn> {
   return createMethodDecorator<This, Fn>(({ meta }) => {
     const routeName = String(meta.context.name);

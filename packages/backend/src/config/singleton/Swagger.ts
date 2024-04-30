@@ -1,22 +1,20 @@
-import { type OpenApiZodAny, generateSchema } from "@anatine/zod-openapi";
+import { generateSchema, type OpenApiZodAny } from "@anatine/zod-openapi";
+import { type RouteMethod } from "@models";
+import { type Class, type TODO } from "@org/shared";
 import type express from "express";
+import {
+  type OpenAPIObject,
+  type TagObject,
+  type OperationObject as OperationObjectNative,
+  type SchemaObject,
+} from "openapi3-ts/oas31";
 import swaggerJsdoc from "swagger-jsdoc";
+import { type z } from "zod";
+import { Environment } from "./Environment";
+import { RouteDecoratorManager } from "./RouteDecoratorManager";
 import swaggerUi from "swagger-ui-express";
-import type HttpStatus from "http-status";
-import type { OpenAPIObject, OperationObject, SchemaObject, TagObject } from "openapi3-ts/oas31";
-import type z from "zod";
-import type { Class, TODO } from "@org/shared";
-import { Environment } from "@config/singleton/Environment";
-import { RouteDecoratorManager, type RouteMethod } from "@config/singleton/RouteDecoratorManager";
 
-// Local types
-type Values<T> = T[keyof T];
-type FilterNumbers<T> = { [K in keyof T]: T[K] extends number ? T[K] : never };
-type Exclude<T, E> = Pick<T, Values<{ [K in keyof T]: [T[K]] extends [E] ? never : K }>>;
-type HttpResponseStatusRecord = Exclude<FilterNumbers<typeof HttpStatus>, never>;
-
-/** 100 | 101 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226 | 300 | 301 | 302 | 303 | 304 | 305 | 306 | 307 | 308 | 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | ... 27 more ... | 511 */
-export type HttpResponseStatus = Values<HttpResponseStatusRecord>;
+export type OperationObject = Omit<OperationObjectNative, "tags">;
 
 export class Swagger {
   private static instance: Swagger;
@@ -111,7 +109,7 @@ export class Swagger {
       const meta = RouteDecoratorManager.from(controllerClass).value;
       meta.routes.forEach(route => {
         const fullPath = `${meta.basePath}${route.path}`;
-        const swagger = route.swagger ?? {};
+        const swagger = (route.swagger ?? {}) as OperationObjectNative;
         swagger.tags = [String(controllerClass.name)];
         this.#registerPath(fullPath, route.method, swagger);
       });

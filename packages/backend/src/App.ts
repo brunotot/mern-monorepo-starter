@@ -14,8 +14,6 @@ export class App {
   private mongoClient = MongoClient.getInstance();
 
   constructor() {
-    Bottle.getInstance().iocStartup();
-
     this.app = express();
     this.env = this.environment.vars.NODE_ENV;
     this.port = this.environment.vars.PORT;

@@ -1,23 +1,13 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import {
-  Collapse,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { TODO } from "@org/shared";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import {
-  NavigationRoute,
-  NavigationRouteSingle,
-  VAR_NAVIGATION_ROUTES,
-  isAnyRouteActive,
-} from "../../../../routes";
+import { VAR_NAVIGATION_ROUTES } from "../../../../routes";
+import { NavigationRoute, NavigationRouteSingle } from "../../../../models";
+import { isAnyRouteActive } from "../../../../utils";
 
 export type SidebarNavItemProps = {
   item: NavigationRoute;
@@ -29,9 +19,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const variant = item?.variant ?? "single";
   const renderChildrenPersistent = hasChildren && variant === "group";
   const renderChildrenMenu = hasChildren && variant === "menu";
-  const children: NavigationRoute[] = (
-    hasChildren ? item.children : []
-  ) as TODO;
+  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,8 +36,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
           sx={{
             marginTop: indent === 0 ? "1.75rem" : "0.25rem",
             marginBottom: indent === 0 ? "0.5rem" : "0.25rem",
-            paddingLeft:
-              indent === 0 ? undefined : `calc(1.5rem + ${indent}rem)`,
+            paddingLeft: indent === 0 ? undefined : `calc(1.5rem + ${indent}rem)`,
           }}
           textAlign="left"
         >

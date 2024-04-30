@@ -1,8 +1,6 @@
 import type { Request } from "express";
 import HttpStatus from "http-status";
-
-import type { HttpResponseStatus } from "@config";
-import type { ErrorLog } from "@models";
+import type { ErrorLog, HttpResponseStatus } from "@models";
 
 export class ErrorResponse extends Error {
   stack: string | undefined;

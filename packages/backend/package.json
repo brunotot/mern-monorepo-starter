@@ -17,9 +17,13 @@
   "dependencies": {
     "@anatine/zod-openapi": "^2.2.5",
     "@org/shared": "file:../shared/src",
+    "@ts-rest/core": "^3.45.0",
+    "@ts-rest/express": "^3.45.0",
+    "@ts-rest/open-api": "^3.45.0",
     "@tsvdec/core": "^2.0.11",
     "@tsvdec/decorators": "^1.0.7",
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
     "bottlejs": "^2.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -40,10 +44,11 @@
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^5.0.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/body-parser": "^1.19.5",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",

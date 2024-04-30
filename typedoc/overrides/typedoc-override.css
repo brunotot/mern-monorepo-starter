@@ -127,6 +127,16 @@ g[id="icon-64"] > path {
   background-color: var(--md-sys-color-surface-container-high);
 }
 
+body {
+  max-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-content > ul[data-id="root"] {
+  /*min-width: 410px;*/
+}
+
 body:not(.show) {
   opacity: 0;
 }

@@ -1,5 +1,3 @@
-import { z } from "zod";
+import { type TODO } from "@org/shared";
 
-export const MongoFilters = z.record(z.any());
-
-export type MongoFilters = z.infer<typeof MongoFilters>;
+export type MongoFilters = Record<string, TODO>;
