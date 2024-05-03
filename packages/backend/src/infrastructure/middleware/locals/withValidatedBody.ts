@@ -1,11 +1,10 @@
-import type { TODO } from "@org/shared";
+import { type TODO, ErrorResponse } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
 
-import { type ErrorLogRepository } from "@infrastructure/repository/interface/ErrorLogRepository";
-import { Bottle } from "@config";
-import { ErrorResponse } from "@errors";
+import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/interface/ErrorLogRepository";
+import { Bottle } from "@org/backend/config";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
   return async (req, res, next) => {
@@ -79,9 +78,14 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
         return segmentsA.length - segmentsB.length;
       }
 
-      const errorResponse = new ErrorResponse(req, 400, "Request body validation error", {
-        errors: formattedErrors,
-      });
+      const errorResponse = new ErrorResponse(
+        req.originalUrl,
+        400,
+        "Request body validation error",
+        {
+          errors: formattedErrors,
+        },
+      );
       const errorLogRepository =
         Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
       const content = errorResponse.content;

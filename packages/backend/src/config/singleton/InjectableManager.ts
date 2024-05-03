@@ -1,8 +1,8 @@
 import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decorators";
 import { type TODO } from "@org/shared";
-import { type InjectionMetaItem } from "@models";
+import { type MetaClassInjectionData } from "@org/backend/types";
 
-export class InjectableManager extends ClassMetadataEntry<InjectionMetaItem> {
+export class InjectableManager extends ClassMetadataEntry<MetaClassInjectionData> {
   static from(injection: ClassMetadataInjectType) {
     return new InjectableManager(injection);
   }

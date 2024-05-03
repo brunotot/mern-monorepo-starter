@@ -1,9 +1,8 @@
-import { ObjectId } from "mongodb";
-import { Repository } from "@decorators";
-import { User } from "@models";
+import { Repository } from "@org/backend/decorators";
+import { User, ObjectId } from "@org/shared";
 
-import { MongoRepository } from "@infrastructure/repository/MongoRepository";
-import { type UserRepository } from "@infrastructure/repository/interface/UserRepository";
+import { MongoRepository } from "@org/backend/infrastructure/repository/MongoRepository";
+import { type UserRepository } from "@org/backend/infrastructure/repository/interface/UserRepository";
 
 @Repository(User)
 export class UserRepositoryImpl extends MongoRepository<User> implements UserRepository {

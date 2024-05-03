@@ -1,13 +1,13 @@
-import { withCompressionMiddleware } from "@infrastructure/middleware/globals/withCompression";
-import { withCookieParserMiddleware } from "@infrastructure/middleware/globals/withCookieParser";
-import { withCorsMiddleware } from "@infrastructure/middleware/globals/withCors";
-import { withCredentialsMiddleware } from "@infrastructure/middleware/globals/withCredentials";
-import { withExpressOverridesMiddleware } from "@infrastructure/middleware/globals/withExpressOverrides";
-import { withHelmetMiddleware } from "@infrastructure/middleware/globals/withHelmet";
-import { withHppMiddleware } from "@infrastructure/middleware/globals/withHpp";
-import { withJsonParserMiddleware } from "@infrastructure/middleware/globals/withJsonParser";
-import { withMorganMiddleware } from "@infrastructure/middleware/globals/withMorgan";
-import { withUrlEncodedMiddleware } from "@infrastructure/middleware/globals/withUrlEncoded";
+import { withCompressionMiddleware } from "@org/backend/infrastructure/middleware/globals/withCompression";
+import { withCookieParserMiddleware } from "@org/backend/infrastructure/middleware/globals/withCookieParser";
+import { withCorsMiddleware } from "@org/backend/infrastructure/middleware/globals/withCors";
+import { withCredentialsMiddleware } from "@org/backend/infrastructure/middleware/globals/withCredentials";
+import { withHelmetMiddleware } from "@org/backend/infrastructure/middleware/globals/withHelmet";
+import { withHppMiddleware } from "@org/backend/infrastructure/middleware/globals/withHpp";
+import { withJsonParserMiddleware } from "@org/backend/infrastructure/middleware/globals/withJsonParser";
+import { withMorganMiddleware } from "@org/backend/infrastructure/middleware/globals/withMorgan";
+import { withUrlEncodedMiddleware } from "@org/backend/infrastructure/middleware/globals/withUrlEncoded";
+import { withStaticAssetsMiddleware } from "@org/backend/infrastructure/middleware/globals/withStaticAssets"
 
 export const GLOBAL_MIDDLEWARES = [
   withMorganMiddleware,
@@ -19,5 +19,5 @@ export const GLOBAL_MIDDLEWARES = [
   withJsonParserMiddleware,
   withUrlEncodedMiddleware,
   withCookieParserMiddleware,
-  withExpressOverridesMiddleware,
+  withStaticAssetsMiddleware
 ];

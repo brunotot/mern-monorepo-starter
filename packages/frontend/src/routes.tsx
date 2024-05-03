@@ -2,6 +2,7 @@ import * as MuiIcons from "@mui/icons-material";
 import { HomePage, LoginPage, Status404Page } from "./pages";
 import { NavigationRoutes } from "./models";
 import { convertToRoutes } from "./utils/NavigationRouteUtils";
+import { PreferencesPage } from "./pages/Preferences";
 
 export const VAR_NAVIGATION_ROUTES: NavigationRoutes = [
   {
@@ -14,7 +15,7 @@ export const VAR_NAVIGATION_ROUTES: NavigationRoutes = [
     label: t => t("accountSettings"),
     icon: <MuiIcons.ManageAccounts />,
     path: "/account",
-    Component: () => <div>Account settings</div>,
+    Component: PreferencesPage,
   },
   {
     label: t => t("apps"),

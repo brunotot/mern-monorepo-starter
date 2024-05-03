@@ -20,11 +20,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
-    "paths": {
-      "@org/shared": ["../shared/src"],
-      "@org/shared/*": ["../shared/src/*"]
-    }
+    "noFallthroughCasesInSwitch": true
   }
 }

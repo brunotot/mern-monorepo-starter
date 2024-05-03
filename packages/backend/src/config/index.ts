@@ -4,6 +4,7 @@ export * from "./singleton/Logger";
 export * from "./singleton/MongoClient";
 export * from "./singleton/InjectableManager";
 export * from "./singleton/ContractManager";
+export * from "./singleton/JwtManager"
 
 import "./init";
 

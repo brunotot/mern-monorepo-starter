@@ -11,7 +11,6 @@ export * from "./middleware/globals/withCompression";
 export * from "./middleware/globals/withCookieParser";
 export * from "./middleware/globals/withCors";
 export * from "./middleware/globals/withCredentials";
-export * from "./middleware/globals/withExpressOverrides";
 export * from "./middleware/globals/withHelmet";
 export * from "./middleware/globals/withHpp";
 export * from "./middleware/globals/withJsonParser";

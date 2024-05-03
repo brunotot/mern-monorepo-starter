@@ -9,3 +9,7 @@ export const Role = z.enum(["ADMIN", "USER"]);
 export type Role = z.infer<typeof Role>;
 
 export const VAR_USER_ROLES = Role.options;
+
+export const ObjectId = String;
+
+export type ObjectId = string;

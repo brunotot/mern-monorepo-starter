@@ -1,10 +1,14 @@
-import type { TODO } from "@org/shared";
+import type { TODO, PaginationResult } from "@org/shared";
 import type { Db, Document as MongoDocument } from "mongodb";
 
-import { Environment, MongoClient } from "@config";
-import { type PaginationOptions, type PaginationResult } from "@models";
-import { type PaginableRepository } from "@infrastructure/repository/interface/PaginableRepository";
-import { buildMatchPipeline, buildSortPipeline } from "@utils";
+import { Environment, MongoClient } from "@org/backend/config";
+import type {
+  MongoFilters,
+  MongoSearch,
+  MongoSort,
+  MongoPaginationOptions,
+} from "@org/backend/types";
+import { type PaginableRepository } from "@org/backend/infrastructure/repository/interface/PaginableRepository";
 
 export abstract class MongoRepository<T extends MongoDocument> implements PaginableRepository<T> {
   readonly #db: Db;
@@ -21,7 +25,7 @@ export abstract class MongoRepository<T extends MongoDocument> implements Pagina
   }
 
   // prettier-ignore
-  async search(options?: PaginationOptions): Promise<PaginationResult<T>> {
+  async search(options?: MongoPaginationOptions): Promise<PaginationResult<T>> {
     const limit = options?.limit ?? 10;
     const page = options?.page ?? 0;
     const search = options?.search ?? { fields: [], regex: "" };
@@ -31,8 +35,8 @@ export abstract class MongoRepository<T extends MongoDocument> implements Pagina
 
     const pipeline: TODO[] = [];
 
-    pipeline.push(...buildMatchPipeline(search, filters));
-    pipeline.push(...buildSortPipeline(sort));
+    pipeline.push(...this.buildMatchPipeline(search, filters));
+    pipeline.push(...this.buildSortPipeline(sort));
 
     pipeline.push(...[
       { $facet: {
@@ -59,5 +63,48 @@ export abstract class MongoRepository<T extends MongoDocument> implements Pagina
       rowsPerPage: limit,
       page,
     };
+  }
+
+  private buildSearchCondition({ fields, regex, options = "i" }: MongoSearch) {
+    return {
+      $or: fields.map(field => ({ [field]: { $regex: regex, $options: options } })),
+    };
+  }
+
+  private buildFilterConditions(filters: MongoFilters) {
+    return Object.entries(filters).map(([key, value]) => ({ [key]: value }));
+  }
+
+  private buildMatchPipeline(search: MongoSearch, filters: MongoFilters) {
+    const $and: TODO[] = [];
+    const useSearch = search.fields.length > 0 && search.regex;
+    const useFilter = Object.keys(filters).length > 0;
+
+    if (useSearch) {
+      $and.push(this.buildSearchCondition(search));
+    }
+
+    if (useFilter) {
+      $and.push(...this.buildFilterConditions(filters));
+    }
+
+    if (useSearch || useFilter) {
+      return [{ $match: { $and } }];
+    }
+
+    return [];
+  }
+
+  private buildSortPipeline(sort: MongoSort = []) {
+    if (sort.length === 0) return [];
+
+    return [
+      {
+        $sort: sort.reduce(
+          (acc, [field, order]) => ({ ...acc, [field]: order === "asc" ? 1 : -1 }),
+          {},
+        ),
+      },
+    ];
   }
 }

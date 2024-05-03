@@ -1,5 +1,5 @@
 import { type MongoClientOptions, MongoClient as MongoClientNative } from "mongodb";
-import { Environment } from "@config/singleton/Environment";
+import { Environment } from "@org/backend/config/singleton/Environment";
 
 function buildMongoUri(): string {
   const { DB_HOST, DB_PORT } = Environment.getInstance().vars;

@@ -3,7 +3,7 @@ import type { ClientSession } from "mongoose";
 import { startSession } from "mongoose";
 import { createMethodDecorator } from "@tsvdec/decorators";
 
-import { Bottle, InjectableManager } from "@config";
+import { Bottle, InjectableManager } from "@org/backend/config";
 
 function isClientSession(obj: TODO): obj is ClientSession {
   return (

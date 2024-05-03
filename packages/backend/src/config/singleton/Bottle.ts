@@ -1,6 +1,6 @@
 import { default as BottleJs } from "bottlejs";
 import { type Class } from "@org/shared";
-import { InjectableManager } from "@config/singleton/InjectableManager";
+import { InjectableManager } from "@org/backend/config/singleton/InjectableManager";
 
 export class Bottle {
   private static instance: Bottle;

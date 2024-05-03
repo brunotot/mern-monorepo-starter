@@ -1,5 +1,6 @@
-import { type PaginationResult, type PaginationOptions } from "@models";
+import { type PaginationResult } from "@org/shared";
+import { type MongoPaginationOptions } from "@org/backend/types";
 
 export interface PaginableRepository<T> {
-  search: (options?: PaginationOptions) => Promise<PaginationResult<T>>;
+  search: (options?: MongoPaginationOptions) => Promise<PaginationResult<T>>;
 }

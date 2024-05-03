@@ -4,7 +4,7 @@
  * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
  */
 
-import { Environment } from "@config";
+import { Environment } from "@org/backend/config";
 import cors from "cors";
 import type { RequestHandler } from "express";
 

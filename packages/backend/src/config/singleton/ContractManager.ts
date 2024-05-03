@@ -1,10 +1,9 @@
-import { type RouteMiddleware } from "@models";
+import { type RouteMiddleware } from "@org/backend/types";
 import { type ContractName, type TODO } from "@org/shared";
 
 export class ContractManager {
   private static instance: ContractManager;
 
-  // TODO! implement middleware: [{req,res,next}]
   #routers: TODO;
 
   public static getInstance(): ContractManager {

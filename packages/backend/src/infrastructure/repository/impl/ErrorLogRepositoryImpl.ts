@@ -1,9 +1,8 @@
-import { Repository /*, Transactional*/ } from "@decorators";
-import { ErrorLog } from "@models";
-import { ObjectId } from "mongodb";
+import { Repository /*, Transactional*/ } from "@org/backend/decorators";
+import { ObjectId, ErrorLog } from "@org/shared";
 
-import { MongoRepository } from "@infrastructure/repository/MongoRepository";
-import { type ErrorLogRepository } from "@infrastructure/repository/interface/ErrorLogRepository";
+import { MongoRepository } from "@org/backend/infrastructure/repository/MongoRepository";
+import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/interface/ErrorLogRepository";
 
 @Repository(ErrorLog)
 export class ErrorLogRepositoryImpl

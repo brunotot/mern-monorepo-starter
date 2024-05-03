@@ -1,7 +1,8 @@
-import { type PaginationResult, type User, type PaginationOptions } from "@models";
+import { type MongoPaginationOptions } from "@org/backend/types";
+import { type User, type PaginationResult } from "@org/shared";
 
 export interface UserService {
-  search: (options?: PaginationOptions) => Promise<PaginationResult<User>>;
+  search: (options?: MongoPaginationOptions) => Promise<PaginationResult<User>>;
   findAll: () => Promise<User[]>;
   create: (user: User) => Promise<User>;
 }

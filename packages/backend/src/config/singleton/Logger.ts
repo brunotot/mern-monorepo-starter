@@ -6,7 +6,7 @@ import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
 
 // @backend
-import { Environment } from "@config/singleton/Environment";
+import { Environment } from "@org/backend/config/singleton/Environment";
 
 export class Logger {
   private static instance: Logger;

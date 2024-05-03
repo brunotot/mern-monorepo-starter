@@ -1,5 +1,5 @@
-import { type User } from "@models";
-import { type PaginableRepository } from "@infrastructure/repository/interface/PaginableRepository";
+import { type User } from "@org/shared";
+import { type PaginableRepository } from "@org/backend/infrastructure/repository/interface/PaginableRepository";
 
 export interface UserRepository extends PaginableRepository<User> {
   findOne: (filters: Partial<User>) => Promise<User | null>;

@@ -1,12 +1,6 @@
 import { createFieldDecorator } from "@tsvdec/decorators";
+import { Bottle, InjectableManager } from "@org/backend/config";
 
-// @backend
-import { Bottle, InjectableManager } from "@config";
-
-/**
- * @remarks ONLY WORKS WITH CURRENT HOTFIX OF @tsvdec/core
- * The `createFieldDecorator` doesn't natively return the result of the supplier so the hotfix fixed that.
- */
 export function Autowired<This, Value>() {
   return createFieldDecorator<This, Value>(({ meta }) => {
     const context = meta.context;

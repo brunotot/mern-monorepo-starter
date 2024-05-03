@@ -1,15 +1,19 @@
 import { Role, type TODO } from "@org/shared";
-import { Autowired, Contract, Injectable } from "@decorators";
-import { withJwt, withPaginableParams, withUserRoles, type UserService } from "@infrastructure";
-import { type MongoSort, type Input, type Output } from "@models";
+import type { MongoSort, RouteInput, RouteOutput } from "@org/backend/types";
+import { Autowired, Contract, Injectable } from "@org/backend/decorators";
+import {
+  withJwt,
+  withPaginableParams,
+  withUserRoles,
+  type UserService,
+} from "@org/backend/infrastructure";
 
 @Injectable()
 export class UserController {
   @Autowired() userService: UserService;
 
   @Contract("User.findAll", withJwt(), withUserRoles(Role.enum.ADMIN))
-  async findAll(data: Input<"User.findAll">): Output<"User.findAll"> {
-    data;
+  async findAll(): RouteOutput<"User.findAll"> {
     const users = await this.userService.findAll();
     const pageableResponse = users as TODO;
     return {
@@ -19,9 +23,9 @@ export class UserController {
   }
 
   @Contract("User.pagination", withPaginableParams())
-  async pagination({ query }: Input<"User.pagination">): Output<"User.pagination"> {
-    // THIS!!!
-    const paginatedResult = (await this.userService.search({
+  async pagination({ query }: RouteInput<"User.pagination">): RouteOutput<"User.pagination"> {
+    //throw new Error("Testing error");
+    const paginationOptions = {
       filters: {},
       sort: (query.sort ? query.sort.split(",").map(value => value.split("|")) : []) as MongoSort,
       page: query.page,
@@ -30,7 +34,9 @@ export class UserController {
         fields: ["username", "email"],
         regex: query.search,
       },
-    })) as TODO;
+    };
+
+    const paginatedResult = (await this.userService.search(paginationOptions)) as TODO;
 
     return {
       status: 200,
@@ -39,9 +45,8 @@ export class UserController {
   }
 
   @Contract("User.create")
-  async create(data: Input<"User.create">): Output<"User.create"> {
-    const body = data.body as TODO;
-    const user = (await this.userService.create(body)) as TODO;
+  async create({ body }: RouteInput<"User.create">): RouteOutput<"User.create"> {
+    const user = await this.userService.create(body);
     return {
       status: 201,
       body: user,

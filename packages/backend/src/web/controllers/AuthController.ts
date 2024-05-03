@@ -1,40 +1,29 @@
-import { type Response } from "express";
-import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
-import type { VerifyErrors } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
-import { Environment } from "@config";
-import { withValidatedBody, type UserRepository } from "@infrastructure";
-import { Autowired, Contract, Injectable } from "@decorators";
-import { LoginForm, type Input, type Output } from "@models";
+import { JwtManager, type TokenData } from "@org/backend/config";
+import { withJwt, withValidatedBody, type UserRepository } from "@org/backend/infrastructure";
+import { Autowired, Contract, Injectable } from "@org/backend/decorators";
+import type { RouteInput, RouteOutput } from "@org/backend/types";
+import { LoginForm, ErrorResponse } from "@org/shared";
 
 @Injectable()
 export class AuthController {
   @Autowired() userRepository: UserRepository;
 
   @Contract("Auth.login", withValidatedBody(LoginForm))
-  async login(data: Input<"Auth.login">): Output<"Auth.login"> {
-    const {
-      req: { cookies },
-      res,
-      body: { username, password },
-    } = data;
-
-    //  Validation error. Needs refactor via decorators
-    if (!username || !password) {
-      return {
-        status: 400,
-        body: { message: "Username and password are required." },
-      };
-    }
-
+  async login({
+    req,
+    res,
+    body: { username, password },
+  }: RouteInput<"Auth.login">): RouteOutput<"Auth.login"> {
+    const cookies = req.cookies;
+    const jwtManager = JwtManager.build(req);
     const foundUser = await this.userRepository.findOne({ username });
 
     // Unauthorized
     if (!foundUser) {
       return {
         status: 401,
-        body: { message: "Unauthorized" },
+        body: new ErrorResponse(req.originalUrl, 400, "Unauthorized").content,
       };
     }
 
@@ -45,14 +34,14 @@ export class AuthController {
     if (!match) {
       return {
         status: 401,
-        body: { message: "Unauthorized" },
+        body: new ErrorResponse(req.originalUrl, 400, "Unauthorized").content,
       };
     }
 
     const roles = Object.values(foundUser.roles).filter(Boolean);
     // create JWTs
-    const accessToken = this.generateAccessToken(username, roles);
-    const newRefreshToken = this.generateRefreshToken(foundUser.username);
+    const accessToken = jwtManager.generateAccessToken({ username, roles });
+    const newRefreshToken = jwtManager.generateRefreshToken(foundUser.username);
 
     // Changed to let keyword
     let newRefreshTokenArray = !cookies?.jwt
@@ -75,7 +64,7 @@ export class AuthController {
         newRefreshTokenArray = [];
       }
 
-      this.clearJwtCookie(res);
+      jwtManager.clearJwtCookie(res);
     }
 
     // Saving refreshToken with current user
@@ -99,8 +88,9 @@ export class AuthController {
   }
 
   @Contract("Auth.logout")
-  async logout(data: Input<"Auth.logout">): Output<"Auth.logout"> {
+  async logout(data: RouteInput<"Auth.logout">): RouteOutput<"Auth.logout"> {
     const { req, res } = data;
+    const jwtManager = JwtManager.build(req);
 
     // On client, also delete the accessToken
 
@@ -115,7 +105,7 @@ export class AuthController {
     // Is refreshToken in db?
     const foundUser = await this.userRepository.findOne({ refreshToken });
     if (!foundUser) {
-      this.clearJwtCookie(res);
+      jwtManager.clearJwtCookie(res);
       return {
         status: 204,
         body: undefined,
@@ -127,38 +117,22 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     await this.userRepository.updateOne(foundUser);
 
-    this.clearJwtCookie(res);
+    jwtManager.clearJwtCookie(res);
     return {
       status: 204,
       body: undefined,
     };
   }
 
-  @Contract("Auth.refresh")
-  async refresh(data: Input<"Auth.refresh">): Output<"Auth.refresh"> {
+  @Contract("Auth.refresh", withJwt("refresh"))
+  async refresh(data: RouteInput<"Auth.refresh">): RouteOutput<"Auth.refresh"> {
     const { req, res } = data;
-    const cookies = req.cookies;
-
-    if (!cookies?.jwt) {
-      return { status: 403, body: undefined };
-    }
-
-    const refreshToken = cookies.jwt;
-    this.clearJwtCookie(res);
-
-    let decoded: TODO;
-    try {
-      decoded = await this.verifyToken(
-        refreshToken,
-        Environment.getInstance().vars.REFRESH_TOKEN_SECRET,
-      );
-    } catch (error) {
-      return { status: 403, body: undefined }; // Handle token verification errors uniformly
-    }
-
-    const foundUser = await this.userRepository.findOne({ refreshToken });
+    const jwtManager = JwtManager.build(req);
+    const { token: refreshToken, data: decoded }: TokenData = res.locals.tokenData;
+    jwtManager.clearJwtCookie(res);
+    const foundUser = await this.userRepository.findOne({ refreshToken: [refreshToken] });
     if (!foundUser || foundUser.username !== decoded.username) {
-      return { status: 403, body: undefined }; // User not found, or username does not match token
+      return { status: 403, body: new ErrorResponse(req.originalUrl, 403, "Forbidden").content }; // User not found, or username does not match token
     }
 
     // Update refresh tokens: remove the used one and possibly add new
@@ -167,58 +141,22 @@ export class AuthController {
     await this.userRepository.updateOne(foundUser);
 
     // Generate new tokens
-    const accessToken = this.generateAccessToken(decoded.username, foundUser.roles);
-    const newRefreshToken = this.generateRefreshToken(decoded.username);
+    const accessToken = jwtManager.generateAccessToken({
+      username: decoded.username,
+      roles: foundUser.roles,
+    });
+    const newRefreshToken = jwtManager.generateRefreshToken(decoded.username);
 
     // Persist the new refresh token with current user
     foundUser.refreshToken.push(newRefreshToken);
     await this.userRepository.updateOne(foundUser);
 
     // Set new secure cookie with the new refresh token
-    this.setSecureCookie(res, newRefreshToken);
+    jwtManager.setSecureCookie(res, newRefreshToken);
 
     return {
       status: 200,
       body: { accessToken },
     };
-  }
-
-  private async verifyToken(token: string, secret: string): Promise<TODO> {
-    return new Promise((resolve, reject) => {
-      jwt.verify(token, secret, (err: VerifyErrors | null, decoded: TODO) => {
-        if (err || !decoded) {
-          reject(new Error("Token verification failed"));
-        } else {
-          resolve(decoded);
-        }
-      });
-    });
-  }
-
-  private generateAccessToken(username: string, roles: string[]): string {
-    return jwt.sign(
-      { UserInfo: { username, roles } },
-      Environment.getInstance().vars.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" },
-    );
-  }
-
-  private generateRefreshToken(username: string): string {
-    return jwt.sign({ username }, Environment.getInstance().vars.REFRESH_TOKEN_SECRET, {
-      expiresIn: "7d",
-    });
-  }
-
-  private clearJwtCookie(res: Response): void {
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-  }
-
-  private setSecureCookie(res: Response, token: string): void {
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
   }
 }

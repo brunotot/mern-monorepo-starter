@@ -1,10 +1,9 @@
 import { createMethodDecorator } from "@tsvdec/decorators";
-import { Bottle, ContractManager, Logger } from "@config";
-import { type ContractName, type TODO } from "@org/shared";
-import { type ErrorLogRepository } from "@infrastructure";
-import { ErrorResponse } from "@errors";
+import { Bottle, ContractManager, Logger } from "@org/backend/config";
+import { type ContractName, type TODO, ErrorResponse } from "@org/shared";
+import { type ErrorLogRepository } from "@org/backend/infrastructure";
 import HttpStatus from "http-status";
-import { type RouteMiddleware, type RouteHandler } from "@models";
+import { type RouteMiddleware, type RouteHandler } from "@org/backend/types";
 
 export function Contract<const Name extends ContractName, This, Fn extends RouteHandler<Name>>(
   routeName: Name,
@@ -33,7 +32,7 @@ export function Contract<const Name extends ContractName, This, Fn extends Route
           Logger.getInstance().logger.error("Error logging failed", error);
         }
         //return res.status(errorContent.status).json(errorContent);
-        return errorContent;
+        return { status: 500, body: errorContent };
       }
     }
 

@@ -1,7 +1,7 @@
 import express from "express";
 import * as swaggerUi from "swagger-ui-express";
-import { ContractManager, Environment, Logger, MongoClient } from "@config";
-import { GLOBAL_MIDDLEWARES } from "@infrastructure";
+import { ContractManager, Environment, Logger, MongoClient } from "@org/backend/config";
+import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure";
 import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
 import { generateOpenApi } from "@ts-rest/open-api";
 import { initServer, createExpressEndpoints } from "@ts-rest/express";
@@ -90,6 +90,12 @@ export class App {
 
     const openApiDocument = generateOpenApi(CONTRACTS, apiDoc, { operationMapper });
 
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(openApiDocument, {
+        customCssUrl: "/css/swagger.css",
+      }),
+    );
   }
 }

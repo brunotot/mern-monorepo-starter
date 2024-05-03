@@ -1,2 +1,2 @@
-export * from "@web/controllers/AuthController";
-export * from "@web/controllers/UserController";
+export * from "@org/backend/web/controllers/AuthController";
+export * from "@org/backend/web/controllers/UserController";

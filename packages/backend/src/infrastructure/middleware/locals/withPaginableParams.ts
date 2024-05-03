@@ -1,7 +1,7 @@
 import type { RequestHandler, Request } from "express";
-import { type PaginationOptions, type MongoSort } from "@models";
+import { type MongoPaginationOptions, type MongoSort } from "@org/backend/types";
 
-function buildPaginationOptions(req: Request): PaginationOptions {
+function buildPaginationOptions(req: Request): MongoPaginationOptions {
   const query = req.query;
   const page = query.page ? parseInt(query.page as string) : 0;
   const limit = query.limit ? parseInt(query.limit as string) : 10;

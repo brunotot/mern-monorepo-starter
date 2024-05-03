@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/morgan|npm specifics}
  */
 
-import { Environment, Logger } from "@config";
+import { Environment, Logger } from "@org/backend/config";
 import type { RequestHandler } from "express";
 import morgan from "morgan";
 

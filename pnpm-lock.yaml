@@ -213,6 +213,15 @@ importers:
       '@preact/signals-react':
         specifier: ^2.0.1
         version: 2.0.1(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.32.1
+        version: 5.32.1(react@18.3.1)
+      '@ts-rest/core':
+        specifier: ^3.45.0
+        version: 3.45.0(zod@3.23.4)
+      '@ts-rest/react-query':
+        specifier: ^3.45.0
+        version: 3.45.0(@tanstack/react-query@5.32.1)(react@18.3.1)
       '@uidotdev/usehooks':
         specifier: ^2.4.1
         version: 2.4.1(react-dom@18.3.1)(react@18.3.1)
@@ -298,6 +307,9 @@ importers:
       '@ts-rest/open-api':
         specifier: ^3.45.0
         version: 3.45.0(zod@3.23.4)
+      http-status:
+        specifier: ^1.7.4
+        version: 1.7.4
       zod:
         specifier: ^3.22.5
         version: 3.23.4
@@ -1720,6 +1732,19 @@ packages:
     dev: true
     optional: true
 
+  /@tanstack/query-core@5.32.1:
+    resolution: {integrity: sha512-mCWa1wdGb1jiny4+qYegbSeadcFj+Nq65KFSs4A1DRveoIq7SrTwUhqu7hrB6d54cQH5x59DfJvxusn3w1Cj/g==}
+    dev: false
+
+  /@tanstack/react-query@5.32.1(react@18.3.1):
+    resolution: {integrity: sha512-+nXLMB0JK0XwTJ+lQt49DPNLrbSppni9N5W5yMR085yW3YaRKRUFhfVTER3TvQd1UycHpoGPFnt1gHiijXERAg==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': 5.32.1
+      react: 18.3.1
+    dev: false
+
   /@ts-rest/core@3.45.0(zod@3.23.4):
     resolution: {integrity: sha512-/0B5CQSfnNX4L3yErGzjAVBFWtyzag0UJBKiHwjhQFMcQ64zQ84D6OXvJlgmNJPQzXaFatY4MagEqTOUMqeKyw==}
     peerDependencies:
@@ -1752,6 +1777,20 @@ packages:
       '@anatine/zod-openapi': 1.14.2(openapi3-ts@2.0.2)(zod@3.23.4)
       openapi3-ts: 2.0.2
       zod: 3.23.4
+    dev: false
+
+  /@ts-rest/react-query@3.45.0(@tanstack/react-query@5.32.1)(react@18.3.1):
+    resolution: {integrity: sha512-x5xjE+MqI02B518vZ9jUN3XCafFoA7lIt5xAEaihuqL2XGRTiYvV7iWrjYiZXzcy/Xu+Y+pc+sxdYpDJcpP4Dw==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      zod: ^3.22.3
+    peerDependenciesMeta:
+      zod:
+        optional: true
+    dependencies:
+      '@tanstack/react-query': 5.32.1(react@18.3.1)
+      react: 18.3.1
     dev: false
 
   /@tsconfig/node10@1.0.11:

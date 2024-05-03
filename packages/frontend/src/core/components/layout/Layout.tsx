@@ -2,7 +2,7 @@ import { Box, Container } from "@mui/material";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { PropsWithChildren } from "react";
 import { Logo } from "..";
-import { sigLayout, sigSidebarOpen } from "../../signals";
+import { sigLayout, sigPreferences, sigSidebarOpen } from "../../signals";
 import { Sidebar } from "../navigation/Sidebar";
 import { Footer, Header } from "../semantics";
 import { HorizontalNavVariant, SidebarNavVariant } from "./variants";
@@ -13,11 +13,12 @@ export function Layout({ children }: PropsWithChildren) {
   const isHorizontal = matchesDesktop && layout === "HorizontalLayout";
   const sidebarOpen = sigSidebarOpen.value;
   const sidebarWidth = 300;
+  const maxWidthPreference = sigPreferences.value.containerWidth;
 
   return (
     <>
       <Container
-        maxWidth={isHorizontal ? false : "xl"}
+        maxWidth={isHorizontal ? false : maxWidthPreference}
         sx={{
           display: "flex",
           height: "100%",
@@ -35,33 +36,24 @@ export function Layout({ children }: PropsWithChildren) {
           <SidebarNavVariant />
         </Sidebar>
 
-        <Box
-          component="main"
-          display="flex"
-          flexDirection="column"
-          flexGrow={1}
-        >
+        <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
           <Header
-            maxWidth={isHorizontal ? "xl" : false}
+            maxWidth={isHorizontal ? maxWidthPreference : false}
             sx={{
               paddingTop: 1.5,
               paddingBottom: 1.5,
             }}
-            backgroundColor={
-              isHorizontal ? "var(--mui-palette-background-paper)" : undefined
-            }
+            backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
             borderBottom={isHorizontal}
           />
 
           <HorizontalNavVariant
             hidden={!isHorizontal || !matchesDesktop}
-            maxWidth={isHorizontal ? "xl" : false}
-            backgroundColor={
-              isHorizontal ? "var(--mui-palette-background-paper)" : undefined
-            }
+            maxWidth={isHorizontal ? maxWidthPreference : false}
+            backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
           />
           <Container
-            maxWidth={isHorizontal ? "xl" : false}
+            maxWidth={isHorizontal ? maxWidthPreference : false}
             sx={{ paddingInline: isHorizontal ? undefined : "0 !important" }}
           >
             {children}
