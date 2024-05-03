@@ -1,254 +1,162 @@
-import type { TODO } from "@org/shared";
 import bcrypt from "bcrypt";
-import type { Request, Response } from "express";
-import HttpStatus from "http-status";
-import type { VerifyErrors } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
-import { z } from "zod";
+import { JwtManager, type TokenData } from "@org/backend/config";
+import { withJwt, withValidatedBody, type UserRepository } from "@org/backend/infrastructure";
+import { Autowired, Contract, Injectable } from "@org/backend/decorators";
+import type { RouteInput, RouteOutput } from "@org/backend/types";
+import { LoginForm, ErrorResponse } from "@org/shared";
 
-import type { UserRepository } from "@internal";
-import {
-  Autowired,
-  Controller,
-  PostMapping,
-  Use,
-  VAR_ZOD_ENVIRONMENT,
-  buildSwaggerBody,
-  withValidatedBody,
-} from "@internal";
-
-const LoginForm = z.object({
-  username: z.string().min(1),
-  password: z.string().min(1),
-});
-
-type LoginForm = z.infer<typeof LoginForm>;
-
-const LoginResponse = z.object({
-  accessToken: z.string().openapi({
-    example:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNjI5MjIwNjI5LCJleHAiOjE2MjkyMjA3Mjl9.1",
-  }),
-});
-
-type LoginResponse = z.infer<typeof LoginResponse>;
-
-@Controller("/auth", {
-  description: "Authentication",
-})
+@Injectable()
 export class AuthController {
   @Autowired() userRepository: UserRepository;
 
-  @Use(withValidatedBody(LoginForm))
-  @PostMapping("/login", {
-    description: "Login user",
-    summary: "Login user",
-    requestBody: buildSwaggerBody(LoginForm),
-    responses: {
-      [HttpStatus.OK]: {
-        description: "Access token",
-        content: buildSwaggerBody(LoginResponse).content,
-      },
-    },
-  })
-  async login(req: Request, res: Response<TODO>) {
+  @Contract("Auth.login", withValidatedBody(LoginForm))
+  async login({
+    req,
+    res,
+    body: { username, password },
+  }: RouteInput<"Auth.login">): RouteOutput<"Auth.login"> {
     const cookies = req.cookies;
+    const jwtManager = JwtManager.build(req);
+    const foundUser = await this.userRepository.findOne({ username });
 
-    const { username, password } = req.body;
-    if (!username || !password) {
-      res.sendError(400, "Username and password are required.");
+    // Unauthorized
+    if (!foundUser) {
+      return {
+        status: 401,
+        body: new ErrorResponse(req.originalUrl, 400, "Unauthorized").content,
+      };
     }
 
-    const foundUser = await this.userRepository.findOne({ username: username });
-    if (!foundUser) {
-      res.sendError(401);
-    } //Unauthorized
-
-    // evaluate password
+    // Evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
-    if (match) {
-      const roles = Object.values(foundUser.roles).filter(Boolean);
-      // create JWTs
-      const accessToken = jwt.sign(
-        {
-          UserInfo: {
-            username: foundUser.username,
-            roles: roles,
-          },
-        },
-        VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" },
-      );
-      const newRefreshToken = jwt.sign(
-        { username: foundUser.username },
-        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" },
-      );
 
-      // Changed to let keyword
-      let newRefreshTokenArray = !cookies?.jwt
-        ? foundUser.refreshToken
-        : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
+    // Password invalid
+    if (!match) {
+      return {
+        status: 401,
+        body: new ErrorResponse(req.originalUrl, 400, "Unauthorized").content,
+      };
+    }
 
-      if (cookies?.jwt) {
-        /* 
+    const roles = Object.values(foundUser.roles).filter(Boolean);
+    // create JWTs
+    const accessToken = jwtManager.generateAccessToken({ username, roles });
+    const newRefreshToken = jwtManager.generateRefreshToken(foundUser.username);
+
+    // Changed to let keyword
+    let newRefreshTokenArray = !cookies?.jwt
+      ? foundUser.refreshToken
+      : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
+
+    if (cookies?.jwt) {
+      /* 
                 Scenario added here: 
                     1) User logs in but never uses RT and does not logout 
                     2) RT is stolen
                     3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
                 */
-        const refreshToken = cookies.jwt;
-        const foundToken = await this.userRepository.findOne({ refreshToken });
+      const refreshToken = cookies.jwt;
+      const foundToken = await this.userRepository.findOne({ refreshToken });
 
-        // Detected refresh token reuse!
-        if (!foundToken) {
-          // clear out ALL previous refresh tokens
-          newRefreshTokenArray = [];
-        }
-
-        res.clearCookie("jwt", {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-        });
+      // Detected refresh token reuse!
+      if (!foundToken) {
+        /** Clear out **all** previous refresh tokens */
+        newRefreshTokenArray = [];
       }
 
-      // Saving refreshToken with current user
-      foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-      await foundUser.save();
-
-      // Creates Secure Cookie with refresh token
-      res.cookie("jwt", newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-
-      // Send authorization roles and access token to user
-      return res.json({ accessToken: accessToken });
-    } else {
-      res.sendError(401);
+      jwtManager.clearJwtCookie(res);
     }
+
+    // Saving refreshToken with current user
+    foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+    await this.userRepository.updateOne(foundUser);
+
+    // Creates Secure Cookie with refresh token
+    res.cookie("jwt", newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // Send authorization roles and access token to user
+
+    return {
+      status: 200,
+      body: { accessToken },
+    };
   }
 
-  @PostMapping("/logout", {
-    description: "Logout user",
-    summary: "Logout user",
-    responses: {
-      [HttpStatus.NO_CONTENT]: {
-        description: "No content",
-      },
-    },
-  })
-  async logout(req: Request, res: Response) {
+  @Contract("Auth.logout")
+  async logout(data: RouteInput<"Auth.logout">): RouteOutput<"Auth.logout"> {
+    const { req, res } = data;
+    const jwtManager = JwtManager.build(req);
+
     // On client, also delete the accessToken
 
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(204); //No content
+    if (!cookies?.jwt)
+      return {
+        status: 204,
+        body: undefined,
+      };
     const refreshToken = cookies.jwt;
 
     // Is refreshToken in db?
     const foundUser = await this.userRepository.findOne({ refreshToken });
     if (!foundUser) {
-      res.clearCookie("jwt", {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-      });
-      return res.sendStatus(204);
+      jwtManager.clearJwtCookie(res);
+      return {
+        status: 204,
+        body: undefined,
+      };
     }
 
     // Delete refreshToken in db
     foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const result = await foundUser.save();
-    // console.log(result);
+    await this.userRepository.updateOne(foundUser);
 
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-    res.sendStatus(204);
+    jwtManager.clearJwtCookie(res);
+    return {
+      status: 204,
+      body: undefined,
+    };
   }
 
-  @PostMapping("/refresh", {
-    description: "Refresh access token",
-    summary: "Refresh access token",
-    responses: {
-      [HttpStatus.OK]: {
-        description: "New access",
-      },
-    },
-  })
-  async refresh(req: Request, res: Response) {
-    const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendError(401);
-    const refreshToken = cookies.jwt;
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-
-    const foundUser = await this.userRepository.findOne({ refreshToken });
-
-    // Detected refresh token reuse!
-    if (!foundUser) {
-      jwt.verify(
-        refreshToken,
-        VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
-        async (err: VerifyErrors | null, decoded: TODO) => {
-          if (err) return res.sendError(403); //Forbidden
-          // Delete refresh tokens of hacked user
-          const filters = { username: decoded.username };
-          const hackedUser = await this.userRepository.findOne(filters);
-          hackedUser!.refreshToken = [];
-          await this.userRepository.save(hackedUser!);
-        },
-      );
-      return res.sendError(403); //Forbidden
+  @Contract("Auth.refresh", withJwt("refresh"))
+  async refresh(data: RouteInput<"Auth.refresh">): RouteOutput<"Auth.refresh"> {
+    const { req, res } = data;
+    const jwtManager = JwtManager.build(req);
+    const { token: refreshToken, data: decoded }: TokenData = res.locals.tokenData;
+    jwtManager.clearJwtCookie(res);
+    const foundUser = await this.userRepository.findOne({ refreshToken: [refreshToken] });
+    if (!foundUser || foundUser.username !== decoded.username) {
+      return { status: 403, body: new ErrorResponse(req.originalUrl, 403, "Forbidden").content }; // User not found, or username does not match token
     }
 
+    // Update refresh tokens: remove the used one and possibly add new
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
+    foundUser.refreshToken = [...newRefreshTokenArray];
+    await this.userRepository.updateOne(foundUser);
 
-    // evaluate jwt
-    jwt.verify(
-      refreshToken,
-      VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
-      async (err: VerifyErrors | null, decoded: TODO) => {
-        if (err) {
-          // expired refresh token
-          foundUser.refreshToken = [...newRefreshTokenArray];
-          await foundUser.save();
-        }
-        if (err || foundUser.username !== decoded.username) return res.sendError(403);
+    // Generate new tokens
+    const accessToken = jwtManager.generateAccessToken({
+      username: decoded.username,
+      roles: foundUser.roles,
+    });
+    const newRefreshToken = jwtManager.generateRefreshToken(decoded.username);
 
-        // Refresh token was still valid
-        const roles = Object.values(foundUser.roles);
-        const accessToken = jwt.sign(
-          {
-            UserInfo: {
-              username: decoded.username,
-              roles: roles,
-            },
-          },
-          VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
-          { expiresIn: "15m" },
-        );
+    // Persist the new refresh token with current user
+    foundUser.refreshToken.push(newRefreshToken);
+    await this.userRepository.updateOne(foundUser);
 
-        const newRefreshToken = jwt.sign(
-          { username: foundUser.username },
-          VAR_ZOD_ENVIRONMENT.REFRESH_TOKEN_SECRET,
-          { expiresIn: "7d" },
-        );
-        // Saving refreshToken with current user
-        foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-        await foundUser.save();
+    // Set new secure cookie with the new refresh token
+    jwtManager.setSecureCookie(res, newRefreshToken);
 
-        // Creates Secure Cookie with refresh token
-        res.cookie("jwt", newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
-        });
-
-        res.json({ accessToken });
-      },
-    );
+    return {
+      status: 200,
+      body: { accessToken },
+    };
   }
 }

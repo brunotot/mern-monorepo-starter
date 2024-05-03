@@ -1,14 +1,8 @@
 import { LightMode } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  CardContent,
-  IconButton,
-  Paper,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Button, Card, CardContent, IconButton, Paper, Switch, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { client } from "../../core/client";
+import { useEffect } from "react";
 
 const ThemeShowcaseComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -59,6 +53,14 @@ const ThemeShowcaseComponent: React.FC = () => {
 };
 
 export function HomePage() {
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await client.User.pagination();
+      console.log(users.body.data);
+    };
+    fetchUsers();
+  }, []);
+
   return (
     <>
       <ThemeShowcaseComponent />

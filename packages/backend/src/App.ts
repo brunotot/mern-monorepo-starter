@@ -1,13 +1,10 @@
 import express from "express";
-
-import {
-  GLOBAL_MIDDLEWARES,
-  VAR_ZOD_ENVIRONMENT,
-  mongoConnect,
-  registerRoutes,
-  registerSwagger,
-  startupLog,
-} from "@internal";
+import * as swaggerUi from "swagger-ui-express";
+import { ContractManager, Environment, Logger, MongoClient } from "@org/backend/config";
+import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure";
+import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
+import { generateOpenApi } from "@ts-rest/open-api";
+import { initServer, createExpressEndpoints } from "@ts-rest/express";
 
 export class App {
   public readonly app: express.Application;
@@ -16,31 +13,31 @@ export class App {
   public readonly swaggerPath: string;
   public readonly url: string;
 
+  private environment = Environment.getInstance();
+  private logger = Logger.getInstance();
+  private mongoClient = MongoClient.getInstance();
+
   constructor() {
     this.app = express();
-    this.env = VAR_ZOD_ENVIRONMENT.NODE_ENV;
-    this.port = VAR_ZOD_ENVIRONMENT.PORT;
+    this.env = this.environment.vars.NODE_ENV;
+    this.port = this.environment.vars.PORT;
     this.swaggerPath = "api-docs";
-    function buildUrl() {
-      const domain =
-        VAR_ZOD_ENVIRONMENT.NODE_ENV === "production"
-          ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-          : "http://localhost";
-
-      return `${domain}:${VAR_ZOD_ENVIRONMENT.PORT}`;
-    }
-    this.url = buildUrl();
+    const domain =
+      this.env === "production"
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+        : "http://localhost";
+    this.url = `${domain}:${this.port}`;
 
     this.#initializeDatabase();
-    this.#initializeMiddlewares();
+    this.#initializeGlobalMiddlewares();
     this.#initializeRoutes();
     this.#initializeSwagger();
   }
 
   public listen() {
     this.app.listen(this.port, () => {
-      startupLog({
-        title: `[Express] MERN Sample App v${VAR_ZOD_ENVIRONMENT.PACKAGE_JSON_VERSION}`,
+      this.logger.table({
+        title: `[Express] MERN Sample App v${this.environment.vars.PACKAGE_JSON_VERSION}`,
         data: {
           "🟢 NodeJS": process.version,
           "🏠 Env": this.env,
@@ -55,18 +52,50 @@ export class App {
   }
 
   async #initializeDatabase() {
-    await mongoConnect();
+    try {
+      await this.mongoClient.connect();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  #initializeMiddlewares() {
+  #initializeGlobalMiddlewares() {
     GLOBAL_MIDDLEWARES.forEach(middleware => this.app.use(middleware));
   }
 
   #initializeRoutes() {
-    registerRoutes(this.app);
+    const s = initServer();
+    const router = s.router(CONTRACTS, ContractManager.getInstance().getRouters());
+    suppressConsole(() => createExpressEndpoints(CONTRACTS, router, this.app));
   }
 
   #initializeSwagger() {
-    registerSwagger(this.app, this.swaggerPath);
+    const apiDoc: Parameters<typeof generateOpenApi>[1] = {
+      info: {
+        title: "REST API",
+        license: {
+          name: "MIT",
+          url: "https://spdx.org/licenses/MIT.html",
+        },
+        termsOfService: "http://swagger.io/terms/",
+        contact: {
+          email: "",
+          name: "",
+          url: "",
+        },
+        version: Environment.getInstance().vars.PACKAGE_JSON_VERSION,
+        description: "This is a dynamically generated Swagger API documentation",
+      },
+    };
+
+    const openApiDocument = generateOpenApi(CONTRACTS, apiDoc, { operationMapper });
+
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(openApiDocument, {
+        customCssUrl: "/css/swagger.css",
+      }),
+    );
   }
 }

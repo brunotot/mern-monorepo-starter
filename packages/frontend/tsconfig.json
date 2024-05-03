@@ -1,4 +1,6 @@
 {
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -18,13 +20,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
-    "paths": {
-      "@org/shared": ["../shared/src"],
-      "@org/shared/*": ["../shared/src/*"]
-    }
-  },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+    "noFallthroughCasesInSwitch": true
+  }
 }

@@ -1,26 +1,29 @@
-import type { Entity, User, UserRepository } from "@internal";
-import { Injectable, Transactional, userDomain } from "@internal";
+import { Repository } from "@org/backend/decorators";
+import { User, ObjectId } from "@org/shared";
 
-@Injectable()
-export class UserRepositoryImpl implements UserRepository {
-  constructor() {}
+import { MongoRepository } from "@org/backend/infrastructure/repository/MongoRepository";
+import { type UserRepository } from "@org/backend/infrastructure/repository/interface/UserRepository";
 
-  async save(user: User): Promise<Entity<User>> {
-    return await new userDomain.db(user).save();
+@Repository(User)
+export class UserRepositoryImpl extends MongoRepository<User> implements UserRepository {
+  async findOne(filters: Partial<User>): Promise<User | null> {
+    return await this.collection.findOne(filters);
   }
 
-  async findOne(
-    filters: Parameters<typeof userDomain.db.findOne>[0],
-  ): Promise<Entity<User> | null> {
-    return await userDomain.db.findOne(filters).exec();
+  async findAll(): Promise<User[]> {
+    return await this.collection.find().toArray();
   }
 
-  async findAll(): Promise<Entity<User>[]> {
-    return await userDomain.db.find();
+  //@Transactional()
+  async insertOne(user: Omit<User, "_id">): Promise<User> {
+    const candidate = { ...user, _id: new ObjectId() };
+    const { insertedId } = await this.collection.insertOne(candidate);
+    return { ...candidate, _id: insertedId };
   }
 
-  @Transactional()
-  async create(user: User): Promise<Entity<User>> {
-    return await new userDomain.db(user).save();
+  //@Transactional()
+  async updateOne(user: User): Promise<User> {
+    await this.collection.updateOne({ _id: user._id }, user);
+    return user;
   }
 }

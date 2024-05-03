@@ -1,18 +1,18 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { TODO } from "@org/shared";
+import { type TODO, ErrorResponse } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
 
-import { errorLogDomain, ErrorResponse } from "@internal";
+import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/interface/ErrorLogRepository";
+import { Bottle } from "@org/backend/config";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
   return async (req, res, next) => {
     try {
       schema.parse(req.body);
       next();
-    } catch (e: TODO) {
-      const issues = e.issues as ZodIssue[];
+    } catch (e) {
+      const issues = (e as TODO).issues as ZodIssue[];
       const formatPath = (path: (string | number)[]) => {
         const maxIndex = path.length - 1;
         return path.reduce((acc, curr, i) => {
@@ -78,12 +78,19 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
         return segmentsA.length - segmentsB.length;
       }
 
-      const errorResponse = new ErrorResponse(req, 400, "Request body validation error", {
-        errors: formattedErrors,
-      });
-      const errorContent = errorResponse.content;
-      await new errorLogDomain.db(errorContent).save();
-      res.status(errorContent.status).json(errorContent);
+      const errorResponse = new ErrorResponse(
+        req.originalUrl,
+        400,
+        "Request body validation error",
+        {
+          errors: formattedErrors,
+        },
+      );
+      const errorLogRepository =
+        Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
+      const content = errorResponse.content;
+      await errorLogRepository.insertOne(content);
+      res.status(content.status).json(content);
     }
   };
 }

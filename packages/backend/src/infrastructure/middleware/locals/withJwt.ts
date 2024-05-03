@@ -1,25 +1,22 @@
-import { VAR_ZOD_ENVIRONMENT } from "@internal";
-import type { TODO } from "@org/shared";
+import { Environment, JwtManager } from "@org/backend/config";
 import type { RequestHandler } from "express";
-import type { VerifyErrors } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
+import { type ErrorResponse } from "@org/shared";
 
-export function withJwt(): RequestHandler {
-  return (req, res, next) => {
-    const authHeader = req.headers.authorization || req.headers.Authorization;
-    const authHeaderSanitized = Array.isArray(authHeader) ? authHeader[0] : authHeader;
-    if (!authHeaderSanitized?.startsWith("Bearer ")) return res.sendStatus(401);
-    const token = authHeaderSanitized.split(" ")[1];
-    // console.log(token);
-    jwt.verify(
-      token,
-      VAR_ZOD_ENVIRONMENT.ACCESS_TOKEN_SECRET,
-      (err: VerifyErrors | null, decoded: TODO) => {
-        if (err) return res.sendStatus(403); //invalid token
-        res.locals.user = decoded.UserInfo.username;
-        res.locals.roles = decoded.UserInfo.roles;
-        next();
-      },
-    );
+export function withJwt(tokenType: "access" | "refresh" = "access"): RequestHandler {
+  const tokenSecret =
+    Environment.getInstance().vars[
+      tokenType === "access" ? "ACCESS_TOKEN_SECRET" : "REFRESH_TOKEN_SECRET"
+    ];
+  return async (req, res, next) => {
+    const jwtManager = JwtManager.build(req);
+    try {
+      const result = await jwtManager.verifyToken(tokenSecret);
+      res.locals.tokenData = result;
+      next();
+    } catch (error) {
+      const typedError = error as ErrorResponse;
+      const content = typedError.content;
+      res.status(content.status).send(content);
+    }
   };
 }

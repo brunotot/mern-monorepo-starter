@@ -1,0 +1,10 @@
+table.responses-table
+  tbody
+  tr.response:not([data-code="500"]):is([data-code^="4"], [data-code^="5"])
+  :is(section.response-controls, div.model-example) {
+  display: none;
+}
+
+.swagger-ui .highlight-code > .microlight {
+  min-height: auto !important;
+}

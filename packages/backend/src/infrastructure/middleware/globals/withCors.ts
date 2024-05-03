@@ -4,14 +4,15 @@
  * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
  */
 
-import { VAR_ZOD_ENVIRONMENT } from "@internal";
+import { Environment } from "@org/backend/config";
 import cors from "cors";
 import type { RequestHandler } from "express";
 
 export function withCors(): RequestHandler {
+  const { ORIGIN, CREDENTIALS } = Environment.getInstance().vars;
   return cors({
-    origin: VAR_ZOD_ENVIRONMENT.ORIGIN,
-    credentials: VAR_ZOD_ENVIRONMENT.CREDENTIALS === "true",
+    origin: ORIGIN,
+    credentials: CREDENTIALS === "true",
   });
 }
 

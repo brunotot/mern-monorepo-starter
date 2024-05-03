@@ -1,55 +1,55 @@
-import { Role } from "@org/shared";
-import type { Request, Response } from "express";
-import HttpStatus from "http-status";
-
-import type { UserService } from "@internal";
+import { Role, type TODO } from "@org/shared";
+import type { MongoSort, RouteInput, RouteOutput } from "@org/backend/types";
+import { Autowired, Contract, Injectable } from "@org/backend/decorators";
 import {
-  Autowired,
-  Controller,
-  GetMapping,
-  PageableResponse,
-  PostMapping,
-  Use,
-  buildSwaggerBody,
-  userDomain,
   withJwt,
+  withPaginableParams,
   withUserRoles,
-} from "@internal";
+  type UserService,
+} from "@org/backend/infrastructure";
 
-@Controller("/users", {
-  description: "User management",
-})
+@Injectable()
 export class UserController {
   @Autowired() userService: UserService;
 
-  @Use(withJwt(), withUserRoles(Role.enum.ADMIN))
-  @GetMapping("", {
-    description: "Get all users",
-    summary: "Get all users",
-    responses: {
-      [HttpStatus.OK]: {
-        description: "List of users",
-        content: buildSwaggerBody(PageableResponse(userDomain.zod)).content,
-      },
-    },
-  })
-  async findAll(_req: Request, res: Response) {
+  @Contract("User.findAll", withJwt(), withUserRoles(Role.enum.ADMIN))
+  async findAll(): RouteOutput<"User.findAll"> {
     const users = await this.userService.findAll();
-    const pageableResponse = users;
-    res.json(pageableResponse);
+    const pageableResponse = users as TODO;
+    return {
+      status: 200,
+      body: pageableResponse,
+    };
   }
 
-  @PostMapping("", {
-    description: "Create a user",
-    summary: "Create a user",
-    responses: {
-      [HttpStatus.CREATED]: {
-        description: "User created",
+  @Contract("User.pagination", withPaginableParams())
+  async pagination({ query }: RouteInput<"User.pagination">): RouteOutput<"User.pagination"> {
+    //throw new Error("Testing error");
+    const paginationOptions = {
+      filters: {},
+      sort: (query.sort ? query.sort.split(",").map(value => value.split("|")) : []) as MongoSort,
+      page: query.page,
+      limit: query.limit,
+      search: {
+        fields: ["username", "email"],
+        regex: query.search,
       },
-    },
-  })
-  async create(req: Request, res: Response) {
-    const user = await this.userService.create(req.body);
-    res.status(201).json(user);
+    };
+
+    const paginatedResult = (await this.userService.search(paginationOptions)) as TODO;
+
+    return {
+      status: 200,
+      body: paginatedResult,
+    };
+  }
+
+  @Contract("User.create")
+  async create({ body }: RouteInput<"User.create">): RouteOutput<"User.create"> {
+    const user = await this.userService.create(body);
+    return {
+      status: 201,
+      body: user,
+    };
   }
 }
