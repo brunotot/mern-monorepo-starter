@@ -136,16 +136,18 @@ function writeToDependenciesMd(markdownTables) {
   }
 }
 
-function addFileToGit(filePath) {
-  exec(`git add ${filePath}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error adding file to Git: ${error}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`Git add stderr: ${stderr}`);
-    }
-  });
+function addFileToGit(...filePaths) {
+  for (const filePath of filePaths) {
+    exec(`git add ${filePath}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error adding file to Git: ${error}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`Git add stderr: ${stderr}`);
+      }
+    });
+  }
 }
 
 function main() {
@@ -155,7 +157,7 @@ function main() {
   const markdownTables = generateMarkdownTables(packageDependencies, packageDescriptions);
   writeToDependenciesMd(markdownTables);
   runPrettierOnFile(pathFromDir(DEPENDENCIES_MD_FILE_NAME));
-  addFileToGit(pathFromDir(DEPENDENCIES_MD_FILE_NAME));
+  addFileToGit(pathFromDir(DEPENDENCIES_MD_FILE_NAME), pathFromDir(DESCRIPTIONS_FILE_NAME));
 }
 
 main();
