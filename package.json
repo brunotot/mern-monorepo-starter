@@ -17,13 +17,15 @@
     "frontend:dev": "npm run dev --prefix packages/frontend",
     "frontend:start": "npm run start --prefix packages/frontend",
     "frontend:build": "npm run build --prefix packages/frontend",
-    "frontend:interface": "npm run interface --prefix packages/frontend"
+    "frontend:interface": "npm run interface --prefix packages/frontend",
+    "md:updateDeps": "node md/dependencies/updateDepDocs.js"
   },
   "author": "Bruno Tot",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^19.2.2",
+    "cross-dirname": "^0.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",

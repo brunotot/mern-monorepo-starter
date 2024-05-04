@@ -5,3 +5,4 @@
 #pnpm run build:docs:dev
 npm run root:test
 npx lint-staged
+npm run md:updateDeps
