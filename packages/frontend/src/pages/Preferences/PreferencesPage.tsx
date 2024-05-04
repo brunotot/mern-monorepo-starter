@@ -11,7 +11,7 @@ import {
 import { sigPreferences } from "../../core";
 import { type TODO } from "@org/shared";
 
-export function PreferencesPage() {
+export default function PreferencesPage() {
   const handleChange = (event: SelectChangeEvent<Breakpoint | false>) => {
     sigPreferences.value = {
       ...sigPreferences.value,

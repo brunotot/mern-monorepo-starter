@@ -4,9 +4,7 @@ import type { StreamOptions } from "morgan";
 import { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
-
-// @backend
-import { Environment } from "@org/backend/config/singleton/Environment";
+import { Environment } from "@org/backend/config/singletons/Environment";
 
 export class Logger {
   private static instance: Logger;

@@ -4,7 +4,7 @@ import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
 
 import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/interface/ErrorLogRepository";
-import { Bottle } from "@org/backend/config";
+import { ServiceRegistry } from "@org/backend/config";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
   return async (req, res, next) => {
@@ -87,7 +87,7 @@ export function withValidatedBody(schema: AnyZodObject): RequestHandler {
         },
       );
       const errorLogRepository =
-        Bottle.getInstance().inject<ErrorLogRepository>("errorLogRepository");
+        ServiceRegistry.getInstance().inject<ErrorLogRepository>("errorLogRepository");
       const content = errorResponse.content;
       await errorLogRepository.insertOne(content);
       res.status(content.status).json(content);

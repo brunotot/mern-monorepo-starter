@@ -8,7 +8,7 @@ export function withJwt(tokenType: "access" | "refresh" = "access"): RequestHand
       tokenType === "access" ? "ACCESS_TOKEN_SECRET" : "REFRESH_TOKEN_SECRET"
     ];
   return async (req, res, next) => {
-    const jwtManager = JwtManager.build(req);
+    const jwtManager = JwtManager.getBy(req);
     try {
       const result = await jwtManager.verifyToken(tokenSecret);
       res.locals.tokenData = result;

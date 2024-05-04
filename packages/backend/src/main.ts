@@ -1,11 +1,10 @@
-import "./index";
-import "./config";
+import "@org/backend/config";
 
 import { App } from "./App";
-import { Bottle } from "./config";
+import { ServiceRegistry } from "./config";
 
 function main() {
-  Bottle.getInstance().iocStartup();
+  ServiceRegistry.getInstance().iocStartup();
   const app = new App();
   app.listen();
 }

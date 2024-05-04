@@ -1,12 +1,4 @@
-export * from "./repository/interface/PaginableRepository";
-export * from "./repository/MongoRepository";
-export * from "./repository/interface/UserRepository";
-export * from "./repository/interface/ErrorLogRepository";
-export * from "./repository/impl/UserRepositoryImpl";
-export * from "./repository/impl/ErrorLogRepositoryImpl";
-export * from "./service/UserService";
-export * from "./service/impl/UserServiceImpl";
-
+/* @org/backend/infrastructure/middleware */
 export * from "./middleware/globals/withCompression";
 export * from "./middleware/globals/withCookieParser";
 export * from "./middleware/globals/withCors";
@@ -22,3 +14,15 @@ export * from "./middleware/locals/withUserRoles";
 export * from "./middleware/locals/withValidatedBody";
 export * from "./middleware/locals/withPaginableParams";
 export * from "./middleware/globals/index";
+
+/* @org/backend/infrastructure/repository */
+export * from "./repository/interface/PaginableRepository";
+export * from "./repository/MongoRepository";
+export * from "./repository/interface/UserRepository";
+export * from "./repository/interface/ErrorLogRepository";
+export * from "./repository/impl/UserRepositoryImpl";
+export * from "./repository/impl/ErrorLogRepositoryImpl";
+
+/* @org/backend/infrastructure/service */
+export * from "./service/UserService";
+export * from "./service/impl/UserServiceImpl";

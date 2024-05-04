@@ -1,11 +1,14 @@
-export * from "./meta/MetaClassInjectionData";
+/* @org/backend/types/meta */
+export * from "@org/backend/types/meta/MetaClassInjectionData";
 
-export * from "./mongo/MongoFilters";
-export * from "./mongo/MongoPaginationOptions";
-export * from "./mongo/MongoSearch";
-export * from "./mongo/MongoSort";
+/* @org/backend/types/mongo */
+export * from "@org/backend/types/mongo/MongoFilters";
+export * from "@org/backend/types/mongo/MongoPaginationOptions";
+export * from "@org/backend/types/mongo/MongoSearch";
+export * from "@org/backend/types/mongo/MongoSort";
 
-export * from "./route/RouteHandler";
-export * from "./route/RouteMiddleware";
-export * from "./route/RouteInput";
-export * from "./route/RouteOutput";
+/* @org/backend/types/route */
+export * from "@org/backend/types/route/RouteHandler";
+export * from "@org/backend/types/route/RouteMiddleware";
+export * from "@org/backend/types/route/RouteInput";
+export * from "@org/backend/types/route/RouteOutput";

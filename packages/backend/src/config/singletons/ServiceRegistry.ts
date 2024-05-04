@@ -1,17 +1,17 @@
 import { default as BottleJs } from "bottlejs";
 import { type Class } from "@org/shared";
-import { InjectableManager } from "@org/backend/config/singleton/InjectableManager";
+import { InjectorMetadataManager } from "@org/backend/config/managers/InjectorMetadataManager";
 
-export class Bottle {
-  private static instance: Bottle;
+export class ServiceRegistry {
+  private static instance: ServiceRegistry;
 
   readonly bottle: BottleJs;
   readonly container: BottleJs.IContainer<string>;
   readonly injectionClasses: Class[];
 
-  public static getInstance(): Bottle {
-    Bottle.instance ??= new Bottle();
-    return Bottle.instance;
+  public static getInstance(): ServiceRegistry {
+    ServiceRegistry.instance ??= new ServiceRegistry();
+    return ServiceRegistry.instance;
   }
 
   private constructor() {
@@ -24,7 +24,7 @@ export class Bottle {
     if (typeof nameOrContext === "string") {
       return this.container[nameOrContext] as T;
     }
-    const containerName = InjectableManager.from(nameOrContext).value.name;
+    const containerName = InjectorMetadataManager.getBy(nameOrContext).value.name;
     return this.container[containerName] as T;
   }
 
@@ -32,14 +32,14 @@ export class Bottle {
     const injectionClasses = this.injectionClasses;
 
     const dependencySchema: Record<string, string[]> = injectionClasses.reduce((acc, Class) => {
-      const { name, dependencies = [] } = InjectableManager.from(Class).value;
+      const { name, dependencies = [] } = InjectorMetadataManager.getBy(Class).value;
       return { ...acc, [name]: dependencies };
     }, {});
 
     function sortInjectionClasses(classes: Class[], dependencySchema: Record<string, string[]>) {
       return [...classes].sort((classA, classB) => {
-        const { name: nameA } = InjectableManager.from(classA).value;
-        const { name: nameB } = InjectableManager.from(classB).value;
+        const { name: nameA } = InjectorMetadataManager.getBy(classA).value;
+        const { name: nameB } = InjectorMetadataManager.getBy(classB).value;
         if (dependencySchema[nameA].length === 0) return -1;
         if (dependencySchema[nameB].length === 0) return 1;
         if (dependencySchema[nameA].includes(nameB)) return 1;
@@ -51,7 +51,7 @@ export class Bottle {
     const sortedInjectionClasses = sortInjectionClasses(injectionClasses, dependencySchema);
 
     sortedInjectionClasses.forEach(Class => {
-      const manager = InjectableManager.from(Class);
+      const manager = InjectorMetadataManager.getBy(Class);
       const decoration = manager.value;
       const name = decoration.name;
       const constructorParams = decoration.constructorParams;

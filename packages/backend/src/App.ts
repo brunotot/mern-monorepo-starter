@@ -1,6 +1,6 @@
 import express from "express";
 import * as swaggerUi from "swagger-ui-express";
-import { ContractManager, Environment, Logger, MongoClient } from "@org/backend/config";
+import { RouterCollection, Environment, Logger, MongoClient } from "@org/backend/config";
 import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure";
 import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -65,7 +65,7 @@ export class App {
 
   #initializeRoutes() {
     const s = initServer();
-    const router = s.router(CONTRACTS, ContractManager.getInstance().getRouters());
+    const router = s.router(CONTRACTS, RouterCollection.getInstance().getRouters());
     suppressConsole(() => createExpressEndpoints(CONTRACTS, router, this.app));
   }
 

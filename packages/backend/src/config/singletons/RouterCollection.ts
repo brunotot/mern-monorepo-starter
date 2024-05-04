@@ -1,14 +1,14 @@
 import { type RouteMiddleware } from "@org/backend/types";
 import { type ContractName, type TODO } from "@org/shared";
 
-export class ContractManager {
-  private static instance: ContractManager;
+export class RouterCollection {
+  private static instance: RouterCollection;
 
   #routers: TODO;
 
-  public static getInstance(): ContractManager {
-    ContractManager.instance ??= new ContractManager();
-    return ContractManager.instance;
+  public static getInstance(): RouterCollection {
+    RouterCollection.instance ??= new RouterCollection();
+    return RouterCollection.instance;
   }
 
   private constructor() {

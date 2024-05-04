@@ -1,3 +1,4 @@
-import "./init";
-
 export {};
+
+/* @org/shared/config/setup */
+import "./setup";

@@ -2,7 +2,22 @@ import * as MuiIcons from "@mui/icons-material";
 import { HomePage, LoginPage, Status404Page } from "./pages";
 import { NavigationRoutes } from "./models";
 import { convertToRoutes } from "./utils/NavigationRouteUtils";
-import { PreferencesPage } from "./pages/Preferences";
+import PreferencesPage from "./pages/Preferences/PreferencesPage";
+
+/*
+import { Suspense, lazy } from "react";
+
+const PublicRoute = (Component: any) => (props: any) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Component {...props} />
+    </Suspense>
+  );
+};
+
+const PreferencesPage = PublicRoute(
+  lazy(() => import("./pages/Preferences/PreferencesPage"))
+);*/
 
 export const VAR_NAVIGATION_ROUTES: NavigationRoutes = [
   {

@@ -3,7 +3,7 @@ import type { ClientSession } from "mongoose";
 import { startSession } from "mongoose";
 import { createMethodDecorator } from "@tsvdec/decorators";
 
-import { Bottle, InjectableManager } from "@org/backend/config";
+import { ServiceRegistry, InjectorMetadataManager } from "@org/backend/config";
 
 function isClientSession(obj: TODO): obj is ClientSession {
   return (
@@ -25,8 +25,8 @@ export function Transactional() {
       const session = isTransactionActive ? lastArg : await startSession();
       !isTransactionActive && session.startTransaction();
       try {
-        const container = InjectableManager.from(context).value.name;
-        const _this = Bottle.getInstance().inject(container);
+        const container = InjectorMetadataManager.getBy(context).value.name;
+        const _this = ServiceRegistry.getInstance().inject(container);
         const result = isTransactionActive
           ? await fn.call(_this, ...args)
           : await fn.call(_this, ...args, session);

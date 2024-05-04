@@ -16,7 +16,7 @@ export class AuthController {
     body: { username, password },
   }: RouteInput<"Auth.login">): RouteOutput<"Auth.login"> {
     const cookies = req.cookies;
-    const jwtManager = JwtManager.build(req);
+    const jwtManager = JwtManager.getBy(req);
     const foundUser = await this.userRepository.findOne({ username });
 
     // Unauthorized
@@ -72,12 +72,7 @@ export class AuthController {
     await this.userRepository.updateOne(foundUser);
 
     // Creates Secure Cookie with refresh token
-    res.cookie("jwt", newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    jwtManager.setSecureCookie(res, newRefreshToken, 1);
 
     // Send authorization roles and access token to user
 
@@ -90,7 +85,7 @@ export class AuthController {
   @Contract("Auth.logout")
   async logout(data: RouteInput<"Auth.logout">): RouteOutput<"Auth.logout"> {
     const { req, res } = data;
-    const jwtManager = JwtManager.build(req);
+    const jwtManager = JwtManager.getBy(req);
 
     // On client, also delete the accessToken
 
@@ -127,7 +122,7 @@ export class AuthController {
   @Contract("Auth.refresh", withJwt("refresh"))
   async refresh(data: RouteInput<"Auth.refresh">): RouteOutput<"Auth.refresh"> {
     const { req, res } = data;
-    const jwtManager = JwtManager.build(req);
+    const jwtManager = JwtManager.getBy(req);
     const { token: refreshToken, data: decoded }: TokenData = res.locals.tokenData;
     jwtManager.clearJwtCookie(res);
     const foundUser = await this.userRepository.findOne({ refreshToken: [refreshToken] });
@@ -152,7 +147,7 @@ export class AuthController {
     await this.userRepository.updateOne(foundUser);
 
     // Set new secure cookie with the new refresh token
-    jwtManager.setSecureCookie(res, newRefreshToken);
+    jwtManager.setSecureCookie(res, newRefreshToken, 7);
 
     return {
       status: 200,

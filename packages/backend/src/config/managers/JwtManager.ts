@@ -2,7 +2,7 @@ import { type TODO, ErrorResponse } from "@org/shared";
 import { type Request, type Response } from "express";
 import type { VerifyErrors } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-import { Environment } from "@org/backend/config/singleton/Environment";
+import { Environment } from "@org/backend/config/singletons/Environment";
 
 export type TokenData = {
   token: string;
@@ -17,7 +17,7 @@ export type JwtPrincipal = {
 export class JwtManager {
   readonly #req: Request;
 
-  static build(req: Request): JwtManager {
+  static getBy(req: Request): JwtManager {
     return new JwtManager(req);
   }
 
@@ -65,12 +65,12 @@ export class JwtManager {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
   }
 
-  public setSecureCookie(res: Response, token: string): void {
+  public setSecureCookie(res: Response, token: string, days: number = 7): void {
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: days * 24 * 60 * 60 * 1000, // 7 days
     });
   }
 }
