@@ -1,4 +1,4 @@
-- [1. Fork repository](#1-fork-repository)
+- [1. Fork repositorya](#1-fork-repositorya)
   - [1.1. Fork main branch](#11-fork-main-branch)
   - [1.2. Enable workflows](#12-enable-workflows)
   - [1.3. Configure workflow permissions](#13-configure-workflow-permissions)
@@ -10,7 +10,7 @@
   - [2.4. Setup Backend service (Express app)](#24-setup-backend-service-express-app)
   - [2.5. Setup Frontend service (React app)](#25-setup-frontend-service-react-app)
 
-## 1. Fork repository
+## 1. Fork repositorya
 
 ### 1.1. Fork main branch
 

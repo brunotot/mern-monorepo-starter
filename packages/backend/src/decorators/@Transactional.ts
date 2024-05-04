@@ -1,9 +1,10 @@
 import type { TODO } from "@org/shared";
-import type { ClientSession } from "mongoose";
-import { startSession } from "mongoose";
 import { createMethodDecorator } from "@tsvdec/decorators";
 
 import { ServiceRegistry, InjectorMetadataManager } from "@org/backend/config";
+
+type ClientSession = TODO;
+const startSession = undefined as TODO;
 
 function isClientSession(obj: TODO): obj is ClientSession {
   return (

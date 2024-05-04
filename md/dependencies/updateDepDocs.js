@@ -153,6 +153,15 @@ function addFileToGit(...filePaths) {
 function main() {
   updateDescriptionsJson();
   const packageDescriptions = readJsonFile(pathFromDir(DESCRIPTIONS_FILE_NAME));
+
+  if (Object.values(packageDescriptions).some(descr => descr === "-")) {
+    console.log(
+      `Some dependencies are missing descriptions at ${pathFromDir(DESCRIPTIONS_FILE_NAME)}`,
+    );
+    console.log("Aborting...");
+    process.exit(1);
+  }
+
   const packageDependencies = getDependenciesFromPackages();
   const markdownTables = generateMarkdownTables(packageDependencies, packageDescriptions);
   writeToDependenciesMd(markdownTables);

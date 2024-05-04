@@ -1,5 +1,4 @@
-import { Box, Container } from "@mui/material";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { Box, Container, useMediaQuery } from "@mui/material";
 import { PropsWithChildren } from "react";
 import { Logo } from "..";
 import { sigLayout, sigPreferences, sigSidebarOpen } from "../../signals";

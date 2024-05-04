@@ -26,7 +26,6 @@
 | http-status               | ^1.7.4             | Utility for working with HTTP status codes                                |
 | jsonwebtoken              | ^9.0.2             | Used for generating and verifying JSON Web Tokens (JWT)                   |
 | mongodb                   | ^6.5.0             | The official MongoDB driver for Node.js                                   |
-| mongoose                  | ^8.3.2             | Object Data Modeling (ODM) library for working with MongoDB               |
 | morgan                    | ^1.10.0            | HTTP request logger middleware for Express.js                             |
 | openapi3-ts               | ^4.3.1             | Used for generating TypeScript types from OpenAPI specifications          |
 | swagger-jsdoc             | ^6.2.8             | Generates OpenAPI documentation from JSDoc comments                       |
