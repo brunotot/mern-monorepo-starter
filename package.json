@@ -18,7 +18,8 @@
     "frontend:start": "npm run start --prefix packages/frontend",
     "frontend:build": "npm run build --prefix packages/frontend",
     "frontend:interface": "npm run interface --prefix packages/frontend",
-    "md:updateDeps": "node md/dependencies/updateDepDocs.js"
+    "md:updateDeps": "node md/dependencies/updateDepDocs.js",
+    "md:mergeMds": "node md/scripts/mergeMds.js"
   },
   "author": "Bruno Tot",
   "license": "MIT",

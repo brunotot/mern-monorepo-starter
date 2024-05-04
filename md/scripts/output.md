@@ -1,4 +1,6 @@
-<h1 align="center">🚀 Monorepo MERN Railway starter 🚀</h1>
+<p align="center">
+  <img src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/md/assets/img/logo.png?raw=true" width="400" alt="logo"/>
+</p>
 
 <p align="center">
   <img alt="TypeScript badge" src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF">
