@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://github.com/antoinezanardi/werewolves-assistant-api-next/blob/main/public/assets/images/logo/full/werewolves-logo.png?raw=true" width="400" alt="logo"/>
-</p>
-
 <h1 align="center">🚀 Monorepo MERN Railway starter 🚀</h1>
 
 <p align="center">

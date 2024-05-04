@@ -1,28 +1,4 @@
-## Impact Legend
-
-🔴 **Critical** - Dependencies that are critical to the core functionality of the package. If these dependencies were to fail or become unavailable, it would severely impact the package's ability to function correctly.
-
-🟠 **Important** - Dependencies that are important for key features or components of the package. While not critical, their absence or failure would significantly degrade the package's functionality.
-
-🟡 **Moderate** - Dependencies that provide useful functionality or enhancements, but the package could still operate without them, albeit with reduced capabilities.
-
-🟢 **Low** - Dependencies that provide minor functionality or utilities, and their absence would have a minimal impact on the package's core operations.
-
-🔵 **Developmental** - Dependencies that are primarily used for development purposes, such as testing, linting, or build tools. They don't directly impact the package's runtime functionality.
-
-🟣 **Transitive** - Dependencies that are brought in transitively by other dependencies and are not directly used by the package itself.
-
-⚫ **Deprecated** - Dependencies that are marked as deprecated and should be considered for replacement or removal in future versions of the package.
-
-🔶 **Experimental** - Dependencies that are experimental or in an early stage of development, and their stability or long-term support is not guaranteed.
-
-🔷 **External** - Dependencies that are external to the project or organization and are not directly maintained or controlled by the development team.
-
-🔸 **Internal** - Dependencies that are internal to the project or organization and are maintained or controlled by the development team.
-
 # backend
-
-IMPACT !!!
 
 | Name                      | Version            | Description                                                                     |
 | ------------------------- | ------------------ | ------------------------------------------------------------------------------- |
