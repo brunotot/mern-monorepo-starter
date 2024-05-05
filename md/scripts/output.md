@@ -1,6 +1,7 @@
-<p align="center">
-  <img src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/md/assets/img/logo.png?raw=true" width="400" alt="logo"/>
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-dark.svg?raw=true">
+  <img alt="MERN Monorepo starter banner" src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-light.svg?raw=true">
+</picture>
 
 <p align="center">
   <img alt="TypeScript badge" src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF">
