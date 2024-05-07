@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "typeRoots": [],
-    "moduleResolution": "Bundler"
+    "typeRoots": []
   },
   "include": ["src"]
 }

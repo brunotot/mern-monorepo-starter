@@ -7,14 +7,14 @@
   "scripts": {
     "build": "rm -rf dist && npm run compile:ts",
     "compile:ts": "tsc && npm run tsc-alias",
-    "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/backend/src/main.js",
-    "tsc-alias": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
+    "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/main.js",
+    "tsc-alias": "tsc-alias -p tsconfig.json"
   },
   "keywords": [],
   "author": "Bruno Tot",
   "license": "MIT",
   "dependencies": {
-    "@org/shared": "*",
+    "@org/shared": "workspace:*",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/express": "^3.45.0",
     "@ts-rest/open-api": "^3.45.0",

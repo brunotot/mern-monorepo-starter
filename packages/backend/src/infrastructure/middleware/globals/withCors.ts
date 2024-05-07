@@ -5,6 +5,7 @@
  */
 
 import { Environment } from "@org/backend/config";
+import { RouteMiddleware } from "@org/backend/types";
 import cors from "cors";
 import type { RequestHandler } from "express";
 
@@ -17,4 +18,4 @@ export function withCors(): RequestHandler {
 }
 
 /** @hidden */
-export const withCorsMiddleware = withCors();
+export const withCorsMiddleware: RouteMiddleware = withCors();

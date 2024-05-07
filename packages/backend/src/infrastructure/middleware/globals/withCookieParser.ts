@@ -3,6 +3,7 @@
  * @see {@link https://www.npmjs.com/package/cookie-parser|npm specifics}
  */
 
+import { RouteMiddleware } from "@org/backend/types";
 import cookieParser from "cookie-parser";
 import type { RequestHandler } from "express";
 
@@ -11,4 +12,4 @@ export function withCookieParser(): RequestHandler {
 }
 
 /** @hidden */
-export const withCookieParserMiddleware = withCookieParser();
+export const withCookieParserMiddleware: RouteMiddleware = withCookieParser();
