@@ -56,7 +56,7 @@ export function HomePage() {
   useEffect(() => {
     const fetchUsers = async () => {
       const users = await client.User.pagination();
-      console.log(users.body.data);
+      console.log(users.body);
     };
     fetchUsers();
   }, []);

@@ -8,7 +8,7 @@
     "pnpm": ">=8.15.7"
   },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky && pnpm --filter @org/shared run build",
     "root:test": "echo \"Error: no test specified\"",
     "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
     "root:lint": "npx eslint . --fix",
@@ -19,7 +19,8 @@
     "frontend:build": "npm run build --prefix packages/frontend",
     "frontend:interface": "npm run interface --prefix packages/frontend",
     "md:updateDeps": "node md/dependencies/updateDepDocs.js",
-    "md:mergeMds": "node md/scripts/mergeMds.js"
+    "md:mergeMds": "node md/scripts/mergeMds.js",
+    "clean": "rm -rf node_modules packages/backend/dist packages/backend/node_modules packages/frontend/dist packages/frontend/node_modules packages/shared/node_modules packages/shared/dist"
   },
   "author": "Bruno Tot",
   "license": "MIT",
