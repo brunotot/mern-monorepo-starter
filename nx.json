@@ -1,0 +1,18 @@
+{
+  "namedInputs": {
+    "noMarkdown": ["!{projectRoot}/**/*.md"]
+  },
+  "targetDefaults": {
+    "build": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "dependsOn": ["^build"],
+      "cache": true
+    },
+    "dev": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "inputs": ["noMarkdown", "^noMarkdown"]
+    }
+  }
+}

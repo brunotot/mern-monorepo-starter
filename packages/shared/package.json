@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "build": "rm -rf dist && npm run compile:ts",
     "compile:ts": "tsc",

@@ -1,11 +1,13 @@
 <p align="center">
-  <img src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/md/assets/img/logo.png?raw=true" alt="logo"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-dark.svg?raw=true">
+    <img width="500px" alt="MERN Monorepo starter banner" src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-light.svg?raw=true">
+  </picture>
 </p>
 
 <p align="center">
-  <img alt="TypeScript badge" src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=2F73BF">
-  <img alt="React badge" src="https://img.shields.io/badge/-React-black?style=for-the-badge&logo=react&color=23272F">
-  <img alt="Express badge" src="https://img.shields.io/badge/-Express-black?style=for-the-badge&logoColor=black&logo=express&color=F7DF1E">
-  <img alt="MongoDB badge" src="https://img.shields.io/badge/-MongoDB-black?style=for-the-badge&logoColor=white&logo=mongodb&color=127237">
-  </a>
+  <img alt="TypeScript badge" src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
+  <img alt="React badge" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+  <img alt="Express badge" src="https://img.shields.io/badge/Express-404D59?style=for-the-badge&logo=express">
+  <img alt="MongoDB badge" src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white">
 </p>
