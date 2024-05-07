@@ -2,7 +2,6 @@ import { createMethodDecorator } from "@tsvdec/decorators";
 import { ServiceRegistry, RouterCollection, Logger } from "@org/backend/config";
 import { type ContractName, type TODO, ErrorResponse } from "@org/shared";
 import { type ErrorLogRepository } from "@org/backend/infrastructure";
-import HttpStatus from "http-status";
 import { type RouteMiddleware, type RouteHandler } from "@org/backend/types";
 
 export function Contract<const Name extends ContractName, This, Fn extends RouteHandler<Name>>(
@@ -18,11 +17,7 @@ export function Contract<const Name extends ContractName, This, Fn extends Route
         const errorResponse =
           error instanceof ErrorResponse
             ? error
-            : new ErrorResponse(
-                data.req,
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                (error as TODO).message,
-              );
+            : new ErrorResponse(data.req, 500, (error as TODO).message);
         const errorContent = errorResponse.content;
         const errorLogRepository =
           ServiceRegistry.getInstance().inject<ErrorLogRepository>("errorLogRepository");

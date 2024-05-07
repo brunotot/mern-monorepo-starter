@@ -2,12 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "typeRoots": ["./node_modules/@types", "./src/@types"]
+    "typeRoots": ["./node_modules/@types"]
   },
-  "include": [
-    "src",
-    "../shared/src/models/domain/ErrorLog.ts",
-    "../shared/src/models/HttpResponseStatus.ts",
-    "../shared/src/models/errors"
-  ]
+  "include": ["src"],
+  "exclude": ["src/logs"]
 }

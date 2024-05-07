@@ -27,7 +27,6 @@
 | jsonwebtoken              | ^9.0.2             | Used for generating and verifying JSON Web Tokens (JWT)                   |
 | mongodb                   | ^6.5.0             | The official MongoDB driver for Node.js                                   |
 | morgan                    | ^1.10.0            | HTTP request logger middleware for Express.js                             |
-| openapi3-ts               | ^4.3.1             | Used for generating TypeScript types from OpenAPI specifications          |
 | swagger-jsdoc             | ^6.2.8             | Generates OpenAPI documentation from JSDoc comments                       |
 | swagger-ui-express        | ^5.0.0             | Renders the Swagger UI for the OpenAPI documentation                      |
 | winston                   | ^3.11.0            | Logging library used for application logging                              |

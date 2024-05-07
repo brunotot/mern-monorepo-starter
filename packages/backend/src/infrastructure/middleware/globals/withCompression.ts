@@ -3,6 +3,7 @@
  * @see {@link https://www.npmjs.com/package/compression|npm specifics}
  */
 
+import { RouteMiddleware } from "@org/backend/types";
 import compression from "compression";
 import type { RequestHandler } from "express";
 
@@ -11,4 +12,4 @@ export function withCompression(): RequestHandler {
 }
 
 /** @hidden */
-export const withCompressionMiddleware = withCompression();
+export const withCompressionMiddleware: RouteMiddleware = withCompression();

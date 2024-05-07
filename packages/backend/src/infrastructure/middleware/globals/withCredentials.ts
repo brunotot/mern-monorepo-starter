@@ -2,6 +2,7 @@
  * @packageDocumentation Middleware which enables credentials for cross-origin requests.
  */
 
+import { RouteMiddleware } from "@org/backend/types";
 import type { RequestHandler } from "express";
 
 const VAR_ALLOWED_ORIGINS = [
@@ -21,4 +22,4 @@ export function withCredentials(): RequestHandler {
 }
 
 /** @hidden */
-export const withCredentialsMiddleware = withCredentials();
+export const withCredentialsMiddleware: RouteMiddleware = withCredentials();

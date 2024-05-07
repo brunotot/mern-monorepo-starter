@@ -5,7 +5,7 @@ import type {
   ContractControllerFactory,
   ContractNameFactory,
   ContractResolverFactory,
-} from "@org/shared/types";
+} from "./../../types";
 
 type ContractController = ContractControllerFactory<typeof CONTRACTS>;
 

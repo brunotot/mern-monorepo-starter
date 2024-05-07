@@ -1,16 +1,12 @@
 ## Understanding the repository name
 
-**monorepo**
-
-- A **monorepo** refers to a single repository containing multiple codebases that might otherwise be separated into individual repositories. This approach simplifies dependency management, streamlines workflows, and enhances collaboration across different parts of an application. Our repository utilizes this structure to centralize and unify the development process, ensuring consistency and ease of maintenance.
-
 **mern**
 
 - The **MERN** stack is a popular set of technologies (MongoDB, Express.js, React, and Node.js) used for full-stack development. This stack is known for its efficiency in building scalable and performance-oriented web applications. By employing the MERN stack, this repo provides a robust foundation for developing modern web applications with TypeScript, ensuring a seamless fullstack experience.
 
-**railway**
+**monorepo**
 
-- **Railway** is a platform as a service (PaaS) that offers easy deployment, scaling, and infrastructure management for cloud applications. It's chosen for this project to simplify the deployment process and provide developers with a quick way to see their applications in production. Utilizing Railway, developers can focus more on code and less on configuring servers.
+- A **monorepo** refers to a single repository containing multiple codebases that might otherwise be separated into individual repositories. This approach simplifies dependency management, streamlines workflows, and enhances collaboration across different parts of an application. Our repository utilizes this structure to centralize and unify the development process, ensuring consistency and ease of maintenance.
 
 **starter**
 
