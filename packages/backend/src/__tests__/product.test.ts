@@ -2,6 +2,8 @@
 //import supertest from "supertest";
 
 describe("product", () => {
+  beforeAll(async () => {});
+
   /*beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();
 

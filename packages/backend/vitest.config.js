@@ -5,5 +5,7 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     globals: true,
+    //globalSetup: "./test-setup.ts", // Path to your setup file
+    //globalTeardown: "./test-setup.ts", // Path to your teardown file
   },
 });

@@ -3,15 +3,12 @@
   "version": "0.0.1",
   "description": "",
   "main": "dist/main.js",
-  "types": "dist/index.js",
   "type": "module",
   "scripts": {
-    "test:watch": "jest --watchAll",
     "test": "vitest",
-    "build": "rm -rf dist && npm run compile:ts",
+    "build": "rm -rf dist && tsc && tsc-alias",
     "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/main.js",
-    "compile:ts": "tsc && npm run tsc-alias",
-    "tsc-alias": "tsc-alias -p tsconfig.json"
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "Bruno Tot",

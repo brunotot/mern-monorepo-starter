@@ -21,6 +21,7 @@
     "shared:build": "npm run build --prefix packages/shared",
     "backend:start": "npm run start --prefix packages/backend",
     "backend:build": "npm run build --prefix packages/backend",
+    "backend:dev": "npm run dev --prefix packages/backend",
     "frontend:dev": "npm run dev --prefix packages/frontend",
     "frontend:start": "npm run start --prefix packages/frontend",
     "frontend:build": "npm run build --prefix packages/frontend",

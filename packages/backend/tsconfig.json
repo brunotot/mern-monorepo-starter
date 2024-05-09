@@ -1,25 +1,28 @@
 {
   "extends": "../../tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    // Tell ts-node CLI to install the --loader automatically, explained below
+    "esm": true,
+    "compilerOptions": {
+      "module": "ESNext"
+    },
+    "require": ["tsconfig-paths/register"]
+  },
   "compilerOptions": {
     "skipLibCheck": true,
     "outDir": "./dist",
     "types": ["jest", "node", "@types/jest"],
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
 
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@org/backend/config": ["./src/config/index"],
-      "@org/backend/config/*": ["./src/config/*"],
-      "@org/backend/decorators": ["./src/decorators/index"],
-      "@org/backend/decorators/*": ["./src/decorators/*"],
-      "@org/backend/types": ["./src/types/index"],
-      "@org/backend/types/*": ["./src/types/*"],
-      "@org/backend/infrastructure": ["./src/infrastructure/index"],
-      "@org/backend/infrastructure/*": ["./src/infrastructure/*"]
+      "@org/backend/*": ["*"],
+      "@org/shared": ["../../shared/dist/index"],
+      "*": ["../node_modules/*"]
     }
-  },
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
   },
   "include": ["src/**/*"],
   "exclude": ["src/logs"]

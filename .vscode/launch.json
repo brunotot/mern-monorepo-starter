@@ -14,13 +14,10 @@
       "console": "integratedTerminal",
       "stopOnEntry": false,
       "autoAttachChildProcesses": true,
-      //"internalConsoleOptions": "openOnSessionStart",
-
       "runtimeVersion": "21.7.0",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "backend:start"],
       "presentation": { "group": "1" }
-      //"runtimeArgs": ["--loader", "ts-node/esm", "--experimental-specifier-resolution=node"]
     },
     {
       "name": "🖼️ Launch Frontend",
