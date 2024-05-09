@@ -12,7 +12,7 @@
     "pnpm": ">=8.15.7"
   },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky && pnpm run shared:build",
     "root:test": "echo \"Error: no test specified\"",
     "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
     "root:lint": "npx eslint . --fix",
