@@ -1,6 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { buildDefaultResponses, buildPathFn, buildRouteMetadata } from "../../utils";
+import { ZOD_ERROR_ANY, buildDefaultResponses, buildPathFn, buildRouteMetadata } from "../../utils";
 import { User } from "../../models";
 
 const metadata = buildRouteMetadata("UserController");
@@ -36,22 +36,26 @@ export type PaginationResult<T> = {
 export const UserPageableResponseDto = PageableResponseDto(User);
 
 export const UserContract = initContract().router({
-  findAll: {
+  findOne: {
     metadata,
     strictStatusCodes: true,
-    path: buildPath(),
+    path: buildPath("/:id"),
     method: "GET",
-    summary: "Get all users",
-    description: "Get all users",
+    summary: "Get a user by id",
+    description: "Get a user by id",
+    pathParams: z.object({
+      id: z.string().openapi({ example: "brunotot" }),
+    }),
     responses: {
-      200: UserPageableResponseDto,
+      200: User,
+      404: ZOD_ERROR_ANY.describe("User not found"),
       ...defaultResponses,
     },
   },
   pagination: {
     metadata,
     strictStatusCodes: true,
-    path: buildPath("/pagination"),
+    path: buildPath(),
     method: "GET",
     summary: "Get all users",
     description: "Get all users",

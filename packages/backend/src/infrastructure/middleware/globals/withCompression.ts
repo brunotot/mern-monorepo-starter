@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/compression|npm specifics}
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import compression from "compression";
 import type { RequestHandler } from "express";
 

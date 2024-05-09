@@ -1,24 +1,29 @@
-import { Role, type TODO } from "@org/shared";
+import { ErrorResponse, type TODO } from "@org/shared";
 import type { MongoSort, RouteInput, RouteOutput } from "@org/backend/types";
 import { Autowired, Contract, Injectable } from "@org/backend/decorators";
-import {
-  withJwt,
-  withPaginableParams,
-  withUserRoles,
-  type UserService,
-} from "@org/backend/infrastructure";
+import { withPaginableParams, type UserService } from "@org/backend/infrastructure";
 
 @Injectable()
 export class UserController {
   @Autowired() userService: UserService;
 
-  @Contract("User.findAll", withJwt(), withUserRoles(Role.enum.ADMIN))
-  async findAll(): RouteOutput<"User.findAll"> {
-    const users = await this.userService.findAll();
-    const pageableResponse = users as TODO;
+  @Contract("User.findOne")
+  async findOne({ req, params: { id } }: RouteInput<"User.findOne">): RouteOutput<"User.findOne"> {
+    const filters = {
+      username: id,
+    };
+    const users = (await this.userService.search({ filters })).data as TODO;
+
+    if (users.length === 0) {
+      return {
+        status: 404,
+        body: new ErrorResponse(req.originalUrl, 404, "User not found").content,
+      };
+    }
+
     return {
       status: 200,
-      body: pageableResponse,
+      body: users[0],
     };
   }
 

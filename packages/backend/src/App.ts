@@ -1,6 +1,7 @@
 import express from "express";
 import * as swaggerUi from "swagger-ui-express";
-import { RouterCollection, Environment, Logger, MongoClient } from "@org/backend/config";
+import { type MongoClient as MongoClientNative } from "mongodb";
+import { RouterCollection, Environment, Logger } from "@org/backend/config";
 import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure";
 import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -15,13 +16,14 @@ export class App {
 
   private environment = Environment.getInstance();
   private logger = Logger.getInstance();
-  private mongoClient = MongoClient.getInstance();
+  private mongoClient: MongoClientNative;
 
-  constructor() {
+  constructor(mongoClient: MongoClientNative) {
     this.app = express();
     this.env = this.environment.vars.NODE_ENV;
     this.port = this.environment.vars.PORT;
     this.swaggerPath = "api-docs";
+    this.mongoClient = mongoClient;
     const domain =
       this.env === "production"
         ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`

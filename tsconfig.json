@@ -14,8 +14,6 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@org/backend": ["./packages/backend/src/index"],
-      "@org/backend/*": ["./packages/backend/src/*"],
       "@org/backend/config": ["./packages/backend/src/config/index"],
       "@org/backend/config/*": ["./packages/backend/src/config/*"],
       "@org/backend/decorators": ["./packages/backend/src/decorators/index"],
@@ -23,9 +21,7 @@
       "@org/backend/types": ["./packages/backend/src/types/index"],
       "@org/backend/types/*": ["./packages/backend/src/types/*"],
       "@org/backend/infrastructure": ["./packages/backend/src/infrastructure/index"],
-      "@org/backend/infrastructure/*": ["./packages/backend/src/infrastructure/*"],
-      "@org/backend/web": ["./packages/backend/src/web/index"],
-      "@org/backend/web/*": ["./packages/backend/src/web/*"]
+      "@org/backend/infrastructure/*": ["./packages/backend/src/infrastructure/*"]
     }
   }
 }

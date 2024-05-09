@@ -1,3 +1,7 @@
+/* @org/backend/infrastructure/controllers */
+export * from "./controllers/AuthController";
+export * from "./controllers/UserController";
+
 /* @org/backend/infrastructure/middleware */
 export * from "./middleware/globals/withCompression";
 export * from "./middleware/globals/withCookieParser";

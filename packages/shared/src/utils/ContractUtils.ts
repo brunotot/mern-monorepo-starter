@@ -1,12 +1,15 @@
 import { type generateOpenApi } from "@ts-rest/open-api";
 import { z } from "zod";
+import { type TODO } from "./TypeUtils";
 
 export type OperationMapper = NonNullable<Parameters<typeof generateOpenApi>[2]>["operationMapper"];
 
 export const META_TAGS_KEY = "openApiTags";
 
-export function buildPathFn(context: string) {
-  return (path: string = "") => `/${context}${path}`;
+export function buildPathFn<C extends string>(
+  context: C,
+): <P extends string>(path?: P) => `/${C}${P}` {
+  return (path: string = "") => `/${context}${path}` as TODO;
 }
 
 export function buildRouteMetadata(tag: string) {

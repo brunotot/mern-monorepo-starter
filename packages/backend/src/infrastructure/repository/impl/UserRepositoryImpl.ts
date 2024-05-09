@@ -6,8 +6,12 @@ import { type UserRepository } from "@org/backend/infrastructure/repository/inte
 
 @Repository(User)
 export class UserRepositoryImpl extends MongoRepository<User> implements UserRepository {
-  async findOne(filters: Partial<User>): Promise<User | null> {
-    return await this.collection.findOne(filters);
+  async findOneByUsername(username: string): Promise<User | null> {
+    return await this.collection.findOne({ username });
+  }
+
+  async findOneByRefreshTokens(refreshTokens: string[]): Promise<User | null> {
+    return await this.collection.findOne({ refreshToken: refreshTokens });
   }
 
   async findAll(): Promise<User[]> {

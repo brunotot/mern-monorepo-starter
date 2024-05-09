@@ -17,7 +17,7 @@ export class AuthController {
   }: RouteInput<"Auth.login">): RouteOutput<"Auth.login"> {
     const cookies = req.cookies;
     const jwtManager = JwtManager.getBy(req);
-    const foundUser = await this.userRepository.findOne({ username });
+    const foundUser = await this.userRepository.findOneByUsername(username);
 
     // Unauthorized
     if (!foundUser) {
@@ -56,7 +56,7 @@ export class AuthController {
                     3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
                 */
       const refreshToken = cookies.jwt;
-      const foundToken = await this.userRepository.findOne({ refreshToken });
+      const foundToken = await this.userRepository.findOneByRefreshTokens(refreshToken);
 
       // Detected refresh token reuse!
       if (!foundToken) {
@@ -98,7 +98,7 @@ export class AuthController {
     const refreshToken = cookies.jwt;
 
     // Is refreshToken in db?
-    const foundUser = await this.userRepository.findOne({ refreshToken });
+    const foundUser = await this.userRepository.findOneByRefreshTokens(refreshToken);
     if (!foundUser) {
       jwtManager.clearJwtCookie(res);
       return {
@@ -125,7 +125,7 @@ export class AuthController {
     const jwtManager = JwtManager.getBy(req);
     const { token: refreshToken, data: decoded }: TokenData = res.locals.tokenData;
     jwtManager.clearJwtCookie(res);
-    const foundUser = await this.userRepository.findOne({ refreshToken: [refreshToken] });
+    const foundUser = await this.userRepository.findOneByRefreshTokens([refreshToken]);
     if (!foundUser || foundUser.username !== decoded.username) {
       return { status: 403, body: new ErrorResponse(req.originalUrl, 403, "Forbidden").content }; // User not found, or username does not match token
     }

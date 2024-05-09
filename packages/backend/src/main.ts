@@ -1,12 +1,3 @@
-import "@org/backend/config";
+import app from "./configureApp";
 
-import { App } from "./App";
-import { ServiceRegistry } from "./config";
-
-function main() {
-  ServiceRegistry.getInstance().iocStartup();
-  const app = new App();
-  app.listen();
-}
-
-main();
+app.listen();

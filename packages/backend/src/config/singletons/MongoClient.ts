@@ -10,6 +10,8 @@ function buildMongoOptions(): MongoClientOptions {
   return {} as MongoClientOptions;
 }
 
+// Ovo treba bit mockabilno
+
 export class MongoClient extends MongoClientNative {
   private static instance: MongoClient;
 
