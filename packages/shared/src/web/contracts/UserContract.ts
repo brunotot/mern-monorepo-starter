@@ -49,6 +49,7 @@ export const UserContract = initContract().router({
     responses: {
       200: User,
       404: ZOD_ERROR_ANY.describe("User not found"),
+      403: ZOD_ERROR_ANY.describe("User not found"),
       ...defaultResponses,
     },
   },

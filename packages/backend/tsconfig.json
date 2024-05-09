@@ -1,10 +1,26 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "skipLibCheck": true,
     "outDir": "./dist",
-    "typeRoots": ["./node_modules/@types"],
-    "types": ["jest", "node"]
+    "types": ["jest", "node", "@types/jest"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@org/backend/config": ["./src/config/index"],
+      "@org/backend/config/*": ["./src/config/*"],
+      "@org/backend/decorators": ["./src/decorators/index"],
+      "@org/backend/decorators/*": ["./src/decorators/*"],
+      "@org/backend/types": ["./src/types/index"],
+      "@org/backend/types/*": ["./src/types/*"],
+      "@org/backend/infrastructure": ["./src/infrastructure/index"],
+      "@org/backend/infrastructure/*": ["./src/infrastructure/*"]
+    }
   },
-  "include": ["src"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "include": ["src/**/*"],
   "exclude": ["src/logs"]
 }

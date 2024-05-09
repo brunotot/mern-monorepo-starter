@@ -22,6 +22,11 @@ export class UserController {
     }
 
     return {
+      status: 403,
+      body: new ErrorResponse(req.originalUrl, 403, "User not found").content,
+    };
+
+    return {
       status: 200,
       body: users[0],
     };

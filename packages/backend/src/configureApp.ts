@@ -1,4 +1,4 @@
-import "@org/backend/config";
+import "./config";
 
 import { App } from "./App";
 import { ServiceRegistry, MongoClient } from "./config";

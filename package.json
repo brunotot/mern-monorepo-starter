@@ -4,14 +4,21 @@
   "description": "monorepo-mern-railway-starter description",
   "main": "index.js",
   "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "pnpm": ">=8.15.7"
   },
   "scripts": {
-    "prepare": "husky && pnpm --filter @org/shared run build",
+    "prepare": "husky",
     "root:test": "echo \"Error: no test specified\"",
     "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
     "root:lint": "npx eslint . --fix",
+    "root:clean": "pnpm run -r clean",
+    "root:build": "pnpm run -r build",
+    "shared:build": "npm run build --prefix packages/shared",
     "backend:start": "npm run start --prefix packages/backend",
     "backend:build": "npm run build --prefix packages/backend",
     "frontend:dev": "npm run dev --prefix packages/frontend",
@@ -19,8 +26,7 @@
     "frontend:build": "npm run build --prefix packages/frontend",
     "frontend:interface": "npm run interface --prefix packages/frontend",
     "md:updateDeps": "node md/dependencies/updateDepDocs.js",
-    "md:mergeMds": "node md/scripts/mergeMds.js",
-    "clean": "rm -rf node_modules packages/backend/dist packages/backend/node_modules packages/frontend/dist packages/frontend/node_modules packages/shared/node_modules packages/shared/dist"
+    "md:mergeMds": "node md/scripts/mergeMds.js"
   },
   "author": "Bruno Tot",
   "license": "MIT",

@@ -83,3 +83,7 @@ Maintains a consistent code style and architecture, carefully crafted to ensure 
 ### Enhancement Decorators
 
 Provides various decorators to enrich the controllers and services with additional functionality, such as logging and security enhancements.
+
+    //"test": "vitest",
+    //"build": "rm -rf dist && npm run compile:ts",
+    //"start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/main.js",
