@@ -7,6 +7,7 @@ import { Injectable } from "@org/backend/decorators/@Injectable";
 export function Repository<This extends Class>(zodSchema: z.AnyZodObject) {
   const modelName = zodSchema.description;
   return Injectable<This>(data => {
+    1;
     const context = data.meta.context;
     InjectorMetadataManager.getBy(context).setConstructorParams([modelName]);
   });

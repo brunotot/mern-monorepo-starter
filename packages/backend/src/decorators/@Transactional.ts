@@ -1,6 +1,5 @@
 import type { TODO } from "@org/shared";
-import { createMethodDecorator } from "@tsvdec/decorators";
-
+import { createMethodDecorator } from "@org/backend/decorators";
 import { ServiceRegistry, InjectorMetadataManager } from "@org/backend/config";
 
 type ClientSession = TODO;

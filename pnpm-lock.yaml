@@ -65,12 +65,6 @@ importers:
       '@ts-rest/open-api':
         specifier: ^3.45.0
         version: 3.45.2(zod@3.23.6)
-      '@tsvdec/core':
-        specifier: ^2.0.11
-        version: 2.0.11(@tsvdec/decorators@1.0.7)
-      '@tsvdec/decorators':
-        specifier: ^1.0.7
-        version: 1.0.7
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -3103,18 +3097,6 @@ packages:
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: true
-
-  /@tsvdec/core@2.0.11(@tsvdec/decorators@1.0.7):
-    resolution: {integrity: sha512-nQMP9oa3Hkpnl5Oqmniw+Cgu52WmhZp1f2eyxmAXumlF10hbehIbYpgv9BdX2WrkvmddDtbWMkx2O8IqhITFxA==}
-    peerDependencies:
-      '@tsvdec/decorators': ^1.0.7
-    dependencies:
-      '@tsvdec/decorators': 1.0.7
-    dev: false
-
-  /@tsvdec/decorators@1.0.7:
-    resolution: {integrity: sha512-Y43pMz9eRC8iqB2qSrVLudO/7XLGRxaGffiyFNT9L0sjpxkyjHdz4gtnJtubOzWuIH5GfxL4zvhPf8iijqzFBQ==}
-    dev: false
 
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}

@@ -1,11 +1,25 @@
 import { defineConfig } from "vitest/config";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  build: {
+    target: "ES6",
+  },
   test: {
     globals: true,
-    //globalSetup: "./test-setup.ts", // Path to your setup file
-    //globalTeardown: "./test-setup.ts", // Path to your teardown file
+    environment: "node",
+    globalSetup: "test/setup/globalSetup.ts",
+    setupFiles: ["test/setup/setupFiles.ts"],
+  },
+  resolve: {
+    alias: {
+      "@org/backend/config": new URL("./dist/config", import.meta.url).pathname,
+      "@org/backend/config/*": new URL("./dist/config/*", import.meta.url).pathname,
+      "@org/backend/decorators": new URL("./dist/decorators", import.meta.url).pathname,
+      "@org/backend/decorators/*": new URL("./dist/decorators/*", import.meta.url).pathname,
+      "@org/backend/types": new URL("./dist/types", import.meta.url).pathname,
+      "@org/backend/types/*": new URL("./dist/types/*", import.meta.url).pathname,
+      "@org/backend/infrastructure": new URL("./dist/infrastructure", import.meta.url).pathname,
+      "@org/backend/infrastructure/*": new URL("./dist/infrastructure/*", import.meta.url).pathname,
+    },
   },
 });

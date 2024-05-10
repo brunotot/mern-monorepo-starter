@@ -1,5 +1,5 @@
 import type { TODO } from "@org/shared";
-import { createClassDecorator, type ClassDecoratorSupplier } from "@tsvdec/decorators";
+import { createClassDecorator, type ClassDecoratorSupplier } from "@org/backend/decorators";
 import { ServiceRegistry, InjectorMetadataManager } from "@org/backend/config";
 
 export function Injectable<This extends new () => TODO>(supplier?: ClassDecoratorSupplier<This>) {

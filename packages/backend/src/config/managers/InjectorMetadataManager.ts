@@ -1,6 +1,6 @@
-import { type ClassMetadataInjectType, ClassMetadataEntry } from "@tsvdec/decorators";
-import { type TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { type MetaClassInjectionData } from "@org/backend/types";
+import { ClassMetadataEntry, type ClassMetadataInjectType } from "@org/backend/decorators";
 
 export class InjectorMetadataManager extends ClassMetadataEntry<MetaClassInjectionData> {
   static getBy(injection: ClassMetadataInjectType) {

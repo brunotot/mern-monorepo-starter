@@ -18,8 +18,6 @@
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/express": "^3.45.0",
     "@ts-rest/open-api": "^3.45.0",
-    "@tsvdec/core": "^2.0.11",
-    "@tsvdec/decorators": "^1.0.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "bottlejs": "^2.0.1",

@@ -1,11 +1,23 @@
 import express from "express";
-import * as swaggerUi from "swagger-ui-express";
-import { type MongoClient as MongoClientNative } from "mongodb";
+import swaggerUi from "swagger-ui-express";
+import { MongoClient, type MongoClientOptions } from "mongodb";
+import { generateOpenApi } from "@ts-rest/open-api";
+import { initServer, createExpressEndpoints } from "@ts-rest/express";
+
 import { RouterCollection, Environment, Logger } from "@org/backend/config";
 import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure";
 import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
-import { generateOpenApi } from "@ts-rest/open-api";
-import { initServer, createExpressEndpoints } from "@ts-rest/express";
+
+export type MongoConnectParams = {
+  uri: string;
+  options?: MongoClientOptions;
+};
+
+export type AppOptions = {
+  mongoConnection: MongoConnectParamsFactory;
+};
+
+export type MongoConnectParamsFactory = () => Promise<MongoConnectParams>;
 
 export class App {
   public readonly app: express.Application;
@@ -14,47 +26,54 @@ export class App {
   public readonly swaggerPath: string;
   public readonly url: string;
 
+  #mongoConnection: MongoConnectParamsFactory;
+
   private environment = Environment.getInstance();
   private logger = Logger.getInstance();
-  private mongoClient: MongoClientNative;
+  mongoClient: MongoClient;
 
-  constructor(mongoClient: MongoClientNative) {
+  constructor(options: AppOptions) {
     this.app = express();
     this.env = this.environment.vars.NODE_ENV;
     this.port = this.environment.vars.PORT;
     this.swaggerPath = "api-docs";
-    this.mongoClient = mongoClient;
+    this.#mongoConnection = options.mongoConnection;
     const domain =
       this.env === "production"
         ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
         : "http://localhost";
     this.url = `${domain}:${this.port}`;
 
-    this.#initializeDatabase();
     this.#initializeGlobalMiddlewares();
     this.#initializeRoutes();
     this.#initializeSwagger();
   }
 
-  public listen() {
-    this.app.listen(this.port, () => {
-      this.logger.table({
-        title: `[Express] MERN Sample App v${this.environment.vars.PACKAGE_JSON_VERSION}`,
-        data: {
-          "🟢 NodeJS": process.version,
-          "🏠 Env": this.env,
-          "🚀 Port": this.port,
-          "📝 Swagger": `/${this.swaggerPath}`,
-          "🆔 PID": `${process.pid}`,
-          "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
-          "📅 Started": new Date().toLocaleString(),
-        },
+  public async listen(): Promise<void> {
+    await this.#initializeDatabase();
+    return new Promise(resolve => {
+      this.app.listen(this.port, () => {
+        this.logger.table({
+          title: `[Express] MERN Sample App v${this.environment.vars.PACKAGE_JSON_VERSION}`,
+          data: {
+            "🟢 NodeJS": process.version,
+            "🏠 Env": this.env,
+            "🚀 Port": this.port,
+            "📝 Swagger": `/${this.swaggerPath}`,
+            "🆔 PID": `${process.pid}`,
+            "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
+            "📅 Started": new Date().toLocaleString(),
+          },
+        });
+        resolve();
       });
     });
   }
 
   async #initializeDatabase() {
     try {
+      const { uri, options } = await this.#mongoConnection();
+      this.mongoClient = new MongoClient(uri, options);
       await this.mongoClient.connect();
     } catch (error) {
       console.log(error);

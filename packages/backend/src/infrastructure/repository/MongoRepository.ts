@@ -1,7 +1,7 @@
 import type { TODO, PaginationResult } from "@org/shared";
 import type { Db, Document as MongoDocument } from "mongodb";
 
-import { Environment, MongoClient } from "@org/backend/config";
+import { Environment } from "@org/backend/config";
 import type {
   MongoFilters,
   MongoSearch,
@@ -9,19 +9,25 @@ import type {
   MongoPaginationOptions,
 } from "@org/backend/types";
 import { type PaginableRepository } from "@org/backend/infrastructure/repository/interface/PaginableRepository";
+import app from "@org/backend/worker";
 
 export abstract class MongoRepository<T extends MongoDocument> implements PaginableRepository<T> {
-  readonly #db: Db;
+  #db: Db;
   readonly #name: string;
 
+  get db() {
+    if (this.#db) return this.#db;
+    this.#db = app.mongoClient.db(Environment.getInstance().vars.DB_DATABASE);
+    return this.#db;
+  }
+
   constructor(name: string) {
-    this.#db = MongoClient.getInstance().db(Environment.getInstance().vars.DB_DATABASE);
     const lowerCaseName = name.toLowerCase();
     this.#name = lowerCaseName.endsWith("s") ? lowerCaseName : `${lowerCaseName}s`;
   }
 
   protected get collection() {
-    return this.#db.collection<T>(this.#name);
+    return this.db.collection<T>(this.#name);
   }
 
   // prettier-ignore

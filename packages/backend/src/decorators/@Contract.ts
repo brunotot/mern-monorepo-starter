@@ -1,4 +1,4 @@
-import { createMethodDecorator } from "@tsvdec/decorators";
+import { createMethodDecorator } from "@org/backend/decorators";
 import { ServiceRegistry, RouterCollection, Logger } from "@org/backend/config";
 import { type ContractName, type TODO, ErrorResponse } from "@org/shared";
 import { type ErrorLogRepository } from "@org/backend/infrastructure";
@@ -10,17 +10,25 @@ export function Contract<const Name extends ContractName, This, Fn extends Route
 ) {
   return createMethodDecorator<This, Fn>(({ target, meta }) => {
     async function handler(data: TODO): Promise<TODO> {
+      console.log("HEEEEEEEEEEEEEEY", ServiceRegistry.getInstance().container, target);
       const context = meta.context;
       try {
-        return await target.call(ServiceRegistry.getInstance().inject(context), data);
+        console.log("Calling target route");
+        console.log(target.name);
+        const container = ServiceRegistry.getInstance().inject(context);
+        console.log(container);
+        return await target.call(container, data);
       } catch (error) {
         const errorResponse =
           error instanceof ErrorResponse
             ? error
             : new ErrorResponse(data.req, 500, (error as TODO).message);
+        console.log(error);
         const errorContent = errorResponse.content;
         const errorLogRepository =
           ServiceRegistry.getInstance().inject<ErrorLogRepository>("errorLogRepository");
+
+        console.log(JSON.stringify(errorResponse.content, null, 2));
         try {
           await errorLogRepository.insertOne(errorContent);
         } catch (error) {

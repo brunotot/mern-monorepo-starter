@@ -25,7 +25,7 @@ start "" " $(color $CYAN)3.$(color) Converting path aliases to relative paths"
 npx tsc-alias -p "${PWD_BACKEND}/tsconfig.json"
 stop "$(color $GREEN)✓$(color)"
 
-echo -e "\n$(color $GREEN)✓ $(color $CYAN)3.$(color) Starting...\n"
+echo -e "\n$(color $GREEN)✓ $(color $CYAN)4.$(color) Starting...\n"
 node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node "${PWD_BACKEND}/dist/main.js"
 
 #

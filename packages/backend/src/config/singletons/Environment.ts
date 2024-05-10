@@ -22,11 +22,11 @@ export class Environment {
     LOG_DIR: z.string().default("../../logs"),
     ORIGIN: z.string().default("*"),
     CREDENTIALS: z.string().default("true"),
-    DB_HOST: z.string(),
-    DB_PORT: z.string(),
-    DB_DATABASE: z.string(),
-    ACCESS_TOKEN_SECRET: z.string(),
-    REFRESH_TOKEN_SECRET: z.string(),
+    DB_HOST: z.string().optional(),
+    DB_PORT: z.string().optional(),
+    DB_DATABASE: z.string().optional(),
+    ACCESS_TOKEN_SECRET: z.string().default("accessTokenSecret"),
+    REFRESH_TOKEN_SECRET: z.string().default("refreshTokenSecret"),
   });
 
   private constructor() {

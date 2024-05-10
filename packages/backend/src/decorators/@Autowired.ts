@@ -1,4 +1,4 @@
-import { createFieldDecorator } from "@tsvdec/decorators";
+import { createFieldDecorator } from "@org/backend/decorators";
 import { ServiceRegistry, InjectorMetadataManager } from "@org/backend/config";
 
 export function Autowired<This, Value>() {

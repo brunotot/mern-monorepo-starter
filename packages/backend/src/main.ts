@@ -1,3 +1,3 @@
-import app from "./configureApp";
+import app from "./worker";
 
 app.listen();

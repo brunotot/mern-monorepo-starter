@@ -1,7 +1,8 @@
 import { ErrorResponse, type TODO } from "@org/shared";
 import type { MongoSort, RouteInput, RouteOutput } from "@org/backend/types";
 import { Autowired, Contract, Injectable } from "@org/backend/decorators";
-import { withPaginableParams, type UserService } from "@org/backend/infrastructure";
+import { withPaginableParams } from "@org/backend/infrastructure/middleware/locals/withPaginableParams";
+import { type UserService } from "@org/backend/infrastructure/service/UserService";
 
 @Injectable()
 export class UserController {
@@ -9,6 +10,7 @@ export class UserController {
 
   @Contract("User.findOne")
   async findOne({ req, params: { id } }: RouteInput<"User.findOne">): RouteOutput<"User.findOne"> {
+    console.log("Hey brothrr");
     const filters = {
       username: id,
     };

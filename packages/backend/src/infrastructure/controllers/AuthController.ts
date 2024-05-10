@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { JwtManager, type TokenData } from "@org/backend/config";
-import { withJwt, withValidatedBody, type UserRepository } from "@org/backend/infrastructure";
+import { type UserRepository } from "@org/backend/infrastructure/repository/interface/UserRepository";
+import { withJwt } from "@org/backend/infrastructure/middleware/locals/withJwt";
+import { withValidatedBody } from "@org/backend/infrastructure/middleware/locals/withValidatedBody";
 import { Autowired, Contract, Injectable } from "@org/backend/decorators";
 import type { RouteInput, RouteOutput } from "@org/backend/types";
 import { LoginForm, ErrorResponse } from "@org/shared";
