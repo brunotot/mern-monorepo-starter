@@ -31,14 +31,10 @@ export class ServiceRegistry {
   public iocStartup() {
     const injectionClasses = this.injectionClasses;
 
-    console.log("Starting with following classes", injectionClasses);
-
     const dependencySchema: Record<string, string[]> = injectionClasses.reduce((acc, Class) => {
       const { name, dependencies = [] } = InjectorMetadataManager.getBy(Class).value;
       return { ...acc, [name]: dependencies };
     }, {});
-
-    console.log("Dependency schema", dependencySchema);
 
     function sortInjectionClasses(classes: Class[], dependencySchema: Record<string, string[]>) {
       return [...classes].sort((classA, classB) => {
@@ -60,7 +56,6 @@ export class ServiceRegistry {
       const name = decoration.name;
       const constructorParams = decoration.constructorParams;
       if (constructorParams.length > 0) {
-        console.log("Setting factory", name);
         this.bottle.factory(name, container => {
           const instance = new Class(...constructorParams);
           const dependencies = dependencySchema[name];
@@ -71,7 +66,6 @@ export class ServiceRegistry {
           return instance;
         });
       } else {
-        console.log("Setting service", name);
         this.bottle.service(name, Class, ...dependencySchema[name]);
       }
     });

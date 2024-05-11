@@ -10,7 +10,6 @@ export class UserController {
 
   @Contract("User.findOne")
   async findOne({ req, params: { id } }: RouteInput<"User.findOne">): RouteOutput<"User.findOne"> {
-    console.log("Hey brothrr");
     const filters = {
       username: id,
     };

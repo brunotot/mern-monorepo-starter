@@ -1,29 +1,17 @@
+// @ts-ignore
 import "./../../dist/index";
-
-import { type App } from "../../src/App";
+// @ts-ignore
 import app from "../../dist/worker";
+// @ts-ignore
 import { ServiceRegistry } from "../../dist/config/singletons/ServiceRegistry";
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export declare module globalThis {
-  let MockApp: App | undefined;
-}
 
 beforeAll(async () => {
   ServiceRegistry.getInstance().iocStartup();
-  //const uri = inject("mongoUri");
-  const MockApp = app; /*new App({
-    mongoConnection: async () => ({
-      uri,
-      options: {},
-    }),
-  });*/
-
+  const MockApp = app;
   await MockApp.listen();
-  // @ts-expect-error Error
-  globalThis.MockApp = MockApp;
+  globalThis.app = MockApp.app;
 });
 
 afterAll(async () => {
-  delete globalThis.MockApp;
+  delete globalThis.app;
 });

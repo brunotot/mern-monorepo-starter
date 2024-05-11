@@ -13,7 +13,7 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "outDir": "./dist",
-    "types": ["jest", "node", "@types/jest"],
+    "types": [],
     "esModuleInterop": true,
     "moduleResolution": "Node",
 

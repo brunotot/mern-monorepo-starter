@@ -6,8 +6,6 @@
 | @ts-rest/core             | ^3.45.0      | Core library for building the TypeScript REST API in the backend              |
 | @ts-rest/express          | ^3.45.0      | Integrates the @ts-rest/core library with Express.js in the backend           |
 | @ts-rest/open-api         | ^3.45.0      | Generates OpenAPI documentation from the @ts-rest/core API in the backend     |
-| @tsvdec/core              | ^2.0.11      | Provides core functionality for using TypeScript decorators in the backend    |
-| @tsvdec/decorators        | ^1.0.7       | Collection of decorators used throughout the backend codebase                 |
 | bcrypt                    | ^5.1.1       | Used for hashing and verifying user passwords in the backend                  |
 | body-parser               | ^1.20.2      | Parses incoming request bodies in the Express.js middleware in the backend    |
 | bottlejs                  | ^2.0.1       | Inversion of Control (IoC) container for dependency injection in the backend  |
