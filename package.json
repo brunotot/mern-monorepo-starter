@@ -13,7 +13,7 @@
   },
   "scripts": {
     "prepare": "husky && pnpm run shared:build",
-    "root:test": "echo \"Error: no test specified\"",
+    "root:test": "pnpm run -r test",
     "root:typedoc": "typedoc --options typedoc/typedoc.json && bash typedoc/scripts/typedoc-sanitize.sh",
     "root:lint": "npx eslint . --fix",
     "root:clean": "pnpm run -r clean",

@@ -10,7 +10,7 @@
     "clean": "rimraf ./dist",
     "compile": "tsc",
     "prepublishOnly": "pnpm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified for shared package\""
   },
   "keywords": [],
   "author": "Bruno Tot",
