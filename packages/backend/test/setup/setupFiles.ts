@@ -1,3 +1,5 @@
+/// <reference types="@types/jest" />
+
 // @ts-ignore
 import "./../../dist/index";
 // @ts-ignore

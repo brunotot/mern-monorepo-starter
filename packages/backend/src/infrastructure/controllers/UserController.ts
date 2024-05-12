@@ -4,7 +4,7 @@ import { Autowired, Contract, Injectable } from "@org/backend/decorators";
 import { withPaginableParams } from "@org/backend/infrastructure/middleware/locals/withPaginableParams";
 import { type UserService } from "@org/backend/infrastructure/service/UserService";
 
-@Injectable()
+@Injectable("userController")
 export class UserController {
   @Autowired() userService: UserService;
 

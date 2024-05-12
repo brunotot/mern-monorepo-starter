@@ -22,10 +22,10 @@ export class ServiceRegistry {
 
   public inject<T>(nameOrContext: string | DecoratorContext): T {
     if (typeof nameOrContext === "string") {
-      return this.container[nameOrContext] as T;
+      return this.container[nameOrContext.toLowerCase()] as T;
     }
     const containerName = InjectorMetadataManager.getBy(nameOrContext).value.name;
-    return this.container[containerName] as T;
+    return this.container[containerName.toLowerCase()] as T;
   }
 
   public iocStartup() {

@@ -1,5 +1,5 @@
 import { type User } from "@org/shared";
-import { type PaginableRepository } from "@org/backend/infrastructure/repository/interface/PaginableRepository";
+import { type PaginableRepository } from "@org/backend/infrastructure/repository/PaginableRepository";
 
 export interface UserRepository extends PaginableRepository<User> {
   findOneByUsername: (username: string) => Promise<User | null>;

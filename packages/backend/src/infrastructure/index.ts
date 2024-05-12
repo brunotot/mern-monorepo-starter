@@ -20,13 +20,18 @@ export * from "./middleware/locals/withPaginableParams";
 export * from "./middleware/globals/index";
 
 /* @org/backend/infrastructure/repository */
-export * from "./repository/interface/PaginableRepository";
-export * from "./repository/MongoRepository";
-export * from "./repository/interface/UserRepository";
-export * from "./repository/interface/ErrorLogRepository";
+export * from "./repository/PaginableRepository";
+export * from "./repository/UserRepository";
+export * from "./repository/ErrorLogRepository";
 export * from "./repository/impl/UserRepositoryImpl";
 export * from "./repository/impl/ErrorLogRepositoryImpl";
 
 /* @org/backend/infrastructure/service */
 export * from "./service/UserService";
 export * from "./service/impl/UserServiceImpl";
+
+/* @org/backend/infrastructure/utils */
+export * from "./utils/PaginationUtils";
+
+/* @org/backend/infrastructure/components */
+export * from "./components/Database";

@@ -2,7 +2,7 @@
  * @packageDocumentation Middleware which serves static and public files from assets directory..
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import { type RouteMiddleware } from "@org/backend/types";
 import type { RequestHandler } from "express";
 import express from "express";
 

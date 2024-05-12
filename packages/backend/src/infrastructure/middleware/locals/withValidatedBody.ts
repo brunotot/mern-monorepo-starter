@@ -2,8 +2,7 @@ import { type TODO, ErrorResponse } from "@org/shared";
 import type { RequestHandler } from "express";
 import type { AnyZodObject, ZodErrorMap, ZodIssue } from "zod";
 import { getErrorMap } from "zod";
-
-import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/interface/ErrorLogRepository";
+import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/ErrorLogRepository";
 import { ServiceRegistry } from "@org/backend/config";
 
 export function withValidatedBody(schema: AnyZodObject): RequestHandler {
