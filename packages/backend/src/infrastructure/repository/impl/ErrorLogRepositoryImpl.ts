@@ -1,20 +1,15 @@
-import { Autowired, Injectable /*, Transactional*/ } from "@org/backend/decorators";
-import { ObjectId, ErrorLog, type PaginationResult } from "@org/shared";
+import { Injectable /*, Transactional*/ } from "@org/backend/decorators";
+import { ObjectId, ErrorLog } from "@org/shared";
 import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/ErrorLogRepository";
-import { type Database } from "@org/backend/infrastructure/components/Database";
-import { type MongoPaginationOptions } from "@org/backend/types";
-import * as PaginationUtils from "@org/backend/infrastructure/utils/PaginationUtils";
+import { AbstractRepository } from "@org/backend/infrastructure/repository/AbstractRepository";
 
 @Injectable("errorLogRepository")
-export class ErrorLogRepositoryImpl implements ErrorLogRepository {
-  @Autowired() private database: Database;
-
-  private get collection() {
-    return this.database.collection(ErrorLog);
-  }
-
-  search(options?: MongoPaginationOptions): Promise<PaginationResult<ErrorLog>> {
-    return PaginationUtils.paginate(this.collection, options);
+export class ErrorLogRepositoryImpl
+  extends AbstractRepository<ErrorLog>
+  implements ErrorLogRepository
+{
+  constructor() {
+    super(ErrorLog);
   }
 
   //@Transactional()

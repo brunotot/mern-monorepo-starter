@@ -1,3 +1,3 @@
-import app from "./worker";
+import server from "./server";
 
-app.listen();
+server.listen();

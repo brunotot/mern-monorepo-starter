@@ -32,6 +32,3 @@ export * from "./service/impl/UserServiceImpl";
 
 /* @org/backend/infrastructure/utils */
 export * from "./utils/PaginationUtils";
-
-/* @org/backend/infrastructure/components */
-export * from "./components/Database";
