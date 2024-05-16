@@ -22,9 +22,8 @@ export class Environment {
     LOG_DIR: z.string().default("../../logs"),
     ORIGIN: z.string().default("*"),
     CREDENTIALS: z.string().default("true"),
-    DB_HOST: z.string(),
-    DB_PORT: z.string(),
-    DB_DATABASE: z.string(),
+    MONGO_URL: z.string(),
+    MONGO_DATABASE: z.string(),
     ACCESS_TOKEN_SECRET: z.string(),
     REFRESH_TOKEN_SECRET: z.string(),
   });

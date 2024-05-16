@@ -19,7 +19,7 @@ export class DatabaseManager {
 
   get client() {
     if (this.#client) return this.#client;
-    this.#client = server.mongoClient.db(Environment.getInstance().vars.DB_DATABASE);
+    this.#client = server.mongoClient.db(Environment.getInstance().vars.MONGO_DATABASE);
     return this.#client;
   }
 

@@ -31,9 +31,8 @@ export default async () => {
   await restoreMongoDBDump(mongoUri, dbDatabase);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
-  process.env.DB_HOST = host;
-  process.env.DB_PORT = port;
-  process.env.DB_DATABASE = dbDatabase;
+  process.env.MONGO_URL = `mongodb://${host}:${port}`;
+  process.env.MONGO_DATABASE = dbDatabase;
   process.env.ACCESS_TOKEN_SECRET = "testAccessTokenSecret";
   process.env.REFRESH_TOKEN_SECRET = "testRefreshTokenSecret";
   return async () => {

@@ -51,6 +51,7 @@ const markdownFiles = [
   //`${pathFromDir("./../overview.md")}`,
   `${pathFromDir("./../banner.md")}`,
   `${pathFromDir("./../project-name-meaning.md")}`,
+  `${pathFromDir("./../installation.md")}`,
 ];
 const outputFilePath = `${pathFromDir("./output.md")}`;
 
