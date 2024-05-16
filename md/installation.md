@@ -113,7 +113,7 @@
 
 2. Install local packages and run prepare scripts with `pnpm install`.
 
-3. Add required environment variables to `packages/backend/.env.development.
+3. Add required environment variables to `packages/backend/.env.development.local`.
    
    (Check **step 4** of Railway setup - **Setup Backend service** )
 
