@@ -1,3 +1,4 @@
 .eslintrc
 docs/
 packages/backend/src/**/index.ts
+**/installation.md
