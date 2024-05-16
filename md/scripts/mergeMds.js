@@ -53,6 +53,6 @@ const markdownFiles = [
   `${pathFromDir("./../project-name-meaning.md")}`,
   `${pathFromDir("./../installation.md")}`,
 ];
-const outputFilePath = `${pathFromDir("./output.md")}`;
+const outputFilePath = `${pathFromDir("./../../README.md")}`;
 
 mergeMarkdownFiles(markdownFiles, outputFilePath);

@@ -69,22 +69,39 @@
    ```
 
 6. Setup created project through Railway's website (the link will be printed to the console)
-   <!--   > [!WARNING]
-      > To gain access to Railway Deployments you should upgrade your Railway account to at least a Hobby tier ($5.00 / month). -->
 
-   - setup **MongoDB** service
-     1. create MongoDB service by clicking on **New > Database > Add MongoDB**
-     2. under **MongoDB Service > Data** create `test` database
-     3. under **MongoDB Service > Data** create `production` database
-     4. under **MongoDB Service > Data** create `development` database
-     5. under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
-   - setup **Backend** service - **Express app**
+> [!WARNING]
+> Incoming steps (excluding MongoDB service) require at least a `Hobby` plan on the Railway account (lowest priced at $5/month)
 
-     > [!WARNING]
-     > Incoming steps require at least a `Hobby` plan on the Railway account (lowest priced at $5/month)
+- setup **MongoDB** service
 
-     1. create Backend service by clicking on **New > GitHub Repo**
-     2. connect your repository to your Railway project
-     3. edit service name to `Backend`
+  1. create MongoDB service by clicking on **New > Database > Add MongoDB**
+  2. under **MongoDB Service > Data** create `test` database
+  3. under **MongoDB Service > Data** create `production` database
+  4. under **MongoDB Service > Data** create `development` database
+  5. under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
 
-   - setup **Frontend** service - **React app**
+- setup **Backend** service - **Express app**
+
+  1.  create Backend service by clicking on **New > GitHub Repo**
+  2.  connect your repository to your Railway project
+  3.  edit service name to `Backend`
+  4.  under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
+  5.  under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
+  6.  add the following environment variables:
+      - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
+      - **MONGO_DATABASE** = production
+      - **ACCESS_TOKEN_SECRET** = accessTokenSecret
+      - **REFRESH_TOKEN_SECRET** = refreshTokenSecret
+  7.  that's it! You can now hit the **Deploy** button
+  8.  Optionally you can generate a custom domain name on **Backend > Settings > Networking > Generate Domain**
+
+- setup **Frontend** service - **React app**
+
+  1.  create Frontend service by clicking on **New > GitHub Repo**
+  2.  connect your repository to your Railway project
+  3.  edit service name to `Frontend`
+  4.  under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
+  5.  under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
+  6.  that's it! You can now hit the **Deploy** button
+  7.  Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
