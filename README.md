@@ -103,52 +103,49 @@ Each element of the repository name has been carefully chosen to reflect the cor
 > [!WARNING]
 > The upcoming steps, except for the **MongoDB** service, require at least a `Hobby` plan on your Railway account, which starts at $5 per month.
 
-4.  Create project services
+4. Create project services
 
-    <details>
+   <details>
 
-       <summary>setup <b>MongoDB</b> service</summary>
+      <summary>Setup <b>MongoDB</b> service</summary>
 
-    1. create MongoDB service by clicking on **New > Database > Add MongoDB**
-    2. under **MongoDB Service > Data** create `test` database
-    3. under **MongoDB Service > Data** create `production` database
-    4. under **MongoDB Service > Data** create `development` database
-    5. under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
+   - Create MongoDB service by clicking on **New > Database > Add MongoDB**
+   - Under **MongoDB Service > Data** create `test` database
+   - Under **MongoDB Service > Data** create `production` database
+   - Under **MongoDB Service > Data** create `development` database
+   - Under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
 
-    </details>
+   </details>
 
-    <details>
+   <details>
 
-       <summary>setup <b>Backend</b> service</summary>
+      <summary>Setup <b>Backend</b> service</summary>
 
-    6. create Backend service by clicking on **New > GitHub Repo**
-    7. connect your repository to your Railway project
-    8. edit service name to `Backend`
-    9. under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
-    10. under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
-    11. add the following environment variables:
+   - Create Backend service by clicking on **New > GitHub Repo**
+   - Connect your repository to your Railway project
+   - Edit service name to `Backend`
+   - Under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
+   - Under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
+   - Add the following environment variables:
+     - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
+     - **MONGO_DATABASE** = production
+     - **ACCESS_TOKEN_SECRET** = accessTokenSecret
+     - **REFRESH_TOKEN_SECRET** = refreshTokenSecret
+   - That's it! You can now hit the **Deploy** button
+   - Optionally you can generate a custom domain name on **Backend > Settings > Networking > Generate Domain**
 
+   </details>
 
-          - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
-          - **MONGO_DATABASE** = production
-          - **ACCESS_TOKEN_SECRET** = accessTokenSecret
-          - **REFRESH_TOKEN_SECRET** = refreshTokenSecret
+   <details>
 
-    12. that's it! You can now hit the **Deploy** button
-    13. Optionally you can generate a custom domain name on **Backend > Settings > Networking > Generate Domain**
+      <summary>Setup <b>Frontend</b> service</summary>
 
-    </details>
+   - Create Frontend service by clicking on **New > GitHub Repo**
+   - Connect your repository to your Railway project
+   - Edit service name to `Frontend`
+   - Under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
+   - Under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
+   - That's it! You can now hit the **Deploy** button
+   - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
-    <details>
-
-       <summary>setup <b>Frontend</b> service</summary>
-
-    14. create Frontend service by clicking on **New > GitHub Repo**
-    15. connect your repository to your Railway project
-    16. edit service name to `Frontend`
-    17. under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
-    18. under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
-    19. that's it! You can now hit the **Deploy** button
-    20. Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
-
-    </details>
+   </details>
