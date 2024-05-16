@@ -1,0 +1,20 @@
+{
+  "name": "create-mern-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create-mern-monorepo": "index.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "inquirer": "^9.2.21",
+    "zx": "^8.1.0"
+  }
+}

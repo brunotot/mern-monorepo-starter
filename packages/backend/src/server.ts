@@ -6,8 +6,8 @@ import { type MongoClientOptions } from "mongodb";
 
 const mongoConnection: MongoConnectParamsFactory = async () => {
   const options: MongoClientOptions = {};
-  const { DB_HOST, DB_PORT } = Environment.getInstance().vars;
-  const uri = `mongodb://${DB_HOST}:${DB_PORT}`;
+  const { MONGO_URL } = Environment.getInstance().vars;
+  const uri = MONGO_URL;
   return { uri, options };
 };
 

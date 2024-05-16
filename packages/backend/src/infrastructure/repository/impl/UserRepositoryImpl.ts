@@ -1,20 +1,12 @@
-import { Autowired, Injectable } from "@org/backend/decorators";
-import { User, ObjectId, type PaginationResult } from "@org/shared";
-import * as PaginationUtils from "@org/backend/infrastructure/utils/PaginationUtils";
+import { Injectable } from "@org/backend/decorators";
+import { User, ObjectId } from "@org/shared";
 import { type UserRepository } from "@org/backend/infrastructure/repository/UserRepository";
-import { type Database } from "@org/backend/infrastructure/components/Database";
-import { type MongoPaginationOptions } from "@org/backend/types";
+import { AbstractRepository } from "../AbstractRepository";
 
 @Injectable("userRepository")
-export class UserRepositoryImpl implements UserRepository {
-  @Autowired() private database: Database;
-
-  private get collection() {
-    return this.database.collection(User);
-  }
-
-  search(options?: MongoPaginationOptions): Promise<PaginationResult<User>> {
-    return PaginationUtils.paginate(this.collection, options);
+export class UserRepositoryImpl extends AbstractRepository<User> implements UserRepository {
+  constructor() {
+    super(User);
   }
 
   async findOneByUsername(username: string): Promise<User | null> {

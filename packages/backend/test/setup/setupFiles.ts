@@ -3,7 +3,7 @@
 // @ts-ignore
 import "./../../dist/index";
 // @ts-ignore
-import app from "../../dist/worker";
+import app from "../../dist/server";
 // @ts-ignore
 import { ServiceRegistry } from "../../dist/config/singletons/ServiceRegistry";
 
