@@ -17,11 +17,15 @@
 
 5. That's it! Now your GitHub repository is ready to be used for deployment through Railway client
 
+---
+
 ### Local installation
 
 1. Clone the previously created repository to your local machine
 
 2. Install local packages and run prepare scripts with `pnpm install`
+
+---
 
 ### Railway setup
 
