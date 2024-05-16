@@ -4,36 +4,37 @@
 
 1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=monorepo-mern-railway-starter&template_owner=brunotot).
 
-2. Navigate to **Repo > Settings > Actions - General** and save the following Workflow-related options:
+2. Navigate to **Repo > Settings > Actions - General** and save the following **workflow** options:
+   
+   - [x] Read and write permissions
+   - [x] Allow GitHub Actions to create and approve pull requests
 
-   1. `Read and write permissions` checked
-   2. `Allow GitHub Actions to create and approve pull requests` checked
 
-3. Navigate to **Repo > Actions > typedoc.yml** and click on **Run workflow**
+3. Navigate to **Repo > Actions > typedoc.yml** and click on **Run workflow**.
 
 4. After **typedoc.yml** finishes,  the `gh-pages` branch is generated.
 
    Navigate to **Repo > Settings > Pages** and save the `gh-pages` branch as the deployment branch.
 
-5. That's it! Now your GitHub repository is ready to be used for deployment through Railway client
+5. That's it! Now your GitHub repository is ready to be used for deployment through Railway client.
 
 ---
 
 ### Local installation
 
-1. Clone the previously created repository to your local machine
+1. Clone the previously created repository to your local machine.
 
-2. Install local packages and run prepare scripts with `pnpm install`
+2. Install local packages and run prepare scripts with `pnpm install`.
 
 ---
 
 ### Railway setup
 
-1. Create an account on Railway [here](https://railway.app/login)
+1. Create an account on Railway [here](https://railway.app/login).
 
-2. On Railway **Dashboard** click on **+ New project > Empty project**
+2. On Railway **Dashboard** click on **+ New project > Empty project**.
 
-3. After project is successfully created, you may update its name at **Project Settings - General > Name**
+3. After project is successfully created, you may update its name at **Project Settings - General > Name**.
 
 <!--2. Install `@railway/cli` if you don't have it already
 
