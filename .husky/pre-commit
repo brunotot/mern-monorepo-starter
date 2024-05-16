@@ -7,3 +7,4 @@ npm run root:test
 npx lint-staged
 npm run md:updateDeps
 npm run md:mergeMds
+git add README.md
