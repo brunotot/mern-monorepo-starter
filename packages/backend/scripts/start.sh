@@ -1,13 +1,11 @@
 #!/bin/bash
 
 PWD_THIS=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 source "${PWD_THIS}/shared/spinner.sh"
 source "${PWD_THIS}/shared/colors.sh"
 
 PWD_BACKEND="$PWD_THIS/.."
-
-APP="$1"
-VERSION="$2"
 
 export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}')
 

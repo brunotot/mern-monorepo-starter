@@ -16,15 +16,7 @@
 
    Navigate to **Repo > Settings > Pages** and save the `gh-pages` branch as the deployment branch.
 
-5. That's it! Now your GitHub repository is ready to be used for deployment through Railway client.
-
----
-
-### Local installation
-
-1. Clone the previously created repository to your local machine.
-
-2. Install local packages and run prepare scripts with `pnpm install`.
+🚀 That's it! Now your GitHub repository is ready to be used for deployment through Railway client.
 
 ---
 
@@ -112,3 +104,17 @@
       - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
    </details>
+
+---
+
+### Local installation
+
+1. Clone the previously created repository to your local machine.
+
+2. Install local packages and run prepare scripts with `pnpm install`.
+
+3. Add required environment variables to `packages/backend/.env.development.
+   
+   (Check **step 4** of Railway setup - **Setup Backend service** )
+
+🚀 That's it! Try running `pnpm run backend:dev` or `pnpm run frontend:dev`
