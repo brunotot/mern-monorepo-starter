@@ -7,13 +7,13 @@ base_dir="docs/"
 find "$base_dir" -type f -exec sed -i 's/\\@/@/g' {} +
 
 # Copy CSS override to docs/assets/style.css
-echo '' >> "$base_dir/assets/style.css" && cat typedoc/overrides/typedoc-override.css >> "$base_dir/assets/style.css"
+echo '' >> "$base_dir/assets/style.css" && cat scripts/data/typedoc-override.css >> "$base_dir/assets/style.css"
 
 # Uncomment to disable JS override script
 #exit 0
 
 # Copy JS override file to docs/assets/docs.js
-cp typedoc/overrides/typedoc-override.js "$base_dir/assets/docs.js"
+cp scripts/data/typedoc-override.js "$base_dir/assets/docs.js"
 
 find "$base_dir" -type f -name "*.html" | while IFS= read -r file; do
   # Calculate depth

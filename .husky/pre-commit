@@ -3,8 +3,8 @@
 
 #pnpm run build
 #pnpm run build:docs:dev
-npm run root:test
+npm run test
 npx lint-staged
-npm run md:updateDeps
-npm run md:mergeMds
+npm run script:writeDependenciesMarkdown
+npm run script:writeReadmeMarkdown
 git add README.md

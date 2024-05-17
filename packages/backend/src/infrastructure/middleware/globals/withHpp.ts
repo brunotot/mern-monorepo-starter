@@ -4,7 +4,7 @@
  * @see {@link https://en.wikipedia.org/wiki/HTTP_parameter_pollution|http parameter pollution wiki}
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import type { RequestHandler } from "express";
 import hpp from "hpp";
 

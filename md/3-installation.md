@@ -5,14 +5,13 @@
 1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=monorepo-mern-railway-starter&template_owner=brunotot).
 
 2. Navigate to **Repo > Settings > Actions - General** and save the following **workflow** options:
-   
+
    - [x] Read and write permissions
    - [x] Allow GitHub Actions to create and approve pull requests
 
-
 3. Navigate to **Repo > Actions > typedoc.yml** and click on **Run workflow**.
 
-4. After **typedoc.yml** finishes,  the `gh-pages` branch is generated.
+4. After **typedoc.yml** finishes, the `gh-pages` branch is generated.
 
    Navigate to **Repo > Settings > Pages** and save the `gh-pages` branch as the deployment branch.
 
@@ -64,11 +63,11 @@
 
       <summary>Setup <b>MongoDB</b> service</summary>
 
-      - Create MongoDB service by clicking on **New > Database > Add MongoDB**
-      - Under **MongoDB Service > Data** create `test` database
-      - Under **MongoDB Service > Data** create `production` database
-      - Under **MongoDB Service > Data** create `development` database
-      - Under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
+   - Create MongoDB service by clicking on **New > Database > Add MongoDB**
+   - Under **MongoDB Service > Data** create `test` database
+   - Under **MongoDB Service > Data** create `production` database
+   - Under **MongoDB Service > Data** create `development` database
+   - Under **MongoDB Service > Variables** section, find and store the value of `MONGO_URL` locally
 
    </details>
 
@@ -76,18 +75,18 @@
 
       <summary>Setup <b>Backend</b> service</summary>
 
-      - Create Backend service by clicking on **New > GitHub Repo**
-      - Connect your repository to your Railway project
-      - Edit service name to `Backend`
-      - Under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
-      - Under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
-      - Add the following environment variables:
-         - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
-         - **MONGO_DATABASE** = production
-         - **ACCESS_TOKEN_SECRET** = accessTokenSecret
-         - **REFRESH_TOKEN_SECRET** = refreshTokenSecret
-      - That's it! You can now hit the **Deploy** button
-      - Optionally you can generate a custom domain name on **Backend > Settings > Networking > Generate Domain**
+   - Create Backend service by clicking on **New > GitHub Repo**
+   - Connect your repository to your Railway project
+   - Edit service name to `Backend`
+   - Under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
+   - Under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
+   - Add the following environment variables:
+     - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
+     - **MONGO_DATABASE** = production
+     - **ACCESS_TOKEN_SECRET** = accessTokenSecret
+     - **REFRESH_TOKEN_SECRET** = refreshTokenSecret
+   - That's it! You can now hit the **Deploy** button
+   - Optionally you can generate a custom domain name on **Backend > Settings > Networking > Generate Domain**
 
    </details>
 
@@ -95,13 +94,13 @@
 
       <summary>Setup <b>Frontend</b> service</summary>
 
-      - Create Frontend service by clicking on **New > GitHub Repo**
-      - Connect your repository to your Railway project
-      - Edit service name to `Frontend`
-      - Under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
-      - Under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
-      - That's it! You can now hit the **Deploy** button
-      - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
+   - Create Frontend service by clicking on **New > GitHub Repo**
+   - Connect your repository to your Railway project
+   - Edit service name to `Frontend`
+   - Under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
+   - Under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
+   - That's it! You can now hit the **Deploy** button
+   - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
    </details>
 
@@ -114,7 +113,7 @@
 2. Install local packages and run prepare scripts with `pnpm install`.
 
 3. Add required environment variables to `packages/backend/.env.development.local`.
-   
+
    (Check **step 4** of Railway setup - **Setup Backend service** )
 
 🚀 That's it! Try running `pnpm run backend:dev` or `pnpm run frontend:dev`

@@ -1,11 +1,11 @@
 {
-  "extends": ["./typedoc.base.json"],
+  "$schema": "https://typedoc.org/schema.json",
   "name": "Demo App",
   "includeVersion": false,
   "excludeInternal": true,
   "pretty": true,
 
-  "entryPoints": ["../packages/*"],
+  "entryPoints": ["packages/*"],
   "entryPointStrategy": "packages",
   "themeColor": "#8787f5",
   "plugin": ["typedoc-material-theme", "typedoc-plugin-remove-references"]

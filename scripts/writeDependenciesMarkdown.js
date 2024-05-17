@@ -3,11 +3,10 @@ import path from "path";
 import { getDirname } from "cross-dirname";
 import { exec } from "child_process";
 
-const PACKAGES_DIR_PATH = "./../../packages";
+const PACKAGES_DIR_PATH = "./../packages";
 
-const DESCRIPTIONS_FILE_NAME = "dependencyDescriptions.json";
-const PACKAGE_JSON_FILE_NAME = "package.json";
-const DEPENDENCIES_MD_FILE_NAME = "dependencies.md";
+const PATH_TO_DEPENDENCIES_JSON = "./data/dependencies.json";
+const PATH_TO_DEPENDENCIES_MD = "./../md/4-dependencies.md";
 
 function pathFromDir(...paths) {
   return path.join(getDirname(), ...paths);
@@ -64,7 +63,7 @@ function getDependenciesFromPackages() {
   const dependenciesByFolder = {};
 
   for (const packageFolder of packageFolders) {
-    const packagePath = pathFromDir(PACKAGES_DIR_PATH, packageFolder, PACKAGE_JSON_FILE_NAME);
+    const packagePath = pathFromDir(PACKAGES_DIR_PATH, packageFolder, "package.json");
     const dependencies = readDependencies(packagePath);
     dependenciesByFolder[packageFolder] = dependencies;
   }
@@ -74,7 +73,7 @@ function getDependenciesFromPackages() {
 
 function updateDependencyDescriptions(dependencies) {
   try {
-    let dependencyDescriptions = readJsonFile(pathFromDir(DESCRIPTIONS_FILE_NAME));
+    let dependencyDescriptions = readJsonFile(pathFromDir(PATH_TO_DEPENDENCIES_JSON));
 
     for (const [dependency, description] of Object.entries(dependencies)) {
       if (!dependencyDescriptions.hasOwnProperty(dependency)) {
@@ -83,7 +82,7 @@ function updateDependencyDescriptions(dependencies) {
     }
 
     fs.writeFileSync(
-      pathFromDir(DESCRIPTIONS_FILE_NAME),
+      pathFromDir(PATH_TO_DEPENDENCIES_JSON),
       JSON.stringify(sortObjectKeys(dependencyDescriptions), null, 2),
     );
     //console.log("dependencyDescriptions.json updated successfully!");
@@ -96,36 +95,55 @@ function updateDescriptionsJson() {
   const packageNames = fs.readdirSync(pathFromDir(PACKAGES_DIR_PATH));
 
   for (const packageName of packageNames) {
-    const packagePath = pathFromDir(PACKAGES_DIR_PATH, packageName, PACKAGE_JSON_FILE_NAME);
+    const packagePath = pathFromDir(PACKAGES_DIR_PATH, packageName, "package.json");
     const dependencies = readDependencies(packagePath);
     updateDependencyDescriptions(dependencies);
   }
 }
 
 function generateMarkdownTables(packageDependencies, packageDescriptions) {
-  const markdownTables = {};
+  const detailsList = Object.entries(packageDependencies).map(([packageName, dependencies]) => {
+    return (
+      "<details>\n" +
+      "\n" +
+      ` <summary>${packageName}</summary>\n` +
+      "\n" +
+      " <table>\n" +
+      "  <thead>\n" +
+      "   <tr>\n" +
+      "    <th>Name</th>\n" +
+      "    <th>Version</th>\n" +
+      "    <th>Description</th>\n" +
+      "   </tr>\n" +
+      "  </thead>\n" +
+      "  <tbody>\n" +
+      `${Object.entries(dependencies)
+        .map(
+          ([dependencyName, version]) =>
+            "   <tr>\n" +
+            `    <td>${dependencyName}</td>\n` +
+            `    <td align="right">${version}</td>\n` +
+            `    <td>${packageDescriptions[dependencyName]}</td>\n` +
+            `   </tr>\n`,
+        )
+        .join("")}` +
+      "  </tbody>\n" +
+      " </table>\n" +
+      "\n" +
+      `</details>\n`
+    );
+  });
 
-  for (const [packageName, dependencies] of Object.entries(packageDependencies)) {
-    const tableRows = Object.entries(dependencies).map(([dependencyName, version]) => {
-      const description = packageDescriptions[dependencyName];
-      return `| ${dependencyName} | ${version} | ${description} |`;
-    });
-
-    const tableHeader = `| Name | Version | Description |\n|------|---------|-------------|`;
-    const markdownTable = `${tableHeader}\n${tableRows.join("\n")}`;
-
-    markdownTables[packageName] = markdownTable;
-  }
-
-  return markdownTables;
+  return detailsList;
 }
 
 function writeToDependenciesMd(markdownTables) {
   try {
-    const stream = fs.createWriteStream(pathFromDir(DEPENDENCIES_MD_FILE_NAME));
+    const stream = fs.createWriteStream(pathFromDir(PATH_TO_DEPENDENCIES_MD));
 
-    for (const [packageName, markdownTable] of Object.entries(markdownTables)) {
-      stream.write(`# ${packageName}\n\n`);
+    stream.write(`## Dependencies overview\n\n`);
+    for (const markdownTable of markdownTables) {
+      //stream.write(`### ${packageName}\n\n`);
       stream.write(markdownTable + "\n\n");
     }
 
@@ -152,11 +170,11 @@ function addFileToGit(...filePaths) {
 
 function main() {
   updateDescriptionsJson();
-  const packageDescriptions = readJsonFile(pathFromDir(DESCRIPTIONS_FILE_NAME));
+  const packageDescriptions = readJsonFile(pathFromDir(PATH_TO_DEPENDENCIES_JSON));
 
   if (Object.values(packageDescriptions).some(descr => descr === "-")) {
     console.log(
-      `Some dependencies are missing descriptions at ${pathFromDir(DESCRIPTIONS_FILE_NAME)}`,
+      `Some dependencies are missing descriptions at ${pathFromDir(PATH_TO_DEPENDENCIES_JSON)}`,
     );
     console.log("Aborting...");
     process.exit(1);
@@ -165,8 +183,8 @@ function main() {
   const packageDependencies = getDependenciesFromPackages();
   const markdownTables = generateMarkdownTables(packageDependencies, packageDescriptions);
   writeToDependenciesMd(markdownTables);
-  runPrettierOnFile(pathFromDir(DEPENDENCIES_MD_FILE_NAME));
-  addFileToGit(pathFromDir(DEPENDENCIES_MD_FILE_NAME), pathFromDir(DESCRIPTIONS_FILE_NAME));
+  runPrettierOnFile(pathFromDir(PATH_TO_DEPENDENCIES_MD));
+  addFileToGit(pathFromDir(PATH_TO_DEPENDENCIES_MD), pathFromDir(PATH_TO_DEPENDENCIES_JSON));
 }
 
 main();

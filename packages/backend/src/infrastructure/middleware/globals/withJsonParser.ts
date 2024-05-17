@@ -2,7 +2,7 @@
  * @packageDocumentation Middleware which parses incoming requests with JSON payloads and is based on body-parser.
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import type { RequestHandler } from "express";
 import express from "express";
 

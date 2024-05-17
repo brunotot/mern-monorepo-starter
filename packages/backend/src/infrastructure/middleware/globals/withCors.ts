@@ -5,7 +5,7 @@
  */
 
 import { Environment } from "@org/backend/config";
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import cors from "cors";
 import type { RequestHandler } from "express";
 

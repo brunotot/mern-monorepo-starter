@@ -3,10 +3,14 @@ import { exec } from "child_process";
 import { getDirname } from "cross-dirname";
 import path from "path";
 import toc from "markdown-toc";
+import fs from "fs";
+
+const MARKDOWN_DIR_PATH = pathFromDir("../", "md");
 
 function pathFromDir(...paths) {
   return path.join(getDirname(), ...paths);
 }
+
 function runPrettierOnFile(filePath) {
   exec(`npx prettier --write ${filePath}`, (error, stdout, stderr) => {
     if (error) {
@@ -46,13 +50,23 @@ async function mergeMarkdownFiles(filePaths, outputFilePath) {
   }
 }
 
-// Example usage
-const markdownFiles = [
-  //`${pathFromDir("./../overview.md")}`,
-  `${pathFromDir("./../banner.md")}`,
-  `${pathFromDir("./../project-name-meaning.md")}`,
-  `${pathFromDir("./../installation.md")}`,
-];
-const outputFilePath = `${pathFromDir("./../../README.md")}`;
+// Read the directory
+fs.readdir(MARKDOWN_DIR_PATH, { withFileTypes: true }, (err, files) => {
+  if (err) {
+    console.error("Error reading the directory:", err);
+    return;
+  }
 
-mergeMarkdownFiles(markdownFiles, outputFilePath);
+  const MATCH_NUMBERED_MARKDOWN = /^(\d+)-(.*)$/;
+  const PATH_TO_README_MARKDOWN = pathFromDir("../", "README.md");
+
+  const markdownFiles = [];
+  for (const file of files) {
+    if (!file.isFile()) continue;
+    const name = file.name;
+    if (!name.match(MATCH_NUMBERED_MARKDOWN)) continue;
+    markdownFiles.push(`${MARKDOWN_DIR_PATH}/${name}`);
+  }
+
+  mergeMarkdownFiles(markdownFiles, PATH_TO_README_MARKDOWN);
+});

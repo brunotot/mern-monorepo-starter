@@ -1,5 +1,5 @@
 {
-  "extends": ["../../typedoc/typedoc.base.json"],
+  "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/index.ts"],
   "name": "backend"
 }

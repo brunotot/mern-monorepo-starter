@@ -8,7 +8,8 @@
     "test": "pnpm run build --silent && export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run",
     "build": "rm -rf dist && tsc && tsc-alias",
     "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/main.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "clean": "rm -rf ./dist"
   },
   "keywords": [],
   "author": "Bruno Tot",

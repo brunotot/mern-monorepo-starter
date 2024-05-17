@@ -2,7 +2,99 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "🖥 Launch Backend",
+      "name": "root > install",
+      "runtimeArgs": ["install"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "root > lint",
+      "runtimeArgs": ["lint"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "root > test",
+      "runtimeArgs": ["test"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "root > typedoc",
+      "runtimeArgs": ["typedoc"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "root > clean",
+      "runtimeArgs": ["clean"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "script > writeDependenciesMarkdown",
+      "runtimeArgs": ["run", "script:writeDependenciesMarkdown"],
+      "presentation": { "group": "2" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "script > writeReadmeMarkdown",
+      "runtimeArgs": ["run", "script:writeReadmeMarkdown"],
+      "presentation": { "group": "2" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "backend > dev - debug",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/packages/backend/src/main.ts",
@@ -15,69 +107,165 @@
       "stopOnEntry": false,
       "autoAttachChildProcesses": true,
       "runtimeVersion": "21.7.0",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "backend:start"],
-      "presentation": { "group": "1" }
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "backend", "run", "start"],
+      "presentation": { "group": "3" }
     },
     {
-      "name": "🖼️ Launch Frontend",
+      "name": "backend > dev - nodemon",
+      "runtimeArgs": ["--filter", "backend", "run", "dev"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "frontend:dev"],
-      "runtimeVersion": "21.7.0",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false,
-      "presentation": { "group": "1" }
+      "autoAttachChildProcesses": false
     },
     {
-      "name": "🔎 Launch ESLint",
+      "name": "backend > test",
+      "runtimeArgs": ["run", "--filter", "backend", "test"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "root:lint"],
-      "runtimeVersion": "21.7.0",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false,
-      "presentation": { "group": "1" }
+      "autoAttachChildProcesses": false
     },
     {
-      "name": "🧪 Launch tests",
+      "name": "backend > clean",
+      "runtimeArgs": ["run", "--filter", "backend", "clean"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "root:test"],
-      "runtimeVersion": "21.7.0",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false,
-      "presentation": { "group": "1" }
+      "autoAttachChildProcesses": false
     },
     {
-      "name": "🌎 Generate i18n.d.ts",
+      "name": "backend > build",
+      "runtimeArgs": ["run", "--filter", "backend", "build"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "frontend:interface"],
-      "runtimeVersion": "21.7.0",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false,
-      "presentation": { "group": "2" }
+      "autoAttachChildProcesses": false
     },
     {
-      "name": "📝 Generate docs",
+      "name": "frontend > dev",
+      "runtimeArgs": ["run", "--filter", "frontend", "dev"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "root:typedoc"],
-      "runtimeVersion": "21.7.0",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false,
-      "presentation": { "group": "2" }
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "frontend > test",
+      "runtimeArgs": ["run", "--filter", "frontend", "test"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "frontend > build",
+      "runtimeArgs": ["run", "--filter", "frontend", "build"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "frontend > clean",
+      "runtimeArgs": ["run", "--filter", "frontend", "clean"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "frontend > loadTranslationTypes",
+      "runtimeArgs": ["run", "--filter", "frontend", "loadTranslationTypes"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "shared > clean",
+      "runtimeArgs": ["run", "--filter", "shared", "clean"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "shared > build",
+      "runtimeArgs": ["run", "--filter", "shared", "build"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "shared > test",
+      "runtimeArgs": ["run", "--filter", "shared", "test"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
     }
   ]
 }

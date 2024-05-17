@@ -6,10 +6,9 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "pnpm run clean && pnpm run compile",
-    "clean": "rimraf ./dist",
-    "compile": "tsc",
     "prepublishOnly": "pnpm run build",
+    "build": "pnpm run clean && tsc",
+    "clean": "rm -rf ./dist",
     "test": "echo \"Error: no test specified for shared package\""
   },
   "keywords": [],

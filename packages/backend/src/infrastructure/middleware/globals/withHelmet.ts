@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/helmet|npm specifics}
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import type { RequestHandler } from "express";
 import helmet from "helmet";
 

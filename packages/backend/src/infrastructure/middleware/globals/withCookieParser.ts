@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/cookie-parser|npm specifics}
  */
 
-import { RouteMiddleware } from "@org/backend/types";
+import type { RouteMiddleware } from "@org/backend/types";
 import cookieParser from "cookie-parser";
 import type { RequestHandler } from "express";
 

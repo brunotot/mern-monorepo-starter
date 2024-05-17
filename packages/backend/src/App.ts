@@ -63,8 +63,10 @@ export class App {
             "🆔 PID": `${process.pid}`,
             "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
             "📅 Started": new Date().toLocaleString(),
+            MONGO_URL: process.env.MONGO_URL!,
+            MONGO_DB: process.env.MONGO_DATABASE!,
           },
-        });
+        }); //
         resolve();
       });
     });

@@ -12,15 +12,15 @@ export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | 
 rm -rf dist
 
 start "" " $(color $CYAN)1.$(color) Compiling shared package"
-cd "${PWD_BACKEND}/../shared" && rm -rf dist && npx tsc
+cd "${PWD_BACKEND}/../shared" && rm -rf dist && tsc
 stop "$(color $GREEN)✓$(color)"
 
 start "" " $(color $CYAN)2.$(color) Compiling backend package"
-cd "${PWD_BACKEND}" && rm -rf dist && npx tsc
+cd "${PWD_BACKEND}" && rm -rf dist && tsc
 stop "$(color $GREEN)✓$(color)"
 
 start "" " $(color $CYAN)3.$(color) Converting path aliases to relative paths"
-npx tsc-alias -p "${PWD_BACKEND}/tsconfig.json"
+tsc-alias -p "${PWD_BACKEND}/tsconfig.json"
 stop "$(color $GREEN)✓$(color)"
 
 echo -e "\n$(color $GREEN)✓ $(color $CYAN)4.$(color) Starting...\n"
