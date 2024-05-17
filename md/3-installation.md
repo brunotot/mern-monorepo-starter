@@ -2,7 +2,7 @@
 
 ### GitHub repository setup
 
-1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=monorepo-mern-railway-starter&template_owner=brunotot).
+1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
 
 2. Navigate to **Repo > Settings > Actions - General** and save the following **workflow** options:
 

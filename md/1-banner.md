@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-dark.svg?raw=true">
-    <img width="500px" alt="MERN Monorepo starter banner" src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-light.svg?raw=true">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/mern-monorepo-starter/blob/main/assets/img/logo-dark.svg?raw=true">
+    <img width="500px" alt="MERN Monorepo starter banner" src="https://github.com/brunotot/mern-monorepo-starter/blob/main/assets/img/logo-light.svg?raw=true">
   </picture>
 </p>
 

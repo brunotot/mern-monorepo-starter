@@ -1,7 +1,7 @@
 {
-  "name": "monorepo-mern-railway-starter",
+  "name": "mern-monorepo-starter",
   "version": "0.0.1",
-  "description": "monorepo-mern-railway-starter description",
+  "description": "mern-monorepo-starter description",
   "main": "index.js",
   "type": "module",
   "private": true,

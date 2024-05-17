@@ -3,7 +3,7 @@
 import "zx/globals";
 import inquirer from "inquirer";
 
-const TEMPLATE_REPO = "brunotot/monorepo-mern-railway-starter";
+const TEMPLATE_REPO = "brunotot/mern-monorepo-starter";
 
 const { ownerHandle, repoHandle, repoVisibility, repoDescription } = await inquirer.prompt([
   {

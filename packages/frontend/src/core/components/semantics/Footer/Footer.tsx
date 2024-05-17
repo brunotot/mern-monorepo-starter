@@ -21,11 +21,11 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
       >
         <Box display="flex" alignItems="center" justifyContent="center">
           <Box display="flex" flexDirection="column" gap={0.5} alignItems="center">
-            <Link href="https://brunotot.github.io/monorepo-mern-railway-starter/" target="_blank">
+            <Link href="https://brunotot.github.io/mern-monorepo-starter/" target="_blank">
               TypeDoc source
             </Link>
             <Link
-              href="https://monorepo-mern-railway-starter-backend.up.railway.app/api-docs/"
+              href="https://mern-monorepo-starter-backend.up.railway.app/api-docs/"
               target="_blank"
             >
               Swagger API

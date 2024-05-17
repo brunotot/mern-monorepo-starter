@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-dark.svg?raw=true">
-    <img width="500px" alt="MERN Monorepo starter banner" src="https://github.com/brunotot/monorepo-mern-railway-starter/blob/main/assets/img/logo-light.svg?raw=true">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/brunotot/mern-monorepo-starter/blob/main/assets/img/logo-dark.svg?raw=true">
+    <img width="500px" alt="MERN Monorepo starter banner" src="https://github.com/brunotot/mern-monorepo-starter/blob/main/assets/img/logo-light.svg?raw=true">
   </picture>
 </p>
 
@@ -34,7 +34,7 @@ The goal is to remove the complexities typically associated with setting up and 
 
 ### GitHub repository setup
 
-1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=monorepo-mern-railway-starter&template_owner=brunotot).
+1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
 
 2. Navigate to **Repo > Settings > Actions - General** and save the following **workflow** options:
 
