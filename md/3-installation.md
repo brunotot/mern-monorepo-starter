@@ -78,8 +78,8 @@
    - Create Backend service by clicking on **New > GitHub Repo**
    - Connect your repository to your Railway project
    - Edit service name to `Backend`
-   - Under **Backend > Settings > Build** set `pnpm run backend:build` as the build command
-   - Under **Backend > Settings > Deploy** set `pnpm run backend:start` as the deploy command
+   - Under **Backend > Settings > Build** set `pnpm --filter backend run build` as the build command
+   - Under **Backend > Settings > Deploy** set `pnpm --filter backend run start` as the deploy command
    - Add the following environment variables:
      - **MONGO_URL** = {the connection string copied from `setup MongoDB service` section}
      - **MONGO_DATABASE** = production
@@ -97,8 +97,8 @@
    - Create Frontend service by clicking on **New > GitHub Repo**
    - Connect your repository to your Railway project
    - Edit service name to `Frontend`
-   - Under **Frontend > Settings > Build** set `pnpm run frontend:build` as the build command
-   - Under **Frontend > Settings > Deploy** set `pnpm run frontend:start` as the deploy command
+   - Under **Frontend > Settings > Build** set `pnpm --filter frontend run build` as the build command
+   - Under **Frontend > Settings > Deploy** set `pnpm --filter frontend run start` as the deploy command
    - That's it! You can now hit the **Deploy** button
    - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 

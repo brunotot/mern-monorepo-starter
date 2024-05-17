@@ -2,6 +2,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { exec } from "child_process";
 import console from "console";
 
+export const TEST_PORT = 8081;
 const DUMP_PATH = "./test/dump";
 const MONGODB_DATABASE_TOOLS_PATH = "./tools/mongodb-database-tools/bin";
 
@@ -31,6 +32,7 @@ export default async () => {
   await restoreMongoDBDump(mongoUri, dbDatabase);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
+  process.env.PORT = String(TEST_PORT);
   process.env.MONGO_URL = `mongodb://${host}:${port}`;
   process.env.MONGO_DATABASE = dbDatabase;
   process.env.ACCESS_TOKEN_SECRET = "testAccessTokenSecret";
