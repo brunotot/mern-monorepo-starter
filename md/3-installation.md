@@ -116,4 +116,4 @@
 
    (Check **step 4** of Railway setup - **Setup Backend service** )
 
-🚀 That's it! Try running `pnpm run backend:dev` or `pnpm run frontend:dev`
+🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter frontend run dev`
