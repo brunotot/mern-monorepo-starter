@@ -267,8 +267,8 @@ The upcoming steps, except for the <strong>MongoDB</strong> service, require at 
 <li>Create Backend service by clicking on <strong>New &gt; GitHub Repo</strong></li>
 <li>Connect your repository to your Railway project</li>
 <li>Edit service name to <code>Backend</code></li>
-<li>Under <strong>Backend &gt; Settings &gt; Build</strong> set <code>pnpm run backend:build</code> as the build command</li>
-<li>Under <strong>Backend &gt; Settings &gt; Deploy</strong> set <code>pnpm run backend:start</code> as the deploy command</li>
+<li>Under <strong>Backend &gt; Settings &gt; Build</strong> set <code>pnpm --filter backend run build</code> as the build command</li>
+<li>Under <strong>Backend &gt; Settings &gt; Deploy</strong> set <code>pnpm --filter backend run start</code> as the deploy command</li>
 <li>Add the following environment variables:<ul>
 <li><strong>MONGO_URL</strong> = {the connection string copied from <code>setup MongoDB service</code> section}</li>
 <li><strong>MONGO_DATABASE</strong> = production</li>
@@ -289,8 +289,8 @@ The upcoming steps, except for the <strong>MongoDB</strong> service, require at 
 <li>Create Frontend service by clicking on <strong>New &gt; GitHub Repo</strong></li>
 <li>Connect your repository to your Railway project</li>
 <li>Edit service name to <code>Frontend</code></li>
-<li>Under <strong>Frontend &gt; Settings &gt; Build</strong> set <code>pnpm run frontend:build</code> as the build command</li>
-<li>Under <strong>Frontend &gt; Settings &gt; Deploy</strong> set <code>pnpm run frontend:start</code> as the deploy command</li>
+<li>Under <strong>Frontend &gt; Settings &gt; Build</strong> set <code>pnpm --filter frontend run build</code> as the build command</li>
+<li>Under <strong>Frontend &gt; Settings &gt; Deploy</strong> set <code>pnpm --filter frontend run start</code> as the deploy command</li>
 <li>That&#39;s it! You can now hit the <strong>Deploy</strong> button</li>
 <li>Optionally you can generate a custom domain name on <strong>Frontend &gt; Settings &gt; Networking &gt; Generate Domain</strong></li>
 </ul>
@@ -306,7 +306,7 @@ The upcoming steps, except for the <strong>MongoDB</strong> service, require at 
 <p>(Check <strong>step 4</strong> of Railway setup - <strong>Setup Backend service</strong> )</p>
 </li>
 </ol>
-<p>🚀 That&#39;s it! Try running <code>pnpm run backend:dev</code> or <code>pnpm run frontend:dev</code></p>
+<p>🚀 That&#39;s it! Try running <code>pnpm --filter backend run dev</code> or <code>pnpm --filter frontend run dev</code></p>
 <a id="md:dependencies-overview" class="tsd-anchor"></a><h2><a href="#md:dependencies-overview">Dependencies overview</a></h2><details>
 
  <summary>backend</summary>
