@@ -3,10 +3,9 @@ import path from "path";
 import { getDirname } from "cross-dirname";
 import { exec } from "child_process";
 
-const PACKAGES_DIR_PATH = "./../packages";
-
-const PATH_TO_DEPENDENCIES_JSON = "./data/dependencies.json";
-const PATH_TO_DEPENDENCIES_MD = "./../md/4-dependencies.md";
+const PACKAGES_DIR_PATH = "./../../packages";
+const PATH_TO_DEPENDENCIES_JSON = "./../data/dependencies.json";
+const PATH_TO_DEPENDENCIES_MD = "./../../md/7-dependencies.md";
 
 function pathFromDir(...paths) {
   return path.join(getDirname(), ...paths);

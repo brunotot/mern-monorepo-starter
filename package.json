@@ -19,9 +19,11 @@
     "typedoc": "typedoc && pnpm run script:customizeTypedocOutput",
     "lint": "npx eslint . --fix",
     "backend:build": "pnpm --filter backend run build",
-    "script:customizeTypedocOutput": "bash scripts/customizeTypedocOutput.sh",
-    "script:writeDependenciesMarkdown": "node scripts/writeDependenciesMarkdown.js",
-    "script:writeReadmeMarkdown": "node scripts/writeReadmeMarkdown.js"
+    "script:customizeTypedocOutput": "bash scripts/sh/customizeTypedocOutput.sh",
+    "script:writeDependenciesMarkdown": "node scripts/js/writeDependenciesMarkdown.js",
+    "script:writeReadmeMarkdown": "node scripts/js/writeReadmeMarkdown.js",
+    "script:writeMarkdowns": "pnpm run script:writeDependenciesMarkdown && pnpm run script:writeReadmeMarkdown",
+    "script:printRepoTreeStructure": "bash scripts/sh/printRepoTreeStructure.sh"
   },
   "author": "Bruno Tot",
   "license": "MIT",

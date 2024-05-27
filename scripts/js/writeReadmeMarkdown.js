@@ -5,7 +5,9 @@ import path from "path";
 import toc from "markdown-toc";
 import fs from "fs";
 
-const MARKDOWN_DIR_PATH = pathFromDir("../", "md");
+const MARKDOWN_DIR_PATH = pathFromDir("../../", "md");
+const PATH_TO_README_MARKDOWN = pathFromDir("../../", "README.md");
+const MATCH_NUMBERED_MARKDOWN = /^(\d+)-(.*)$/;
 
 function pathFromDir(...paths) {
   return path.join(getDirname(), ...paths);
@@ -56,9 +58,6 @@ fs.readdir(MARKDOWN_DIR_PATH, { withFileTypes: true }, (err, files) => {
     console.error("Error reading the directory:", err);
     return;
   }
-
-  const MATCH_NUMBERED_MARKDOWN = /^(\d+)-(.*)$/;
-  const PATH_TO_README_MARKDOWN = pathFromDir("../", "README.md");
 
   const markdownFiles = [];
   for (const file of files) {
