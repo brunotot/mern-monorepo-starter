@@ -107,8 +107,8 @@
       "stopOnEntry": false,
       "autoAttachChildProcesses": true,
       "runtimeVersion": "21.7.0",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "backend", "run", "start"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "backend:start"],
       "presentation": { "group": "3" }
     },
     {

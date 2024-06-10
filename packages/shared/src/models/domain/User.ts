@@ -3,7 +3,7 @@ import z from "zod";
 
 export const User = z
   .object({
-    _id: z.instanceof(ObjectId),
+    _id: z.instanceof(ObjectId).optional(),
     username: z.string().openapi({ example: "john_doe" }),
     password: z.string().openapi({ example: "password" }),
     email: z.string().email().openapi({ example: "john.doe@mail.com" }),

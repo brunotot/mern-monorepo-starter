@@ -37,7 +37,7 @@ function HorizontalNavItem({
   const hasChildren = "children" in item && item.children;
   const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
-  const borderRadius = isMainNavButton ? 8 : undefined;
+  const borderRadius = isMainNavButton ? 1 : undefined;
 
   if (hasChildren) {
     const isAnyRouteActiveInGroup = isAnyRouteActive(children);
@@ -50,6 +50,7 @@ function HorizontalNavItem({
             sx={{
               flexGrow: 0,
               whiteSpace: "nowrap",
+              outline: isMainNavButton && isAnyRouteActiveInGroup ? "1px solid gray" : undefined,
               backgroundColor: popupState.isOpen
                 ? "action.hover"
                 : isAnyRouteActiveInGroup
@@ -91,10 +92,17 @@ function HorizontalNavItem({
     return <></>;
   }
 
+  const isSelected = location.pathname === itemSingle.path;
+
   return (
     <ListItemButton
-      sx={{ flexGrow: 0, borderRadius, whiteSpace: "nowrap" }}
-      selected={location.pathname === itemSingle.path}
+      sx={{
+        flexGrow: 0,
+        borderRadius,
+        whiteSpace: "nowrap",
+        outline: isSelected ? "1px solid gray" : undefined,
+      }}
+      selected={isSelected}
       onClick={() => navigate(itemSingle.path)}
     >
       {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}

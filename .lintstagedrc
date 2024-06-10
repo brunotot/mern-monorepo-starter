@@ -1,5 +1,4 @@
 {
   "**/*.{ts,tsx,js,jsx}": ["prettier --write"],
-  "**/*.{md,mdx,yml,json}": ["prettier --write"],
-  "commit-msg": ["node scripts/js/commitEmoji.js"]
+  "**/*.{md,mdx,yml,json}": ["prettier --write"]
 }

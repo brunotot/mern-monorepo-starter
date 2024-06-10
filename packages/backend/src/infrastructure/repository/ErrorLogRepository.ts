@@ -1,6 +1,6 @@
-import { type ErrorLog } from "@org/shared";
-import { type PaginableRepository } from "@org/backend/infrastructure/repository/PaginableRepository";
+import type { PaginationOptions, PaginationResult, ErrorLog } from "@org/shared";
 
-export interface ErrorLogRepository extends PaginableRepository<ErrorLog> {
+export interface ErrorLogRepository {
+  search: (options: PaginationOptions) => Promise<PaginationResult<ErrorLog>>;
   insertOne: (user: Omit<ErrorLog, "_id">) => Promise<ErrorLog>;
 }

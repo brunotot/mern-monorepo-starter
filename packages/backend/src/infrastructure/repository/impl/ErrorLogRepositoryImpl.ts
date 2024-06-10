@@ -8,6 +8,10 @@ export class ErrorLogRepositoryImpl
   extends AbstractRepository<ErrorLog>
   implements ErrorLogRepository
 {
+  buildSearch(): string[] {
+    return [];
+  }
+
   constructor() {
     super(ErrorLog);
   }

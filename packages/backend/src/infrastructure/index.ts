@@ -16,11 +16,9 @@ export * from "./middleware/locals/withJwt";
 export * from "./middleware/locals/withRateLimit";
 export * from "./middleware/locals/withUserRoles";
 export * from "./middleware/locals/withValidatedBody";
-export * from "./middleware/locals/withPaginableParams";
 export * from "./middleware/globals/index";
 
 /* @org/backend/infrastructure/repository */
-export * from "./repository/PaginableRepository";
 export * from "./repository/UserRepository";
 export * from "./repository/ErrorLogRepository";
 export * from "./repository/impl/UserRepositoryImpl";

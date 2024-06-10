@@ -19,6 +19,7 @@
     "typedoc": "typedoc && pnpm run script:customizeTypedocOutput",
     "lint": "npx eslint . --fix",
     "backend:build": "pnpm --filter backend run build",
+    "backend:start": "npm run start --prefix packages/backend",
     "script:customizeTypedocOutput": "bash scripts/sh/customizeTypedocOutput.sh",
     "script:writeDependenciesMarkdown": "node scripts/js/writeDependenciesMarkdown.js",
     "script:writeReadmeMarkdown": "node scripts/js/writeReadmeMarkdown.js",
@@ -53,5 +54,8 @@
     "mongodb",
     "express",
     "node"
-  ]
+  ],
+  "dependencies": {
+    "react-use": "^17.5.0"
+  }
 }

@@ -1,14 +1,10 @@
 import { PaletteMode, PaletteOptions, ThemeOptions } from "@mui/material";
-import {
-  CssVarsTheme,
-  Theme,
-  experimental_extendTheme as extendTheme,
-} from "@mui/material/styles";
+import { CssVarsTheme, Theme, experimental_extendTheme as extendTheme } from "@mui/material/styles";
 import { signal } from "@preact/signals-react";
 
 export function buildBaseThemeConfig(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _schema: MuiThemeColors
+  _schema: MuiThemeColors,
 ): Omit<ThemeOptions, "palette"> {
   return {
     shape: {
@@ -49,6 +45,13 @@ export function buildBaseThemeConfig(
       MuiMenu: {
         defaultProps: {
           MenuListProps: { sx: { padding: "0 !important" } },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          head: {
+            fontWeight: "bold",
+          },
         },
       },
       MuiList: {
@@ -122,10 +125,7 @@ export function buildBaseThemeConfig(
   };
 }
 
-function buildBasePalette(
-  schema: MuiThemeColors,
-  mode: PaletteMode
-): PaletteOptions {
+function buildBasePalette(schema: MuiThemeColors, mode: PaletteMode): PaletteOptions {
   const lightColor = "58, 53, 65";
   const darkColor = "231, 227, 252";
   const mainColor = mode === "light" ? lightColor : darkColor;

@@ -313,6 +313,11 @@ Our goal is to provide an easy setup and deployment process, allowing developers
     <td>Provides rate limiting to protect against brute force attacks</td>
    </tr>
    <tr>
+    <td>flatted</td>
+    <td align="right">^3.3.1</td>
+    <td>-</td>
+   </tr>
+   <tr>
     <td>helmet</td>
     <td align="right">^7.1.0</td>
     <td>Collection of security middleware for Express.js</td>
@@ -484,6 +489,11 @@ Our goal is to provide an easy setup and deployment process, allowing developers
     <td>react-router-dom</td>
     <td align="right">^6.22.3</td>
     <td>Provides routing functionality for the React frontend application</td>
+   </tr>
+   <tr>
+    <td>react-use</td>
+    <td align="right">^17.5.0</td>
+    <td>-</td>
    </tr>
   </tbody>
  </table>

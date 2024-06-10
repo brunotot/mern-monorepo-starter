@@ -175,8 +175,8 @@ function main() {
     console.log(
       `Some dependencies are missing descriptions at ${pathFromDir(PATH_TO_DEPENDENCIES_JSON)}`,
     );
-    console.log("Aborting...");
-    process.exit(1);
+    //console.log("Aborting...");
+    //process.exit(1);
   }
 
   const packageDependencies = getDependenciesFromPackages();

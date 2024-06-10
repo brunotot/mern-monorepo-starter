@@ -1,7 +1,8 @@
-import { type User } from "@org/shared";
-import { type PaginableRepository } from "@org/backend/infrastructure/repository/PaginableRepository";
+import type { PaginationOptions, PaginationResult, User } from "@org/shared";
 
-export interface UserRepository extends PaginableRepository<User> {
+export interface UserRepository {
+  deleteByUsername(username: string): Promise<void>;
+  search: (options: PaginationOptions) => Promise<PaginationResult<User>>;
   findOneByUsername: (username: string) => Promise<User | null>;
   findOneByRefreshTokens: (refreshTokens: string[]) => Promise<User | null>;
   findAll: () => Promise<User[]>;

@@ -10,11 +10,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { sigSidebarOpen } from "../../../signals";
-import {
-  InputLayoutToggle,
-  InputLocaleSelect,
-  InputThemeToggle,
-} from "../../inputs";
+import { InputLayoutToggle, InputLocaleSelect, InputThemeToggle } from "../../inputs";
 import { InputFuzzySearch } from "../../inputs/InputFuzzySearch";
 
 export type MuiSxProps = SxProps<Theme>;
@@ -40,23 +36,19 @@ export function Header({
       component="header"
       sx={{
         backgroundColor,
-        borderBottom: borderBottom
-          ? "1px solid var(--mui-palette-divider)"
-          : undefined,
+        borderBottom: borderBottom ? "1px solid var(--mui-palette-divider)" : undefined,
       }}
     >
       <Container maxWidth={maxWidth} sx={{ paddingInline: "0 !important" }}>
         <Box
           display="flex"
           alignItems="center"
-          paddingInline={matchesDesktop ? "1rem" : 0}
+          paddingInline={matchesDesktop ? /*"1rem"*/ 0 : 0}
           gap={1}
           sx={sx}
         >
           {!matchesDesktop && (
-            <IconButton
-              onClick={() => (sigSidebarOpen.value = !sigSidebarOpen.value)}
-            >
+            <IconButton onClick={() => (sigSidebarOpen.value = !sigSidebarOpen.value)}>
               <Menu />
             </IconButton>
           )}

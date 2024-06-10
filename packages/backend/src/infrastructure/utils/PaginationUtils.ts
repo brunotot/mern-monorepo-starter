@@ -1,27 +1,30 @@
-import type { TODO, PaginationResult } from "@org/shared";
+import type { TODO, PaginationResult, PaginationOptions } from "@org/shared";
 import type { Collection } from "mongodb";
-import type {
-  MongoFilters,
-  MongoSearch,
-  MongoSort,
-  MongoPaginationOptions,
-} from "@org/backend/types";
+import type { MongoFilters, MongoSearch, MongoSort } from "@org/backend/types";
 
 export async function paginate(
   collection: Collection<TODO>,
-  options?: MongoPaginationOptions,
+  searchFields: string[],
+  options?: PaginationOptions,
 ): Promise<PaginationResult<TODO>> {
-  const limit = options?.limit ?? 10;
+  const limit = options?.rowsPerPage ?? 10;
   const page = options?.page ?? 0;
-  const search = options?.search ?? { fields: [], regex: "" };
-  const sort = options?.sort ?? [];
+  const search = options?.search ?? "";
+  const order = options?.order ?? [];
   const filters = options?.filters ?? {};
   const skip = page * limit;
 
   const pipeline: TODO[] = [];
 
-  pipeline.push(...buildMatchPipeline(search, filters));
-  pipeline.push(...buildSortPipeline(sort));
+  pipeline.push(...buildMatchPipeline({ fields: searchFields, regex: search }, filters));
+  pipeline.push(
+    ...buildSortPipeline(
+      order.map(s => {
+        const [field, sortOrder] = s.split(" ");
+        return [field, sortOrder as "asc" | "desc"];
+      }) as TODO,
+    ),
+  );
 
   pipeline.push(
     ...[

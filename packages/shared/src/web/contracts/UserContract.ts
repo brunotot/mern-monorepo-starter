@@ -35,6 +35,26 @@ export type PaginationResult<T> = {
 
 export const UserPageableResponseDto = PageableResponseDto(User);
 
+export type UserPageableResponseDto = z.infer<typeof UserPageableResponseDto>;
+
+export function JsonQueryParam<Schema extends z.Schema>(schema: Schema) {
+  return z.string().transform(val => {
+    console.log(val);
+    const result = JSON.parse(val) as z.infer<typeof schema>;
+    return result;
+  });
+}
+
+export const PaginationOptions = z.object({
+  page: z.number().default(0),
+  rowsPerPage: z.number().default(10),
+  order: z.array(z.string()).default([]),
+  search: z.string().default(""),
+  filters: z.any().default({}),
+});
+
+export type PaginationOptions = z.infer<typeof PaginationOptions>;
+
 export const UserContract = initContract().router({
   findOne: {
     metadata,
@@ -60,10 +80,7 @@ export const UserContract = initContract().router({
     summary: "Get all users",
     description: "Get all users",
     query: z.object({
-      page: z.number().default(0),
-      limit: z.number().default(10),
-      sort: z.string().default(""),
-      search: z.string().default(""),
+      paginationOptions: JsonQueryParam(PaginationOptions),
     }),
     responses: {
       200: UserPageableResponseDto,
@@ -80,6 +97,21 @@ export const UserContract = initContract().router({
     body: User,
     responses: {
       201: User,
+      ...defaultResponses,
+    },
+  },
+  deleteByUsername: {
+    metadata,
+    strictStatusCodes: true,
+    path: buildPath(),
+    method: "DELETE",
+    summary: "Delete User by username",
+    description: "Delete User by username",
+    body: z.object({
+      username: z.string().openapi({ example: "brunotot" }),
+    }),
+    responses: {
+      201: z.string(),
       ...defaultResponses,
     },
   },

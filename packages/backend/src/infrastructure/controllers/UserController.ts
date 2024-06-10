@@ -1,7 +1,6 @@
 import { ErrorResponse, type TODO } from "@org/shared";
-import type { MongoSort, RouteInput, RouteOutput } from "@org/backend/types";
+import type { RouteInput, RouteOutput } from "@org/backend/types";
 import { Autowired, Contract, Injectable } from "@org/backend/decorators";
-import { withPaginableParams } from "@org/backend/infrastructure/middleware/locals/withPaginableParams";
 import { type UserService } from "@org/backend/infrastructure/service/UserService";
 
 @Injectable("userController")
@@ -28,25 +27,11 @@ export class UserController {
     };
   }
 
-  @Contract("User.pagination", withPaginableParams())
+  @Contract("User.pagination")
   async pagination({ query }: RouteInput<"User.pagination">): RouteOutput<"User.pagination"> {
-    //throw new Error("Testing error");
-    const paginationOptions = {
-      filters: {},
-      sort: (query.sort ? query.sort.split(",").map(value => value.split("|")) : []) as MongoSort,
-      page: query.page,
-      limit: query.limit,
-      search: {
-        fields: ["username", "email"],
-        regex: query.search,
-      },
-    };
-
-    const paginatedResult = (await this.userService.search(paginationOptions)) as TODO;
-
     return {
       status: 200,
-      body: paginatedResult,
+      body: (await this.userService.search(query.paginationOptions)) as TODO,
     };
   }
 
@@ -56,6 +41,17 @@ export class UserController {
     return {
       status: 201,
       body: user,
+    };
+  }
+
+  @Contract("User.deleteByUsername")
+  async deleteByUsername({
+    body,
+  }: RouteInput<"User.deleteByUsername">): RouteOutput<"User.deleteByUsername"> {
+    await this.userService.deleteByUsername(body.username);
+    return {
+      status: 201,
+      body: "OK",
     };
   }
 }
