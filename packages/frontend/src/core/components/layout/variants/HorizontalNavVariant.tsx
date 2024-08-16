@@ -13,10 +13,10 @@ import { TODO } from "@org/shared";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { VAR_NAVIGATION_ROUTES } from "../../../../routes";
 import { ButtonHoverMenu, OriginPosition } from "../../navigation/ButtonHoverMenu";
 import { NavigationRoute, NavigationRouteSingle } from "../../../../models";
 import { isAnyRouteActive } from "../../../../utils";
+import { ReactApp } from "../../../init";
 
 export type HorizontalNavItemProps = {
   item: NavigationRoute;
@@ -128,11 +128,11 @@ export function HorizontalNavVariant({
         backgroundColor,
         display: hidden ? "none" : undefined,
       }}
-      paddingBlock={0.75}
+      paddingBlock={1}
     >
       <Container sx={{ paddingInline: `0 !important` }} maxWidth={maxWidth}>
         <List dense component={Stack} direction="row">
-          {VAR_NAVIGATION_ROUTES.map((item, index) => (
+          {ReactApp.getInstance().routes.map((item, index) => (
             <Fragment key={index}>
               <HorizontalNavItem item={item} />
             </Fragment>

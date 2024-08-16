@@ -14,7 +14,7 @@ export function convertToRoutes(data: NavigationRoutes): RouteObject[] {
   const routes: RouteObject[] = [];
 
   for (const item of data) {
-    if ("path" in item) {
+    if ("path" in item || "handle" in item) {
       routes.push(item);
       continue;
     }

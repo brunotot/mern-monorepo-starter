@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import { VAR_NAVIGATION_ROUTES } from "../../../../routes";
 import { NavigationRoute, NavigationRouteSingle } from "../../../../models";
 import { isAnyRouteActive } from "../../../../utils";
+import { ReactApp } from "../../../init";
 
 export type SidebarNavItemProps = {
   item: NavigationRoute;
@@ -101,7 +101,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
 export function SidebarNavVariant() {
   return (
     <List dense sx={{ paddingRight: "1.75rem !important" }}>
-      {VAR_NAVIGATION_ROUTES.map((item, index) => (
+      {ReactApp.getInstance().routes.map((item, index) => (
         <SidebarNavItem key={index} item={item} />
       ))}
     </List>

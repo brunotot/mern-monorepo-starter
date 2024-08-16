@@ -10,7 +10,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["node_modules/", "dist/", "logger.js", "docs/", "updateDepDocs.js", "npx", "scripts"],
+  "ignorePatterns": ["node_modules/", "dist/", "logger.js", "docs/", "updateDepDocs.js", "npx", "scripts", "keycloak.js"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/ban-ts-comment": "off"

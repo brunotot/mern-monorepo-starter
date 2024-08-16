@@ -3,10 +3,10 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Badge,
   Box,
   Button,
   Menu,
+  TextField,
   Typography,
 } from "@mui/material";
 import { client } from "../../core/client";
@@ -18,6 +18,8 @@ import { DEFAULT_PAGINATION_OPTIONS } from "../../core/components/semantics/Data
 import { type UserPageableResponseDto } from "@org/shared";
 import { ExpandMore, FilterAlt, FilterAltOutlined } from "@mui/icons-material";
 import { DatatableContainer } from "../../core/components/semantics/Datatable/components/DatatableContainer";
+import { FixedBadge } from "./FixedBadge";
+import { buildPaginationQueryParams } from "../../utils/ClientApiUtils";
 
 export function HomePage() {
   const [userResponse, setUserResponse] = useState<UserPageableResponseDto>();
@@ -27,9 +29,8 @@ export function HomePage() {
   });
 
   const fetchUsers = useCallback(async () => {
-    const users = await client.User.pagination({
-      query: { paginationOptions: JSON.stringify(paginationOptions) },
-    });
+    const query = buildPaginationQueryParams(paginationOptions);
+    const users = await client.User.pagination({ query });
     if (users.status !== 200) throw new Error("Failed to fetch users.");
     setUserResponse(users.body);
   }, [paginationOptions]);
@@ -47,7 +48,7 @@ export function HomePage() {
     fetchUsers();
   }, [fetchUsers]);
 
-  const badgeContent: number = 2;
+  const badgeContent: number = 6;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -62,20 +63,17 @@ export function HomePage() {
     <>
       <DatatableContainer>
         <Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
-          <Button variant="contained" color="primary" sx={{ paddingLeft: 1 }} onClick={handleClick}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ paddingInline: 1 }}
+            onClick={handleClick}
+          >
             <FilterAltOutlined />
-            <Box flex="1">Filters</Box>
-            <Badge
-              badgeContent={badgeContent > 0 ? badgeContent : undefined}
-              color="warning"
-              overlap="circular"
-              sx={{
-                transform: "translate(0px, 50%)",
-                "& .MuiBadge-badge": {
-                  position: badgeContent > 0 ? "relative" : undefined,
-                },
-              }}
-            />
+            <Box flex="1" marginRight={1}>
+              Filters
+            </Box>
+            <FixedBadge value={badgeContent > 0 ? badgeContent : undefined} />
           </Button>
           <Menu
             slotProps={{ paper: { sx: { width: "320px" } } }}
@@ -98,11 +96,10 @@ export function HomePage() {
                   aria-controls="panel1-content"
                   id="panel1-header"
                 >
-                  Accordion 1
+                  Username
                 </AccordionSummary>
                 <AccordionDetails>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-                  lacus ex, sit amet blandit leo lobortis eget.
+                  <TextField label="Search by username" placeholder="johndoe" />
                 </AccordionDetails>
               </Accordion>
               <Accordion disableGutters>
@@ -111,20 +108,19 @@ export function HomePage() {
                   aria-controls="panel2-content"
                   id="panel2-header"
                 >
-                  Accordion 2
+                  Email
                 </AccordionSummary>
                 <AccordionDetails>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-                  lacus ex, sit amet blandit leo lobortis eget.
+                  <TextField label="Search by email" placeholder="johndoe@mail.com" />
                 </AccordionDetails>
               </Accordion>
-              <Accordion disableGutters defaultExpanded>
+              <Accordion disableGutters sx={{ boxShadow: "none" }}>
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
                   aria-controls="panel3-content"
                   id="panel3-header"
                 >
-                  Accordion Actions
+                  Roles
                 </AccordionSummary>
                 <AccordionDetails>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
@@ -135,6 +131,21 @@ export function HomePage() {
                   <Button>Agree</Button>
                 </AccordionActions>
               </Accordion>
+              <Box
+                sx={{
+                  paddingInline: 2,
+                  backgroundImage: "var(--mui-overlays-1)",
+                  paddingBottom: 2,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  backgroundColor: "var(--mui-palette-background-paper)",
+                }}
+              >
+                <Button variant="contained" color="primary">
+                  Search
+                </Button>
+              </Box>
             </div>
           </Menu>
           <UserCreateFormButton afterUpdate={fetchUsers} />
@@ -154,7 +165,6 @@ export function HomePage() {
             },
             {
               id: "email",
-              align: "left",
               renderHeader: () => "Email",
               renderBody: user => user.email,
               sort: "email",
@@ -168,12 +178,7 @@ export function HomePage() {
               id: "actions",
               renderHeader: () => "Actions",
               renderBody: user => (
-                <Button
-                  //size="small"
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteUser(user.username)}
-                >
+                <Button variant="contained" color="error" onClick={() => deleteUser(user.username)}>
                   Delete
                 </Button>
               ),

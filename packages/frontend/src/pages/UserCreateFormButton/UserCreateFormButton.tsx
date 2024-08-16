@@ -3,6 +3,7 @@ import { client } from "../../core/client";
 import { useState } from "react";
 import { TODO, User } from "@org/shared";
 import { UserForm } from "../UserForm/UserForm";
+import { Add } from "@mui/icons-material";
 
 export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
@@ -43,7 +44,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
 
   return (
     <>
-      <Button variant="contained" color="success" onClick={onOpen}>
+      <Button variant="contained" startIcon={<Add />} color="success" onClick={onOpen}>
         Add User
       </Button>
       <Dialog open={open} onClose={onClose}>

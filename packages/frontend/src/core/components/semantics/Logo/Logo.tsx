@@ -7,20 +7,20 @@ export function Logo() {
       alignItems="center"
       gap={1}
       paddingBlock={1.5}
-      paddingLeft={3}
+      paddingLeft={2}
       paddingRight={3.5}
     >
       <Box
         component="img"
         alt="Logo"
-        src="/svg/logo.svg"
+        src="/png/logo.png"
         sx={{
-          height: 28,
-          width: 28,
+          height: 40,
+          width: 40,
         }}
       />
-      <Typography variant="h6" textTransform="uppercase">
-        Demo App
+      <Typography whiteSpace="nowrap" fontFamily="monospace" textTransform="uppercase">
+        Leather proizvodnja
       </Typography>
     </Box>
   );

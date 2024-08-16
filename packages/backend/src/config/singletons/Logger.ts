@@ -111,6 +111,7 @@ export class Logger {
 
     logger.add(
       new winston.transports.Console({
+        level: "debug", // Set the level to 'debug' to capture all logs, including errors
         format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
       }),
     );

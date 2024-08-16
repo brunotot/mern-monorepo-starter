@@ -1,5 +1,5 @@
 import { Environment } from "@org/backend/config/singletons/Environment";
-import { type Db } from "mongodb";
+import type { MongoClient, Db, ClientSession } from "mongodb";
 import { type ZodSchema, type z } from "zod";
 import server from "@org/backend/server";
 
@@ -11,17 +11,47 @@ export class DatabaseManager {
     return this.instance;
   }
 
-  #client: Db;
+  #client: MongoClient;
+  #db: Db;
+
+  session: ClientSession | undefined;
 
   private constructor() {
-    // NOOP
+    this.#client = server.mongoClient;
   }
 
-  get client() {
-    if (this.#client) return this.#client;
-    this.#client = server.mongoClient.db(Environment.getInstance().vars.MONGO_DATABASE);
+  private get client() {
     return this.#client;
   }
+
+  async rollbackTransaction() {
+    if (this.session) {
+      await this.session.abortTransaction();
+      this.session.endSession();
+    }
+    this.session = undefined;
+  }
+
+  async commitTransaction() {
+    if (this.session) {
+      await this.session.commitTransaction();
+      this.session.endSession();
+    }
+    this.session = undefined;
+  }
+
+  startTransaction() {
+    this.session = this.client.startSession();
+    this.session.startTransaction();
+  }
+
+  get db() {
+    if (this.#db) return this.#db;
+    this.#db = this.#client.db(Environment.getInstance().vars.MONGO_DATABASE);
+    return this.#db;
+  }
+
+  // Show deleted in table checkbox
 
   collection<const T extends ZodSchema>(zodSchema: T) {
     const documentName = zodSchema.description;
@@ -30,6 +60,6 @@ export class DatabaseManager {
     const suffix = "s";
     const computedSuffix = lowerCaseName.endsWith(suffix) ? "" : suffix;
     const name = lowerCaseName + computedSuffix;
-    return this.client.collection<z.infer<T>>(name);
+    return this.db.collection<z.infer<T>>(name);
   }
 }

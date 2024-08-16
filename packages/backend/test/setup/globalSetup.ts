@@ -29,7 +29,10 @@ export default async () => {
   const server = await MongoMemoryServer.create();
   const mongoUri = server.getUri();
   const dbDatabase = "test";
+  const startTime = Date.now();
   await restoreMongoDBDump(mongoUri, dbDatabase);
+  const endTime = Date.now();
+  console.log(`Restored MongoDB dump in ${endTime - startTime}ms`);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
   process.env.PORT = String(TEST_PORT);
