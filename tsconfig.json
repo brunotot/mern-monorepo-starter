@@ -5,14 +5,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@org/backend/config": ["packages/backend/src/config/index"],
-      "@org/backend/config/*": ["packages/backend/src/config/*"],
-      "@org/backend/decorators": ["packages/backend/src/decorators/index"],
-      "@org/backend/decorators/*": ["packages/backend/src/decorators/*"],
-      "@org/backend/types": ["packages/backend/src/types/index"],
-      "@org/backend/types/*": ["packages/backend/src/types/*"],
-      "@org/backend/infrastructure": ["packages/backend/src/infrastructure/index"],
-      "@org/backend/infrastructure/*": ["packages/backend/src/infrastructure/*"]
+      "@org/backend/*": ["packages/backend/src/*"]
     }
   }
 }

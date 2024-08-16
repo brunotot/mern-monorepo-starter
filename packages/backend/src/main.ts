@@ -1,4 +1,6 @@
 import server from "./server";
 
-// Connect to database and start listening
-server.listen();
+(async () => {
+  await server.prepare();
+  server.start();
+})();

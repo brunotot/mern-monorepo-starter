@@ -53,7 +53,7 @@ export function Layout({ children }: PropsWithChildren) {
           />
           <Container
             maxWidth={isHorizontal ? maxWidthPreference : false}
-            sx={{ paddingInline: isHorizontal ? undefined : "0 !important" }}
+            sx={{ paddingInline: 0.5, marginTop: 1.5 }}
           >
             {children}
           </Container>

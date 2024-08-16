@@ -115,4 +115,16 @@ export const UserContract = initContract().router({
       ...defaultResponses,
     },
   },
+  findAll: {
+    metadata,
+    strictStatusCodes: true,
+    path: buildPath(),
+    method: "GET",
+    summary: "Get all users",
+    description: "Get all users",
+    responses: {
+      200: z.array(User),
+      ...defaultResponses,
+    },
+  },
 });

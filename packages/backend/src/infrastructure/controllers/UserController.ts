@@ -1,13 +1,13 @@
 import { ErrorResponse, type TODO } from "@org/shared";
-import type { RouteInput, RouteOutput } from "@org/backend/types";
-import { Autowired, Contract, Injectable } from "@org/backend/decorators";
-import { type UserService } from "@org/backend/infrastructure/service/UserService";
+import { contract, type RouteInput, type RouteOutput } from "@org/backend/decorators/contract";
+import { autowired } from "@org/backend/decorators/autowired";
+import { type UserService } from "../service/UserService";
+import { withSecured } from "../middleware/withSecured";
 
-@Injectable("userController")
 export class UserController {
-  @Autowired() userService: UserService;
+  @autowired userService: UserService;
 
-  @Contract("User.findOne")
+  @contract("User.findOne")
   async findOne({ req, params: { id } }: RouteInput<"User.findOne">): RouteOutput<"User.findOne"> {
     const filters = {
       username: id,
@@ -27,7 +27,15 @@ export class UserController {
     };
   }
 
-  @Contract("User.pagination")
+  @contract("User.findAll", withSecured("admin"))
+  async findAll(): RouteOutput<"User.findAll"> {
+    return {
+      status: 200,
+      body: (await this.userService.findAll()) as TODO,
+    };
+  }
+
+  @contract("User.pagination")
   async pagination({ query }: RouteInput<"User.pagination">): RouteOutput<"User.pagination"> {
     return {
       status: 200,
@@ -35,7 +43,7 @@ export class UserController {
     };
   }
 
-  @Contract("User.create")
+  @contract("User.create")
   async create({ body }: RouteInput<"User.create">): RouteOutput<"User.create"> {
     const user = await this.userService.create(body);
     return {
@@ -44,7 +52,7 @@ export class UserController {
     };
   }
 
-  @Contract("User.deleteByUsername")
+  @contract("User.deleteByUsername")
   async deleteByUsername({
     body,
   }: RouteInput<"User.deleteByUsername">): RouteOutput<"User.deleteByUsername"> {

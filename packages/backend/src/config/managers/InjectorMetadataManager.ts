@@ -1,6 +1,10 @@
-import type { TODO } from "@org/shared";
-import { type MetaClassInjectionData } from "@org/backend/types";
-import { ClassMetadataEntry, type ClassMetadataInjectType } from "@org/backend/decorators";
+import { ClassMetadataEntry } from "@org/backend/config/utils/ClassMetadataEntry";
+import { type ClassMetadataInjectType } from "@org/backend/config/utils/ClassMetadata";
+
+export type MetaClassInjectionData = {
+  name: string;
+  dependencies: string[];
+};
 
 export class InjectorMetadataManager extends ClassMetadataEntry<MetaClassInjectionData> {
   static getBy(injection: ClassMetadataInjectType) {
@@ -11,12 +15,7 @@ export class InjectorMetadataManager extends ClassMetadataEntry<MetaClassInjecti
     super(injection, () => ({
       name: "",
       dependencies: [],
-      constructorParams: [],
     }));
-  }
-
-  setConstructorParams(params: TODO[]) {
-    this.value.constructorParams = params;
   }
 
   setName(name: string) {

@@ -25,7 +25,7 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
               TypeDoc source
             </Link>
             <Link
-              href="https://mern-monorepo-starter-backend.up.railway.app/api-docs/"
+              href="https://monorepo-mern-railway-starter-backend.up.railway.app/api-docs/"
               target="_blank"
             >
               Swagger API

@@ -1,19 +1,23 @@
 /// <reference types="@types/jest" />
 
 // @ts-ignore
-import "./../../dist/index";
-// @ts-ignore
-import app from "../../dist/server";
-// @ts-ignore
-import { ServiceRegistry } from "../../dist/config/singletons/ServiceRegistry";
+import server from "../../dist/server";
+
+import { DatabaseManager } from "../../dist/config/managers/DatabaseManager";
 
 beforeAll(async () => {
-  ServiceRegistry.getInstance().iocStartup();
-  const MockApp = app;
-  await MockApp.listen();
-  globalThis.app = MockApp.app;
+  await server.prepare();
+  globalThis.expressApp = server.expressApp;
 });
 
 afterAll(async () => {
-  delete globalThis.app;
+  delete globalThis.expressApp;
+});
+
+beforeEach(async () => {
+  await DatabaseManager.getInstance().startTransaction();
+});
+
+afterEach(async () => {
+  await DatabaseManager.getInstance().rollbackTransaction();
 });

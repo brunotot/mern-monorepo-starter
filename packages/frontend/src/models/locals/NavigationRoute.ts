@@ -26,6 +26,7 @@ export type NavigationRouteSingle = NavigationRouteRender &
   };
 
 export type NavigationRouteMultiple = NavigationRouteRender &
+  RouteObject &
   NavigationRouteChildren & {
     variant: "group" | "menu";
   };

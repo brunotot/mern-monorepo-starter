@@ -17,7 +17,7 @@ export class Environment {
   readonly schema = z.object({
     PACKAGE_JSON_VERSION: z.string().default("?.?.?"),
     NODE_ENV: z.string().default("development"),
-    PORT: z.string().default("8080"),
+    PORT: z.string().default("8081"),
     LOG_FORMAT: z.string().default("dev"),
     LOG_DIR: z.string().default("../../logs"),
     ORIGIN: z.string().default("*"),
@@ -26,6 +26,12 @@ export class Environment {
     MONGO_DATABASE: z.string(),
     ACCESS_TOKEN_SECRET: z.string(),
     REFRESH_TOKEN_SECRET: z.string(),
+    KEYCLOAK_URL: z.string(),
+    KEYCLOAK_SSL_REQUIRED: z.string(),
+    KEYCLOAK_REALM: z.string(),
+    KEYCLOAK_ADMIN_CLI_ID: z.string(),
+    KEYCLOAK_ADMIN_CLI_SECRET: z.string(),
+    KEYCLOAK_CONFIDENTIAL_PORT: z.string(),
   });
 
   private constructor() {

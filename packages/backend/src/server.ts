@@ -1,16 +1,13 @@
-import "./config";
+import { App } from "./App";
 
-import { App, type MongoConnectParamsFactory } from "./App";
-import { Environment, ServiceRegistry } from "./config";
-import { type MongoClientOptions } from "mongodb";
+process.on("uncaughtException", err => {
+  console.error("There was an uncaught error", err);
+  //process.exit(1);
+});
 
-const mongoConnection: MongoConnectParamsFactory = async () => {
-  const options: MongoClientOptions = {};
-  const { MONGO_URL } = Environment.getInstance().vars;
-  const uri = MONGO_URL;
-  return { uri, options };
-};
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled rejection at:", promise, "reason:", reason);
+  //process.exit(1);
+});
 
-ServiceRegistry.getInstance().iocStartup();
-const app = new App({ mongoConnection });
-export default app;
+export default new App();

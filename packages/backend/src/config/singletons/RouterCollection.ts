@@ -1,5 +1,7 @@
-import { type RouteMiddleware } from "@org/backend/types";
 import { type ContractName, type TODO } from "@org/shared";
+import type { Request, Response, NextFunction } from "express";
+
+export type RouteMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 
 export class RouterCollection {
   private static instance: RouterCollection;
