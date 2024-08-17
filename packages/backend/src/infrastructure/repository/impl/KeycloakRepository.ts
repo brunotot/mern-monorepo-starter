@@ -29,7 +29,7 @@ export class KeycloakDao {
 
   public async getToken(): Promise<string> {
     if (this.token && this.tokenExpiresAt && Date.now() < this.tokenExpiresAt) {
-      return this.token;
+      // return this.token;
     }
 
     const response = await axios.post(
@@ -70,6 +70,9 @@ export class KeycloakDao {
   }
 }
 
+/**
+ * @see {@link https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html Keycloak Admin REST API} documentation.
+ */
 export class KeycloakRepository extends KeycloakDao {
   public async findAll(): Promise<KeycloakUser[]> {
     const endpoint = this.endpoint("/users");
