@@ -29,7 +29,7 @@ export class KeycloakDao {
 
   public async getToken(): Promise<string> {
     if (this.token && this.tokenExpiresAt && Date.now() < this.tokenExpiresAt) {
-      // return this.token;
+      return this.token;
     }
 
     const response = await axios.post(
@@ -43,7 +43,7 @@ export class KeycloakDao {
     );
 
     this.token = response.data.access_token;
-    this.tokenExpiresAt = Date.now() + response.data.expires_in * 1000 - 60000;
+    this.tokenExpiresAt = Date.now() + response.data.expires_in * 1000;
 
     return this.token;
   }
@@ -52,17 +52,17 @@ export class KeycloakDao {
     const token = await this.getToken();
     return {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `bearer ${token}`,
       },
     } satisfies AxiosRequestConfig;
   }
 
-  protected auth(): string {
+  protected auth() {
     return new URLSearchParams({
-      grant_type: "client_credentials",
       client_id: this.KEYCLOAK_ADMIN_CLI_ID,
       client_secret: this.KEYCLOAK_ADMIN_CLI_SECRET,
-    }).toString();
+      grant_type: "client_credentials",
+    });
   }
 
   protected genericEndpoint(path: string, asAdmin: boolean): string {

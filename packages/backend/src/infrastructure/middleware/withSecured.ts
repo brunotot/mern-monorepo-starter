@@ -40,7 +40,8 @@ export function withSecured(...roles: KeycloakRole[]): RequestHandler[] {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (!error.content) {
-        res.status(500).send({ error });
+        res?.status(500).send({ error });
+        return;
       }
       const typedError = error as ErrorResponse;
       const content = typedError.content;
