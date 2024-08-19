@@ -52,15 +52,13 @@ export class App {
           data: {
             "🟢 NodeJS": process.version,
             "🏠 Env": this.env,
-            "🚀 Port": this.port,
             "📝 Swagger": `/${this.swaggerPath}`,
             "🆔 PID": `${process.pid}`,
             "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
             "📅 Started": new Date().toLocaleString(),
-            MONGO_URL: process.env.MONGO_URL!,
-            MONGO_DB: process.env.MONGO_DATABASE!,
           },
-        }); //
+        });
+        this.logger.logger.info(`🚀 App listening on port ${this.port}`);
         resolve();
       });
     });

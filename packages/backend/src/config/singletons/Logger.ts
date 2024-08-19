@@ -1,10 +1,21 @@
-import { getDirname } from "cross-dirname";
-import { existsSync, mkdirSync } from "fs";
 import type { StreamOptions } from "morgan";
-import { join } from "path";
-import winston from "winston";
-import winstonDaily from "winston-daily-rotate-file";
-import { Environment } from "@org/backend/config/singletons/Environment";
+import { type Logger as WinstonLogger, addColors, createLogger, format, transports } from "winston";
+
+const AVAILABLE_LOG_LEVELS = ["error", "warn", "info", "debug"];
+
+function getLogLevelPrettyPrinted(coloredLogLevel: string) {
+  const COLORED_LOG_OFFSET = 10;
+
+  const longestLogLevelCharLength = AVAILABLE_LOG_LEVELS.reduce(
+    (acc, lvl) => Math.max(acc, lvl.length),
+    0,
+  );
+
+  const coloredRawLogLevelLength = coloredLogLevel.length - COLORED_LOG_OFFSET;
+  const diff = longestLogLevelCharLength - coloredRawLogLevelLength;
+  const repeat = diff > 0 ? diff : 0;
+  return " ".repeat(repeat) + coloredLogLevel;
+}
 
 export class Logger {
   private static instance: Logger;
@@ -14,7 +25,7 @@ export class Logger {
     return Logger.instance;
   }
 
-  readonly logger: winston.Logger;
+  readonly logger: WinstonLogger;
   readonly stream: StreamOptions;
 
   private constructor() {
@@ -22,16 +33,28 @@ export class Logger {
     this.stream = this.#createStream();
   }
 
-  public table(props: {
-    title: string;
-    data: Record<string, string>;
-    padding?: number;
-    kvSeparator?: string;
-  }) {
+  /**
+   *
+   * An example output might be:
+   *
+   * ```
+   * ┌──────────────────────────────────────┐
+   * │   [Express] MERN Sample App v0.0.1   │
+   * ├──────────────────────────────────────┤
+   * │  🟢 NodeJS  : v21.7.0                │
+   * │  🏠 Env     : development            │
+   * │  📝 Swagger : /api-docs              │
+   * │  🆔 PID     : 61178                  │
+   * │  🧠 Memory  : 24.65 MB               │
+   * │  📅 Started : 8/19/2024, 7:40:59 PM  │
+   * └──────────────────────────────────────┘
+   * ```
+   */
+  public table(props: { title: string; data: Record<string, string> }) {
     const title = props.title;
     const data = props.data;
-    const kvSeparator = props.kvSeparator ?? " : ";
-    const padding = props.padding ?? 2;
+    const kvSeparator = " : ";
+    const padding = 2;
 
     const center = (text: string, length: number) => {
       const remainingSpace = length - text.length;
@@ -61,11 +84,11 @@ export class Logger {
       return `│${spacer}${text}${remainder}${spacer}│`;
     });
 
-    this.logger.info(`┌${hrX}┐`);
-    this.logger.info(`│${center(title, containerWidth)}│`);
-    this.logger.info(`├${hrX}┤`);
-    content.forEach(text => this.logger.info(text));
-    this.logger.info(`└${hrX}┘`);
+    console.info(`┌${hrX}┐`);
+    console.info(`│${center(title, containerWidth)}│`);
+    console.info(`├${hrX}┤`);
+    content.forEach(text => console.info(text));
+    console.info(`└${hrX}┘`);
   }
 
   #createStream(): StreamOptions {
@@ -74,48 +97,27 @@ export class Logger {
     };
   }
 
-  #createLogger(): winston.Logger {
-    const logDir: string = join(getDirname(), Environment.getInstance().vars.LOG_DIR);
-    if (!existsSync(logDir)) mkdirSync(logDir);
-    const logFormat = winston.format.printf(
-      ({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`,
-    );
+  #createLogger(): WinstonLogger {
+    addColors({
+      error: "red",
+      warn: "yellow",
+      info: "cyan",
+      debug: "green",
+    });
 
-    const logger = winston.createLogger({
-      format: winston.format.combine(
-        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-        logFormat,
-      ),
+    return createLogger({
+      format: format.combine(format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), format.json()),
       transports: [
-        new winstonDaily({
-          level: "debug",
-          datePattern: "YYYY-MM-DD",
-          dirname: logDir + "/debug",
-          filename: `%DATE%.log`,
-          maxFiles: 30,
-          json: false,
-          zippedArchive: true,
-        }),
-        new winstonDaily({
-          level: "error",
-          datePattern: "YYYY-MM-DD",
-          dirname: logDir + "/error",
-          filename: `%DATE%.log`,
-          maxFiles: 30,
-          handleExceptions: true,
-          json: false,
-          zippedArchive: true,
+        new transports.Console({
+          format: format.combine(
+            format.colorize(), // see this
+            format.printf(
+              info =>
+                `[${info.timestamp}] ${getLogLevelPrettyPrinted(info.level)}: ${info.message}`,
+            ),
+          ),
         }),
       ],
     });
-
-    logger.add(
-      new winston.transports.Console({
-        level: "debug", // Set the level to 'debug' to capture all logs, including errors
-        format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-      }),
-    );
-
-    return logger;
   }
 }
