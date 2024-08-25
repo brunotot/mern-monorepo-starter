@@ -1,23 +1,22 @@
-import { type generateOpenApi } from "@ts-rest/open-api";
 import { z } from "zod";
-import { type TODO } from "./TypeUtils";
+import { type OperationMapper } from "./types";
 
-export type OperationMapper = NonNullable<Parameters<typeof generateOpenApi>[2]>["operationMapper"];
-
-export const META_TAGS_KEY = "openApiTags";
-
-export function buildPathFn<C extends string>(
-  context: C,
-): <P extends string>(path?: P) => `/${C}${P}` {
-  return (path: string = "") => `/${context}${path}` as TODO;
-}
-
-export function buildRouteMetadata(tag: string) {
-  return { [META_TAGS_KEY]: [tag] };
-}
-
-export function hasCustomTags(metadata: unknown): metadata is { [META_TAGS_KEY]: string[] } {
-  return !!metadata && typeof metadata === "object" && META_TAGS_KEY in metadata;
+export function routeCommonConfigFactory<TGroupName extends string, TContextPath extends string>({
+  groupName,
+  contextPath,
+}: {
+  groupName: TGroupName;
+  contextPath: TContextPath;
+}) {
+  return <TPath extends string>(path: TPath) => {
+    return {
+      strictStatusCodes: true,
+      metadata: {
+        [META_TAGS_KEY]: [groupName],
+      },
+      path: `${contextPath}${path}`,
+    } as const;
+  };
 }
 
 export const operationMapper: OperationMapper = (operation, appRoute) => ({
@@ -29,7 +28,7 @@ export const operationMapper: OperationMapper = (operation, appRoute) => ({
     : {}),
 });
 
-const ZOD_ERROR_500 = z
+export const ZOD_ERROR_500 = z
   .object({
     details: z.string().min(0).openapi({
       example: "Request body validation error",
@@ -72,8 +71,10 @@ export const ZOD_ERROR_ANY = ZOD_ERROR_500.extend({}).describe("").openapi({
   description: undefined,
 });
 
-export function buildDefaultResponses() {
-  return {
-    500: ZOD_ERROR_500,
-  } as const;
+/* Internals below */
+
+const META_TAGS_KEY = "openApiTags";
+
+function hasCustomTags(metadata: unknown): metadata is { [META_TAGS_KEY]: string[] } {
+  return !!metadata && typeof metadata === "object" && META_TAGS_KEY in metadata;
 }

@@ -1,6 +1,17 @@
+import { log } from "./config/singletons/Logger";
 import server from "./server";
 
 (async () => {
-  await server.prepare();
-  server.start();
+  try {
+    await server.init();
+    await server.startListening();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && "message" in error) {
+      log.error((error as { message: string }).message);
+    } else {
+      log.error(error);
+    }
+    process.exit(1);
+  }
 })();

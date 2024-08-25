@@ -1,8 +1,10 @@
-import { type ZodSchema } from "zod";
+import { type AnyZodObject, type ZodSchema } from "zod";
 import { DatabaseManager } from "@org/backend/config/managers/DatabaseManager";
 import { type TODO, type PaginationOptions } from "@org/shared";
 import { type PaginationResult } from "@org/shared";
-import type { Collection } from "mongodb";
+import type { ClientSession, Collection, WithId } from "mongodb";
+import { type Entity } from "@org/shared";
+import { getRequestContext } from "../middleware/utils/RequestContext";
 
 export type MongoSort = [string, "asc" | "desc"][];
 
@@ -14,7 +16,7 @@ export type MongoSearch = {
   options?: string;
 };
 
-export abstract class Repository<T> {
+export abstract class Repository<T extends Entity<AnyZodObject>> {
   private readonly schema: ZodSchema<T>;
   private readonly searchFields: string[];
 
@@ -23,13 +25,46 @@ export abstract class Repository<T> {
     this.searchFields = searchFields;
   }
 
-  protected get collection() {
+  protected get session(): ClientSession {
+    const isFromTest = process.env.NODE_ENV === "test";
+    const session = isFromTest
+      ? DatabaseManager.getInstance().testSession
+      : getRequestContext<ClientSession>("session")!;
+    return session;
+  }
+
+  private get collection() {
     return DatabaseManager.getInstance().collection(this.schema);
+  }
+
+  public async findAll(): Promise<WithId<T>[]> {
+    return await this.collection.find().toArray();
+  }
+
+  public async findOne(doc: Parameters<Collection<T>["findOne"]>[0]) {
+    return await this.collection.findOne(doc, { session: this.session });
+  }
+
+  public async insertOne(doc: Omit<T, "_id">): Promise<T> {
+    const candidate = { ...doc };
+    const { insertedId } = await this.collection.insertOne(candidate as TODO, {
+      session: this.session,
+    });
+    return { ...candidate, _id: insertedId } as unknown as T;
+  }
+
+  public async updateOne(newValue: T): Promise<T> {
+    await this.collection.updateOne({ _id: newValue._id }, newValue);
+    return newValue;
+  }
+
+  public async deleteOne(doc: Parameters<Collection<T>["deleteOne"]>[0]): Promise<void> {
+    await this.collection.deleteOne(doc, { session: this.session });
   }
 
   /* Pagination */
 
-  public async search(options?: PaginationOptions): Promise<PaginationResult<T>> {
+  public async findAllPaginated(options?: PaginationOptions): Promise<PaginationResult<T>> {
     return this.paginate(this.collection, this.searchFields, options);
   }
 

@@ -30,7 +30,7 @@ export function HomePage() {
 
   const fetchUsers = useCallback(async () => {
     const query = buildPaginationQueryParams(paginationOptions);
-    const users = await client.User.pagination({ query });
+    const users = await client.User.findAllPaginated({ query });
     if (users.status !== 200) throw new Error("Failed to fetch users.");
     setUserResponse(users.body);
   }, [paginationOptions]);

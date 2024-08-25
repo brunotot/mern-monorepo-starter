@@ -34,7 +34,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     event.preventDefault();
     // Handle form submission
     console.log("Form submitted:", user);
-    await client.User.create({
+    await client.User.createOne({
       body: user,
     });
     setUser(DEFAULT_FORM_STATE);

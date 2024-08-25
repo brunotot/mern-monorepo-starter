@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "pnpm run build --silent && export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run",
-    "build": "rm -rf dist && tsc && tsc-alias",
-    "start": "export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node ./dist/main.js",
+    "build": "rm -rf dist && tsc --build && tsc-alias",
+    "start": "bash scripts/start.sh",
     "dev": "nodemon",
     "clean": "rm -rf ./dist"
   },
@@ -28,7 +28,6 @@
     "cross-dirname": "^0.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "express-rate-limit": "^7.2.0",
     "flatted": "^3.3.1",
     "glob": "^11.0.0",
     "helmet": "^7.1.0",
@@ -62,7 +61,7 @@
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^9.2.0",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.4",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

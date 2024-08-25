@@ -3,9 +3,11 @@
 
   "compilerOptions": {
     "moduleResolution": "node",
-    "baseUrl": ".",
+    //"baseUrl": ".",
     "paths": {
-      "@org/backend/*": ["packages/backend/src/*"]
+      //"@org/backend/*": ["packages/backend/src/*"],
+      //"@org/frontend/*": ["packages/frontend/src/*"],
+      //"@org/shared/*": ["packages/shared/src/*"]
     }
   }
 }

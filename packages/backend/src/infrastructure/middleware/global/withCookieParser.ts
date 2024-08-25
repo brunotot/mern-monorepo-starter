@@ -3,13 +3,9 @@
  * @see {@link https://www.npmjs.com/package/cookie-parser|npm specifics}
  */
 
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
 import cookieParser from "cookie-parser";
-import type { RequestHandler } from "express";
 
-export function withCookieParser(): RequestHandler {
+export const withCookieParser: RouteMiddlewareFactory = () => {
   return cookieParser();
-}
-
-/** @hidden */
-export const withCookieParserMiddleware: RouteMiddleware = withCookieParser();
+};

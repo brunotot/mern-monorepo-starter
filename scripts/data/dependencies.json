@@ -24,7 +24,6 @@
   "cross-dirname": "Utility for getting the directory path of a file",
   "dotenv": "Loads environment variables from .env files",
   "express": "The web framework used for building the backend API",
-  "express-rate-limit": "Provides rate limiting to protect against brute force attacks",
   "flatted": "-",
   "helmet": "Collection of security middleware for Express.js",
   "hpp": "Protects against HTTP Parameter Pollution attacks",

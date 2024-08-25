@@ -3,13 +3,9 @@
  * @see {@link https://www.npmjs.com/package/compression|npm specifics}
  */
 
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
 import compression from "compression";
-import type { RequestHandler } from "express";
 
-export function withCompression(): RequestHandler {
+export const withCompression: RouteMiddlewareFactory = () => {
   return compression();
-}
-
-/** @hidden */
-export const withCompressionMiddleware: RouteMiddleware = withCompression();
+};

@@ -4,13 +4,9 @@
  * @see {@link https://en.wikipedia.org/wiki/HTTP_parameter_pollution|http parameter pollution wiki}
  */
 
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
-import type { RequestHandler } from "express";
+import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
 import hpp from "hpp";
 
-export function withHpp(): RequestHandler {
+export const withHpp: RouteMiddlewareFactory = () => {
   return hpp();
-}
-
-/** @hidden */
-export const withHppMiddleware: RouteMiddleware = withHpp();
+};

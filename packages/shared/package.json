@@ -3,7 +3,7 @@
   "name": "@org/shared",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
     "prepublishOnly": "pnpm run build",

@@ -8,3 +8,17 @@ table.responses-table
 .swagger-ui .highlight-code > .microlight {
   min-height: auto !important;
 }
+
+.role-badge {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-size: 0.875rem; /* slightly smaller font size */
+  font-weight: 600; /* makes the text bold */
+  color: #fff; /* text color */
+  background-color: #007bff; /* background color, similar to Bootstrap primary */
+  border-radius: 0.25rem; /* rounded corners */
+  text-transform: uppercase; /* makes the text uppercase */
+  vertical-align: middle; /* aligns the badge nicely with text */
+  white-space: nowrap; /* prevents text from wrapping */
+  margin-left: 0.5rem;
+}

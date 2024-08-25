@@ -1,7 +1,74 @@
 import type { StreamOptions } from "morgan";
-import { type Logger as WinstonLogger, addColors, createLogger, format, transports } from "winston";
+import {
+  type Logger as WinstonLogger,
+  addColors,
+  createLogger as winstonCreateLogger,
+  format,
+  transports,
+} from "winston";
 
 const AVAILABLE_LOG_LEVELS = ["error", "warn", "info", "debug"];
+
+export const log = createLogger();
+export const stream = createStream(log);
+
+/**
+ *
+ * An example output might be:
+ *
+ * ```
+ * ┌──────────────────────────────────────┐
+ * │   [Express] MERN Sample App v0.0.1   │
+ * ├──────────────────────────────────────┤
+ * │  🟢 NodeJS  : v21.7.0                │
+ * │  🏠 Env     : development            │
+ * │  📝 Swagger : /api-docs              │
+ * │  🆔 PID     : 61178                  │
+ * │  🧠 Memory  : 24.65 MB               │
+ * │  📅 Started : 8/19/2024, 7:40:59 PM  │
+ * └──────────────────────────────────────┘
+ * ```
+ */
+export function logTable(props: { title: string; data: Record<string, string> }) {
+  const title = props.title;
+  const data = props.data;
+  const kvSeparator = " : ";
+  const padding = 2;
+
+  const center = (text: string, length: number) => {
+    const remainingSpace = length - text.length;
+    const leftBorderCount = Math.floor(remainingSpace / 2);
+    const rightBorderCount = remainingSpace - leftBorderCount;
+    const left = " ".repeat(leftBorderCount);
+    const right = " ".repeat(rightBorderCount);
+    return `${left}${text}${right}`;
+  };
+
+  const spacer = " ".repeat(padding);
+  const hrY = kvSeparator;
+  const maxKeyLength = Math.max(...Object.keys(data).map(key => key.length));
+
+  const keyValueLengths = Object.values(data).map(
+    value => maxKeyLength + hrY.length + value.length,
+  );
+
+  const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
+
+  const hrX = `${"─".repeat(containerWidth)}`;
+
+  const content = Object.entries(data).map(([key, value]) => {
+    const keyPadding = " ".repeat(maxKeyLength - key.length);
+    const text = `${key}${keyPadding}${hrY}${value}`;
+    const remainder = " ".repeat(containerWidth - text.length - spacer.length * 2);
+    return `│${spacer}${text}${remainder}${spacer}│`;
+  });
+
+  console.info(`┌${hrX}┐`);
+  console.info(`│${center(title, containerWidth)}│`);
+  console.info(`├${hrX}┤`);
+  content.forEach(text => console.info(text));
+  console.info(`└${hrX}┘`);
+}
 
 function getLogLevelPrettyPrinted(coloredLogLevel: string) {
   const COLORED_LOG_OFFSET = 10;
@@ -17,107 +84,31 @@ function getLogLevelPrettyPrinted(coloredLogLevel: string) {
   return " ".repeat(repeat) + coloredLogLevel;
 }
 
-export class Logger {
-  private static instance: Logger;
+function createLogger(): WinstonLogger {
+  addColors({
+    error: "red",
+    warn: "yellow",
+    info: "cyan",
+    debug: "green",
+  });
 
-  public static getInstance(): Logger {
-    Logger.instance ??= new Logger();
-    return Logger.instance;
-  }
-
-  readonly logger: WinstonLogger;
-  readonly stream: StreamOptions;
-
-  private constructor() {
-    this.logger = this.#createLogger();
-    this.stream = this.#createStream();
-  }
-
-  /**
-   *
-   * An example output might be:
-   *
-   * ```
-   * ┌──────────────────────────────────────┐
-   * │   [Express] MERN Sample App v0.0.1   │
-   * ├──────────────────────────────────────┤
-   * │  🟢 NodeJS  : v21.7.0                │
-   * │  🏠 Env     : development            │
-   * │  📝 Swagger : /api-docs              │
-   * │  🆔 PID     : 61178                  │
-   * │  🧠 Memory  : 24.65 MB               │
-   * │  📅 Started : 8/19/2024, 7:40:59 PM  │
-   * └──────────────────────────────────────┘
-   * ```
-   */
-  public table(props: { title: string; data: Record<string, string> }) {
-    const title = props.title;
-    const data = props.data;
-    const kvSeparator = " : ";
-    const padding = 2;
-
-    const center = (text: string, length: number) => {
-      const remainingSpace = length - text.length;
-      const leftBorderCount = Math.floor(remainingSpace / 2);
-      const rightBorderCount = remainingSpace - leftBorderCount;
-      const left = " ".repeat(leftBorderCount);
-      const right = " ".repeat(rightBorderCount);
-      return `${left}${text}${right}`;
-    };
-
-    const spacer = " ".repeat(padding);
-    const hrY = kvSeparator;
-    const maxKeyLength = Math.max(...Object.keys(data).map(key => key.length));
-
-    const keyValueLengths = Object.values(data).map(
-      value => maxKeyLength + hrY.length + value.length,
-    );
-
-    const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
-
-    const hrX = `${"─".repeat(containerWidth)}`;
-
-    const content = Object.entries(data).map(([key, value]) => {
-      const keyPadding = " ".repeat(maxKeyLength - key.length);
-      const text = `${key}${keyPadding}${hrY}${value}`;
-      const remainder = " ".repeat(containerWidth - text.length - spacer.length * 2);
-      return `│${spacer}${text}${remainder}${spacer}│`;
-    });
-
-    console.info(`┌${hrX}┐`);
-    console.info(`│${center(title, containerWidth)}│`);
-    console.info(`├${hrX}┤`);
-    content.forEach(text => console.info(text));
-    console.info(`└${hrX}┘`);
-  }
-
-  #createStream(): StreamOptions {
-    return {
-      write: (msg: string) => this.logger.info(msg.substring(0, msg.lastIndexOf("\n"))),
-    };
-  }
-
-  #createLogger(): WinstonLogger {
-    addColors({
-      error: "red",
-      warn: "yellow",
-      info: "cyan",
-      debug: "green",
-    });
-
-    return createLogger({
-      format: format.combine(format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), format.json()),
-      transports: [
-        new transports.Console({
-          format: format.combine(
-            format.colorize(), // see this
-            format.printf(
-              info =>
-                `[${info.timestamp}] ${getLogLevelPrettyPrinted(info.level)}: ${info.message}`,
-            ),
+  return winstonCreateLogger({
+    format: format.combine(format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), format.json()),
+    transports: [
+      new transports.Console({
+        format: format.combine(
+          format.colorize(),
+          format.printf(
+            info => `[${info.timestamp}] ${getLogLevelPrettyPrinted(info.level)}: ${info.message}`,
           ),
-        }),
-      ],
-    });
-  }
+        ),
+      }),
+    ],
+  });
+}
+
+function createStream(logger: WinstonLogger): StreamOptions {
+  return {
+    write: (msg: string) => logger.info(msg.substring(0, msg.lastIndexOf("\n"))),
+  };
 }

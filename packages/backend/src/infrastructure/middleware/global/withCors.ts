@@ -4,18 +4,15 @@
  * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
  */
 
-import { Environment } from "@org/backend/config/singletons/Environment";
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { env } from "@org/backend/config/singletons/Environment";
 import cors from "cors";
-import type { RequestHandler } from "express";
 
-export function withCors(): RequestHandler {
-  const { ORIGIN, CREDENTIALS } = Environment.getInstance().vars;
+export const withCors: RouteMiddlewareFactory = () => {
   return cors({
-    origin: ORIGIN,
-    credentials: CREDENTIALS === "true",
+    origin: env.ALLOWED_ORIGINS,
+    credentials: env.CREDENTIALS,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["*"],
   });
-}
-
-/** @hidden */
-export const withCorsMiddleware: RouteMiddleware = withCors();
+};

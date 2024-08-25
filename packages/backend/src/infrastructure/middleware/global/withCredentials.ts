@@ -2,24 +2,15 @@
  * @packageDocumentation Middleware which enables credentials for cross-origin requests.
  */
 
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
-import type { RequestHandler } from "express";
+import { env } from "@org/backend/config/singletons/Environment";
+import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
 
-const VAR_ALLOWED_ORIGINS = [
-  "http://127.0.0.1:5500",
-  "http://localhost:3000",
-  "http://localhost:5173",
-];
-
-export function withCredentials(): RequestHandler {
+export const withCredentials: RouteMiddlewareFactory = () => {
   return (req, res, next) => {
     const origin = req.headers.origin;
-    if (origin && VAR_ALLOWED_ORIGINS.includes(origin)) {
+    if (origin && env.ALLOWED_ORIGINS.includes(origin)) {
       res.header("Access-Control-Allow-Credentials", "true");
     }
     next();
   };
-}
-
-/** @hidden */
-export const withCredentialsMiddleware: RouteMiddleware = withCredentials();
+};

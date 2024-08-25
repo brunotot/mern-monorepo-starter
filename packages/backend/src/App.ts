@@ -1,84 +1,101 @@
-import express from "express";
-import swaggerUi from "swagger-ui-express";
-import { MongoClient, type MongoClientOptions } from "mongodb";
-import { generateOpenApi } from "@ts-rest/open-api";
+import express, { type ErrorRequestHandler } from "express";
 import { initServer, createExpressEndpoints } from "@ts-rest/express";
+import { CONTRACTS, type ErrorResponse, suppressConsole } from "@org/shared";
+import { MongoClient } from "mongodb";
 
 import { GLOBAL_MIDDLEWARES } from "@org/backend/infrastructure/middleware/global";
-import { CONTRACTS, operationMapper, suppressConsole } from "@org/shared";
-import { Environment } from "@org/backend/config/singletons/Environment";
-import { Logger } from "@org/backend/config/singletons/Logger";
-import { RouterCollection } from "./config/singletons/RouterCollection";
-import { ServiceRegistry } from "./config/singletons/ServiceRegistry";
-import MODULES from "./modules";
-import keycloak from "./keycloak";
+import { log, logTable } from "@org/backend/config/singletons/Logger";
+import { RouterCollection } from "@org/backend/config/singletons/RouterCollection";
+import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
+import { env, SERVER_URL } from "@org/backend/config/singletons/Environment";
+import { applySwaggerMiddleware, SWAGGER_PATH } from "@org/backend/swagger";
+import MODULES, { type NoArgsClass } from "@org/backend/modules";
 
 export class App {
   public readonly expressApp: express.Application;
-  public readonly env: string;
   public readonly port: string;
-  public readonly swaggerPath: string;
   public readonly url: string;
+  public readonly keycloakUrl?: string;
 
-  private environment = Environment.getInstance();
-  private logger = Logger.getInstance();
-  mongoClient: MongoClient;
+  public get mongoClient(): MongoClient {
+    return this.#mongoClient;
+  }
+
+  #mongoClient: MongoClient;
+
+  private get memoryUsage() {
+    return `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`;
+  }
 
   constructor() {
     this.expressApp = express();
-    this.env = this.environment.vars.NODE_ENV;
-    this.port = this.environment.vars.PORT;
-    this.swaggerPath = "api-docs";
-    const domain =
-      this.env === "production"
-        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-        : "http://localhost";
-    this.url = `${domain}:${this.port}`;
+    this.keycloakUrl = env.KEYCLOAK_URL;
+    this.port = env.PORT;
+    this.url = SERVER_URL;
+    log.info("Applying Swagger middleware");
+    applySwaggerMiddleware(this.expressApp);
+  }
+
+  public async init(mocks: Record<string, NoArgsClass> = {}): Promise<void> {
+    log.info("Initializing IoC container");
+    this.#initializeIoc(mocks);
+    log.info(`Initializing global middleware (${GLOBAL_MIDDLEWARES.length})`);
     this.#initializeGlobalMiddlewares();
+    log.info("Initializing routes");
     this.#initializeRoutes();
-    this.#initializeSwagger();
-  }
-
-  public async prepare(): Promise<void> {
-    ServiceRegistry.getInstance().iocStartup(MODULES);
+    log.info("Initializing global error handler");
+    this.#initializeErrorHandlerMiddleware();
+    log.info("Connecting to database");
     await this.#initializeDatabase();
+    log.info("App successfully initialized!");
   }
 
-  public async start(): Promise<void> {
+  public async startListening(): Promise<void> {
     return new Promise(resolve => {
+      log.info("Server connecting...");
       this.expressApp.listen(this.port, () => {
-        this.logger.table({
-          title: `[Express] MERN Sample App v${this.environment.vars.PACKAGE_JSON_VERSION}`,
+        logTable({
+          title: `[Express] ${env.APP_NAME} v${env.PACKAGE_JSON_VERSION}`,
           data: {
             "🟢 NodeJS": process.version,
-            "🏠 Env": this.env,
-            "📝 Swagger": `/${this.swaggerPath}`,
+            "🏠 Env": env.NODE_ENV,
+            "📝 Swagger": SWAGGER_PATH,
             "🆔 PID": `${process.pid}`,
-            "🧠 Memory": `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`,
+            "🧠 Memory": this.memoryUsage,
             "📅 Started": new Date().toLocaleString(),
+            "🔑 Keycloak": this.keycloakUrl ?? "-",
           },
         });
-        this.logger.logger.info(`🚀 App listening on port ${this.port}`);
+        log.info(`🚀 App listening on port ${this.port}`);
         resolve();
       });
     });
   }
 
   async #initializeDatabase() {
-    try {
-      const { MONGO_URL } = Environment.getInstance().vars;
-      const MONGO_OPTIONS: MongoClientOptions = {};
-      this.mongoClient = new MongoClient(MONGO_URL, MONGO_OPTIONS);
-      await this.mongoClient.connect();
-    } catch (error) {
-      console.log(error);
-    }
+    this.#mongoClient = new MongoClient(env.MONGO_URL, {});
+    await this.#mongoClient.connect();
+  }
+
+  #initializeErrorHandlerMiddleware() {
+    const errorHandler: ErrorRequestHandler = (err: ErrorResponse, req, res, next) => {
+      if (res.headersSent) return next(err);
+      log.warn(`Headers sent before reaching main error handler`, err);
+      res.status(err.content.status).json(err.content);
+    };
+    this.expressApp.use(errorHandler);
+  }
+
+  #initializeIoc(mocks: Record<string, NoArgsClass>) {
+    const modules: Record<string, NoArgsClass> = {};
+    Object.entries(MODULES).forEach(([key, value]) => (modules[key.toLowerCase()] = value));
+    Object.entries(mocks).forEach(([key, value]) => (modules[key.toLowerCase()] = value));
+    ServiceRegistry.getInstance().iocStartup(modules);
   }
 
   #initializeGlobalMiddlewares() {
-    this.expressApp.use(keycloak.middleware());
-    GLOBAL_MIDDLEWARES.forEach(middleware => {
-      this.expressApp.use(middleware);
+    GLOBAL_MIDDLEWARES.forEach(middlewareFactory => {
+      this.expressApp.use(middlewareFactory());
     });
   }
 
@@ -86,35 +103,5 @@ export class App {
     const s = initServer();
     const router = s.router(CONTRACTS, RouterCollection.getInstance().getRouters());
     suppressConsole(() => createExpressEndpoints(CONTRACTS, router, this.expressApp));
-  }
-
-  #initializeSwagger() {
-    const apiDoc: Parameters<typeof generateOpenApi>[1] = {
-      info: {
-        title: "REST API",
-        license: {
-          name: "MIT",
-          url: "https://spdx.org/licenses/MIT.html",
-        },
-        termsOfService: "http://swagger.io/terms/",
-        contact: {
-          email: "",
-          name: "",
-          url: "",
-        },
-        version: Environment.getInstance().vars.PACKAGE_JSON_VERSION,
-        description: "This is a dynamically generated Swagger API documentation",
-      },
-    };
-
-    const openApiDocument = generateOpenApi(CONTRACTS, apiDoc, { operationMapper });
-
-    this.expressApp.use(
-      "/api-docs",
-      swaggerUi.serve,
-      swaggerUi.setup(openApiDocument, {
-        customCssUrl: "/css/swagger.css",
-      }),
-    );
   }
 }

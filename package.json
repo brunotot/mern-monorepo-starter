@@ -60,6 +60,8 @@
     "axios": "^1.6.8",
     "express-session": "^1.18.0",
     "glob": "^11.0.0",
+    "helmet": "^7.1.0",
+    "helmet-csp": "^4.0.0",
     "keycloak-connect": "^25.0.2",
     "react-use": "^17.5.0"
   }

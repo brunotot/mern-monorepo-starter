@@ -17,6 +17,12 @@ importers:
       glob:
         specifier: ^11.0.0
         version: 11.0.0
+      helmet:
+        specifier: ^7.1.0
+        version: 7.1.0
+      helmet-csp:
+        specifier: ^4.0.0
+        version: 4.0.0
       keycloak-connect:
         specifier: ^25.0.2
         version: 25.0.2
@@ -111,9 +117,6 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.19.2
-      express-rate-limit:
-        specifier: ^7.2.0
-        version: 7.2.0(express@4.19.2)
       express-session:
         specifier: ^1.18.0
         version: 1.18.0
@@ -209,8 +212,8 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0
       nodemon:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^3.1.4
+        version: 3.1.4
       supertest:
         specifier: ^7.0.0
         version: 7.0.0
@@ -4350,8 +4353,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /chromedriver@127.0.3:
-    resolution: {integrity: sha512-trUHkFt0n7jGzNOgkO1srOJfz50kKyAGJ016PyV0hrtyKNIGnOC9r3Jlssz19UoEjSzI/1g2shEiIFtDbBYVaw==}
+  /chromedriver@128.0.0:
+    resolution: {integrity: sha512-Ggo21z/dFQxTOTgU0vm0V59Mi79yyR+9AUk/KiVAsRfbDRdVZQYQWfgxnIvD/x8KOKn0oB7haRzDO/KfrKyvOA==}
     engines: {node: '>=18'}
     hasBin: true
     requiresBuild: true
@@ -5373,15 +5376,6 @@ packages:
       jest-util: 29.7.0
     dev: true
 
-  /express-rate-limit@7.2.0(express@4.19.2):
-    resolution: {integrity: sha512-T7nul1t4TNyfZMJ7pKRKkdeVJWa2CqB8NA1P8BwYaoDI5QSBZARv5oMS43J7b7I5P+4asjVXjb7ONuwDKucahg==}
-    engines: {node: '>= 16'}
-    peerDependencies:
-      express: 4 || 5 || ^5.0.0-beta.1
-    dependencies:
-      express: 4.19.2
-    dev: false
-
   /express-session@1.18.0:
     resolution: {integrity: sha512-m93QLWr0ju+rOwApSsyso838LQwgfs44QtOP/WBiwtAgPIo/SAh1a5c6nn2BR6mFNZehTpqKDESzP+fRHVbxwQ==}
     engines: {node: '>= 0.8.0'}
@@ -6006,6 +6000,11 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       function-bind: 1.1.2
+
+  /helmet-csp@4.0.0:
+    resolution: {integrity: sha512-fNQk70QffZk4lKP6sY545UUjFv7IjZ45qWB2zaDx2rtxXJHORI4hxYTMTE2Awn+EqDWdlllatafmN5Wk7E71hQ==}
+    engines: {node: '>=18.0.0'}
+    dev: false
 
   /helmet@7.1.0:
     resolution: {integrity: sha512-g+HZqgfbpXdCkme/Cd/mZkV0aV3BZZZSugecH03kl38m/Kmdx8jKjBikpDj2cr+Iynv4KpYEviojNdTJActJAg==}
@@ -7117,7 +7116,7 @@ packages:
     dependencies:
       jwk-to-pem: 2.0.6
     optionalDependencies:
-      chromedriver: 127.0.3
+      chromedriver: 128.0.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -7928,8 +7927,8 @@ packages:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
     dev: true
 
-  /nodemon@3.1.0:
-    resolution: {integrity: sha512-xqlktYlDMCepBJd43ZQhjWwMw2obW/JRvkrLxq5RCNcuDDX1DbcPT+qT1IlIIdf+DhnWs90JpTMe+Y5KxOchvA==}
+  /nodemon@3.1.4:
+    resolution: {integrity: sha512-wjPBbFhtpJwmIeY2yP7QF+UKzPfltVGtfce1g/bB15/8vCGZj8uxD62b/b9M9/WVgme0NZudpownKN+c0plXlQ==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:

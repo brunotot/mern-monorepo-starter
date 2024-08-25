@@ -98,7 +98,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/packages/backend/src/main.ts",
-      "preLaunchTask": "npm: backend:build",
+      //"preLaunchTask": "npm: backend:build",
       "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"],
       "envFile": "${workspaceFolder}/packages/backend/.env.development.local",
       "sourceMaps": true,
