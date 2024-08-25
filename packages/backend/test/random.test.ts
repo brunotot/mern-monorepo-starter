@@ -1,26 +1,16 @@
 /// <reference types="@types/jest" />
 import supertest from "supertest";
-import { getComponent } from "./setup/registrySetup";
-import { UserService } from "../dist/infrastructure/service/UserService";
+import { type UserService } from "../dist/infrastructure/service/UserService";
+import { ServiceRegistry } from "../dist/config/singletons/ServiceRegistry";
 
 describe("user", () => {
   describe("get user route", () => {
     describe("given the user does not exist", () => {
       it("should return a 404", async () => {
         const nonExistingUsername = "usernameWhichShouldFail";
-        const userService = getComponent(UserService);
-        const users = await userService.findAll();
-        console.log("From random.test.ts");
-        console.log(JSON.stringify(users, null, 2));
-
-        //console.log(globalThis.expressApp);
+        const userService = ServiceRegistry.getInstance().inject<UserService>("UserService");
         await supertest(globalThis.expressApp).get(`/users/${nonExistingUsername}`).expect(404);
-
         await userService.deleteByUsername("brunotot");
-
-        console.log("After delete");
-        const usersAfterDelete = await userService.findAll();
-        console.log(JSON.stringify(usersAfterDelete, null, 2));
       });
     });
 

@@ -1,6 +1,11 @@
 import { default as BottleJs } from "bottlejs";
 import { InjectorMetadataManager } from "@org/backend/config/managers/InjectorMetadataManager";
 import { type NoArgsClass } from "@org/backend/modules";
+import { type Class } from "@org/shared";
+
+export function injectClass<T extends Class>(clazz: T): InstanceType<T> {
+  return ServiceRegistry.getInstance().inject<InstanceType<T>>(clazz.name);
+}
 
 export class ServiceRegistry {
   private static instance: ServiceRegistry;
@@ -45,15 +50,17 @@ export class ServiceRegistry {
     }, {});
   }
 
-  #setupComponentNameMetadata(classes: NoArgsClass[]) {
-    classes.forEach(constructor => {
-      const componentName = constructor.name.toLowerCase();
+  #setupComponentNameMetadata(serviceRegistryData: Record<string, NoArgsClass>) {
+    Object.entries(serviceRegistryData).forEach(([className, constructor]) => {
+      const componentName = className.toLowerCase();
       InjectorMetadataManager.getBy(constructor).setName(componentName);
     });
   }
 
-  public iocStartup(componentClasses: NoArgsClass[]) {
-    this.#setupComponentNameMetadata(componentClasses);
+  public iocStartup(serviceRegistryData: Record<string, NoArgsClass>) {
+    this.#setupComponentNameMetadata(serviceRegistryData);
+
+    const componentClasses = Object.values(serviceRegistryData);
 
     const dependencySchema = this.#getDependencySchema(componentClasses);
 

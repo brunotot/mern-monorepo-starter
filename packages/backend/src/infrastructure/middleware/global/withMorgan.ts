@@ -3,16 +3,15 @@
  * @see {@link https://www.npmjs.com/package/morgan|npm specifics}
  */
 
-import { Environment } from "@org/backend/config/singletons/Environment";
-import { Logger } from "@org/backend/config/singletons/Logger";
-import { type RouteMiddleware } from "@org/backend/config/singletons/RouterCollection";
-import type { RequestHandler } from "express";
 import morgan from "morgan";
+import { env } from "@org/backend/config/singletons/Environment";
+import type { RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { stream } from "@org/backend/config/singletons/Logger";
 
-export function withMorgan(): RequestHandler {
-  const stream = Logger.getInstance().stream;
-  return morgan(Environment.getInstance().vars.LOG_FORMAT, { stream });
-}
+export const withMorgan: RouteMiddlewareFactory = () => {
+  if (env.NODE_ENV === "test") {
+    return (req, res, next) => next();
+  }
 
-/** @hidden */
-export const withMorganMiddleware: RouteMiddleware = withMorgan();
+  return morgan("dev", { stream });
+};

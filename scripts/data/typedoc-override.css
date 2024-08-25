@@ -112,8 +112,8 @@ g[id="icon-64"] > path {
 }
 
 .tsd-accordion-summary > svg {
-  --dropdown-width: 8px;
-  border-radius: 7px !important;
+  --dropdown-width: 4px;
+  border-radius: 2px !important;
   padding: var(--dropdown-width) !important;
   margin-right: calc(-1 * var(--dropdown-width)) !important;
 }
@@ -176,4 +176,10 @@ summary:has(a[href$="/_tsvdec_decorators.html"]) > svg {
 
 .tsd-breadcrumb a::before {
   content: none !important;
+}
+
+.tsd-navigation a,
+.tsd-navigation summary > span,
+.tsd-page-navigation a {
+  padding: 0.35rem !important;
 }

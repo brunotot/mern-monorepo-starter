@@ -1,56 +1,59 @@
-import { type ContractName, type ContractResolver, type TODO, ErrorResponse } from "@org/shared";
-import { type ErrorLogRepository } from "@org/backend/infrastructure/repository/impl/ErrorLogRepository";
+import { type TODO } from "@org/shared";
+import { ErrorLogRepository } from "@org/backend/infrastructure/repository/impl/ErrorLogRepository";
 import type { AppRouteImplementation } from "@ts-rest/express";
-import type { ServerInferResponses } from "@ts-rest/core";
-import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
+import type { AppRoute, ServerInferResponses } from "@ts-rest/core";
+import { injectClass, ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
 import {
   RouterCollection,
   type RouteMiddleware,
 } from "@org/backend/config/singletons/RouterCollection";
-import { Logger } from "@org/backend/config/singletons/Logger";
+import { DatabaseManager } from "@org/backend/config/managers/DatabaseManager";
+import { type KeycloakRole, withSecured } from "@org/backend/infrastructure/middleware/withSecured";
+import { getTypedError } from "@org/backend/config/utils/ErrorResponseUtils";
 
-export type RouteOutput<Name extends ContractName> = Promise<
-  ServerInferResponses<ContractResolver<Name>>
->;
+export type RouteOutput<Route extends AppRoute> = Promise<ServerInferResponses<Route>>;
 
-export type RouteInput<Name extends ContractName> = Parameters<
-  AppRouteImplementation<ContractResolver<Name>>
->[0];
+export type RouteInput<Route extends AppRoute> = Parameters<AppRouteImplementation<Route>>[0];
 
-export type RouteHandler<Name extends ContractName> = (data: RouteInput<Name>) => RouteOutput<Name>;
+export type RouteHandler<Route extends AppRoute> = (data: RouteInput<Route>) => RouteOutput<Route>;
 
 export type RouteMiddlewareDecoratorParam = RouteMiddleware | RouteMiddleware[];
 
-export function contract<
-  const RouteName extends ContractName,
-  This,
-  Fn extends RouteHandler<RouteName>,
->(routeName: RouteName, ...middleware: RouteMiddlewareDecoratorParam[]) {
+export function contract<const Route extends AppRoute, This, Fn extends RouteHandler<Route>>(
+  routeContractData: { contract: Route; roles?: KeycloakRole[] },
+  ...middlewareData: RouteMiddlewareDecoratorParam[]
+) {
+  const routeContract = routeContractData.contract;
+  const roles = routeContractData.roles ?? [];
+  const middleware = (
+    roles.length === 0 ? middlewareData : [withSecured(...roles), ...middlewareData]
+  ).flat();
+
   return function (target: Fn, context: ClassMethodDecoratorContext<This, Fn>) {
     async function handler(data: TODO): Promise<TODO> {
+      const session = DatabaseManager.getInstance().client.startSession();
       try {
+        DatabaseManager.getInstance().startTransaction(session);
         const container = ServiceRegistry.getInstance().inject(context);
-        return await target.call(container, data);
-      } catch (error) {
-        const errorResponse =
-          error instanceof ErrorResponse
-            ? error
-            : new ErrorResponse(data.req, 500, (error as TODO).message);
-        const errorContent = errorResponse.content;
-        const errorLogRepository =
-          ServiceRegistry.getInstance().inject<ErrorLogRepository>("errorLogRepository");
-
-        try {
-          await errorLogRepository.insertOne(errorContent);
-        } catch (error) {
-          Logger.getInstance().logger.error("Error logging failed", error);
-        }
-        return { status: 500, body: errorContent };
+        const result = await target.call(container, data);
+        await DatabaseManager.getInstance().commitTransaction(session);
+        return result;
+      } catch (error: unknown) {
+        await DatabaseManager.getInstance().rollbackTransaction(session);
+        const typedError = getTypedError(error);
+        await injectClass(ErrorLogRepository).insertOne(typedError.content);
+        return { status: 500, body: typedError.content };
+      } finally {
+        session.endSession();
       }
     }
 
-    RouterCollection.getInstance().addRouter(routeName, handler, middleware.flat());
-
+    routeContract.summary = buildContractSummary(routeContract.summary, roles);
+    RouterCollection.getInstance().addRouter(routeContract, handler, middleware);
     return handler as Fn;
   };
+}
+
+function buildContractSummary(plainSummary: string = "", roles: string[]) {
+  return (plainSummary ?? "") + " " + roles.map(role => `[role:${role}]`).join(" ");
 }

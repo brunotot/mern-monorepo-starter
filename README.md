@@ -308,11 +308,6 @@ Our goal is to provide an easy setup and deployment process, allowing developers
     <td>The web framework used for building the backend API</td>
    </tr>
    <tr>
-    <td>express-rate-limit</td>
-    <td align="right">^7.2.0</td>
-    <td>Provides rate limiting to protect against brute force attacks</td>
-   </tr>
-   <tr>
     <td>flatted</td>
     <td align="right">^3.3.1</td>
     <td>-</td>

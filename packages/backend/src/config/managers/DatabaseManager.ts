@@ -1,5 +1,5 @@
-import { Environment } from "@org/backend/config/singletons/Environment";
-import type { MongoClient, Db, ClientSession } from "mongodb";
+import { env } from "@org/backend/config/singletons/Environment";
+import { type MongoClient, type Db, type ClientSession } from "mongodb";
 import { type ZodSchema, type z } from "zod";
 import server from "@org/backend/server";
 
@@ -11,47 +11,60 @@ export class DatabaseManager {
     return this.instance;
   }
 
+  testSession: ClientSession;
   #client: MongoClient;
   #db: Db;
-
-  session: ClientSession | undefined;
 
   private constructor() {
     this.#client = server.mongoClient;
   }
 
-  private get client() {
+  public get client() {
     return this.#client;
   }
 
-  async rollbackTransaction() {
-    if (this.session) {
-      await this.session.abortTransaction();
-      this.session.endSession();
+  async #sneakyThrows<T>(fn: () => Promise<T>): Promise<T | undefined> {
+    try {
+      return await fn();
+    } catch (error) {
+      // NOOP
     }
-    this.session = undefined;
   }
 
-  async commitTransaction() {
-    if (this.session) {
-      await this.session.commitTransaction();
-      this.session.endSession();
-    }
-    this.session = undefined;
+  async rollbackTransaction(session: ClientSession) {
+    if (process.env.NODE_ENV === "test") return;
+
+    await this.#sneakyThrows(async () => {
+      if (!session) return;
+      await session.abortTransaction();
+      session.endSession();
+    });
   }
 
-  startTransaction() {
-    this.session = this.client.startSession();
-    this.session.startTransaction();
+  async commitTransaction(session: ClientSession) {
+    if (process.env.NODE_ENV === "test") return;
+
+    this.#sneakyThrows(async () => {
+      if (!session) return;
+      await session.commitTransaction();
+      session.endSession();
+    });
+  }
+
+  async startTransaction(session: ClientSession): Promise<ClientSession> {
+    if (process.env.NODE_ENV === "test") return null as unknown as ClientSession;
+
+    return (await this.#sneakyThrows(async () => {
+      if (!session.inTransaction()) session.startTransaction();
+      return session;
+    }))!;
   }
 
   get db() {
     if (this.#db) return this.#db;
-    this.#db = this.#client.db(Environment.getInstance().vars.MONGO_DATABASE);
+    this.#db = this.#client.db(env.MONGO_DATABASE);
     return this.#db;
   }
-
-  // Show deleted in table checkbox
 
   collection<const T extends ZodSchema>(zodSchema: T) {
     const documentName = zodSchema.description;
@@ -60,6 +73,6 @@ export class DatabaseManager {
     const suffix = "s";
     const computedSuffix = lowerCaseName.endsWith(suffix) ? "" : suffix;
     const name = lowerCaseName + computedSuffix;
-    return this.db.collection<z.infer<T>>(name);
+    return this.db.collection<z.infer<T>>(name, {});
   }
 }

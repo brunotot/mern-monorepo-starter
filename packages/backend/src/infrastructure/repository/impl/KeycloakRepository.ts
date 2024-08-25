@@ -1,88 +1,146 @@
-import { Environment } from "@org/backend/config/singletons/Environment";
+import { env } from "@org/backend/config/singletons/Environment";
 import axios, { type AxiosRequestConfig } from "axios";
+import { z } from "zod";
 
 export type KeycloakUser = {
   id: string;
   username: string;
 };
 
-export class KeycloakDao {
-  private readonly KEYCLOAK_URL: string;
-  private readonly KEYCLOAK_REALM: string;
-  private readonly KEYCLOAK_ADMIN_CLI_ID: string;
-  private readonly KEYCLOAK_ADMIN_CLI_SECRET: string;
+export type KeycloakUserRoles = {
+  name: string;
+}[];
 
-  private token: string = "";
-  private tokenExpiresAt: number | null = null;
+export class KeycloakTokenManager {
+  private readonly KEYCLOAK_LOGIN_URL: string;
+  private readonly KEYCLOAK_LOGIN_CREDENTIALS: URLSearchParams;
+  private readonly KEYCLOAK_LOGIN_CONFIG: AxiosRequestConfig<URLSearchParams>;
+
+  private cachedToken: string = "";
+  private cachedTokenExpiresAt: number | null = null;
 
   constructor() {
-    const vars = Environment.getInstance().vars;
-    this.KEYCLOAK_URL = vars.KEYCLOAK_URL;
-    this.KEYCLOAK_REALM = vars.KEYCLOAK_REALM;
-    this.KEYCLOAK_ADMIN_CLI_ID = vars.KEYCLOAK_ADMIN_CLI_ID;
-    this.KEYCLOAK_ADMIN_CLI_SECRET = vars.KEYCLOAK_ADMIN_CLI_SECRET;
-  }
+    const { KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_ADMIN_CLI_ID, KEYCLOAK_ADMIN_CLI_SECRET } = env;
 
-  public endpoint(path: string): string {
-    return this.genericEndpoint(path, true);
+    const parseResult = z
+      .object({
+        KEYCLOAK_URL: z.string(),
+        KEYCLOAK_REALM: z.string(),
+        KEYCLOAK_ADMIN_CLI_ID: z.string(),
+        KEYCLOAK_ADMIN_CLI_SECRET: z.string(),
+      })
+      .safeParse({
+        KEYCLOAK_URL,
+        KEYCLOAK_REALM,
+        KEYCLOAK_ADMIN_CLI_ID,
+        KEYCLOAK_ADMIN_CLI_SECRET,
+      });
+
+    if (!parseResult.success) {
+      throw new Error(
+        `Missing environment variables for Keycloak: "KEYCLOAK_URL", "KEYCLOAK_REALM", "KEYCLOAK_ADMIN_CLI_ID", "KEYCLOAK_ADMIN_CLI_SECRET"`,
+      );
+    }
+
+    this.KEYCLOAK_LOGIN_URL = `${parseResult.data.KEYCLOAK_URL}/realms/${parseResult.data.KEYCLOAK_REALM}/protocol/openid-connect/token`;
+
+    this.KEYCLOAK_LOGIN_CREDENTIALS = new URLSearchParams({
+      client_id: parseResult.data.KEYCLOAK_ADMIN_CLI_ID,
+      client_secret: parseResult.data.KEYCLOAK_ADMIN_CLI_SECRET,
+      grant_type: "client_credentials",
+    });
+
+    this.KEYCLOAK_LOGIN_CONFIG = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Security-Policy":
+          "default-src 'self' http://localhost:* 'unsafe-inline'; connect-src 'self' http://localhost:* 'unsafe-inline'; script-src 'self' http://localhost:* 'unsafe-inline'; img-src 'self' http://localhost:* 'unsafe-inline'; frame-src 'self' http://localhost:* 'unsafe-inline'",
+      },
+    };
   }
 
   public async getToken(): Promise<string> {
-    if (this.token && this.tokenExpiresAt && Date.now() < this.tokenExpiresAt) {
-      return this.token;
+    if (this.isCachedTokenValid()) {
+      return this.cachedToken;
     }
 
-    const response = await axios.post(
-      this.genericEndpoint("/protocol/openid-connect/token", false),
-      this.auth(),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      },
+    type KeycloakLoginResponse = {
+      access_token: string;
+      expires_in: number;
+    };
+
+    const response = await axios.post<KeycloakLoginResponse>(
+      this.KEYCLOAK_LOGIN_URL,
+      this.KEYCLOAK_LOGIN_CREDENTIALS,
+      this.KEYCLOAK_LOGIN_CONFIG,
     );
 
-    this.token = response.data.access_token;
-    this.tokenExpiresAt = Date.now() + response.data.expires_in * 1000;
+    this.cachedToken = response.data.access_token;
+    this.cachedTokenExpiresAt = Date.now() + response.data.expires_in * 1000;
 
-    return this.token;
+    return this.cachedToken;
   }
 
-  protected async buildConfig() {
-    const token = await this.getToken();
+  private isCachedTokenValid(): boolean {
+    return (
+      !!this.cachedToken && !!this.cachedTokenExpiresAt && Date.now() < this.cachedTokenExpiresAt
+    );
+  }
+}
+
+export class KeycloakDao {
+  private readonly TOKEN_MANAGER: KeycloakTokenManager;
+  private readonly ADMIN_API_URL: string;
+
+  constructor() {
+    const { KEYCLOAK_URL, KEYCLOAK_REALM } = env;
+    this.TOKEN_MANAGER = new KeycloakTokenManager();
+    this.ADMIN_API_URL = `${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}`;
+  }
+
+  protected async get<T>(path: string): Promise<T> {
+    const endpoint = this.endpoint(path);
+    const response = await axios.get<T>(endpoint, await this.buildConfig());
+    return response.data;
+  }
+
+  private endpoint(path: string): string {
+    const constructedPath = path.startsWith("/") ? path : `/${path}`;
+    return `${this.ADMIN_API_URL}${constructedPath}`;
+  }
+
+  private async buildConfig() {
+    const token = await this.TOKEN_MANAGER.getToken();
     return {
       headers: {
         Authorization: `bearer ${token}`,
       },
     } satisfies AxiosRequestConfig;
   }
-
-  protected auth() {
-    return new URLSearchParams({
-      client_id: this.KEYCLOAK_ADMIN_CLI_ID,
-      client_secret: this.KEYCLOAK_ADMIN_CLI_SECRET,
-      grant_type: "client_credentials",
-    });
-  }
-
-  protected genericEndpoint(path: string, asAdmin: boolean): string {
-    return `${this.KEYCLOAK_URL}${asAdmin ? "/admin" : ""}/realms/${this.KEYCLOAK_REALM}${path}`;
-  }
 }
+
+export type IKeycloakRepository = {
+  findAllUsers(): Promise<KeycloakUser[]>;
+  findRolesByUserId(id: string): Promise<string[]>;
+  findUserByUsername(username: string): Promise<KeycloakUser | null>;
+};
 
 /**
  * @see {@link https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html Keycloak Admin REST API} documentation.
  */
-export class KeycloakRepository extends KeycloakDao {
-  public async findAll(): Promise<KeycloakUser[]> {
-    const endpoint = this.endpoint("/users");
-    const response = await axios.get(endpoint, await this.buildConfig());
-    return response.data;
+export class KeycloakRepository extends KeycloakDao implements IKeycloakRepository {
+  public async findUserByUsername(username: string): Promise<KeycloakUser | null> {
+    const users = await this.get<KeycloakUser[]>(`/users?username=${username}`);
+    if (users.length === 0) return null;
+    return users.filter(user => user.username === username)[0];
   }
 
-  public async findRolesById(id: string): Promise<string[]> {
-    const endpoint = this.endpoint(`/users/${id}/role-mappings`);
-    const response = await axios.get(endpoint, await this.buildConfig());
-    return response.data.realmMappings.map((role: { name: string }) => role.name);
+  public async findAllUsers(): Promise<KeycloakUser[]> {
+    return await this.get<KeycloakUser[]>(`/users`);
+  }
+
+  public async findRolesByUserId(userId: string): Promise<string[]> {
+    const res = await this.get<KeycloakUserRoles>(`/users/${userId}/role-mappings/realm`);
+    return res.map(({ name }) => name);
   }
 }

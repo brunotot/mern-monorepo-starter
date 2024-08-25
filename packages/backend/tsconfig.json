@@ -20,10 +20,16 @@
     "baseUrl": "./src",
     "paths": {
       "@org/backend/*": ["*"],
-      "@org/shared": ["../../shared/dist/index"],
+      "@org/shared": ["../../shared/src"],
       "*": ["../node_modules/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/logs", "test/**"]
+  "include": ["src/**/*", "../../shared/src/**/*"],
+  "exclude": ["src/logs", "test/**"],
+
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ]
 }

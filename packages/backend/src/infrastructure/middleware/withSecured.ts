@@ -1,9 +1,11 @@
-import type { RequestHandler } from "express";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { ErrorResponse } from "@org/shared";
 import jwt from "jsonwebtoken";
 import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
 import { KeycloakRepository } from "../repository/impl/KeycloakRepository";
-import keycloak from "@org/backend/keycloak";
+import { type IKeycloakAuth } from "@org/backend/infrastructure/security/interface/IKeycloakAuth";
+import { KeycloakAuth } from "@org/backend/infrastructure/security/KeycloakAuth";
+import { getTypedError } from "@org/backend/config/utils/ErrorResponseUtils";
 
 export type KeycloakRole = "admin" | "user";
 
@@ -29,7 +31,7 @@ export function withSecured(...roles: KeycloakRole[]): RequestHandler[] {
       const { sub: userId } = jwt.decode(token) as KeycloakTokenData;
       const roles = await ServiceRegistry.getInstance()
         .inject<KeycloakRepository>(KeycloakRepository.name)
-        .findRolesById(userId);
+        .findRolesByUserId(userId);
       const hasRole = flattenedRoles.some(role => roles.includes(role));
 
       if (!hasRole) {
@@ -37,17 +39,25 @@ export function withSecured(...roles: KeycloakRole[]): RequestHandler[] {
       }
 
       next();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (!error.content) {
-        res?.status(500).send({ error });
-        return;
-      }
-      const typedError = error as ErrorResponse;
-      const content = typedError.content;
-      res.status(content.status).send(content);
+    } catch (error: unknown) {
+      next(getTypedError(error));
     }
   };
 
-  return [keycloak.protect(), roleSecuredMiddleware];
+  //const keycloakAuth = ServiceRegistry.getInstance().inject<IKeycloakAuth>(KeycloakAuth.name);
+
+  const protect = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const keycloakAuth = ServiceRegistry.getInstance().inject<IKeycloakAuth>(KeycloakAuth.name);
+      const handler = keycloakAuth.protect();
+      handler(req, res, next);
+    } catch (error: unknown) {
+      next(getTypedError(error));
+    }
+  };
+
+  // TODO!
+  // ovo se izvrsi prije nego se mockovi ucitaju i to je problem.
+  // update: provjeriti jel ovo jos uvijek problem.
+  return [protect, roleSecuredMiddleware];
 }
