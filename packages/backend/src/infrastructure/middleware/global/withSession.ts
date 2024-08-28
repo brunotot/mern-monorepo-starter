@@ -2,15 +2,15 @@
  * @packageDocumentation
  */
 
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
 import session from "express-session";
-import { memoryStore } from "@org/backend/infrastructure/security/KeycloakSession";
+import { keycloakMemoryStore } from "@org/backend/infrastructure/security/KeycloakMemoryStore";
 
 export const withSession: RouteMiddlewareFactory = () => {
   return session({
     secret: "secret-key",
     resave: false,
     saveUninitialized: true,
-    store: memoryStore,
+    store: keycloakMemoryStore,
   });
 };

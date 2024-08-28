@@ -1,27 +1,16 @@
 import { type TODO } from "@org/shared";
 import { ErrorLogRepository } from "@org/backend/infrastructure/repository/impl/ErrorLogRepository";
-import type { AppRouteImplementation } from "@ts-rest/express";
-import type { AppRoute, ServerInferResponses } from "@ts-rest/core";
-import { injectClass, ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
-import {
-  RouterCollection,
-  type RouteMiddleware,
-} from "@org/backend/config/singletons/RouterCollection";
-import { DatabaseManager } from "@org/backend/config/managers/DatabaseManager";
+import type { AppRoute } from "@ts-rest/core";
+import { iocRegistry } from "@org/backend/setup/registry.setup";
+import { DatabaseManager } from "@org/backend/config/DatabaseManager.config";
 import { type KeycloakRole, withSecured } from "@org/backend/infrastructure/middleware/withSecured";
-import { getTypedError } from "@org/backend/config/utils/ErrorResponseUtils";
-
-export type RouteOutput<Route extends AppRoute> = Promise<ServerInferResponses<Route>>;
-
-export type RouteInput<Route extends AppRoute> = Parameters<AppRouteImplementation<Route>>[0];
-
-export type RouteHandler<Route extends AppRoute> = (data: RouteInput<Route>) => RouteOutput<Route>;
-
-export type RouteMiddlewareDecoratorParam = RouteMiddleware | RouteMiddleware[];
+import { getTypedError } from "@org/shared";
+import type { RequestHandler } from "express";
+import { type RouteHandler, RouteCollection } from "@org/backend/config/Route.config";
 
 export function contract<const Route extends AppRoute, This, Fn extends RouteHandler<Route>>(
   routeContractData: { contract: Route; roles?: KeycloakRole[] },
-  ...middlewareData: RouteMiddlewareDecoratorParam[]
+  ...middlewareData: (RequestHandler | RequestHandler[])[]
 ) {
   const routeContract = routeContractData.contract;
   const roles = routeContractData.roles ?? [];
@@ -34,14 +23,16 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
       const session = DatabaseManager.getInstance().client.startSession();
       try {
         DatabaseManager.getInstance().startTransaction(session);
-        const container = ServiceRegistry.getInstance().inject(context);
+        const container = iocRegistry.inject(context);
         const result = await target.call(container, data);
         await DatabaseManager.getInstance().commitTransaction(session);
         return result;
       } catch (error: unknown) {
         await DatabaseManager.getInstance().rollbackTransaction(session);
         const typedError = getTypedError(error);
-        await injectClass(ErrorLogRepository).insertOne(typedError.content);
+        await iocRegistry
+          .inject<ErrorLogRepository>(ErrorLogRepository.name)
+          .insertOne(typedError.content);
         return { status: 500, body: typedError.content };
       } finally {
         session.endSession();
@@ -49,7 +40,7 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
     }
 
     routeContract.summary = buildContractSummary(routeContract.summary, roles);
-    RouterCollection.getInstance().addRouter(routeContract, handler, middleware);
+    RouteCollection.getInstance().addRouter(routeContract, handler, middleware);
     return handler as Fn;
   };
 }

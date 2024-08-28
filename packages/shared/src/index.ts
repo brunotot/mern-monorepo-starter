@@ -2,10 +2,11 @@
  * @packageDocumentation This shared package supplies backend and frontend with a set of config, models, types, utils and web components.
  */
 
-export * from "./config";
-export * from "./models";
-export * from "./types";
-export * from "./utils";
-export * from "./infrastructure";
+import z from "zod";
+import { extendZodWithOpenApi } from "@anatine/zod-openapi";
+extendZodWithOpenApi(z);
 
-import "./config";
+export * from "./config";
+export * from "./domain";
+export * from "./errors";
+export * from "./setup";

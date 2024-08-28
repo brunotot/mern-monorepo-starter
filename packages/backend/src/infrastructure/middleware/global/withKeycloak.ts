@@ -2,11 +2,11 @@
  * @packageDocumentation
  */
 
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
-import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
-import { type IKeycloakAuth } from "@org/backend/infrastructure/security/interface/IKeycloakAuth";
-import { KeycloakAuth } from "@org/backend/infrastructure/security/KeycloakAuth";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
+import { iocRegistry } from "@org/backend/setup/registry.setup";
+import { KeycloakAuthorization } from "@org/backend/infrastructure/security/KeycloakAuthorization";
+import { type Authorization } from "@org/backend/interface/Authorization";
 
 export const withKeycloak: RouteMiddlewareFactory = () => {
-  return ServiceRegistry.getInstance().inject<IKeycloakAuth>(KeycloakAuth.name).middleware();
+  return iocRegistry.inject<Authorization>(KeycloakAuthorization.name).middleware();
 };

@@ -2,8 +2,8 @@
  * @packageDocumentation Middleware which enables credentials for cross-origin requests.
  */
 
-import { env } from "@org/backend/config/singletons/Environment";
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { env } from "@org/backend/setup/env.setup";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
 
 export const withCredentials: RouteMiddlewareFactory = () => {
   return (req, res, next) => {

@@ -1,11 +1,11 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { ErrorResponse } from "@org/shared";
 import jwt from "jsonwebtoken";
-import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
+import { iocRegistry } from "@org/backend/setup/registry.setup";
 import { KeycloakRepository } from "../repository/impl/KeycloakRepository";
-import { type IKeycloakAuth } from "@org/backend/infrastructure/security/interface/IKeycloakAuth";
-import { KeycloakAuth } from "@org/backend/infrastructure/security/KeycloakAuth";
-import { getTypedError } from "@org/backend/config/utils/ErrorResponseUtils";
+import { KeycloakAuthorization } from "@org/backend/infrastructure/security/KeycloakAuthorization";
+import { getTypedError } from "@org/shared";
+import { type Authorization } from "@org/backend/interface/Authorization";
 
 export type KeycloakRole = "admin" | "user";
 
@@ -29,13 +29,13 @@ export function withSecured(...roles: KeycloakRole[]): RequestHandler[] {
       const bearerToken = req.headers.authorization!;
       const token = bearerToken.split(" ")[1];
       const { sub: userId } = jwt.decode(token) as KeycloakTokenData;
-      const roles = await ServiceRegistry.getInstance()
+      const roles = await iocRegistry
         .inject<KeycloakRepository>(KeycloakRepository.name)
         .findRolesByUserId(userId);
       const hasRole = flattenedRoles.some(role => roles.includes(role));
 
       if (!hasRole) {
-        throw new ErrorResponse(req.originalUrl, 403, "User does not have the required role");
+        throw new ErrorResponse(403, "User does not have the required role");
       }
 
       next();
@@ -44,20 +44,15 @@ export function withSecured(...roles: KeycloakRole[]): RequestHandler[] {
     }
   };
 
-  //const keycloakAuth = ServiceRegistry.getInstance().inject<IKeycloakAuth>(KeycloakAuth.name);
-
   const protect = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const keycloakAuth = ServiceRegistry.getInstance().inject<IKeycloakAuth>(KeycloakAuth.name);
-      const handler = keycloakAuth.protect();
+      const keycloakAuthorization = iocRegistry.inject<Authorization>(KeycloakAuthorization.name);
+      const handler = keycloakAuthorization.protect();
       handler(req, res, next);
     } catch (error: unknown) {
       next(getTypedError(error));
     }
   };
 
-  // TODO!
-  // ovo se izvrsi prije nego se mockovi ucitaju i to je problem.
-  // update: provjeriti jel ovo jos uvijek problem.
   return [protect, roleSecuredMiddleware];
 }

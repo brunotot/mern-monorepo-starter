@@ -1,6 +1,5 @@
-import { type IKeycloakRepository } from "../../dist/infrastructure/repository/impl/KeycloakRepository";
-
-export class KeycloakRepositoryMock implements IKeycloakRepository {
+import { type AuthorizationRepository } from "../../dist/interface/AuthorizationRepository";
+export class KeycloakRepositoryMock implements AuthorizationRepository {
   async findAll(): Promise<[]> {
     return [];
   }

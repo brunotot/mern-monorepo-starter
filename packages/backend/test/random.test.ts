@@ -1,14 +1,14 @@
 /// <reference types="@types/jest" />
 import supertest from "supertest";
 import { type UserService } from "../dist/infrastructure/service/UserService";
-import { ServiceRegistry } from "../dist/config/singletons/ServiceRegistry";
+import { iocRegistry } from "../dist/setup/registry.setup";
 
 describe("user", () => {
   describe("get user route", () => {
     describe("given the user does not exist", () => {
       it("should return a 404", async () => {
         const nonExistingUsername = "usernameWhichShouldFail";
-        const userService = ServiceRegistry.getInstance().inject<UserService>("UserService");
+        const userService = iocRegistry.inject<UserService>("UserService");
         await supertest(globalThis.expressApp).get(`/users/${nonExistingUsername}`).expect(404);
         await userService.deleteByUsername("brunotot");
       });

@@ -1,6 +1,6 @@
 import { type TODO } from "@org/shared";
-import { InjectorMetadataManager } from "@org/backend/config/managers/InjectorMetadataManager";
-import { ServiceRegistry } from "@org/backend/config/singletons/ServiceRegistry";
+import { InjectorMetadataManager } from "@org/backend/config/InjectorMetadataManager.config";
+import { iocRegistry } from "@org/backend/setup/registry.setup";
 
 export function autowired(_target: undefined, context: ClassFieldDecoratorContext<TODO, TODO>) {
   const componentName = String(context.name).toLowerCase();
@@ -8,6 +8,6 @@ export function autowired(_target: undefined, context: ClassFieldDecoratorContex
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return function (_value: TODO) {
-    return ServiceRegistry.getInstance().inject<TODO>(componentName);
+    return iocRegistry.inject<TODO>(componentName);
   };
 }

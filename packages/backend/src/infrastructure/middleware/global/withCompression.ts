@@ -3,7 +3,7 @@
  * @see {@link https://www.npmjs.com/package/compression|npm specifics}
  */
 
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
 import compression from "compression";
 
 export const withCompression: RouteMiddlewareFactory = () => {

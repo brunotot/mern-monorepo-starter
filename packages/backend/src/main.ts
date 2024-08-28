@@ -1,5 +1,5 @@
-import { log } from "./config/singletons/Logger";
-import server from "./server";
+import { log } from "./setup/log.setup";
+import { server } from "./setup/server.setup";
 
 (async () => {
   try {

@@ -1,20 +1,11 @@
 import { type AnyZodObject, type ZodSchema } from "zod";
-import { DatabaseManager } from "@org/backend/config/managers/DatabaseManager";
+import { DatabaseManager } from "@org/backend/config/DatabaseManager.config";
 import { type TODO, type PaginationOptions } from "@org/shared";
 import { type PaginationResult } from "@org/shared";
 import type { ClientSession, Collection, WithId } from "mongodb";
 import { type Entity } from "@org/shared";
-import { getRequestContext } from "../middleware/utils/RequestContext";
-
-export type MongoSort = [string, "asc" | "desc"][];
-
-export type MongoFilters = Record<string, TODO>;
-
-export type MongoSearch = {
-  fields: string[];
-  regex?: string;
-  options?: string;
-};
+import { getRequestContext } from "@org/backend/config/RequestContext.config";
+import type { MongoFilters, MongoSearch, MongoSort } from "@org/backend/config/MongoDB.config";
 
 export abstract class Repository<T extends Entity<AnyZodObject>> {
   private readonly schema: ZodSchema<T>;

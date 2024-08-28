@@ -4,7 +4,7 @@
  * @see {@link https://en.wikipedia.org/wiki/HTTP_parameter_pollution|http parameter pollution wiki}
  */
 
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
 import hpp from "hpp";
 
 export const withHpp: RouteMiddlewareFactory = () => {

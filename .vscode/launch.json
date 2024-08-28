@@ -42,13 +42,13 @@
     },
     {
       "name": "root > typedoc",
-      "runtimeArgs": ["typedoc"],
+      "runtimeArgs": ["run", "typedoc"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
@@ -66,20 +66,6 @@
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
-
-    {
-      "name": "script > writeDependenciesMarkdown",
-      "runtimeArgs": ["run", "script:writeDependenciesMarkdown"],
-      "presentation": { "group": "2" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
     {
       "name": "script > writeReadmeMarkdown",
       "runtimeArgs": ["run", "script:writeReadmeMarkdown"],
@@ -88,7 +74,7 @@
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
@@ -113,13 +99,13 @@
     },
     {
       "name": "backend > dev - nodemon",
-      "runtimeArgs": ["--filter", "backend", "run", "dev"],
+      "runtimeArgs": ["run", "dev", "--prefix", "packages/backend"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
@@ -243,13 +229,13 @@
     },
     {
       "name": "shared > build",
-      "runtimeArgs": ["run", "--filter", "shared", "build"],
+      "runtimeArgs": ["run", "shared:build"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false

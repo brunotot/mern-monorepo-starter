@@ -6,15 +6,11 @@ export class UserRepository extends Repository<User> {
     super(User, ["email", "username"]);
   }
 
-  async deleteByUsername(username: string): Promise<void> {
+  public async deleteOneByUsername(username: string): Promise<void> {
     await this.deleteOne({ username });
   }
 
-  async findOneByUsername(username: string): Promise<User | null> {
+  public async findOneByUsername(username: string): Promise<User | null> {
     return await this.findOne({ username });
-  }
-
-  async findOneByRefreshTokens(refreshTokens: string[]): Promise<User | null> {
-    return await this.findOne({ refreshToken: refreshTokens });
   }
 }

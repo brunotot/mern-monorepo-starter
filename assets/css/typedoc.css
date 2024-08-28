@@ -1,0 +1,195 @@
+:root {
+  --module-background: #1e88e5;
+  --module-border: #0d47a1;
+  --module-color: #ffffff;
+
+  --namespace-background: #263238;
+  --namespace-border: #37474f;
+  --namespace-color: #e0e0e0;
+
+  --class-background: #ffeb3b;
+  --class-border: #fbc02d;
+  --class-color: #333333;
+
+  --interface-background: #9c27b0;
+  --interface-border: #7b1fa2;
+  --interface-color: #ede7f6;
+
+  --type-background: #4dd0e1;
+  --type-border: #0097a7;
+  --type-color: #004d40;
+
+  --variable-background: #4caf50;
+  --variable-border: #388e3c;
+  --variable-color: #fafafa;
+
+  --function-background: #ec407a;
+  --function-border: #d81b60;
+  --function-color: #fce4ec;
+}
+
+/* Module */
+g[id="icon-1"] > rect,
+g[id="icon-2"] > rect {
+  fill: var(--module-background);
+  stroke: var(--module-border);
+}
+g[id="icon-1"] > path,
+g[id="icon-2"] > path {
+  fill: var(--module-color);
+}
+
+/* Namespace */
+g[id="icon-4"] > rect {
+  fill: var(--namespace-background);
+  stroke: var(--namespace-border);
+}
+g[id="icon-4"] > path {
+  fill: var(--namespace-color);
+}
+
+/* Class */
+g[id="icon-128"] > rect {
+  fill: var(--class-background);
+  stroke: var(--class-border);
+}
+g[id="icon-128"] > path {
+  fill: var(--class-color);
+}
+
+/* Interface */
+g[id="icon-256"] > rect {
+  fill: var(--interface-background);
+  stroke: var(--interface-border);
+}
+g[id="icon-256"] > path {
+  fill: var(--interface-color);
+}
+
+/* Type */
+g[id="icon-2097152"] > rect {
+  fill: var(--type-background);
+  stroke: var(--type-border);
+}
+g[id="icon-2097152"] > path {
+  fill: var(--type-color);
+}
+
+/* Variable */
+g[id="icon-32"] > rect {
+  fill: var(--variable-background);
+  stroke: var(--variable-border);
+}
+g[id="icon-32"] > path {
+  fill: var(--variable-color);
+}
+
+/* Function */
+g[id="icon-64"] > rect {
+  fill: var(--function-background);
+  stroke: var(--function-border);
+}
+g[id="icon-64"] > path {
+  fill: var(--function-color);
+}
+
+.tsd-index-accordion .tsd-accordion-summary > svg {
+  margin-top: 0.125rem !important;
+}
+
+.custom-search-input {
+  width: 89%;
+  margin-inline: 0.5rem;
+  min-height: 1.5rem;
+}
+
+.site-menu {
+  scrollbar-gutter: stable;
+}
+
+.tsd-accordion-summary > svg {
+  --dropdown-width: 0px;
+  border-radius: 2px !important;
+  padding: var(--dropdown-width) !important;
+  margin-right: calc(-1 * var(--dropdown-width)) !important;
+}
+
+.tsd-accordion-summary > svg:hover {
+  outline: 1px solid grey !important;
+}
+
+.tsd-accordion-summary > svg:hover + a {
+  text-decoration: none;
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+/*body {
+  max-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}*/
+
+.tree-content > ul[data-id="root"] {
+  /*min-width: 410px;*/
+}
+
+body:not(.show) {
+  opacity: 0;
+}
+
+body.show {
+  transition: opacity 0.4s;
+  opacity: 1;
+}
+
+a[href$="/_backend.html"],
+a[href$="/_frontend.html"],
+a[href$="/_shared.html"] {
+  position: relative;
+}
+
+a[href$="/_backend.html"]::before,
+a[href$="/_frontend.html"]::before,
+a[href$="/_shared.html"]::before {
+  content: "@org/";
+  position: absolute;
+  top: calc(50% - 0.5px);
+  left: 41.5px;
+  transform: translateY(-50%);
+}
+
+a[href$="/_backend.html"] > span,
+a[href$="/_frontend.html"] > span,
+a[href$="/_shared.html"] > span {
+  margin-left: 75px;
+}
+
+summary:has(a[href$="/_backend.html"]) > svg,
+summary:has(a[href$="/_frontend.html"]) > svg,
+summary:has(a[href$="/_shared.html"]) > svg {
+  z-index: 9999;
+}
+
+.tsd-breadcrumb a::before {
+  content: none !important;
+}
+
+.tsd-navigation a,
+.tsd-navigation summary > span,
+.tsd-page-navigation a {
+  padding: 0.35rem !important;
+}
+
+.tsd-nested-navigation {
+  display: grid;
+}
+
+/* First, set all <li> elements to a default order */
+.tsd-nested-navigation > li {
+  order: 2; /* default order */
+}
+
+/* Then, target <li> elements where the <summary> has a second child that's a <span> and give them a higher priority order */
+.tsd-nested-navigation > li:has(details summary > span:nth-child(2)) {
+  order: 1; /* these will appear first */
+}

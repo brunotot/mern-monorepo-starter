@@ -1,8 +1,8 @@
-import { type NoArgsClass } from "../../dist/modules";
-import { KeycloakAuthMock } from "./KeycloakAuthMock";
+import { type NoArgsClass } from "../../../shared/dist/src/index";
+import { KeycloakAuthorizationMock } from "./KeycloakAuthorizationMock";
 import { KeycloakRepositoryMock } from "./KeycloakRepositoryMock";
 
 export default {
-  KeycloakAuth: KeycloakAuthMock,
+  KeycloakAuthorization: KeycloakAuthorizationMock,
   KeycloakRepository: KeycloakRepositoryMock,
-} as const satisfies startListening<string, NoArgsClass>;
+} as const satisfies Record<string, NoArgsClass>;

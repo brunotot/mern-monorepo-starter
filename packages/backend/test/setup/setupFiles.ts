@@ -1,7 +1,7 @@
 /// <reference types="@types/jest" />
 
-import server from "../../dist/server";
-import { DatabaseManager } from "../../dist/config/managers/DatabaseManager";
+import { server } from "../../dist/setup/server.setup";
+import { DatabaseManager } from "../../dist/config/DatabaseManager.config";
 import __mocks__ from "../__mocks__";
 
 beforeAll(async () => {

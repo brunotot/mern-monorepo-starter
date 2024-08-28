@@ -5,10 +5,23 @@
   "excludeInternal": true,
   "pretty": true,
 
+  "navigation": {
+    "includeCategories": false,
+    "includeGroups": false,
+    "includeFolders": true,
+    "compactFolders": false
+  },
+
   "entryPoints": ["packages/*"],
   "entryPointStrategy": "packages",
-  "themeColor": "#8787f5",
-  "plugin": ["typedoc-material-theme", "typedoc-plugin-remove-references"]
+
+  //"themeColor": "#8787f5"// NEW option of TypeDoc added by this plugin
+  "mergeModulesMergeMode": "module",
+  "plugin": [
+    "typedoc-github-theme",
+    "typedoc-plugin-remove-references",
+    "typedoc-plugin-merge-modules"
+  ]
 
   // "entryPoints": ["../packages/backend/src", "../packages/frontend/src", "../packages/shared/src"],
   // "exclude": ["../packages/frontend/vite-env"],

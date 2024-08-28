@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "prepublishOnly": "pnpm run build",
-    "build": "pnpm run clean && tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./dist",
     "test": "echo \"Error: no test specified for shared package\""
   },

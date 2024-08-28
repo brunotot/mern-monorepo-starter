@@ -3,7 +3,8 @@ import { type PaginationResult } from "@org/shared";
 import { type UserRepository } from "@org/backend/infrastructure/repository/impl/UserRepository";
 import { type User } from "@org/shared";
 import { autowired } from "@org/backend/decorators/autowired";
-import { type KeycloakUser, type KeycloakRepository } from "../repository/impl/KeycloakRepository";
+import { type KeycloakRepository } from "@org/backend/infrastructure/repository/impl/KeycloakRepository";
+import type * as KC from "@org/backend/config/Keycloak.config";
 
 export class UserService {
   @autowired private userRepository: UserRepository;
@@ -13,13 +14,13 @@ export class UserService {
     return await this.userRepository.findAllPaginated(PaginationOptions.parse(options));
   }
 
-  async findAll(): Promise<KeycloakUser[]> {
+  async findAll(): Promise<KC.KeycloakUser[]> {
     return await this.keycloakRepository.findAllUsers();
   }
 
-  async findOneByUsername(username: string): Promise<KeycloakUser> {
+  async findOneByUsername(username: string): Promise<KC.KeycloakUser> {
     const user = await this.keycloakRepository.findUserByUsername(username);
-    if (user === null) throw new ErrorResponse("", 404, "User not found");
+    if (user === null) throw new ErrorResponse(404, "User not found");
     return user;
   }
 
@@ -28,6 +29,6 @@ export class UserService {
   }
 
   async deleteByUsername(username: string): Promise<void> {
-    return await this.userRepository.deleteByUsername(username);
+    return await this.userRepository.deleteOneByUsername(username);
   }
 }

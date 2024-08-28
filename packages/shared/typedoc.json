@@ -1,5 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/index.ts"],
-  "name": "shared"
+  "entryPoints": ["src/**/*.ts"],
+  "name": "shared",
+  "exclude": ["src/index.ts"]
 }

@@ -4,8 +4,8 @@
  * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
  */
 
-import { type RouteMiddlewareFactory } from "@org/backend/config/singletons/RouterCollection";
-import { env } from "@org/backend/config/singletons/Environment";
+import { type RouteMiddlewareFactory } from "@org/backend/config/Route.config";
+import { env } from "@org/backend/setup/env.setup";
 import cors from "cors";
 
 export const withCors: RouteMiddlewareFactory = () => {

@@ -1,7 +1,7 @@
 import { initClient } from "@ts-rest/core";
-import { CONTRACTS } from "@org/shared";
+import { contracts } from "@org/shared";
 
-export const client = initClient(CONTRACTS, {
+export const client = initClient(contracts, {
   baseUrl: "http://localhost:8081",
   baseHeaders: {},
 });
