@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src", "vite-env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "target": "ES2020",
@@ -7,6 +7,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["./vite-env.d.ts"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

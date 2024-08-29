@@ -2,15 +2,12 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
 
-const appToServe = "leather-proizvodnja";
-//const appToServe = "old-testing-app";
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  root: path.resolve(__dirname, `example-apps/${appToServe}`),
-  //build: {
-  //  outDir: path.resolve(__dirname, "dist/"),
-  //},
+  root: path.resolve(__dirname, "src"),
+  build: {
+    outDir: path.resolve(__dirname, "dist"),
+  },
   plugins: [
     react({
       babel: {
@@ -20,6 +17,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      "@org/frontend": path.resolve(__dirname, "src"),
       "@org/shared": path.resolve(__dirname, "../shared/src"),
     },
   },

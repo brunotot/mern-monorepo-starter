@@ -1,10 +1,5 @@
 /**
- * @packageDocumentation
- *
- * This is Environment setup for Backend 2
- * This is Environment setup for Backend 3
- *
- * This is Environment setup for Backend 4
+ * @packageDocumentation Environment setup.
  */
 
 import { getDirname } from "cross-dirname";

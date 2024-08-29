@@ -1,3 +1,3 @@
-import { App } from "../App";
+import { ExpressApp } from "../ExpressApp";
 
-export const server = new App();
+export const server = new ExpressApp();

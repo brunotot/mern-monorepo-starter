@@ -203,13 +203,13 @@
     },
     {
       "name": "frontend > loadTranslationTypes",
-      "runtimeArgs": ["run", "--filter", "frontend", "loadTranslationTypes"],
+      "runtimeArgs": ["run", "loadTranslationTypes", "--prefix", "packages/frontend"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
