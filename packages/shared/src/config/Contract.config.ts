@@ -1,7 +1,7 @@
 import { type AppRouter } from "@ts-rest/core";
 import { type generateOpenApi } from "@ts-rest/open-api";
-import { z } from "zod";
 import { type TODO } from "./Types.config";
+import { z } from "./Zod.config";
 
 export type OperationMapper = NonNullable<Parameters<typeof generateOpenApi>[2]>["operationMapper"];
 

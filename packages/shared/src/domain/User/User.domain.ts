@@ -1,6 +1,5 @@
-import { Role } from "../../config";
-import { Entity } from "../../config/Entity.config";
-import z from "zod";
+import { Role, Entity } from "../../config";
+import { z } from "../../config/Zod.config";
 
 /** @hidden */
 export const User = Entity("User", {

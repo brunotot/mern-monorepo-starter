@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { ObjectId } from "./Types.config";
+import { z } from "./Zod.config";
 
 export const BASE_ENTITY_SCHEMA = {
   _id: z.instanceof(ObjectId).optional(),

@@ -1,5 +1,5 @@
 import { Entity } from "../../config/Entity.config";
-import z from "zod";
+import { z } from "../../config/Zod.config";
 
 /** @hidden */
 export const ErrorLog = Entity("ErrorLog", {

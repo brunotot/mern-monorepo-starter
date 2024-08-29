@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "../../config/Zod.config";
 import { User } from "./User.domain";
 
 /** @hidden */
