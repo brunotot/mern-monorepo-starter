@@ -64,6 +64,7 @@
     "helmet": "^7.1.0",
     "helmet-csp": "^4.0.0",
     "keycloak-connect": "^25.0.2",
+    "memorystore": "^1.6.7",
     "react-use": "^17.5.0"
   }
 }
