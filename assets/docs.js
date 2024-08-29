@@ -1,5 +1,5 @@
 function extractName(href) {
-  const prefix = "_tsvdec_";
+  const prefix = "";
   const extension = "html";
   const prefixIndex = href.indexOf(prefix);
   const startIndex = href.indexOf(".", prefixIndex) + 1;
