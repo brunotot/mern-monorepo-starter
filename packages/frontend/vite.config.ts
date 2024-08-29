@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  envDir: path.resolve(__dirname),
   root: path.resolve(__dirname, "src"),
   build: {
     outDir: path.resolve(__dirname, "dist"),

@@ -138,26 +138,26 @@
     },
     {
       "name": "backend > build",
-      "runtimeArgs": ["run", "--filter", "backend", "build"],
+      "runtimeArgs": ["run", "build", "--prefix", "packages/backend"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "frontend > dev",
-      "runtimeArgs": ["run", "--filter", "frontend", "dev"],
+      "runtimeArgs": ["run", "dev", "--prefix", "packages/frontend"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
