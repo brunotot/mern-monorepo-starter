@@ -2,12 +2,16 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
 
+function pwd(...args: string[]): string {
+  return path.resolve(__dirname, ...args);
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  envDir: path.resolve(__dirname),
-  root: path.resolve(__dirname, "src"),
+  envDir: pwd(),
+  root: pwd("src"),
   build: {
-    outDir: path.resolve(__dirname, "dist"),
+    outDir: pwd("dist"),
   },
   plugins: [
     react({
@@ -18,8 +22,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@org/frontend": path.resolve(__dirname, "src"),
-      "@org/shared": path.resolve(__dirname, "../shared/src"),
+      "@org/frontend": pwd("src"),
+      "@org/shared": pwd("../", "shared", "src"),
     },
   },
 });

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-#pnpm run build
-#pnpm run build:docs:dev
-npm run test
-npx lint-staged
-npm run script:writeReadmeMarkdown
-git add README.md

@@ -1,7 +1,10 @@
 {
   "include": ["src", "vite-env.d.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "../shared" }],
   "compilerOptions": {
+    "outDir": "./dist",
+    "composite": true,
+
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
