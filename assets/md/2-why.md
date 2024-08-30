@@ -1,7 +1,9 @@
-## Why
+## What is `typescript-monorepo-starter`?
 
-The motivation behind creating this MERN monorepo starter was to simplify application development and deployment. It offers a ready-to-use, opinionated setup with best practices for a TypeScript monorepo.
+`typescript-monorepo-starter` is a GitHub template designed to kickstart your next **TypeScript 5** project (with immediate deployment configuration). It provides an opinionated, ready-to-use monorepo structure that handles all the tricky configuration for you (while still allowing you to customize it to your needs).
 
-The repository streamlines the workflow from local development to cloud deployment, starting with Railway. Future updates will cover platforms like Heroku. Follow this template to deploy a production-ready app with CI/CD, automated documentation, and testing.
+The following [packages](https://github.com/brunotot/typescript-monorepo-starter/tree/main/packages) are implemented and at your disposal:
 
-Our goal is to provide an easy setup and deployment process, allowing developers to focus on building features while ensuring the development environment follows best practices.
+- [app-node-express](https://expressjs.com/) <sup>[[TS Compiler](https://www.typescriptlang.org/), [NodeJS](https://nodejs.org/en/about), [Express API](https://expressjs.com/en/starter/hello-world.html), [MongoDB](https://www.mongodb.com/company/what-is-mongodb), [Keycloak](https://www.keycloak.org/), [Railway](https://railway.app/)]</sup>
+- [app-vite-react](https://reactjs.org/) <sup>[[Vite](https://vitejs.dev/guide/why.html), [ReactJS](https://react.dev/), [Railway](https://railway.app/)]</sup>
+- [pkg-commons](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/)]</sup>
