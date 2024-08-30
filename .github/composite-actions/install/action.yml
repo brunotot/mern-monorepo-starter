@@ -19,8 +19,8 @@ runs:
     - name: ⚙️ Setup Git User
       shell: bash
       run: |
-        git config --global user.email "brunotot10000@gmail.com"
-        git config --global user.name "Bruno Tot"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
 
     - name: Install dependencies
       shell: bash

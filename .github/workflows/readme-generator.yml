@@ -1,0 +1,26 @@
+name: MERN Sample App - ReadMe
+
+on:
+  push:
+    paths:
+      - "assets/md/**"
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛒 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🤳 Install
+        uses: ./.github/composite-actions/install
+
+      - name: 🔥 Generate README.md
+        run: pnpm run script:writeReadmeMarkdown
+
+      - name: Push code
+        uses: stefanzweifel/git-auto-commit-action@v5

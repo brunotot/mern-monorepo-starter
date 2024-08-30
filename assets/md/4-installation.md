@@ -9,9 +9,9 @@
    - [x] Read and write permissions
    - [x] Allow GitHub Actions to create and approve pull requests
 
-3. Navigate to **Repo > Actions > typedoc.yml** and click on **Run workflow**.
+3. Navigate to **Repo > Actions > typedoc-generator.yml** and click on **Run workflow**.
 
-4. After **typedoc.yml** finishes, the `gh-pages` branch is generated.
+4. After **typedoc-generator.yml** finishes, the `gh-pages` branch is generated.
 
    Navigate to **Repo > Settings > Pages** and save the `gh-pages` branch as the deployment branch.
 
