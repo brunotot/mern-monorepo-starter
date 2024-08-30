@@ -9,7 +9,7 @@
     "prepublishOnly": "pnpm run build",
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./dist",
-    "test": "echo \"Error: no test specified for shared package\""
+    "test": "npm run build --silent && vitest --run"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.6.0"
   }
 }

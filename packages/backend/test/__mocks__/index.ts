@@ -3,6 +3,6 @@ import { KeycloakAuthorizationMock } from "./KeycloakAuthorizationMock";
 import { KeycloakRepositoryMock } from "./KeycloakRepositoryMock";
 
 export default {
-  KeycloakAuthorization: KeycloakAuthorizationMock,
-  KeycloakRepository: KeycloakRepositoryMock,
+  Authorization: KeycloakAuthorizationMock,
+  AuthorizationRepository: KeycloakRepositoryMock,
 } as const satisfies Record<string, NoArgsClass>;

@@ -1,0 +1,23 @@
+name: MERN Sample App - Backend Tests
+
+on:
+  push:
+    paths:
+      - "packages/backend/**"
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛒 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🤳 Install
+        uses: ./.github/composite-actions/install
+
+      - name: 🚀 Run Backend Tests
+        run: pnpm run backend:test

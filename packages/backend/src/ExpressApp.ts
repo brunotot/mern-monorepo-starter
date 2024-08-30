@@ -21,12 +21,12 @@ import { buildMongoClient } from "./config/MongoDB.config";
 
 function getModules() {
   return {
-    KeycloakAuthorization,
+    Authorization: KeycloakAuthorization,
     UserController,
     UserRepository,
     ErrorLogRepository,
     UserService,
-    KeycloakRepository,
+    AuthorizationRepository: KeycloakRepository,
   } as const satisfies Record<string, new () => TODO>;
 }
 

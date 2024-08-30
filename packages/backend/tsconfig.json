@@ -1,15 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "ts-node": {
-    "transpileOnly": true,
-    "files": true,
-    // Tell ts-node CLI to install the --loader automatically, explained below
-    "esm": true,
-    "compilerOptions": {
-      "module": "ESNext"
-    },
-    "require": ["tsconfig-paths/register"]
-  },
   "compilerOptions": {
     "skipLibCheck": true,
     "outDir": "./dist",

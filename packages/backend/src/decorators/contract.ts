@@ -33,7 +33,7 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
         await iocRegistry
           .inject<ErrorLogRepository>(ErrorLogRepository.name)
           .insertOne(typedError.content);
-        return { status: 500, body: typedError.content };
+        return { status: typedError.content.status, body: typedError.content };
       } finally {
         session.endSession();
       }

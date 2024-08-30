@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "dist", "docs"],
   "compilerOptions": {
     "module": "ES6",
     "target": "ES6",

@@ -15,17 +15,5 @@
   "entryPoints": ["packages/*"],
   "entryPointStrategy": "packages",
 
-  //"themeColor": "#8787f5"// NEW option of TypeDoc added by this plugin
-  "mergeModulesMergeMode": "module",
-  "plugin": [
-    "typedoc-github-theme",
-    "typedoc-plugin-remove-references",
-    "typedoc-plugin-merge-modules"
-  ]
-
-  // "entryPoints": ["../packages/backend/src", "../packages/frontend/src", "../packages/shared/src"],
-  // "exclude": ["../packages/frontend/vite-env"],
-  // "entryPointStrategy": "expand",
-  // "plugin": ["typedoc-theme-hierarchy", "typedoc-plugin-remove-references"],
-  // "theme": "hierarchy"
+  "plugin": ["typedoc-github-theme", "typedoc-plugin-remove-references"]
 }

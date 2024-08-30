@@ -3,23 +3,23 @@ import { type PaginationResult } from "@org/shared";
 import { type UserRepository } from "@org/backend/infrastructure/repository/impl/UserRepository";
 import { type User } from "@org/shared";
 import { autowired } from "@org/backend/decorators/autowired";
-import { type KeycloakRepository } from "@org/backend/infrastructure/repository/impl/KeycloakRepository";
+import { type AuthorizationRepository } from "@org/backend/interface/AuthorizationRepository";
 import type * as KC from "@org/backend/config/Keycloak.config";
 
 export class UserService {
   @autowired private userRepository: UserRepository;
-  @autowired private keycloakRepository: KeycloakRepository;
+  @autowired private authorizationRepository: AuthorizationRepository;
 
   async search(options: Partial<PaginationOptions>): Promise<PaginationResult<User>> {
     return await this.userRepository.findAllPaginated(PaginationOptions.parse(options));
   }
 
   async findAll(): Promise<KC.KeycloakUser[]> {
-    return await this.keycloakRepository.findAllUsers();
+    return await this.authorizationRepository.findAllUsers();
   }
 
   async findOneByUsername(username: string): Promise<KC.KeycloakUser> {
-    const user = await this.keycloakRepository.findUserByUsername(username);
+    const user = await this.authorizationRepository.findUserByUsername(username);
     if (user === null) throw new ErrorResponse(404, "User not found");
     return user;
   }

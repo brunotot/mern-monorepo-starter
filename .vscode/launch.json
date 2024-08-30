@@ -2,19 +2,6 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "root > install",
-      "runtimeArgs": ["install"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
       "name": "root > lint",
       "runtimeArgs": ["lint"],
       "presentation": { "group": "1" },
@@ -215,7 +202,7 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "shared > clean",
+      "name": "@org/shared: clean",
       "runtimeArgs": ["run", "--filter", "shared", "clean"],
       "presentation": { "group": "5" },
       // Defaults below
@@ -228,7 +215,7 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "shared > build",
+      "name": "@org/shared: build",
       "runtimeArgs": ["run", "shared:build"],
       "presentation": { "group": "5" },
       // Defaults below
@@ -241,7 +228,7 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "shared > test",
+      "name": "@org/shared: test",
       "runtimeArgs": ["run", "--filter", "shared", "test"],
       "presentation": { "group": "5" },
       // Defaults below

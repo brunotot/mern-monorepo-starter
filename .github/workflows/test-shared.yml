@@ -1,0 +1,23 @@
+name: MERN Sample App - Shared Tests
+
+on:
+  push:
+    paths:
+      - "packages/shared/**"
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛒 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🤳 Install
+        uses: ./.github/composite-actions/install
+
+      - name: 🚀 Run Shared Tests
+        run: pnpm run shared:test

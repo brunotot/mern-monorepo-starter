@@ -6,14 +6,18 @@ describe("user", () => {
     describe("given the user does not exist", () => {
       it("should return a 404", async () => {
         const nonExistingUsername = "usernameWhichShouldFail";
-        await supertest(globalThis.expressApp).get(`/users/${nonExistingUsername}`).expect(404);
+        await supertest(globalThis.expressApp)
+          .get(`/users/findOneByUsername?username=${nonExistingUsername}`)
+          .expect(404);
       });
     });
 
     describe("given the user does exist", () => {
       it("should return a 200 status and the user", async () => {
-        const existingUsername = "brunotot";
-        await supertest(globalThis.expressApp).get(`/users/${existingUsername}`).expect(200);
+        const existingUsername = "admin";
+        await supertest(globalThis.expressApp)
+          .get(`/users/findOneByUsername?username=${existingUsername}`)
+          .expect(200);
       });
     });
   });

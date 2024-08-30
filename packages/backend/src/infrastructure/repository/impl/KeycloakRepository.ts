@@ -1,6 +1,9 @@
 import * as KC from "@org/backend/config/Keycloak.config";
 import { type AuthorizationRepository } from "@org/backend/interface/AuthorizationRepository";
 
+// PROBLEM JE STO SE KeycloakRepository svakako pokrene (konstruktor, super.KeycloakDao) a to ne zelimo u testovima
+// logika je takva da se svi defaultni instanciraju i tek onda se mergaju mockane instance u jedan objekt
+
 /**
  * @see {@link https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html Keycloak Admin REST API} documentation.
  */
