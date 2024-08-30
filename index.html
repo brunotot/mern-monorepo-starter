@@ -29,7 +29,8 @@
 <ul>
 <li><a href="https://expressjs.com/">app-node-express</a> <sup>[<a href="https://www.typescriptlang.org/">TS Compiler</a>, <a href="https://nodejs.org/en/about">NodeJS</a>, <a href="https://expressjs.com/en/starter/hello-world.html">Express API</a>, <a href="https://www.mongodb.com/company/what-is-mongodb">MongoDB</a>, <a href="https://www.keycloak.org/">Keycloak</a>, <a href="https://railway.app/">Railway</a>]</sup></li>
 <li><a href="https://reactjs.org/">app-vite-react</a> <sup>[<a href="https://vitejs.dev/guide/why.html">Vite</a>, <a href="https://react.dev/">ReactJS</a>, <a href="https://railway.app/">Railway</a>]</sup></li>
-<li><a href="https://www.typescriptlang.org/">pkg-commons</a> <sup>[<a href="https://www.typescriptlang.org/">TS Compiler</a>]</sup></li>
+<li><a href="https://www.typescriptlang.org/">lib-commons</a> <sup>[<a href="https://www.typescriptlang.org/">TS Compiler</a>]</sup></li>
+<li><a href="https://www.typescriptlang.org/">lib-api-client</a> <sup>[<a href="https://www.typescriptlang.org/">TS Compiler</a>]</sup></li>
 </ul>
 <a id="md:prerequisites" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Prerequisites<a href="#md:prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ol>
 <li>
@@ -167,8 +168,8 @@ The upcoming steps, except for the <strong>MongoDB</strong> service, require at 
 <li>Create Frontend service by clicking on <strong>New &gt; GitHub Repo</strong></li>
 <li>Connect your repository to your Railway project</li>
 <li>Edit service name to <code>Frontend</code></li>
-<li>Under <strong>Frontend &gt; Settings &gt; Build</strong> set <code>pnpm --filter frontend run build</code> as the build command</li>
-<li>Under <strong>Frontend &gt; Settings &gt; Deploy</strong> set <code>pnpm --filter frontend run start</code> as the deploy command</li>
+<li>Under <strong>Frontend &gt; Settings &gt; Build</strong> set <code>pnpm --filter app-vite-react run build</code> as the build command</li>
+<li>Under <strong>Frontend &gt; Settings &gt; Deploy</strong> set <code>pnpm --filter app-vite-react run start</code> as the deploy command</li>
 <li>That's it! You can now hit the <strong>Deploy</strong> button</li>
 <li>Optionally you can generate a custom domain name on <strong>Frontend &gt; Settings &gt; Networking &gt; Generate Domain</strong></li>
 </ul>
@@ -184,11 +185,11 @@ The upcoming steps, except for the <strong>MongoDB</strong> service, require at 
 <p>Install local packages and run prepare scripts with <code>pnpm install</code>.</p>
 </li>
 <li>
-<p>Add required environment variables to <code>packages/backend/.env.development.local</code>.</p>
+<p>Add required environment variables to <code>packages/app-node-express/.env.development.local</code>.</p>
 <p>(Check <strong>step 4</strong> of Railway setup - <strong>Setup Backend service</strong> )</p>
 </li>
 </ol>
-<p>🚀 That's it! Try running <code>pnpm --filter backend run dev</code> or <code>pnpm --filter frontend run dev</code></p>
+<p>🚀 That's it! Try running <code>pnpm --filter backend run dev</code> or <code>pnpm --filter app-vite-react run dev</code></p>
 <a id="md:recommended-vscode-extensions" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Recommended VSCode extensions<a href="#md:recommended-vscode-extensions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
 <li><a href="https://marketplace.visualstudio.com/items?itemName=NuclleaR.vscode-extension-auto-import">Auto Import - ES6, TS, JSX, TSX</a></li>
 <li><a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint</a></li>
