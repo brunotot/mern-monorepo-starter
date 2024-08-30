@@ -1,6 +1,0 @@
-{
-  "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/**/*.d.ts", "src/main.tsx"],
-  "name": "frontend"
-}

@@ -97,8 +97,8 @@
    - Create Frontend service by clicking on **New > GitHub Repo**
    - Connect your repository to your Railway project
    - Edit service name to `Frontend`
-   - Under **Frontend > Settings > Build** set `pnpm --filter frontend run build` as the build command
-   - Under **Frontend > Settings > Deploy** set `pnpm --filter frontend run start` as the deploy command
+   - Under **Frontend > Settings > Build** set `pnpm --filter app-vite-react run build` as the build command
+   - Under **Frontend > Settings > Deploy** set `pnpm --filter app-vite-react run start` as the deploy command
    - That's it! You can now hit the **Deploy** button
    - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
@@ -112,8 +112,8 @@
 
 2. Install local packages and run prepare scripts with `pnpm install`.
 
-3. Add required environment variables to `packages/backend/.env.development.local`.
+3. Add required environment variables to `packages/app-node-express/.env.development.local`.
 
    (Check **step 4** of Railway setup - **Setup Backend service** )
 
-🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter frontend run dev`
+🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter app-vite-react run dev`

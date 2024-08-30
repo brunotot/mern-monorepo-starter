@@ -30,7 +30,8 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 - [app-node-express](https://expressjs.com/) <sup>[[TS Compiler](https://www.typescriptlang.org/), [NodeJS](https://nodejs.org/en/about), [Express API](https://expressjs.com/en/starter/hello-world.html), [MongoDB](https://www.mongodb.com/company/what-is-mongodb), [Keycloak](https://www.keycloak.org/), [Railway](https://railway.app/)]</sup>
 - [app-vite-react](https://reactjs.org/) <sup>[[Vite](https://vitejs.dev/guide/why.html), [ReactJS](https://react.dev/), [Railway](https://railway.app/)]</sup>
-- [pkg-commons](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/)]</sup>
+- [lib-commons](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/)]</sup>
+- [lib-api-client](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/)]</sup>
 
 ## Prerequisites
 
@@ -156,8 +157,8 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
    - Create Frontend service by clicking on **New > GitHub Repo**
    - Connect your repository to your Railway project
    - Edit service name to `Frontend`
-   - Under **Frontend > Settings > Build** set `pnpm --filter frontend run build` as the build command
-   - Under **Frontend > Settings > Deploy** set `pnpm --filter frontend run start` as the deploy command
+   - Under **Frontend > Settings > Build** set `pnpm --filter app-vite-react run build` as the build command
+   - Under **Frontend > Settings > Deploy** set `pnpm --filter app-vite-react run start` as the deploy command
    - That's it! You can now hit the **Deploy** button
    - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
@@ -171,11 +172,11 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 2. Install local packages and run prepare scripts with `pnpm install`.
 
-3. Add required environment variables to `packages/backend/.env.development.local`.
+3. Add required environment variables to `packages/app-node-express/.env.development.local`.
 
    (Check **step 4** of Railway setup - **Setup Backend service** )
 
-🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter frontend run dev`
+🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter app-vite-react run dev`
 
 ## Recommended VSCode extensions
 

@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "types": [],
+
+    "baseUrl": "./src",
+    "paths": {
+      "@org/app-node-express/*": ["*"],
+      "@org/lib-commons": ["../../shared/dist/src/index"],
+      "*": ["../node_modules/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/logs", "test/**"],
+
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ]
+}

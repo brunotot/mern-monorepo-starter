@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "typeRoots": [],
+    "composite": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@org/lib-commons": ["../../lib-commons/src"],
+      "*": ["../node_modules/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../lib-commons"
+    }
+  ]
+}

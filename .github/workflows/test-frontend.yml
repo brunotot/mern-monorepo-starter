@@ -3,7 +3,7 @@ name: MERN Sample App - Frontend Tests
 on:
   push:
     paths:
-      - "packages/frontend/**"
+      - "packages/app-vite-react/**"
     branches:
       - main
   workflow_dispatch:
@@ -20,4 +20,4 @@ jobs:
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run Frontend Tests
-        run: pnpm run frontend:test
+        run: pnpm run app-vite-react:test

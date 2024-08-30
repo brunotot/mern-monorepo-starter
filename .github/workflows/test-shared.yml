@@ -3,7 +3,7 @@ name: MERN Sample App - Shared Tests
 on:
   push:
     paths:
-      - "packages/shared/**"
+      - "packages/lib-commons/**"
     branches:
       - main
   workflow_dispatch:

@@ -3,7 +3,7 @@ name: MERN Sample App - Backend Tests
 on:
   push:
     paths:
-      - "packages/backend/**"
+      - "packages/app-node-express/**"
     branches:
       - main
   workflow_dispatch:
@@ -20,4 +20,4 @@ jobs:
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run Backend Tests
-        run: pnpm run backend:test
+        run: pnpm run app-node-express:test
