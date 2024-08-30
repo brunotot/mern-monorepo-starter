@@ -28,19 +28,6 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "root > typedoc",
-      "runtimeArgs": ["run", "typedoc"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
       "name": "root > clean",
       "runtimeArgs": ["clean"],
       "presentation": { "group": "1" },
@@ -49,6 +36,19 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "script > typedoc",
+      "runtimeArgs": ["run", "script:typedoc"],
+      "presentation": { "group": "2" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false

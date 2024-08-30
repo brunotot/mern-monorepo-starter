@@ -9,7 +9,8 @@
     "prepublishOnly": "pnpm run build",
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./dist",
-    "test": "npm run build --silent && vitest --run"
+    "test": "npm run build --silent && vitest --run",
+    "lint": "npx eslint . --fix"
   },
   "keywords": [],
   "author": "Bruno Tot",

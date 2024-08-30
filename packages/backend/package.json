@@ -9,7 +9,8 @@
     "build": "rm -rf dist && tsc --build && tsc-alias",
     "start": "bash scripts/start.sh",
     "dev": "nodemon",
-    "clean": "rm -rf ./dist"
+    "clean": "rm -rf ./dist",
+    "lint": "npx eslint . --fix"
   },
   "keywords": [],
   "author": "Bruno Tot",

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+npx typedoc
+
 # Define root directory for generated documentation
 base_dir="docs/"
 typedoc_css_path="assets/css/typedoc.css"
