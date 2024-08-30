@@ -1,14 +1,18 @@
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { type Signal, signal } from "@preact/signals-react";
-import { Outlet, RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
+import type { RouteObject} from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
-import { NavigationRoutes } from "@org/frontend/config/NavigationRoute.config";
-import { MuiThemeConfig, MuiThemeValue, createTheme } from "@org/frontend/config/MuiTheme.config";
+import type { NavigationRoutes } from "@org/frontend/config/NavigationRoute.config";
+import type { MuiThemeConfig, MuiThemeValue} from "@org/frontend/config/MuiTheme.config";
+import { createTheme } from "@org/frontend/config/MuiTheme.config";
 
 import { Layout } from "@org/frontend/components/layout/Layout";
-import { Provider, Providers } from "@org/frontend/components/providers/Providers";
+import type { Provider} from "@org/frontend/components/providers/Providers";
+import { Providers } from "@org/frontend/components/providers/Providers";
 import { StylesProvider } from "@org/frontend/components/providers/impl/StylesProvider";
 import { ThemeProvider } from "@org/frontend/components/providers/impl/MuiThemeProvider";
 import { QueryClientProvider } from "@org/frontend/components/providers/impl/QueryClientProvider";

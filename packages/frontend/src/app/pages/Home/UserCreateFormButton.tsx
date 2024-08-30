@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
-import { TODO, User } from "@org/shared";
+import type { TODO, User } from "@org/shared";
 import { UserForm } from "@org/frontend/app/pages/Home/UserForm";
 import { Add } from "@mui/icons-material";
 import { apiClient } from "@org/frontend/setup/apiClient.setup";

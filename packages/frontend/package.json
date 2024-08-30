@@ -9,7 +9,7 @@
     "debug": "vite --mode debug",
     "dev": "vite",
     "build": "tsc && vite build --emptyOutDir",
-    "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "start": "serve -s dist",
     "loadTranslationTypes": "i18next-resources-for-ts interface -i ./src/public/locales/en -o ./src/@types/resources.d.ts"
   },
@@ -44,10 +44,10 @@
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.4",
     "i18next-resources-for-ts": "^1.5.0",
     "locize-cli": "^8.0.0",
     "serve": "^14.2.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.4"
+    "typescript": "^5.2.2"
   }
 }

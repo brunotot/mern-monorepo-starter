@@ -1,5 +1,5 @@
 import { effect, signal } from "@preact/signals-react";
-import { LayoutVariant } from "@org/frontend/components/layout";
+import { type LayoutVariant } from "@org/frontend/components/layout";
 
 export const sigLayout = signal<LayoutVariant>(
   (["HorizontalLayout", "SidebarLayout"].find(value => value === localStorage.getItem("layout")) ??

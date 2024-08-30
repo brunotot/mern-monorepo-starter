@@ -1,4 +1,4 @@
-import { DtBaseColumn } from "@org/frontend/components/semantics/Datatable/types";
+import type { DtBaseColumn } from "@org/frontend/components/semantics/Datatable/types";
 
 export type DtClientColumnSort<T> = (o1: T, o2: T) => number;
 

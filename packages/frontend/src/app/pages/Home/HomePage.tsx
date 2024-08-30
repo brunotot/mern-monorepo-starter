@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { PaginationOptions, TODO, User, type UserPageableResponseDto } from "@org/shared";
+import type { PaginationOptions, TODO, User} from "@org/shared";
+import { type UserPageableResponseDto } from "@org/shared";
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 

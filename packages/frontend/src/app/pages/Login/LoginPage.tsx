@@ -4,7 +4,8 @@ import * as icons from "@mui/icons-material";
 import { Logo } from "@org/frontend/components/semantics";
 import { sigUser } from "@org/frontend/signals/sigUser";
 import { ObjectId, Role, type TODO } from "@org/shared";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import type { ChangeEvent, MouseEvent} from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface State {

@@ -1,7 +1,8 @@
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
+import type {
+  Breakpoint} from "@mui/material";
 import {
   Box,
-  Breakpoint,
   Container,
   List,
   ListItemButton,
@@ -9,17 +10,19 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import type {
+  OriginPosition} from "@org/frontend/components/navigation/ButtonHoverMenu";
 import {
-  ButtonHoverMenu,
-  OriginPosition,
+  ButtonHoverMenu
 } from "@org/frontend/components/navigation/ButtonHoverMenu";
-import {
+import type {
   NavigationRoute,
-  NavigationRouteSingle,
+  NavigationRouteSingle} from "@org/frontend/config/NavigationRoute.config";
+import {
   isAnyRouteActive,
 } from "@org/frontend/config/NavigationRoute.config";
 import { reactServer } from "@org/frontend/setup/reactServer.setup";

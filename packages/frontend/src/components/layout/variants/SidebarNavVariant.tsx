@@ -1,13 +1,14 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import {
+import type {
   NavigationRoute,
-  NavigationRouteSingle,
+  NavigationRouteSingle} from "@org/frontend/config/NavigationRoute.config";
+import {
   isAnyRouteActive,
 } from "@org/frontend/config/NavigationRoute.config";
 import { reactServer } from "@org/frontend/setup/reactServer.setup";

@@ -1,5 +1,6 @@
-import { Box, Breakpoint, Container, Link, Typography } from "@mui/material";
-import { MuiSxProps } from "@org/frontend/components/semantics/Header";
+import type { Breakpoint} from "@mui/material";
+import { Box, Container, Link, Typography } from "@mui/material";
+import type { MuiSxProps } from "@org/frontend/components/semantics/Header";
 
 export type FooterProps = {
   backgroundColor?: string;

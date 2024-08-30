@@ -1,7 +1,8 @@
 import PopupState, { bindHover, bindPopover } from "material-ui-popup-state";
 import HoverPopover from "material-ui-popup-state/HoverPopover";
-import { PopupState as PopupStateProps } from "material-ui-popup-state/hooks";
-import { ReactNode, useId } from "react";
+import type { PopupState as PopupStateProps } from "material-ui-popup-state/hooks";
+import type { ReactNode} from "react";
+import { useId } from "react";
 
 export type OriginPositionX = "left" | "center" | "right";
 

@@ -1,5 +1,5 @@
-import { PaginationOptions } from "@org/shared";
-import { DtBaseColumn } from "@org/frontend/components/semantics/Datatable/types";
+import type { PaginationOptions } from "@org/shared";
+import type { DtBaseColumn } from "@org/frontend/components/semantics/Datatable/types";
 
 export type DtServerColumn<T> = DtBaseColumn<T> & {
   sort?: string;

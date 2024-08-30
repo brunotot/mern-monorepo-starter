@@ -1,6 +1,6 @@
 import * as icons from "@mui/icons-material";
 
-import { NavigationRoutes } from "@org/frontend/config/NavigationRoute.config";
+import type { NavigationRoutes } from "@org/frontend/config/NavigationRoute.config";
 import { HomePage } from "@org/frontend/app/pages/Home";
 
 export const routes: NavigationRoutes = [

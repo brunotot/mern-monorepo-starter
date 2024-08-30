@@ -1,12 +1,13 @@
-import {
+import type {
   Breakpoint,
+  SelectChangeEvent} from "@mui/material";
+import {
   Card,
   CardContent,
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
-  SelectChangeEvent,
+  Select
 } from "@mui/material";
 import { sigPreferences } from "@org/frontend/signals/sigPreferences";
 import { type TODO } from "@org/shared";

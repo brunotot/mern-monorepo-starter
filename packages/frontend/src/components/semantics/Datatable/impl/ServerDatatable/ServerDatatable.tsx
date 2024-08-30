@@ -7,10 +7,11 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import { TODO } from "@org/shared";
-import { Fragment, MouseEvent, useCallback } from "react";
-import { ServerDatatableProps } from "@org/frontend/components/semantics/Datatable/impl/ServerDatatable/types";
-import { DtBaseSortItem } from "@org/frontend/components/semantics/Datatable/types";
+import type { TODO } from "@org/shared";
+import type { MouseEvent } from "react";
+import { Fragment, useCallback } from "react";
+import type { ServerDatatableProps } from "@org/frontend/components/semantics/Datatable/impl/ServerDatatable/types";
+import type { DtBaseSortItem } from "@org/frontend/components/semantics/Datatable/types";
 import { DtSortableCell } from "@org/frontend/components/semantics/Datatable/components/DtSortableCell";
 
 export function ServerDatatable<T>({
@@ -51,6 +52,7 @@ export function ServerDatatable<T>({
       }
       onPaginationOptionsChange({ ...paginationOptions, order: [`${id} desc`] });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [paginationOptions, sortData],
   );
 

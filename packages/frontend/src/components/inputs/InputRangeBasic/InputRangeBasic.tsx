@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material";
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 
 export type InputRangeProps = {
   value: number;

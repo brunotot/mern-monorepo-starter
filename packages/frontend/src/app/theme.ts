@@ -1,5 +1,5 @@
 import { colors as muiColors } from "@mui/material";
-import { MuiThemeConfig } from "@org/frontend/config/MuiTheme.config";
+import type { MuiThemeConfig } from "@org/frontend/config/MuiTheme.config";
 
 export const themeColors = {
   primary: muiColors.blue["700"],

@@ -1,5 +1,5 @@
 import { effect, signal } from "@preact/signals-react";
-import { UiPreferences } from "@org/frontend/config/UiPreferences.config";
+import { type UiPreferences } from "@org/frontend/config/UiPreferences.config";
 
 const DEFAULT_PREFERENCES: UiPreferences = {
   containerWidth: "xl",

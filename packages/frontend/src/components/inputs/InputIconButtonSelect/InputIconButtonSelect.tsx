@@ -1,5 +1,5 @@
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { useMemo, useState } from "react";
 
 export type InputIconButtonSelectProps<Item = unknown, Value = Item> = {

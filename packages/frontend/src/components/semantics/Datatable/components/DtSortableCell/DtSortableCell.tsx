@@ -1,6 +1,7 @@
 import { TableCell, Box, TableSortLabel } from "@mui/material";
-import { MouseEvent, useCallback, useState } from "react";
-import {
+import type { MouseEvent} from "react";
+import { useCallback, useState } from "react";
+import type {
   DtBaseColumnAlign,
   DtBaseColumnRenderHeader,
 } from "@org/frontend/components/semantics/Datatable/types";

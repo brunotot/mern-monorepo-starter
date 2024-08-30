@@ -1,5 +1,5 @@
 import { Box, Container, useMediaQuery } from "@mui/material";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { Sidebar } from "@org/frontend/components/navigation/Sidebar";
 import { Footer, Header } from "@org/frontend/components/semantics";
 import { HorizontalNavVariant, SidebarNavVariant } from "@org/frontend/components/layout/variants";

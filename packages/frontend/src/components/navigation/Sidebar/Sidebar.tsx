@@ -1,5 +1,5 @@
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type SidebarProps = {
   width?: number;

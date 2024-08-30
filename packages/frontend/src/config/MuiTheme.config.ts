@@ -1,4 +1,4 @@
-import {
+import type {
   CssVarsTheme,
   PaletteMode,
   PaletteOptions,
@@ -6,13 +6,14 @@ import {
   TypeBackground,
   PaletteColorOptions,
 } from "@mui/material";
+import type {
+  Theme} from "@mui/material/styles";
 import {
-  Theme,
   experimental_extendTheme as extendTheme,
   createTheme as muiCreateTheme,
 } from "@mui/material/styles";
 import { darken, lighten, alpha } from "@mui/material/styles";
-import { ColorPartial, TypeText } from "@mui/material/styles/createPalette";
+import type { ColorPartial, TypeText } from "@mui/material/styles/createPalette";
 
 export type MuiThemeValue = Omit<Theme, "palette" | "applyStyles"> & CssVarsTheme;
 

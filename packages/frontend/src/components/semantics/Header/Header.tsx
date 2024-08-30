@@ -1,13 +1,14 @@
 import { Menu } from "@mui/icons-material";
+import type {
+  Breakpoint,
+  SxProps,
+  Theme} from "@mui/material";
 import {
   Box,
   Breadcrumbs,
-  Breakpoint,
   Container,
   IconButton,
   Link,
-  SxProps,
-  Theme,
   useMediaQuery,
 } from "@mui/material";
 import {
@@ -16,7 +17,7 @@ import {
   InputThemeToggle,
 } from "@org/frontend/components/inputs";
 import { useMatches } from "react-router-dom";
-import { TODO } from "@org/shared";
+import type { TODO } from "@org/shared";
 import { sigSidebarOpen } from "@org/frontend/signals/sigSidebarOpen";
 
 export type MuiSxProps = SxProps<Theme>;

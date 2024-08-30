@@ -7,14 +7,13 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import { TODO } from "@org/shared";
-import { Fragment, MouseEvent, useMemo, useState } from "react";
+import type { TODO } from "@org/shared";
+import type { MouseEvent } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { DtSortableCell } from "@org/frontend/components/semantics/Datatable/components/DtSortableCell/DtSortableCell";
-import {
-  DEFAULT_PAGINATION_OPTIONS,
-  DtBaseOrder,
-} from "@org/frontend/components/semantics/Datatable/types";
-import { ClientDatatableProps } from "@org/frontend/components/semantics/Datatable/impl/ClientDatatable/types";
+import type { DtBaseOrder } from "@org/frontend/components/semantics/Datatable/types";
+import { DEFAULT_PAGINATION_OPTIONS } from "@org/frontend/components/semantics/Datatable/types";
+import type { ClientDatatableProps } from "@org/frontend/components/semantics/Datatable/impl/ClientDatatable/types";
 
 export function ClientDatatable<T>({
   data,
@@ -49,6 +48,7 @@ export function ClientDatatable<T>({
       });
     }
     return localData.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, paginationOptions, disablePagination, sortData]);
 
   const onSortColumnClick = (id: string, event: MouseEvent<TODO>) => {

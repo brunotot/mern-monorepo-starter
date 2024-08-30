@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import { Role, User } from "@org/shared";
+import type { User } from "@org/shared";
+import { Role } from "@org/shared";
 
 export type UserFormProps = {
   value: User;

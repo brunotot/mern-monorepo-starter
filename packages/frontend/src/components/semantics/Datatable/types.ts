@@ -1,5 +1,5 @@
-import { PaginationOptions } from "@org/shared";
-import { ReactNode } from "react";
+import type { PaginationOptions } from "@org/shared";
+import type { ReactNode } from "react";
 
 export type DtBaseColumnAlign = "left" | "center" | "right";
 export type DtBaseColumnRenderHeader = () => ReactNode;
