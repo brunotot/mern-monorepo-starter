@@ -7,6 +7,7 @@ import { server } from "./setup/server.setup";
     await server.startListening();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
+    console.log(error);
     if (typeof error === "object" && error !== null && "message" in error) {
       log.error((error as { message: string }).message);
     } else {

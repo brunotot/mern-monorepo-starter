@@ -2,16 +2,17 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
     "outDir": "./dist",
     "types": [],
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
 
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
-      "@org/app-node-express/*": ["*"],
-      "@org/lib-commons": ["../../shared/dist/src/index"],
-      "*": ["../node_modules/*"]
+      "@org/app-node-express/*": ["./src/*"],
+      "@org/lib-commons": ["./../../lib-commons/dist/src/index"],
+      "@org/lib-api-client": ["./../../lib-api-client/dist/src/index"],
+      "*": ["./node_modules/*"]
     }
   },
   "include": ["src/**/*"],
@@ -19,7 +20,10 @@
 
   "references": [
     {
-      "path": "../shared"
+      "path": "../lib-commons"
+    },
+    {
+      "path": "../lib-api-client"
     }
   ]
 }

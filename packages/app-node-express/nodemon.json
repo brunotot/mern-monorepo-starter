@@ -1,6 +1,6 @@
 {
-  "watch": ["src"],
+  "watch": ["src", "../lib-commons/src", "../lib-api-client/src"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "exec": "bash scripts/start.sh"
+  "exec": "bash start.sh"
 }

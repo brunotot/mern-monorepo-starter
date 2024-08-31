@@ -17,7 +17,7 @@ const ENVIRONMENT_VARS = z.object({
     .string()
     .default("/api-docs")
     .transform(s => (s.startsWith("/") ? s : `/${s}`)),
-  APP_NAME: z.string().default("App"),
+  APP_NAME: z.string().default("app-node-express"),
   PORT: z.string().default("8081"),
   ORIGIN: z.string().default("*"),
   CREDENTIALS: z

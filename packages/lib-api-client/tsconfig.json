@@ -1,20 +1,25 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "typeRoots": [],
     "composite": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "types": [],
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
 
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
-      "@org/lib-commons": ["../../lib-commons/src"],
-      "*": ["../node_modules/*"]
+      "@org/lib-commons": ["./../lib-commons/src/index"],
+      "*": ["./node_modules/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
+  "exclude": ["src/logs", "test/**"],
+
   "references": [
     {
       "path": "../lib-commons"
-    }
+    },
   ]
 }
