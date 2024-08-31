@@ -18,8 +18,8 @@ TOC
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [GitHub repository setup](#github-repository-setup)
-  - [Railway setup](#railway-setup)
   - [Local installation](#local-installation)
+  - [Railway setup](#railway-setup)
 - [Recommended VSCode extensions](#recommended-vscode-extensions)
 
 ## What is `typescript-monorepo-starter`?
@@ -62,20 +62,26 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 ### GitHub repository setup
 
-1. Create new repository from `@mern-monorepo-starter` template [here](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
+1. create your repository from [this](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot) template
+2. configure your GitHub workflow permissions
+   1. navigate to **Settings** / **Actions** / **General** / **Workflow permissions**
+   2. select option `Read and write permissions`
+   3. select option `Allow GitHub Actions to create and approve pull requests`
+   4. save configuration
+3. configure [Typedoc](https://typedoc.org/) deployment to [GitHub Pages](https://pages.github.com/)
+   1. navigate to **Actions** / **typedoc-generator.yml**
+   2. click on `Run workflow` button
+   3. after workflow is finished, navigate to **Settings** / **Pages**
+   4. save `gh-pages` branch as the deployment branch
 
-2. Navigate to **Repo > Settings > Actions - General** and save the following **workflow** options:
+---
 
-   - [x] Read and write permissions
-   - [x] Allow GitHub Actions to create and approve pull requests
+### Local installation
 
-3. Navigate to **Repo > Actions > typedoc-generator.yml** and click on **Run workflow**.
-
-4. After **typedoc-generator.yml** finishes, the `gh-pages` branch is generated.
-
-   Navigate to **Repo > Settings > Pages** and save the `gh-pages` branch as the deployment branch.
-
-🚀 That's it! Now your GitHub repository is ready to be used for deployment through Railway client.
+1. clone previously created repository into your local machine
+2. install dependencies with `pnpm install`
+3. configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts))
+4. you can now run your **app-node-express** with `pnpm run app-node-express:dev`
 
 ---
 
@@ -163,20 +169,6 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
    - Optionally you can generate a custom domain name on **Frontend > Settings > Networking > Generate Domain**
 
    </details>
-
----
-
-### Local installation
-
-1. Clone the previously created repository to your local machine.
-
-2. Install local packages and run prepare scripts with `pnpm install`.
-
-3. Add required environment variables to `packages/app-node-express/.env.development.local`.
-
-   (Check **step 4** of Railway setup - **Setup Backend service** )
-
-🚀 That's it! Try running `pnpm --filter backend run dev` or `pnpm --filter app-vite-react run dev`
 
 ## Recommended VSCode extensions
 
