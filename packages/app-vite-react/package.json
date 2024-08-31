@@ -9,7 +9,7 @@
     "debug": "vite --mode debug",
     "dev": "vite",
     "build": "tsc && vite build --emptyOutDir",
-    "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "start": "serve -s dist",
     "loadTranslationTypes": "i18next-resources-for-ts interface -i ./src/public/locales/en -o ./src/@types/resources.d.ts"
   },
@@ -22,6 +22,7 @@
     "@mui/styles": "^5.15.14",
     "@mui/x-tree-view": "^7.0.0",
     "@org/lib-commons": "workspace:*",
+    "@org/lib-api-client": "workspace:*",
     "@preact/signals-react": "^2.0.1",
     "@tanstack/react-query": "^5.32.1",
     "@ts-rest/core": "^3.45.0",

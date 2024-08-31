@@ -2,48 +2,9 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "root > lint",
-      "runtimeArgs": ["lint"],
+      "name": "@org: test",
+      "runtimeArgs": ["run", "test"],
       "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "root > test",
-      "runtimeArgs": ["test"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "root > clean",
-      "runtimeArgs": ["clean"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "script > typedoc",
-      "runtimeArgs": ["run", "script:typedoc"],
-      "presentation": { "group": "2" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
@@ -54,9 +15,9 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "script > writeReadmeMarkdown",
-      "runtimeArgs": ["run", "script:writeReadmeMarkdown"],
-      "presentation": { "group": "2" },
+      "name": "@org: build",
+      "runtimeArgs": ["run", "build"],
+      "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
@@ -67,25 +28,72 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-node-express > dev - debug",
+      "name": "@org: clean",
+      "runtimeArgs": ["run", "clean"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/packages/app-node-express/src/main.ts",
-      //"preLaunchTask": "npm: app-node-express:build",
-      "outFiles": ["${workspaceFolder}/packages/app-node-express/dist/**/*.js"],
-      "envFile": "${workspaceFolder}/packages/app-node-express/.env.development.local",
-      "sourceMaps": true,
-      "outputCapture": "std",
-      "console": "integratedTerminal",
-      "stopOnEntry": false,
-      "autoAttachChildProcesses": true,
-      "runtimeVersion": "21.7.0",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "app-node-express:start"],
-      "presentation": { "group": "3" }
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
     },
     {
-      "name": "app-node-express > dev - nodemon",
+      "name": "@org: lint",
+      "runtimeArgs": ["run", "lint"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org: writeTypedoc",
+      "runtimeArgs": ["run", "writeTypedoc"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org: writeReadmeMarkdown",
+      "runtimeArgs": ["run", "writeReadmeMarkdown"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/app-node-express: start",
+      "runtimeArgs": ["run", "start", "--prefix", "packages/app-node-express"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": true
+    },
+    {
+      "name": "@org/app-node-express: dev",
       "runtimeArgs": ["run", "dev", "--prefix", "packages/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
@@ -95,36 +103,23 @@
       "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
-      "autoAttachChildProcesses": false
+      "autoAttachChildProcesses": true
     },
     {
-      "name": "app-node-express > test",
-      "runtimeArgs": ["run", "--filter", "app-node-express", "test"],
+      "name": "@org/app-node-express: test",
+      "runtimeArgs": ["run", "test", "--prefix", "packages/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-node-express > clean",
-      "runtimeArgs": ["run", "--filter", "app-node-express", "clean"],
-      "presentation": { "group": "3" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "app-node-express > build",
+      "name": "@org/app-node-express: build",
       "runtimeArgs": ["run", "build", "--prefix", "packages/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
@@ -137,7 +132,46 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-vite-react > dev",
+      "name": "@org/app-node-express: clean",
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/app-node-express"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/app-node-express: lint",
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/app-node-express"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/app-vite-react: start",
+      "runtimeArgs": ["run", "start", "--prefix", "packages/app-vite-react"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/app-vite-react: dev",
       "runtimeArgs": ["run", "dev", "--prefix", "packages/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
@@ -150,46 +184,59 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-vite-react > test",
-      "runtimeArgs": ["run", "--filter", "app-vite-react", "test"],
+      "name": "@org/app-vite-react: test",
+      "runtimeArgs": ["run", "test", "--prefix", "packages/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-vite-react > build",
-      "runtimeArgs": ["run", "--filter", "app-vite-react", "build"],
+      "name": "@org/app-vite-react: build",
+      "runtimeArgs": ["run", "build", "--prefix", "packages/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-vite-react > clean",
-      "runtimeArgs": ["run", "--filter", "app-vite-react", "clean"],
+      "name": "@org/app-vite-react: clean",
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "app-vite-react > loadTranslationTypes",
+      "name": "@org/app-vite-react: lint",
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/app-vite-react"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/app-vite-react: loadTranslationTypes",
       "runtimeArgs": ["run", "loadTranslationTypes", "--prefix", "packages/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
@@ -202,21 +249,8 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org/lib-commons: clean",
-      "runtimeArgs": ["run", "--filter", "shared", "clean"],
-      "presentation": { "group": "5" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "pnpm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "@org/lib-commons: build",
-      "runtimeArgs": ["run", "shared:build"],
+      "name": "@org/lib-commons: test",
+      "runtimeArgs": ["run", "test", "--prefix", "packages/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -228,35 +262,35 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org/lib-commons: test",
-      "runtimeArgs": ["run", "--filter", "shared", "test"],
+      "name": "@org/lib-commons: build",
+      "runtimeArgs": ["run", "build", "--prefix", "packages/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org/lib-api-client: clean",
-      "runtimeArgs": ["run", "--filter", "lib-api-client", "clean"],
-      "presentation": { "group": "6" },
+      "name": "@org/lib-commons: clean",
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/lib-commons"],
+      "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org/lib-api-client: build",
-      "runtimeArgs": ["run", "lib-api-client:build"],
-      "presentation": { "group": "6" },
+      "name": "@org/lib-commons: lint",
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/lib-commons"],
+      "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
@@ -268,13 +302,52 @@
     },
     {
       "name": "@org/lib-api-client: test",
-      "runtimeArgs": ["run", "--filter", "lib-api-client", "test"],
+      "runtimeArgs": ["run", "test", "--prefix", "packages/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-api-client: build",
+      "runtimeArgs": ["run", "build", "--prefix", "packages/lib-api-client"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-api-client: clean",
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/lib-api-client"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-api-client: lint",
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/lib-api-client"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false

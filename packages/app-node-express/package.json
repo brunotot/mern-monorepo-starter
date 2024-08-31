@@ -5,12 +5,12 @@
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "test": "pnpm run build --silent && export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run",
+    "test": "npm run build --silent && export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run",
     "build": "rm -rf dist && tsc --build && tsc-alias -p tsconfig.prod.json",
     "start": "bash start.sh",
     "dev": "nodemon",
     "clean": "rm -rf ./dist",
-    "lint": "npx eslint . --fix"
+    "lint": "eslint src"
   },
   "keywords": [],
   "author": "Bruno Tot",

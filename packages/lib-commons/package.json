@@ -10,7 +10,7 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
-    "lint": "npx eslint . --fix"
+    "lint": "eslint src"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -23,6 +23,7 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
     "vitest": "^1.6.0"

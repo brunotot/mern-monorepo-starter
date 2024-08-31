@@ -23,7 +23,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@org/app-vite-react": pwd("src"),
-      "@org/lib-commons": pwd("../", "shared", "src"),
+      "@org/lib-commons": pwd("../", "lib-commons", "src"),
+      "@org/lib-api-client": pwd("../", "lib-api-client", "src"),
     },
   },
 });

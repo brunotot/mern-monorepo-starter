@@ -5,7 +5,7 @@ import path from "path";
 import toc from "markdown-toc";
 import fs from "fs";
 
-const MARKDOWN_DIR_PATH = pathFromDir("../", "md");
+const MARKDOWN_DIR_PATH = pathFromDir("../../", "readme-toc");
 const PATH_TO_README_MARKDOWN = pathFromDir("../../", "README.md");
 const MATCH_NUMBERED_MARKDOWN = /^(\d+)-(.*)$/;
 

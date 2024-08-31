@@ -12,7 +12,7 @@ import { server } from "./setup/server.setup";
       log.error((error as { message: string }).message);
     } else {
       log.error(error);
-    }
+    } //
     process.exit(1);
   }
 })();
