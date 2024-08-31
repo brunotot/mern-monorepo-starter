@@ -1,9 +1,9 @@
-name: MERN Sample App - Backend Tests
+name: test-lib-commons
 
 on:
   push:
     paths:
-      - "packages/app-node-express/**"
+      - "packages/lib-commons/**"
     branches:
       - main
   workflow_dispatch:
@@ -19,5 +19,5 @@ jobs:
       - name: 🤳 Install
         uses: ./.github/composite-actions/install
 
-      - name: 🚀 Run Backend Tests
-        run: pnpm run app-node-express:test
+      - name: 🚀 Run Shared Tests
+        run: pnpm run lib-commons:test

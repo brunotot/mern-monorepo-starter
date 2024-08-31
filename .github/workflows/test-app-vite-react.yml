@@ -1,4 +1,4 @@
-name: MERN Sample App - Frontend Tests
+name: test-app-vite-react
 
 on:
   push:
