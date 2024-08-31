@@ -4,15 +4,15 @@
 
 1. create your repository from [this](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot) template 
 2. configure your GitHub workflow permissions
-   1. navigate to **Settings** / **Actions** / **General** / **Workflow permissions**
-   2. select option `Read and write permissions`
-   3. select option `Allow GitHub Actions to create and approve pull requests`
-   4. save configuration
+   - navigate to **Settings** / **Actions** / **General** / **Workflow permissions**
+   - select option `Read and write permissions`
+   - select option `Allow GitHub Actions to create and approve pull requests`
+   - save configuration
 3. configure [Typedoc](https://typedoc.org/) deployment to [GitHub Pages](https://pages.github.com/)
-   1. navigate to **Actions** / **typedoc-generator.yml**
-   2. click on `Run workflow` button
-   3. after workflow is finished, navigate to **Settings** / **Pages**
-   4. save `gh-pages` branch as the deployment branch 
+   - navigate to **Actions** / **typedoc-generator.yml**
+   - click on `Run workflow` button
+   - after workflow is finished, navigate to **Settings** / **Pages**
+   - save `gh-pages` branch as the deployment branch 
 
 ----
 
