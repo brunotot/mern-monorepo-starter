@@ -20,7 +20,7 @@
 
 1. clone previously created repository into your local machine
 2. install dependencies with `pnpm install`
-3. configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts))
+3. configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13))
 4. you can now run your **app-node-express** with `pnpm run app-node-express:dev`
 
 ---
