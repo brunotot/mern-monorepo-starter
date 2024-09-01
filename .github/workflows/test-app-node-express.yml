@@ -23,6 +23,7 @@ jobs:
 
       - name: List all changed files
         id: run-test-flag-2
+        shell: bash
         env:
           ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
         run: |
