@@ -58,7 +58,27 @@
 <li>navigate to <strong>Actions</strong> / <strong>typedoc-generator.yml</strong></li>
 <li>click on <code>Run workflow</code> button</li>
 <li>after workflow is finished, navigate to <strong>Settings</strong> / <strong>Pages</strong></li>
-<li>save <code>gh-pages</code> branch as the deployment branch</li>
+<li>select <code>gh-pages</code> branch as the deployment branch</li>
+<li>save configuration</li>
+</ul>
+</li>
+<li>configure GitHub CI
+<ul>
+<li>navigate to <strong>Settings</strong> / <strong>Branches</strong> / <strong>Add classic branch protection rule</strong></li>
+<li>set branch name pattern to <code>main</code></li>
+<li>enable setting ✅ <code>Require a pull request before merging</code></li>
+<li>disable setting ❌ <code>Require approvals</code></li>
+<li>enable setting ✅ <code>Require status checks to pass before merging</code></li>
+<li>enable setting ✅ <code>Require branches to be up to date before merging</code></li>
+<li>select following actions as status checks:
+<ul>
+<li><strong>test-app-node-express</strong></li>
+<li><strong>test-app-vite-react</strong></li>
+<li><strong>lib-commons</strong></li>
+<li><strong>lib-api-client</strong></li>
+</ul>
+</li>
+<li>save configuration</li>
 </ul>
 </li>
 </ol>
