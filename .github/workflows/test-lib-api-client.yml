@@ -1,9 +1,10 @@
 name: test-lib-api-client
 
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
-    paths:
-      - "packages/lib-api-client/**"
     branches:
       - "**"
   merge_group:
@@ -14,11 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            lib-api-client:
+              - 'packages/lib-api-client/**'
+
       - name: 🛒 Checkout Repository
+        if: steps.changes.outputs.lib-api-client == 'true'
         uses: actions/checkout@v4
 
       - name: 🤳 Install
+        if: steps.changes.outputs.lib-api-client == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run lib-api-client Tests
+        if: steps.changes.outputs.lib-api-client == 'true'
         run: pnpm run lib-api-client:test

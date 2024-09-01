@@ -1,9 +1,10 @@
 name: test-app-node-express
 
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
-    paths:
-      - "packages/app-node-express/**"
     branches:
       - "**"
   merge_group:
@@ -14,21 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            app-node-express:
+              - 'packages/app-node-express/**'
+
       - name: 🛒 Checkout Repository
+        if: steps.changes.outputs.app-node-express == 'true'
         uses: actions/checkout@v4
 
       - name: 🤳 Install
+        if: steps.changes.outputs.app-node-express == 'true'
         uses: ./.github/composite-actions/install
 
-      - name: Check if backend files changed
-        id: check_if_backend_changed
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^packages/app-node-express/'; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: 🚀 Run app-node-express Tests
-        if: steps.check_if_backend_changed.outputs.changed == 'true'
+        if: steps.changes.outputs.app-node-express == 'true'
         run: pnpm run app-node-express:test
