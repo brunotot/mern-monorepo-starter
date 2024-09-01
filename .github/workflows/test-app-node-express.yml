@@ -2,6 +2,8 @@ name: test-app-node-express
 
 on:
   pull_request:
+    paths:
+      - "packages/app-node-express/**"
     branches:
       - "**"
   merge_group:
@@ -10,66 +12,13 @@ on:
 jobs:
   test-app-node-express:
     runs-on: ubuntu-latest
+
     steps:
       - name: 🛒 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Get changed files
-        id: run-test-flag
-        uses: tj-actions/changed-files@v45
-        with:
-          since_last_remote_commit: true
-
-      - name: List all changed files
-        id: run-test-flag-2
-        shell: bash
-        env:
-          ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
-        run: |
-          echo "any_changed=false" >> "$GITHUB_OUTPUT"
-          for file in $ALL_CHANGED_FILES; do
-            if [[ "$file" =~ ^packages/app-node-express/ ]]
-            then
-              echo "any_changed=true" >> "$GITHUB_OUTPUT"
-            fi
-          done
-
-      - name: Retrieve last test result
-        id: get-last-test-result
-        uses: actions/cache@v3
-        with:
-          path: last-test-result.txt
-          key: app-node-express-last-test-result
-        continue-on-error: true
-
-      - name: Check if last test failed
-        shell: bash
-        run: |
-          if [[ "${{ steps.run-test-flag-2.outputs.any_changed }}" == "false" ]] && [[ -f last-test-result.txt ]]; then
-            last_result=$(cat last-test-result.txt)
-            if [[ "$last_result" == "fail" ]]; then
-              echo "The last test run failed and no relevant changes were made. Failing the workflow."
-              exit 1
-            fi
-          fi
-
       - name: 🤳 Install
-        if: steps.run-test-flag-2.outputs.any_changed == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run app-node-express Tests
-        if: steps.run-test-flag-2.outputs.any_changed == 'true'
-        run: |
-          if pnpm run app-node-express:test; then
-            echo "pass" > last-test-result.txt
-          else
-            echo "fail" > last-test-result.txt
-            exit 1
-          fi
-
-      - name: Cache the last test result
-        if: steps.run-test-flag-2.outputs.any_changed == 'true'
-        uses: actions/cache@v3
-        with:
-          path: last-test-result.txt
-          key: app-node-express-last-test-result
+        run: pnpm run app-node-express:test
