@@ -15,16 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 🛒 Checkout Repository
+        uses: actions/checkout@v4
+
       - uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
             app-vite-react:
               - 'packages/app-vite-react/**'
-
-      - name: 🛒 Checkout Repository
-        if: steps.changes.outputs.app-vite-react == 'true'
-        uses: actions/checkout@v4
 
       - name: 🤳 Install
         if: steps.changes.outputs.app-vite-react == 'true'
