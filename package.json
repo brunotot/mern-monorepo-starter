@@ -20,7 +20,6 @@
     "clean": "rm -rf docs && npm run app-node-express:clean && npm run app-vite-react:clean && npm run lib-commons:clean && npm run lib-api-client:clean",
     "lint": "npm run app-node-express:lint && npm run app-vite-react:lint && npm run lib-commons:lint && npm run lib-api-client:lint",
     "writeTypedoc": "bash assets/sh/typedoc.sh",
-    "writeReadmeMarkdown": "node assets/js/writeReadmeMarkdown.js",
     "app-node-express:start": "npm run start --prefix packages/app-node-express",
     "app-node-express:dev": "npm run start --prefix packages/app-node-express",
     "app-node-express:test": "npm run test --prefix packages/app-node-express",

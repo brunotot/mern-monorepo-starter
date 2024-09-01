@@ -59,8 +59,6 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
    - after workflow is finished, navigate to **Settings** / **Pages**
    - save `gh-pages` branch as the deployment branch
 
----
-
 ### Local installation
 
 1. clone previously created repository into your local machine

@@ -67,19 +67,6 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org: writeReadmeMarkdown",
-      "runtimeArgs": ["run", "writeReadmeMarkdown"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
       "name": "@org/app-node-express: start",
       "runtimeArgs": ["run", "start", "--prefix", "packages/app-node-express"],
       "presentation": { "group": "3" },
