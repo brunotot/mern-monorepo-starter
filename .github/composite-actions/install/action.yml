@@ -4,24 +4,24 @@ description: "Sets up NodeJS and runs install"
 runs:
   using: composite
   steps:
-    - name: 🤳 Install dependencies
+    - name: ⚙️ Install PNPM package manager
       uses: pnpm/action-setup@v4.0.0
       with:
         version: 9
 
-    - name: 🚧 Setup Node.js
+    - name: ⚙️ Install Node.js
       uses: actions/setup-node@v3
       with:
         node-version-file: ".nvmrc"
         registry-url: "https://registry.npmjs.org"
         cache: "pnpm"
 
-    - name: ⚙️ Setup Git User
+    - name: ⓘ Configure Git user
       shell: bash
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
 
-    - name: Install dependencies
+    - name: 🎯 Run pnpm install
       shell: bash
       run: pnpm install --no-frozen-lockfile
