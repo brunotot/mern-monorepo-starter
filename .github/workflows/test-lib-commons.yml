@@ -1,20 +1,16 @@
 name: test-lib-commons
 
 on:
-  push:
-    paths:
-      - "packages/lib-commons/**"
-    branches:
-      - main
   pull_request:
     paths:
       - "packages/lib-commons/**"
+    branches:
+      - "**"
   merge_group:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: test-lib-commons
+  test-lib-commons:
     runs-on: ubuntu-latest
 
     steps:

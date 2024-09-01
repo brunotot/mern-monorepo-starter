@@ -1,20 +1,16 @@
 name: test-app-vite-react
 
 on:
-  push:
-    paths:
-      - "packages/app-vite-react/**"
-    branches:
-      - main
   pull_request:
     paths:
       - "packages/app-vite-react/**"
+    branches:
+      - "**"
   merge_group:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: test-app-vite-react
+  test-app-vite-react:
     runs-on: ubuntu-latest
 
     steps:

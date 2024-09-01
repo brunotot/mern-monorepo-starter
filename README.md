@@ -57,7 +57,21 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
    - navigate to **Actions** / **typedoc-generator.yml**
    - click on `Run workflow` button
    - after workflow is finished, navigate to **Settings** / **Pages**
-   - save `gh-pages` branch as the deployment branch
+   - select `gh-pages` branch as the deployment branch
+   - save configuration
+4. configure GitHub CI
+   - navigate to **Settings** / **Branches** / **Add classic branch protection rule**
+   - set branch name pattern to `main`
+   - enable setting ✅ `Require a pull request before merging`
+   - disable setting ❌ `Require approvals`
+   - enable setting ✅ `Require status checks to pass before merging`
+   - enable setting ✅ `Require branches to be up to date before merging`
+   - select following actions as status checks:
+     - **test-app-node-express**
+     - **test-app-vite-react**
+     - **lib-commons**
+     - **lib-api-client**
+   - save configuration
 
 ### Local installation
 
