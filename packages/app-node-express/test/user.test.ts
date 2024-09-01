@@ -6,6 +6,7 @@ describe("user", () => {
     describe("given the user does not exist", () => {
       it("should return a 404", async () => {
         const nonExistingUsername = "usernameWhichShouldFail";
+        throw new Error("Test");
         await supertest(globalThis.expressApp)
           .get(`/users/findOneByUsername?username=${nonExistingUsername}`)
           .expect(404);
