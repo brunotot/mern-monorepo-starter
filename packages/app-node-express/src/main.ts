@@ -1,7 +1,7 @@
 import { log } from "./setup/log.setup";
 import { server } from "./setup/server.setup";
 
-//
+// This is a test.
 
 (async () => {
   try {
