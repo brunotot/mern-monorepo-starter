@@ -30,6 +30,8 @@ jobs:
           # Initialize the output variable
           echo "any_changed=false" >> $GITHUB_OUTPUT
 
+          echo "all changed files: $ALL_CHANGED_FILES"
+
           # Loop through each file in the ALL_CHANGED_FILES
           for file in $ALL_CHANGED_FILES; do
               if [[ $file =~ $pattern ]]; then
