@@ -35,7 +35,7 @@ jobs:
           # Loop through each file in the ALL_CHANGED_FILES
           for file in $ALL_CHANGED_FILES; do
             echo "checking file: $file"
-            [[ "$file" =~ ^packages/app-node-express/ ]] && echo "any_changed='true'" >> "$GITHUB_OUTPUT" && break
+            [[ "$file" =~ ^packages/app-node-express/ ]] && echo "detected changes for app-node-express" && echo "any_changed='true'" >> "$GITHUB_OUTPUT" && break
           done
 
       - name: 🤳 Install
