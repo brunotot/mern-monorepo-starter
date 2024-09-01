@@ -30,7 +30,10 @@ jobs:
           echo "any_changed=false" >> "$GITHUB_OUTPUT"
           echo "We're here."
           for file in $ALL_CHANGED_FILES; do
-            [[ "$file" =~ ^packages/app-node-express/ ]] && echo "detected changes for app-node-express" && echo "any_changed=true" >> "$GITHUB_OUTPUT" && break
+            if [[ "$file" =~ ^packages/app-node-express/ ]]
+            then
+              echo "any_changed=true" >> "$GITHUB_OUTPUT"
+            fi
           done
 
       - name: 🤳 Install
