@@ -9,6 +9,8 @@ on:
   pull_request:
     paths:
       - "packages/app-node-express/**"
+    branches:
+      - main
   merge_group:
   workflow_dispatch:
 

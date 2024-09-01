@@ -9,6 +9,8 @@ on:
   pull_request:
     paths:
       - "packages/lib-commons/**"
+    branches:
+      - main
   merge_group:
   workflow_dispatch:
 
