@@ -5,12 +5,12 @@ on:
     paths:
       - "packages/lib-commons/**"
     branches:
-      - main
+      - "**"
   pull_request:
     paths:
       - "packages/lib-commons/**"
     branches:
-      - main
+      - "**"
   merge_group:
   workflow_dispatch:
 

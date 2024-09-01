@@ -10,7 +10,7 @@ on:
     paths:
       - "packages/lib-api-client/**"
     branches:
-      - main
+      - "**"
   merge_group:
   workflow_dispatch:
 
