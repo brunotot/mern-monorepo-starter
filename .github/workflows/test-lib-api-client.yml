@@ -1,11 +1,6 @@
 name: test-lib-api-client
 
 on:
-  push:
-    paths:
-      - "packages/lib-api-client/**"
-    branches:
-      - main
   pull_request:
     paths:
       - "packages/lib-api-client/**"

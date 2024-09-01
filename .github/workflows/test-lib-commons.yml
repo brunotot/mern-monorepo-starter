@@ -1,11 +1,6 @@
 name: test-lib-commons
 
 on:
-  push:
-    paths:
-      - "packages/lib-commons/**"
-    branches:
-      - "**"
   pull_request:
     paths:
       - "packages/lib-commons/**"

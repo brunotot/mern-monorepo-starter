@@ -1,11 +1,6 @@
 name: test-app-node-express
 
 on:
-  push:
-    paths:
-      - "packages/app-node-express/**"
-    branches:
-      - "**"
   pull_request:
     paths:
       - "packages/app-node-express/**"
