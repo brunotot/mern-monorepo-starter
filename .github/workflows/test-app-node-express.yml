@@ -1,6 +1,9 @@
 name: test-app-node-express
 
 on:
+  push:
+    branches:
+      - "main"
   pull_request:
     branches:
       - "**"
