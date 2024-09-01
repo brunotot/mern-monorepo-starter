@@ -15,20 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🛒 Checkout Repository
+      - name: 🛒 Checkout repository
         uses: actions/checkout@v4
 
-      - uses: dorny/paths-filter@v3
+      - name: ⚙️ Configure paths filter environment variable
+        uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
             app-vite-react:
               - 'packages/app-vite-react/**'
 
-      - name: 🤳 Install
+      - name: 🛠 Setup Git, PNPM and Node.js
         if: steps.changes.outputs.app-vite-react == 'true'
         uses: ./.github/composite-actions/install
 
-      - name: 🚀 Run app-vite-react Tests
+      - name: 🚀 Run test
         if: steps.changes.outputs.app-vite-react == 'true'
         run: pnpm run app-vite-react:test
