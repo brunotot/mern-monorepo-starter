@@ -18,8 +18,8 @@ jobs:
         id: run-test-flag
         uses: tj-actions/changed-files@v45
         # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
-        # with:
-        #   since_last_remote_commit: true
+        with:
+          since_last_remote_commit: true
 
       - name: List all changed files
         env:
