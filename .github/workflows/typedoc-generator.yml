@@ -13,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🛒 Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🤳 Install
+      - name: 🛠 Setup Git, PNPM and Node.js
         uses: ./.github/composite-actions/install
 
-      - name: 🔥 Generate documentation
+      - name: ⚙️ Build Typedoc assets
         run: pnpm run writeTypedoc
 
-      - name: 🚢 Deploy to GitHub Pages
+      - name: 🚢 Deploy Typedoc assets to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
