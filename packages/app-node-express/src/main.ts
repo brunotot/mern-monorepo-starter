@@ -1,9 +1,6 @@
 import { log } from "./setup/log.setup";
 import { server } from "./setup/server.setup";
 
-/**
- * app-node-express main entrypoint.
- */
 (async () => {
   try {
     await server.init();
