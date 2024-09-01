@@ -45,7 +45,7 @@ jobs:
 
       - name: Prevent from running
         if: steps.changed-files-specific.outputs.any_changed != 'true'
-        run: exit 1
+        run: exit 0
 
   test-app-node-express:
     timeout-minutes: 60
