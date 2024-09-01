@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: test-app-vite-react
+  test-app-vite-react:
     runs-on: ubuntu-latest
 
     steps:

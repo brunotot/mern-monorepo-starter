@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: test-lib-commons
+  test-lib-commons:
     runs-on: ubuntu-latest
 
     steps:

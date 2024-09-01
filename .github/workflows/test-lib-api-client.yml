@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: test-lib-api-client
+  test-lib-api-client:
     runs-on: ubuntu-latest
 
     steps:
