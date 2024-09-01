@@ -8,6 +8,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  test-app-node-express-init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files in the docs folder
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v34
+        with:
+          files: packages/app-node-express/**
+
+      - name: Run step if any file(s) in the docs folder change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: echo app-node-express is affected
+
+      - name: Prevent from running
+        if: steps.changed-files-specific.outputs.any_changed != 'true'
+        run: exit 1
+
   test-app-node-express:
     runs-on: ubuntu-latest
 
@@ -18,10 +39,5 @@ jobs:
       - name: 🤳 Install
         uses: ./.github/composite-actions/install
 
-      - name: Check if backend files changed
-        id: check_if_backend_changed
-        run: if git diff --name-only HEAD~1 HEAD | grep -q '^packages/app-node-express/'; then echo "changed=true" >> $GITHUB_OUTPUT; else echo "changed=false" >> $GITHUB_OUTPUT; fi
-
       - name: 🚀 Run app-node-express Tests
-        if: steps.check_if_backend_changed.outputs.changed == 'true'
         run: pnpm run app-node-express:test
