@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Get changed files
-        id: changed-files
+        id: run-test-flag
         uses: tj-actions/changed-files@v45
         # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
         # with:
@@ -23,25 +23,20 @@ jobs:
 
       - name: List all changed files
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
         run: |
-          pattern="^packages/app-node-express/"
-
           # Initialize the output variable
           echo "any_changed=false" >> $GITHUB_OUTPUT
 
-          echo "all changed files: $ALL_CHANGED_FILES"
-
           # Loop through each file in the ALL_CHANGED_FILES
           for file in $ALL_CHANGED_FILES; do
-            echo "checking file: $file"
             [[ "$file" =~ ^packages/app-node-express/ ]] && echo "detected changes for app-node-express" && echo "any_changed='true'" >> "$GITHUB_OUTPUT" && break
           done
 
       - name: 🤳 Install
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: steps.run-test-flag.outputs.any_changed == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run app-node-express Tests
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: steps.run-test-flag.outputs.any_changed == 'true'
         run: pnpm run app-node-express:test
