@@ -6,10 +6,15 @@ on:
       - "packages/lib-api-client/**"
     branches:
       - main
+  pull_request:
+    paths:
+      - "packages/lib-api-client/**"
+  merge_group:
   workflow_dispatch:
 
 jobs:
   test:
+    name: test-lib-api-client
     runs-on: ubuntu-latest
 
     steps:

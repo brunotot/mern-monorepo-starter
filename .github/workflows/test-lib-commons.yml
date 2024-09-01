@@ -6,10 +6,15 @@ on:
       - "packages/lib-commons/**"
     branches:
       - main
+  pull_request:
+    paths:
+      - "packages/lib-commons/**"
+  merge_group:
   workflow_dispatch:
 
 jobs:
   test:
+    name: test-lib-commons
     runs-on: ubuntu-latest
 
     steps:

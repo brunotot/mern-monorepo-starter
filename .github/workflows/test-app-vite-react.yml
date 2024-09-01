@@ -6,10 +6,15 @@ on:
       - "packages/app-vite-react/**"
     branches:
       - main
+  pull_request:
+    paths:
+      - "packages/app-vite-react/**"
+  merge_group:
   workflow_dispatch:
 
 jobs:
   test:
+    name: test-app-vite-react
     runs-on: ubuntu-latest
 
     steps:
