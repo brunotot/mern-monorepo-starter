@@ -19,5 +19,5 @@ jobs:
       - name: 🤳 Install
         uses: ./.github/composite-actions/install
 
-      - name: 🚀 Run Shared Tests
+      - name: 🚀 Run lib-commons Tests
         run: pnpm run lib-commons:test

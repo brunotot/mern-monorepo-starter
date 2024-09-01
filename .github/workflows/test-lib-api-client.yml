@@ -1,15 +1,11 @@
-name: test-app-node-express
+name: test-lib-api-client
 
 on:
   push:
     paths:
-      - "packages/app-node-express/**"
+      - "packages/lib-api-client/**"
     branches:
       - main
-  pull_request:
-    paths:
-      - "packages/app-node-express/**"
-  merge_group:
   workflow_dispatch:
 
 jobs:
@@ -23,5 +19,5 @@ jobs:
       - name: 🤳 Install
         uses: ./.github/composite-actions/install
 
-      - name: 🚀 Run app-node-express Tests
-        run: pnpm run app-node-express:test
+      - name: 🚀 Run lib-api-client Tests
+        run: pnpm run lib-api-client:test

@@ -50,8 +50,8 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 1. create your repository from [this](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot) template
 2. configure your GitHub workflow permissions
    - navigate to **Settings** / **Actions** / **General** / **Workflow permissions**
-   - select option `Read and write permissions`
-   - select option `Allow GitHub Actions to create and approve pull requests`
+   - enable setting `Read and write permissions`
+   - enable setting `Allow GitHub Actions to create and approve pull requests`
    - save configuration
 3. configure [Typedoc](https://typedoc.org/) deployment to [GitHub Pages](https://pages.github.com/)
    - navigate to **Actions** / **typedoc-generator.yml**
