@@ -1,4 +1,4 @@
-#name: test-app-node-express
+name: test-app-node-express
 
 on:
   pull_request:
@@ -28,7 +28,6 @@ jobs:
           ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
         run: |
           echo "any_changed=false" >> "$GITHUB_OUTPUT"
-          echo "We're here."
           for file in $ALL_CHANGED_FILES; do
             if [[ "$file" =~ ^packages/app-node-express/ ]]
             then
