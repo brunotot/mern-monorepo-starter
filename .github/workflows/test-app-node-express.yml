@@ -22,11 +22,12 @@ jobs:
           since_last_remote_commit: true
 
       - name: List all changed files
+        id: run-test-flag-2
         env:
           ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
         run: |
           # Initialize the output variable
-          echo "any_changed=false" >> $GITHUB_OUTPUT
+          echo "any_changed=false" >> "$GITHUB_OUTPUT"
 
           # Loop through each file in the ALL_CHANGED_FILES
           for file in $ALL_CHANGED_FILES; do
@@ -34,9 +35,9 @@ jobs:
           done
 
       - name: 🤳 Install
-        if: steps.run-test-flag.outputs.any_changed == 'true'
+        if: steps.run-test-flag-2.outputs.any_changed == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run app-node-express Tests
-        if: steps.run-test-flag.outputs.any_changed == 'true'
+        if: steps.run-test-flag-2.outputs.any_changed == 'true'
         run: pnpm run app-node-express:test
