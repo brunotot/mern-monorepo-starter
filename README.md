@@ -56,7 +56,8 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 3. configure [Typedoc](https://typedoc.org/) deployment to [GitHub Pages](https://pages.github.com/)
    - navigate to **Actions** / **typedoc-generator.yml**
    - click on `Run workflow` button
-   - after workflow is finished, navigate to **Settings** / **Pages**
+   - when typedoc finishes, make sure to do the same for all test workflows
+   - after all workflows finish, navigate to **Settings** / **Pages**
    - select `gh-pages` branch as the deployment branch
    - save configuration
 4. configure GitHub CI
@@ -69,8 +70,8 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
    - select following actions as status checks:
      - **test-app-node-express**
      - **test-app-vite-react**
-     - **lib-commons**
-     - **lib-api-client**
+     - **test-lib-commons**
+     - **test-lib-api-client**
    - save configuration
 
 ### Local installation
