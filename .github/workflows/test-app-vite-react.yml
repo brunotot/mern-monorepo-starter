@@ -2,8 +2,6 @@ name: test-app-vite-react
 
 on:
   pull_request:
-    paths:
-      - "packages/app-vite-react/**"
     branches:
       - "**"
   merge_group:

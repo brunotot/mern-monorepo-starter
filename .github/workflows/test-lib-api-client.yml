@@ -2,8 +2,6 @@ name: test-lib-api-client
 
 on:
   pull_request:
-    paths:
-      - "packages/lib-api-client/**"
     branches:
       - "**"
   merge_group:

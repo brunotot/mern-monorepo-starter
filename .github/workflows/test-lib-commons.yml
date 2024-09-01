@@ -2,8 +2,6 @@ name: test-lib-commons
 
 on:
   pull_request:
-    paths:
-      - "packages/lib-commons/**"
     branches:
       - "**"
   merge_group:

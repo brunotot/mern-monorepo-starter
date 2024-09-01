@@ -2,8 +2,6 @@ name: test-app-node-express
 
 on:
   pull_request:
-    paths:
-      - "packages/app-node-express/**"
     branches:
       - "**"
   merge_group:
