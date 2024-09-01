@@ -38,16 +38,10 @@ jobs:
               fi
           done
 
-      - name: Run step if any file(s) in the docs folder change
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: echo app-node-express is affected
-
-      - name: Prevent from running
-        if: steps.changed-files-specific.outputs.any_changed != 'true'
-        run: exit 0
-
       - name: 🤳 Install
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run app-node-express Tests
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: pnpm run app-node-express:test
