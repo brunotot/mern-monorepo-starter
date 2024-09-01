@@ -1,6 +1,8 @@
 import { log } from "./setup/log.setup";
 import { server } from "./setup/server.setup";
 
+//
+
 (async () => {
   try {
     await server.init();
