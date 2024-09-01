@@ -15,11 +15,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get changed files in the docs folder
-        id: changed-files-specific
+      - name: Get changed files
+        id: changed-files
         uses: tj-actions/changed-files@v45
-        with:
-          files: packages/app-node-express/**
+        # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
+        # with:
+        #   since_last_remote_commit: true
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          pattern="^packages/app-node-express/"
+
+          # Initialize the output variable
+          echo "any_changed=false" >> $GITHUB_OUTPUT
+
+          # Loop through each file in the ALL_CHANGED_FILES
+          for file in $ALL_CHANGED_FILES; do
+              if [[ $file =~ $pattern ]]; then
+                  echo "any_changed=true" >> $GITHUB_OUTPUT
+                  break
+              fi
+          done
 
       - name: Run step if any file(s) in the docs folder change
         if: steps.changed-files-specific.outputs.any_changed == 'true'
