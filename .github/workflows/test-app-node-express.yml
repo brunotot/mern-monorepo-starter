@@ -25,14 +25,7 @@ jobs:
         id: run-test-flag-2
         env:
           ALL_CHANGED_FILES: ${{ steps.run-test-flag.outputs.all_changed_files }}
-        run: |
-          # Initialize the output variable
-          echo "any_changed=false" >> "$GITHUB_OUTPUT"
-
-          # Loop through each file in the ALL_CHANGED_FILES
-          for file in $ALL_CHANGED_FILES; do
-            [[ "$file" =~ ^packages/app-node-express/ ]] && echo "detected changes for app-node-express" && echo "any_changed=true" >> "$GITHUB_OUTPUT" && break
-          done
+        run: echo "any_changed=false" >> "$GITHUB_OUTPUT" && for file in $ALL_CHANGED_FILES; do [[ "$file" =~ ^packages/app-node-express/ ]] && echo "detected changes for app-node-express" && echo "any_changed=true" >> "$GITHUB_OUTPUT" && break done
 
       - name: 🤳 Install
         if: steps.run-test-flag-2.outputs.any_changed == 'true'
