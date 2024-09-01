@@ -30,7 +30,9 @@ jobs:
         run: exit 1
 
   test-app-node-express:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
+    needs: [test-app-node-express-init]
 
     steps:
       - name: 🛒 Checkout Repository
