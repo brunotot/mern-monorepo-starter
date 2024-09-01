@@ -14,11 +14,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            app-node-express:
+              - 'packages/app-node-express/**'
+
       - name: 🛒 Checkout Repository
+        if: steps.changes.outputs.src == 'true'
         uses: actions/checkout@v4
 
       - name: 🤳 Install
+        if: steps.changes.outputs.src == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run app-node-express Tests
+        if: steps.changes.outputs.src == 'true'
         run: pnpm run app-node-express:test
