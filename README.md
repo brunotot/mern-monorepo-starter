@@ -47,32 +47,63 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 ### GitHub repository setup
 
-1. create your repository from [this](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot) template
-2. configure your GitHub workflow permissions
-   - navigate to **Settings** / **Actions** / **General** / **Workflow permissions**
-   - enable setting `Read and write permissions`
-   - enable setting `Allow GitHub Actions to create and approve pull requests`
-   - save configuration
-3. configure [Typedoc](https://typedoc.org/) deployment to [GitHub Pages](https://pages.github.com/)
-   - navigate to **Actions** / **typedoc-generator.yml**
-   - click on `Run workflow` button
-   - when typedoc finishes, make sure to do the same for all test workflows
-   - after all workflows finish, navigate to **Settings** / **Pages**
-   - select `gh-pages` branch as the deployment branch
-   - save configuration
-4. configure GitHub CI
-   - navigate to **Settings** / **Branches** / **Add classic branch protection rule**
-   - set branch name pattern to `main`
-   - enable setting ✅ `Require a pull request before merging`
-   - disable setting ❌ `Require approvals`
-   - enable setting ✅ `Require status checks to pass before merging`
-   - enable setting ✅ `Require branches to be up to date before merging`
-   - select following actions as status checks:
+1. **Create your repository**  
+   Create your monorepo repository using [this template](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
+
+---
+
+2. **Configure GitHub workflow permissions**
+
+   <details>
+   <summary>Enable GitHub actions to create and approve pull requests.</summary>
+
+   - Go to **Settings** > **Actions** > **General** > **Workflow permissions**.
+   - Enable the following settings:
+     - ✅ `Read and write permissions`.
+     - ✅ `Allow GitHub Actions to create and approve pull requests`.
+   - Save changes.
+
+   </details>
+
+---
+
+3. **Configure GitHub actions**
+
+   <details>
+   <summary>Run existing actions for the first time.</summary>
+
+   - Go to **Actions** > **typedoc-generator.yml**.
+   - Click on the `Run workflow` button.
+   - Repeat the process for all `test-` prefixed workflows.
+   - After all workflows finish, navigate to **Settings** > **Pages**.
+   - Select the `gh-pages` branch as the deployment source.
+   - Save changes.
+
+   </details>
+
+---
+
+4. **Configure GitHub CI**
+
+   <details>
+   <summary>Configure branch protection rules to prevent direct pushes to the `main` branch, require pull requests for merging, and all status checks to pass before merging.</summary>
+
+   - Navigate to **Settings** > **Branches** > **Add classic branch protection rule**.
+   - Set the branch name pattern to `main`.
+   - Enable the following settings:
+     - ✅ `Require a pull request before merging`
+     - ✅ `Require status checks to pass before merging`
+     - ✅ `Require branches to be up to date before merging`
+   - Disable the setting:
+     - ❌ `Require approvals`
+   - Select the following workflows as required for all pull requests:
      - **test-app-node-express**
      - **test-app-vite-react**
      - **test-lib-commons**
      - **test-lib-api-client**
-   - save configuration
+   - Save the configuration.
+
+   </details>
 
 ### Local installation
 
