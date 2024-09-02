@@ -61,8 +61,8 @@ Enable GitHub actions to create and approve pull requests.
 
 - Go to **Settings** > **Actions** > **General** > **Workflow permissions**.
 - Enable the following settings:
-- ✅ `Read and write permissions`.
-- ✅ `Allow GitHub Actions to create and approve pull requests`.
+  - ✅ `Read and write permissions`.
+  - ✅ `Allow GitHub Actions to create and approve pull requests`.
 - Save changes.
 
 </details>
