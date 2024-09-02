@@ -47,14 +47,14 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 ### GitHub repository setup
 
-<details open>
+<details>
 <summary>1. <b>Create your repository</b></summary>
 
 Create your monorepo repository using [this template](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
 
 </details>
 
-<details open>
+<details>
 <summary>2. <b>Configure GitHub permissions</b></summary>
 
 Enable GitHub actions to create and approve pull requests.
@@ -67,7 +67,7 @@ Enable GitHub actions to create and approve pull requests.
 
 </details>
 
-<details open>
+<details>
 <summary>3. <b>Configure GitHub actions</b></summary>
 
 Run existing actions for the first time.
@@ -81,7 +81,7 @@ Run existing actions for the first time.
 
 </details>
 
-<details open>
+<details>
 <summary>4. <b>Configure GitHub ci</b></summary>
 
 Configure branch protection rules to prevent direct pushes to the `main` branch, require pull requests for merging, and all status checks to pass before merging.
@@ -105,10 +105,41 @@ Configure branch protection rules to prevent direct pushes to the `main` branch,
 
 ### Local installation
 
-1. clone previously created repository into your local machine
-2. install dependencies with `pnpm install`
-3. configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13))
-4. you can now run your **app-node-express** with `pnpm run app-node-express:dev`
+<details>
+<summary>1. <b>Clone to local machine</b></summary>
+
+Clone previously created repository into your local machine.
+
+```sh
+git clone https://github.com/YOUR_USER/YOUR_REPO.git
+```
+
+</details>
+
+<details>
+<summary>2. <b>Install dependencies</b></summary>
+
+Install dependencies with `pnpm`
+
+```sh
+pnpm install
+```
+
+</details>
+
+<details>
+<summary>3. <b>Configure environment variables</b></summary>
+
+Configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13))
+
+</details>
+
+<details>
+<summary>4. <b>Run a sample app locally</b></summary>
+
+You can now run your **app-node-express** with `pnpm run app-node-express:dev`
+
+</details>
 
 ## Deploy
 
