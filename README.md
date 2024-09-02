@@ -7,25 +7,7 @@
   </picture>
 </p>
 
-<p align="center">
-  <img alt="MongoDB badge" src="https://img.shields.io/badge/MongoDB-20232A?style=for-the-badge&logo=mongodb&logoColor=02ED64">
-  <img alt="Express badge" src="https://img.shields.io/badge/Express-404D59?style=for-the-badge&logo=express">
-  <img alt="React badge" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
-  <img alt="NodeJS badge" src="https://img.shields.io/badge/Node-404D59?style=for-the-badge&logo=Node.js&logoColor=43853D">
-</p>
-
-TOC
-
-- [What is `typescript-monorepo-starter`?](#what-is-typescript-monorepo-starter)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-  - [GitHub repository setup](#github-repository-setup)
-  - [Local installation](#local-installation)
-- [Deploy](#deploy)
-  - [Deploy with Railway](#deploy-with-railway)
-- [Recommended VSCode extensions](#recommended-vscode-extensions)
-
-## What is `typescript-monorepo-starter`?
+## 🧐 What is `typescript-monorepo-starter`?
 
 `typescript-monorepo-starter` is a GitHub template designed to kickstart your next **TypeScript 5** project, offering an opinionated, ready-to-use monorepo structure that takes care of all the tricky configuration for you.
 
@@ -36,14 +18,32 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 - [lib-api-client](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/), [ts-rest](https://ts-rest.com/)]</sup>
 - [lib-commons](https://www.typescriptlang.org/) <sup>[[TS Compiler](https://www.typescriptlang.org/)]</sup>
 
-## Prerequisites
+<p align="center">
+  <img alt="MongoDB badge" src="https://img.shields.io/badge/MongoDB-20232A?style=for-the-badge&logo=mongodb&logoColor=02ED64">
+  <img alt="Express badge" src="https://img.shields.io/badge/Express-404D59?style=for-the-badge&logo=express">
+  <img alt="React badge" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+  <img alt="NodeJS badge" src="https://img.shields.io/badge/Node-404D59?style=for-the-badge&logo=Node.js&logoColor=43853D">
+</p>
+
+TOC
+
+- [🧐 What is `typescript-monorepo-starter`?](#-what-is-typescript-monorepo-starter)
+- [🔧 Prerequisites](#-prerequisites)
+- [💻 Installation](#-installation)
+  - [GitHub repository setup](#github-repository-setup)
+  - [Local installation](#local-installation)
+- [🚢 Deploy](#-deploy)
+  - [Deploy with Railway](#deploy-with-railway)
+- [🧩 Recommended VSCode extensions](#-recommended-vscode-extensions)
+
+## 🔧 Prerequisites
 
 - **PNPM**
 - **Node.js**
 - **Git**
 - **VS Code** (Optional)
 
-## Installation
+## 💻 Installation
 
 ### GitHub repository setup
 
@@ -141,7 +141,7 @@ You can now run your **app-node-express** with `pnpm run app-node-express:dev`
 
 </details>
 
-## Deploy
+## 🚢 Deploy
 
 ### Deploy with Railway
 
@@ -151,7 +151,7 @@ You can now run your **app-node-express** with `pnpm run app-node-express:dev`
 4. select **`typescript-monorepo-starter`** template
 5. finally, deploy changes 🚀
 
-## Recommended VSCode extensions
+## 🧩 Recommended VSCode extensions
 
 - [Auto Import - ES6, TS, JSX, TSX](https://marketplace.visualstudio.com/items?itemName=NuclleaR.vscode-extension-auto-import)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
