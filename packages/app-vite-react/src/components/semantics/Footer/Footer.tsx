@@ -31,7 +31,7 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
             >
               Swagger API
             </Link>
-            <Typography>Demo App © {new Date().getFullYear()}</Typography>
+            <Typography>@org © {new Date().getFullYear()}</Typography>
           </Box>
         </Box>
       </Container>
