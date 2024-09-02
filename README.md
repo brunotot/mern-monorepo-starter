@@ -47,61 +47,13 @@ TOC
 
 ### GitHub repository setup
 
-<details>
-<summary>1. <b>Create your repository</b></summary>
+1. <details><summary>Create your repository</summary>Create your monorepo repository using <a href="https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot">this template</a>.</details>
 
-Create your monorepo repository using [this template](https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot).
+2. <details><summary>Configure GitHub permissions</summary>Enable GitHub actions to create and approve pull requests.<ul><li>Go to <b>Settings</b> > <b>Actions</b> > <b>General</b> > <b>Workflow permissions</b></li><li>Enable the following settings:<ul><li>✅ <i>Read and write permissions</i></li><li>✅ <i>Allow GitHub Actions to create and approve pull requests</i></li></ul></li></ul></details>
 
-</details>
+3. <details><summary>Configure GitHub actions</summary>Run existing actions for the first time.<ul><li>Go to <b>Actions</b> > <b>typedoc-generator.yml</b></li><li>Click on the <code>Run workflow</code> button.</li><li>Repeat the process for all <code>test-</code> prefixed workflows.</li><li>After all workflows finish, navigate to <b>Settings</b> > <b>Pages</b>.</li><li>Select the <code>gh-pages</code> branch as the deployment source.</li><li>Save changes.</li></ul></details>
 
-<details>
-<summary>2. <b>Configure GitHub permissions</b></summary>
-
-Enable GitHub actions to create and approve pull requests.
-
-- Go to **Settings** > **Actions** > **General** > **Workflow permissions**.
-- Enable the following settings:
-  - ✅ `Read and write permissions`.
-  - ✅ `Allow GitHub Actions to create and approve pull requests`.
-- Save changes.
-
-</details>
-
-<details>
-<summary>3. <b>Configure GitHub actions</b></summary>
-
-Run existing actions for the first time.
-
-- Go to **Actions** > **typedoc-generator.yml**.
-- Click on the `Run workflow` button.
-- Repeat the process for all `test-` prefixed workflows.
-- After all workflows finish, navigate to **Settings** > **Pages**.
-- Select the `gh-pages` branch as the deployment source.
-- Save changes.
-
-</details>
-
-<details>
-<summary>4. <b>Configure GitHub ci</b></summary>
-
-Configure branch protection rules to prevent direct pushes to the `main` branch, require pull requests for merging, and all status checks to pass before merging.
-
-- Navigate to **Settings** > **Branches** > **Add classic branch protection rule**.
-- Set the branch name pattern to `main`.
-- Enable the following settings:
-  - ✅ `Require a pull request before merging`
-  - ✅ `Require status checks to pass before merging`
-  - ✅ `Require branches to be up to date before merging`
-- Disable the setting:
-  - ❌ `Require approvals`
-- Select the following workflows as required for all pull requests:
-  - **test-app-node-express**
-  - **test-app-vite-react**
-  - **test-lib-commons**
-  - **test-lib-api-client**
-- Save changes.
-
-</details>
+4. <details><summary>Configure GitHub ci</summary>Configure branch protection rules to prevent direct pushes to the  <code>main</code> branch, require pull requests for merging, and all status checks to pass before merging.<ul><li>Set the branch name pattern to <code>main</code>.</li><li>Enable the following settings:<ul><li>✅<code>Require a pull request before merging</code></li><li>✅<code>Require status checks to pass before merging</code></li><li>✅<code>Require branches to be up to date before merging</code></li></ul></li><li>Disable the setting:<ul><li>❌ <code>Require approvals</code></li></ul></li><li>Select the following workflows as required for all pull requests:<ul><li><b>test-app-node-express</b></li><li><b>test-app-vite-react</b></li><li><b>test-lib-commons</b></li><li><b>test-lib-api-client</b></li></ul></li><li>Save changes.</li></ul></details>
 
 ### Local installation
 
