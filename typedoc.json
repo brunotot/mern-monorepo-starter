@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "name": "Demo App",
+  "name": "@org",
   "includeVersion": false,
   "excludeInternal": true,
   "pretty": true,
