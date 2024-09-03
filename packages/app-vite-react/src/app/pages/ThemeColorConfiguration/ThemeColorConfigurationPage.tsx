@@ -1,5 +1,4 @@
 import { Box, Card, CardContent, TextField, Typography, useTheme } from "@mui/material";
-import { reactServer } from "@org/app-vite-react/setup/reactServer.setup";
 
 export function ThemeColorConfigurationPage() {
   const theme = useTheme();
@@ -16,10 +15,11 @@ export function ThemeColorConfigurationPage() {
               sx={{ "& label": { fontWeight: "bold" } }}
               color="primary"
               label="Primary"
-              onChange={e => {
-                reactServer.changeTheme({
+              onChange={() => {
+                /*reactServer.changeTheme({
                   colors: { primary: e.target.value },
-                });
+                });*/
+                console.log("TODO!!!");
               }}
               value={theme.palette.primary.main}
               type="color"

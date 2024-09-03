@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { Experimental_CssVarsProvider as MuiThemeProvider } from "@mui/material/styles";
-import { reactServer } from "@org/app-vite-react/setup/reactServer.setup";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material";
+import { sigTheme } from "@org/app-vite-react/signals/sigTheme";
 
 export function ThemeProvider({ children }: PropsWithChildren) {
-  return <MuiThemeProvider theme={reactServer.signals.theme.value}>{children}</MuiThemeProvider>;
+  return <MuiThemeProvider theme={sigTheme.value}>{children}</MuiThemeProvider>;
 }

@@ -1,14 +1,10 @@
 import type { ReactNode } from "react";
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { type Signal, signal } from "@preact/signals-react";
 import type { RouteObject } from "react-router-dom";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
 import type { NavigationRoutes } from "@org/app-vite-react/config/NavigationRoute.config";
-import type { MuiThemeConfig, MuiThemeValue } from "@org/app-vite-react/config/MuiTheme.config";
-import { createTheme } from "@org/app-vite-react/config/MuiTheme.config";
 
 import { Layout } from "@org/app-vite-react/components/layout/Layout";
 import type { Provider } from "@org/app-vite-react/components/providers/Providers";
@@ -19,20 +15,12 @@ import { QueryClientProvider } from "@org/app-vite-react/components/providers/im
 
 import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
 import { RootErrorPage } from "@org/app-vite-react/app/pages/RootError";
-
-type ReactAppSignals = {
-  theme: Signal<MuiThemeValue>;
-};
+import { KeycloakAuthProvider } from "./components/providers";
 
 type ReactAppConfig = {
   providers?: Provider[];
   errorElement?: ReactNode;
   routes: NavigationRoutes;
-  theme: MuiThemeConfig;
-};
-
-type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
 };
 
 function convertToRoutes(data: NavigationRoutes): RouteObject[] {
@@ -51,7 +39,12 @@ function convertToRoutes(data: NavigationRoutes): RouteObject[] {
 
 export class ReactApp {
   static readonly #DEFAULT_ROOT_ERROR_PAGE = (<RootErrorPage />);
-  static readonly #COMMON_PROVIDERS = [QueryClientProvider, StylesProvider, ThemeProvider];
+  static readonly #COMMON_PROVIDERS = [
+    KeycloakAuthProvider,
+    QueryClientProvider,
+    StylesProvider,
+    ThemeProvider,
+  ];
 
   // prettier-ignore
   static readonly #COMMON_ROUTES: NavigationRoutes = [
@@ -59,7 +52,6 @@ export class ReactApp {
       { label: () => "",                 Component: Status404Page,               path: "*",                 hidden: true },
     ];
 
-  signals!: ReactAppSignals;
   config!: ReactAppConfig;
   routes!: NavigationRoutes;
   providers!: Provider[];
@@ -71,22 +63,14 @@ export class ReactApp {
 
   run(config: ReactAppConfig) {
     this.#loadConfig(config);
-    ReactDOM.createRoot(document.getElementById("root")!).render(
+    /*ReactDOM.createRoot(document.getElementById("root")!).render(
       <React.StrictMode>
         <RouterProvider router={this.router} />
       </React.StrictMode>,
+    );*/
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+      <RouterProvider router={this.router} />,
     );
-  }
-
-  changeTheme(theme: DeepPartial<MuiThemeConfig>) {
-    this.signals.theme.value = this.#loadTheme({
-      config: { ...this.config.theme.config, ...theme.config },
-      colors: { ...this.config.theme.colors, ...theme.colors },
-    });
-  }
-
-  #loadTheme(theme: MuiThemeConfig) {
-    return createTheme(theme);
   }
 
   #loadConfig(config: ReactAppConfig) {
@@ -94,13 +78,6 @@ export class ReactApp {
     this.routes = [...config.routes, ...ReactApp.#COMMON_ROUTES];
     this.providers = [...(config.providers ?? []), ...ReactApp.#COMMON_PROVIDERS];
     this.router = this.#createBrowserRouter();
-    this.signals = this.#buildSignals(config);
-  }
-
-  #buildSignals({ theme }: ReactAppConfig): ReactAppSignals {
-    return {
-      theme: signal(this.#loadTheme(theme)),
-    };
   }
 
   #createBrowserRouter() {

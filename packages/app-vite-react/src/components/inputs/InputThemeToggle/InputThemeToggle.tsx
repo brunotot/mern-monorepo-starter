@@ -1,22 +1,20 @@
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
-import { useColorScheme } from "@mui/material/styles";
+import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
 import { useTranslation } from "react-i18next";
 
 export function InputThemeToggle() {
   const { t } = useTranslation();
-  const { mode, setMode } = useColorScheme();
-  const isDarkMode = mode === "dark";
+
+  const isDarkMode = !!sigThemeOpts.value?.dark;
 
   const handleToggle = () => {
-    setMode(mode === "dark" ? "light" : "dark");
+    sigThemeOpts.value = { dark: !isDarkMode };
   };
 
   return (
     <Tooltip title={isDarkMode ? t("setDarkMode") : t("setLightMode")}>
-      <IconButton onClick={handleToggle}>
-        {isDarkMode ? <DarkMode /> : <LightMode />}
-      </IconButton>
+      <IconButton onClick={handleToggle}>{isDarkMode ? <DarkMode /> : <LightMode />}</IconButton>
     </Tooltip>
   );
 }
