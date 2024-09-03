@@ -41,6 +41,19 @@
       "autoAttachChildProcesses": false
     },
     {
+      "name": "@org: reinstall",
+      "runtimeArgs": ["run", "reinstall"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org: lint",
       "runtimeArgs": ["run", "lint"],
       "presentation": { "group": "1" },

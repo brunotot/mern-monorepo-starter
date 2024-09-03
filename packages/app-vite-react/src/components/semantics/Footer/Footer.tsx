@@ -13,6 +13,7 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
     <Box
       component="footer"
       sx={{
+        mt: 3,
         backgroundColor,
       }}
     >
