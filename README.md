@@ -69,11 +69,13 @@ TOC
 
 ### Deploy with Railway
 
-1. create an account on Railway [here](https://railway.app/login)
-2. create a new project on Railway's dashboard and connect to your GitHub monorepo
-3. within the project, select `+ Create` and choose `From Template`
-4. select **`typescript-monorepo-starter`** template
-5. finally, deploy changes 🚀
+1. <details><summary>Create new account on Railway</summary><hr>You can create your Railway account <a href="https://railway.app/login">here</a><hr></details>
+
+2. <details><summary>Create new Railway project</summary><hr>Create a new project through Railway's dashboard and connect it to your GitHub monorepo<hr></details>
+
+3. <details><summary>Import template to your Railway project</summary><hr><ul><li>Within the project, select <code>+ Create</code> and choose <code>From Template</code></li><li>Select <b><code>typescript-monorepo-starter</code></b></li><li>Follow through with setup (and environment variables)</li></ul><hr></details>
+
+4. <details><summary>Deploy</summary><hr>Deploy all project changes by clicking <code>Deploy</code> button 🚀<hr></details>
 
 ## 🧩 Recommended VSCode extensions
 
