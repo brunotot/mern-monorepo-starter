@@ -47,9 +47,9 @@ TOC
 
 ### GitHub repository setup
 
-1. <details><summary>Create your repository</summary>Create your monorepo repository using <a href="https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot">this template</a>.</details>
+1. <details><summary>Create your repository</summary><hr>Create your monorepo repository using <a href="https://github.com/new?template_name=mern-monorepo-starter&template_owner=brunotot">this template</a>.<hr></details>
 
-2. <details><summary>Configure GitHub permissions</summary>Enable GitHub actions to create and approve pull requests.<ul><li>Go to <b>Settings</b> > <b>Actions</b> > <b>General</b> > <b>Workflow permissions</b></li><li>Enable the following settings:<ul><li>✅ <i>Read and write permissions</i></li><li>✅ <i>Allow GitHub Actions to create and approve pull requests</i></li></ul></li></ul></details>
+2. <details><summary>Configure GitHub permissions</summary><hr>Enable GitHub actions to create and approve pull requests.<hr><ul><li>Go to <b>Settings</b> > <b>Actions</b> > <b>General</b> > <b>Workflow permissions</b></li><li>Enable the following settings:<ul><li>✅ <code>Read and write permissions</code></li><li>✅ <code>Allow GitHub Actions to create and approve pull requests</code></li></ul><li>Save changes.</li></li></ul></details>
 
 3. <details><summary>Configure GitHub actions</summary>Run existing actions for the first time.<ul><li>Go to <b>Actions</b> > <b>typedoc-generator.yml</b></li><li>Click on the <code>Run workflow</code> button.</li><li>Repeat the process for all <code>test-</code> prefixed workflows.</li><li>After all workflows finish, navigate to <b>Settings</b> > <b>Pages</b>.</li><li>Select the <code>gh-pages</code> branch as the deployment source.</li><li>Save changes.</li></ul></details>
 
@@ -57,41 +57,13 @@ TOC
 
 ### Local installation
 
-<details>
-<summary>1. <b>Clone to local machine</b></summary>
+1. <details><summary>Clone to local machine</summary><hr>Clone previously created repository into your local machine.<pre>git clone https://github.com/YOUR_USER/YOUR_REPO.git</pre><hr></details>
 
-Clone previously created repository into your local machine.
+2. <details><summary>Install dependencies</summary><hr>Install dependencies with <code>pnpm</code>.<pre>pnpm install</pre><hr></details>
 
-```sh
-git clone https://github.com/YOUR_USER/YOUR_REPO.git
-```
+3. <details><summary>Configure environment variables</summary><hr>Configure <code>.env.development.local</code> variables for <b>app-node-express</b> (see env schema defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13">env.setup.ts</a><hr></details>
 
-</details>
-
-<details>
-<summary>2. <b>Install dependencies</b></summary>
-
-Install dependencies with `pnpm`
-
-```sh
-pnpm install
-```
-
-</details>
-
-<details>
-<summary>3. <b>Configure environment variables</b></summary>
-
-Configure `.env.development.local` variables for **app-node-express** (see env schema defined at [env.setup.ts](https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13))
-
-</details>
-
-<details>
-<summary>4. <b>Run a sample app locally</b></summary>
-
-You can now run your **app-node-express** with `pnpm run app-node-express:dev`
-
-</details>
+4. <details><summary>Run a sample app locally</summary><hr>You can now run your <b>app-node-express</b> with:<pre>pnpm run app-node-express:dev</pre><hr></details>
 
 ## 🚢 Deploy
 
