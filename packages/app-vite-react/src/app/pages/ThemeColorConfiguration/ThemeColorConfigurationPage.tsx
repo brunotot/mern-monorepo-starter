@@ -15,7 +15,7 @@ export function ThemeColorConfigurationPage() {
               sx={{ "& label": { fontWeight: "bold" } }}
               color="primary"
               label="Primary"
-              onChange={e => {
+              onChange={() => {
                 /*reactServer.changeTheme({
                   colors: { primary: e.target.value },
                 });*/
