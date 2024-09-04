@@ -1,29 +1,17 @@
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import type { Breakpoint } from "@mui/material";
-import {
-  Box,
-  Container,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-} from "@mui/material";
+import * as mui from "@mui/material";
 import type { TODO } from "@org/lib-commons";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import type { OriginPosition } from "@org/app-vite-react/components/navigation/ButtonHoverMenu";
 import { ButtonHoverMenu } from "@org/app-vite-react/components/navigation/ButtonHoverMenu";
-import type {
-  NavigationRoute,
-  NavigationRouteSingle,
-} from "@org/app-vite-react/config/NavigationRoute.config";
-import { isAnyRouteActive } from "@org/app-vite-react/config/NavigationRoute.config";
-import { reactServer } from "@org/app-vite-react/setup/reactServer.setup";
+import * as RouteTypes from "@org/app-vite-react/routeTypes";
+import { reactServer } from "@org/app-vite-react/server";
 
 export type HorizontalNavItemProps = {
-  item: NavigationRoute;
+  item: RouteTypes.NavigationRoute;
   dropdownPosition?: OriginPosition;
 };
 
@@ -39,17 +27,17 @@ function HorizontalNavItem({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const hasChildren = "children" in item && item.children;
-  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 1 : undefined;
 
   if (hasChildren) {
-    const isAnyRouteActiveInGroup = isAnyRouteActive(children);
+    const isAnyRouteActiveInGroup = RouteTypes.isAnyRouteActive(children);
     return (
       <ButtonHoverMenu
         position={dropdownPosition}
         renderButton={(hoverProps, popupState) => (
-          <ListItemButton
+          <mui.ListItemButton
             selected={isMainNavButton ? isAnyRouteActiveInGroup : undefined}
             sx={{
               flexGrow: 0,
@@ -66,12 +54,12 @@ function HorizontalNavItem({
             }}
             {...hoverProps}
           >
-            {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-            <ListItemText primary={item.label(t)} />
-            <ListItemIcon sx={{ minWidth: 0 }}>
+            {item.icon && <mui.ListItemIcon>{item.icon}</mui.ListItemIcon>}
+            <mui.ListItemText primary={item.label(t)} />
+            <mui.ListItemIcon sx={{ minWidth: 0 }}>
               {isMainNavButton ? <ExpandMore /> : <ChevronRight />}
-            </ListItemIcon>
-          </ListItemButton>
+            </mui.ListItemIcon>
+          </mui.ListItemButton>
         )}
       >
         {children.map((child, index) => (
@@ -90,7 +78,7 @@ function HorizontalNavItem({
     );
   }
 
-  const itemSingle = item as NavigationRouteSingle;
+  const itemSingle = item as RouteTypes.NavigationRouteSingle;
 
   if (itemSingle.hidden === true) {
     return <></>;
@@ -99,7 +87,7 @@ function HorizontalNavItem({
   const isSelected = location.pathname === itemSingle.path;
 
   return (
-    <ListItemButton
+    <mui.ListItemButton
       sx={{
         flexGrow: 0,
         borderRadius,
@@ -109,9 +97,9 @@ function HorizontalNavItem({
       selected={isSelected}
       onClick={() => navigate(itemSingle.path)}
     >
-      {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-      <ListItemText primary={item.label(t)} />
-    </ListItemButton>
+      {item.icon && <mui.ListItemIcon>{item.icon}</mui.ListItemIcon>}
+      <mui.ListItemText primary={item.label(t)} />
+    </mui.ListItemButton>
   );
 }
 
@@ -127,22 +115,22 @@ export function HorizontalNavVariant({
   hidden = false,
 }: HorizontalNavVariantProps) {
   return (
-    <Box
+    <mui.Box
       sx={{
         backgroundColor,
         display: hidden ? "none" : undefined,
       }}
       paddingBlock={1}
     >
-      <Container sx={{ paddingInline: `0 !important` }} maxWidth={maxWidth}>
-        <List dense component={Stack} direction="row">
+      <mui.Container sx={{ paddingInline: `0 !important` }} maxWidth={maxWidth}>
+        <mui.List dense component={mui.Stack} direction="row">
           {reactServer.routes.map((item, index) => (
             <Fragment key={index}>
               <HorizontalNavItem item={item} />
             </Fragment>
           ))}
-        </List>
-      </Container>
-    </Box>
+        </mui.List>
+      </mui.Container>
+    </mui.Box>
   );
 }

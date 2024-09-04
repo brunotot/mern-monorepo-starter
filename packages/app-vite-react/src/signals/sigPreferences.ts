@@ -1,7 +1,11 @@
 import { effect, signal } from "@preact/signals-react";
-import { type UiPreferences } from "@org/app-vite-react/config/UiPreferences.config";
+import type { Breakpoint } from "@mui/material";
 
-const DEFAULT_PREFERENCES: UiPreferences = {
+export type GuiPreferences = {
+  containerWidth: Breakpoint | false;
+};
+
+const DEFAULT_PREFERENCES: GuiPreferences = {
   containerWidth: "xl",
 };
 
@@ -22,7 +26,7 @@ function getJsonItem<const T extends Required<Record<string, unknown>>>(
   return { ...defaults, ...json } as T;
 }
 
-export const sigPreferences = signal<UiPreferences>(
+export const sigPreferences = signal<GuiPreferences>(
   getJsonItem(PREFERENCES_KEY, DEFAULT_PREFERENCES),
 );
 

@@ -1,6 +1,6 @@
 import * as icons from "@mui/icons-material";
 
-import type { NavigationRoutes } from "@org/app-vite-react/config/NavigationRoute.config";
+import type { NavigationRoutes } from "@org/app-vite-react/routeTypes";
 import { HomePage } from "@org/app-vite-react/app/pages/Home";
 
 export const routes: NavigationRoutes = [

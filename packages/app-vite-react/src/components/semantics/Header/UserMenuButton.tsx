@@ -12,7 +12,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { type TODO } from "@org/lib-commons";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
-import { sigKeycloak } from "@org/app-vite-react/signals/sigKeycloak";
+import { keycloakLogout } from "@org/app-vite-react/lib/keycloak-js";
 
 export function UserMenuButton() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,8 +24,7 @@ export function UserMenuButton() {
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    sigKeycloak.value!.logout();
-    //handleClose();
+    keycloakLogout();
   };
   return (
     <React.Fragment>

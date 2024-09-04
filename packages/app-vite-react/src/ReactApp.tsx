@@ -4,18 +4,17 @@ import type { RouteObject } from "react-router-dom";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
-import type { NavigationRoutes } from "@org/app-vite-react/config/NavigationRoute.config";
+import { type NavigationRoutes } from "@org/app-vite-react/routeTypes";
 
 import { Layout } from "@org/app-vite-react/components/layout/Layout";
-import type { Provider } from "@org/app-vite-react/components/providers/Providers";
-import { Providers } from "@org/app-vite-react/components/providers/Providers";
-import { StylesProvider } from "@org/app-vite-react/components/providers/impl/StylesProvider";
-import { ThemeProvider } from "@org/app-vite-react/components/providers/impl/MuiThemeProvider";
-import { QueryClientProvider } from "@org/app-vite-react/components/providers/impl/QueryClientProvider";
+import { Providers, type Provider } from "@org/app-vite-react/components/providers/Providers";
+import { StylesProvider, ThemeProvider } from "@org/app-vite-react/lib/@mui";
+import { QueryClientProvider } from "@org/app-vite-react/lib/@tanstack";
 
 import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
 import { RootErrorPage } from "@org/app-vite-react/app/pages/RootError";
-import { KeycloakAuthProvider } from "./components/providers";
+import { KeycloakProvider } from "@org/app-vite-react/lib/keycloak-js";
+import { initI18n } from "@org/app-vite-react/lib/i18next/i18n";
 
 type ReactAppConfig = {
   providers?: Provider[];
@@ -40,7 +39,7 @@ function convertToRoutes(data: NavigationRoutes): RouteObject[] {
 export class ReactApp {
   static readonly #DEFAULT_ROOT_ERROR_PAGE = (<RootErrorPage />);
   static readonly #COMMON_PROVIDERS = [
-    KeycloakAuthProvider,
+    KeycloakProvider,
     QueryClientProvider,
     StylesProvider,
     ThemeProvider,
@@ -58,7 +57,7 @@ export class ReactApp {
   router!: ReturnType<typeof createBrowserRouter>;
 
   constructor() {
-    // NOOP
+    initI18n();
   }
 
   run(config: ReactAppConfig) {

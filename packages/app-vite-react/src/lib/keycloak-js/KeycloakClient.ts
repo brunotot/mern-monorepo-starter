@@ -5,3 +5,7 @@ export const keycloakClient = new Keycloak({
   url: import.meta.env.VITE_API_KEYCLOAK_URL,
   clientId: "app-vite-react",
 });
+
+export async function keycloakLogout() {
+  await keycloakClient.logout();
+}

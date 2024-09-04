@@ -7,7 +7,7 @@ const nest = (children: React.ReactNode, Provider: React.FC<{ children: React.Re
   <Provider>{children}</Provider>
 );
 
-// Type for the props of the Providers component
+/** @hidden */
 export type ProvidersProps = React.PropsWithChildren<{
   list: Array<React.FC<{ children: React.ReactNode }>>;
 }>;

@@ -1,7 +1,7 @@
 import type { Role, User } from "@org/lib-commons";
 import type { ReactNode } from "react";
 import type { RouteObject } from "react-router-dom";
-import { type I18nTranslateFn } from "@org/app-vite-react/config/i18n.config";
+import { type I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
 
 export type NavigationRouteAnchorSecure = Role[] | ((user: User) => boolean | Role[]);
 
