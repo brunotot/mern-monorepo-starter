@@ -11,7 +11,7 @@
     "build": "tsc && vite build --emptyOutDir",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "start": "serve -s dist",
-    "loadTranslationTypes": "i18next-resources-for-ts interface -i ./src/public/locales/en -o ./src/@types/resources.d.ts"
+    "loadTranslationTypes": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/lib/i18next/@types/resources.d.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

@@ -5,15 +5,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
-import type {
-  NavigationRoute,
-  NavigationRouteSingle,
-} from "@org/app-vite-react/config/NavigationRoute.config";
-import { isAnyRouteActive } from "@org/app-vite-react/config/NavigationRoute.config";
-import { reactServer } from "@org/app-vite-react/setup/reactServer.setup";
+import { reactServer } from "@org/app-vite-react/server";
+import * as RouteTypes from "@org/app-vite-react/routeTypes";
 
 export type SidebarNavItemProps = {
-  item: NavigationRoute;
+  item: RouteTypes.NavigationRoute;
   indent?: number;
 };
 
@@ -22,7 +18,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   const variant = item?.variant ?? "single";
   const renderChildrenPersistent = hasChildren && variant === "group";
   const renderChildrenMenu = hasChildren && variant === "menu";
-  const children: NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,7 +56,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
             paddingLeft: `calc(1.5rem + ${indent}rem)`,
             borderTopRightRadius: "2rem",
             borderBottomRightRadius: "2rem",
-            backgroundColor: isAnyRouteActive(children)
+            backgroundColor: RouteTypes.isAnyRouteActive(children)
               ? "var(--mui-palette-action-hover)"
               : undefined,
           }}
@@ -79,7 +75,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  const itemSingle = item as NavigationRouteSingle;
+  const itemSingle = item as RouteTypes.NavigationRouteSingle;
 
   if (itemSingle.hidden === true) {
     return <></>;

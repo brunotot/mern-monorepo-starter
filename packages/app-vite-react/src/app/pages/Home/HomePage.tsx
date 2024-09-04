@@ -9,7 +9,7 @@ import { ServerDatatable } from "@org/app-vite-react/components/semantics/Datata
 import { DEFAULT_PAGINATION_OPTIONS } from "@org/app-vite-react/components/semantics/Datatable/types";
 import { DatatableContainer } from "@org/app-vite-react/components/semantics/Datatable/components/DatatableContainer";
 import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
-import { apiClient } from "@org/app-vite-react/setup/apiClient.setup";
+import { apiClient } from "@org/app-vite-react/lib/@ts-rest";
 
 function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { TODO, User } from "@org/lib-commons";
 import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
 import { Add } from "@mui/icons-material";
-import { apiClient } from "@org/app-vite-react/setup/apiClient.setup";
+import { apiClient } from "@org/app-vite-react/lib/@ts-rest";
 
 export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;

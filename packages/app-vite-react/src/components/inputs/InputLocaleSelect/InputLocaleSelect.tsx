@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { InputIconButtonSelect } from "@org/app-vite-react/components/inputs/InputIconButtonSelect/InputIconButtonSelect";
 import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
-import type { Locale } from "@org/app-vite-react/config/i18n.config";
+import type { Locale } from "@org/app-vite-react/lib/i18next";
 
 function getLocaleNativeName(locale: Locale) {
   const name: string = new Intl.DisplayNames([locale], {

@@ -1,11 +1,11 @@
 import { StrictMode, type PropsWithChildren } from "react";
 import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
-import { keycloakClient } from "@org/app-vite-react/setup/keycloakClient.setup";
-import { decodeUserData, sigUser } from "@org/app-vite-react/signals/sigUser";
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { sigToken } from "@org/app-vite-react/signals/sigToken";
-import { sigKeycloak } from "@org/app-vite-react/signals/sigKeycloak";
+import { decodeKeycloakToken } from "@org/app-vite-react/lib/keycloak-js/KeycloakUser";
+import { keycloakClient } from "@org/app-vite-react/lib/keycloak-js/KeycloakClient";
 
-const KeycloakAuthContent = ({ children }: PropsWithChildren) => {
+const KeycloakImpl = ({ children }: PropsWithChildren) => {
   const { keycloak, initialized } = useKeycloak();
 
   if (!initialized) {
@@ -16,11 +16,10 @@ const KeycloakAuthContent = ({ children }: PropsWithChildren) => {
     return <div>Not authenticated</div>;
   }
 
-  sigKeycloak.value = keycloak;
   return <>{children}</>;
 };
 
-export function KeycloakAuthProvider({ children }: PropsWithChildren) {
+export function KeycloakProvider({ children }: PropsWithChildren) {
   return (
     <ReactKeycloakProvider
       initOptions={{ onLoad: "login-required" }}
@@ -31,12 +30,12 @@ export function KeycloakAuthProvider({ children }: PropsWithChildren) {
           return;
         }
         sigToken.value = token;
-        sigUser.value = decodeUserData(token);
+        sigUser.value = decodeKeycloakToken(token);
       }}
     >
-      <KeycloakAuthContent>
+      <KeycloakImpl>
         <StrictMode>{children}</StrictMode>
-      </KeycloakAuthContent>
+      </KeycloakImpl>
     </ReactKeycloakProvider>
   );
 }

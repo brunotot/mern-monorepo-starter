@@ -1,6 +1,6 @@
 import { effect, signal } from "@preact/signals-react";
-import { i18n } from "@org/app-vite-react/setup/i18n.setup";
-import { type Locale } from "@org/app-vite-react/config/i18n.config";
+import { type Locale } from "@org/app-vite-react/lib/i18next";
+import i18n from "i18next";
 
 export const sigLocale = signal<Locale>(
   (["en", "hr"].find(value => value === localStorage.getItem("locale")) ?? "en") as Locale,
