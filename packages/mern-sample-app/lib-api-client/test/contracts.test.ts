@@ -1,6 +1,7 @@
 /// <reference types="@types/jest" />
 
-import { contracts, type TODO } from "../dist/src";
+import { contracts } from "../dist/src";
+import { type TODO } from "../../lib-commons";
 
 describe("contracts", () => {
   describe("given the contracts have valid values filled", () => {

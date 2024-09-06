@@ -16,7 +16,7 @@ export class ErrorResponse extends Error {
 
   constructor(status: HttpResponseStatus, message: string) {
     super(HttpStatus[`${status}_MESSAGE`]);
-    this.stack = new Error().stack ?? "";
+    this.stack = new Error().stack;
     this.content = this.#buildErrorLog(status, message);
   }
 

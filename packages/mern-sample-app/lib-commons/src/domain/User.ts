@@ -51,7 +51,8 @@ export function JsonQueryParam<Schema extends z.Schema>(schema: Schema) {
   return z.string().transform(val => {
     console.log(val);
     const result = JSON.parse(val) as z.infer<typeof schema>;
-    return result;
+
+    return schema.parse(result);
   });
 }
 

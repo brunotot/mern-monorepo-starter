@@ -267,6 +267,19 @@
       "autoAttachChildProcesses": false
     },
     {
+      "name": "@org/lib-commons: test - coverage",
+      "runtimeArgs": ["run", "test:coverage", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org/lib-commons: build",
       "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },

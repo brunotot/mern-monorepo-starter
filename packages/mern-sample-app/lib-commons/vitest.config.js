@@ -11,12 +11,18 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    coverage: {
+      all: true, // Include all files in the coverage report
+      include: ["src/**/*.ts"], // Adjust based on your file structure
+      exclude: ["src/**/index.ts"],
+    },
+
     //globalSetup: "test/setup/globalSetup.ts",
     //setupFiles: ["test/setup/setupFiles.ts"],
   },
   resolve: {
     alias: {
-      //"@org/app-node-express/*": new URL("./dist/*", import.meta.url).pathname,
+      "@org/lib-commons/*": new URL("./dist/*", import.meta.url).pathname,
     },
   },
 });

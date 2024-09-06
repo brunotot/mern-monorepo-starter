@@ -9,6 +9,10 @@ export function Entity<const T extends z.ZodRawShape>(
   name: string,
   shape: T,
 ): z.ZodObject<T & typeof BASE_ENTITY_SCHEMA> {
+  if (!name) {
+    throw new Error("entity name must not be blank");
+  }
+
   return z
     .object({
       ...BASE_ENTITY_SCHEMA,

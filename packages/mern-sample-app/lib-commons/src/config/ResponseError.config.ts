@@ -1,5 +1,7 @@
 import { ErrorResponse } from "../errors";
 
+export const UNHANDLED_SERVER_ERROR_MSG = "Unhandled Server Error";
+
 export function getTypedError(error: unknown): ErrorResponse {
   const message =
     error != null &&
@@ -7,7 +9,7 @@ export function getTypedError(error: unknown): ErrorResponse {
     "message" in error &&
     typeof error["message"] === "string"
       ? error.message
-      : "Internal Server Error";
+      : UNHANDLED_SERVER_ERROR_MSG;
 
   return error instanceof ErrorResponse ? error : new ErrorResponse(500, message);
 }
