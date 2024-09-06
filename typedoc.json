@@ -12,7 +12,7 @@
     "compactFolders": false
   },
 
-  "entryPoints": ["packages/*"],
+  "entryPoints": ["packages/**/*"],
   "entryPointStrategy": "packages",
 
   "plugin": ["typedoc-github-theme", "typedoc-plugin-remove-references"]

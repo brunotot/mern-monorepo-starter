@@ -1,0 +1,11 @@
+/**
+ * @packageDocumentation Provides response compression middleware to optimize client-server communication, supporting deflate, gzip, and custom compression configurations.
+ * @see {@link https://www.npmjs.com/package/compression|npm specifics}
+ */
+
+import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import compression from "compression";
+
+export const withCompression: RouteMiddlewareFactory = () => {
+  return compression();
+};

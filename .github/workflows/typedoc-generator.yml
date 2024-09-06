@@ -3,7 +3,7 @@ name: typedoc-generator
 on:
   push:
     paths:
-      - "packages/**/src/**"
+      - "packages/**/**/src/**"
     branches:
       - main
   workflow_dispatch:

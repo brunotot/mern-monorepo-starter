@@ -24,7 +24,7 @@ jobs:
         with:
           filters: |
             app-vite-react:
-              - 'packages/app-vite-react/**'
+              - 'packages/mern-sample-app/app-vite-react/**'
 
       - name: 🛠 Setup Git, PNPM and Node.js
         if: steps.changes.outputs.app-vite-react == 'true'
