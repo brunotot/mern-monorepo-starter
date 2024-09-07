@@ -7,6 +7,10 @@ export const contracts = {
   User: userContract,
 } as const satisfies ContractData;
 
+export function buildOpenAPIObject(props: { version: string; authorizationUrl: string }) {
+  return generateOpenApi(contracts, buildSwaggerConfig(props), { operationMapper });
+}
+
 function buildSwaggerConfig(props: {
   version: string;
   authorizationUrl: string;
@@ -46,8 +50,4 @@ function buildSwaggerConfig(props: {
       },
     ],
   };
-}
-
-export function buildOpenAPIObject(props: { version: string; authorizationUrl: string }) {
-  return generateOpenApi(contracts, buildSwaggerConfig(props), { operationMapper });
 }

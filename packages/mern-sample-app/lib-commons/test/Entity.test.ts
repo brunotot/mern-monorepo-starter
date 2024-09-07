@@ -3,8 +3,6 @@
 import { z } from "zod";
 import { Entity } from "../src/config/Entity.config";
 
-//import { getTypedError, UNHANDLED_SERVER_ERROR_MSG, ErrorResponse } from "../src/";
-
 describe("Entity", () => {
   describe("given the entity name is present", () => {
     it("should return a valid entity", () => {

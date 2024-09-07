@@ -3,8 +3,6 @@
 import { getTypedError, UNHANDLED_SERVER_ERROR_MSG } from "../src/config/ResponseError.config";
 import { ErrorResponse } from "../src/errors/ResponseError";
 
-//import { getTypedError, UNHANDLED_SERVER_ERROR_MSG, ErrorResponse } from "../src/";
-
 describe("getTypedError", () => {
   describe("given the error is handled by system", () => {
     it("should return ErrorResponse with status corresponding to one defined by system", () => {

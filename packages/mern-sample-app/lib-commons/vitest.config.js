@@ -15,6 +15,7 @@ export default defineConfig({
       all: true, // Include all files in the coverage report
       include: ["src/**/*.ts"], // Adjust based on your file structure
       exclude: ["src/**/index.ts"],
+      reporter: ["text"],
     },
 
     //globalSetup: "test/setup/globalSetup.ts",
