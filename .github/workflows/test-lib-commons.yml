@@ -24,7 +24,7 @@ jobs:
         with:
           filters: |
             lib-commons:
-              - 'packages/lib-commons/**'
+              - 'packages/mern-sample-app/lib-commons/**'
 
       - name: 🛠 Setup Git, PNPM and Node.js
         if: steps.changes.outputs.lib-commons == 'true'

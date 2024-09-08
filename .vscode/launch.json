@@ -81,7 +81,7 @@
     },
     {
       "name": "@org/app-node-express: start",
-      "runtimeArgs": ["run", "start", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "start", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -94,7 +94,7 @@
     },
     {
       "name": "@org/app-node-express: dev",
-      "runtimeArgs": ["run", "dev", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "dev", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -107,7 +107,7 @@
     },
     {
       "name": "@org/app-node-express: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -120,7 +120,7 @@
     },
     {
       "name": "@org/app-node-express: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -133,7 +133,7 @@
     },
     {
       "name": "@org/app-node-express: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -146,7 +146,7 @@
     },
     {
       "name": "@org/app-node-express: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/app-node-express"],
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/app-node-express"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -159,7 +159,7 @@
     },
     {
       "name": "@org/app-vite-react: start",
-      "runtimeArgs": ["run", "start", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "start", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -172,7 +172,7 @@
     },
     {
       "name": "@org/app-vite-react: dev",
-      "runtimeArgs": ["run", "dev", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "dev", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -185,7 +185,7 @@
     },
     {
       "name": "@org/app-vite-react: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -198,7 +198,7 @@
     },
     {
       "name": "@org/app-vite-react: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -211,7 +211,7 @@
     },
     {
       "name": "@org/app-vite-react: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -224,7 +224,7 @@
     },
     {
       "name": "@org/app-vite-react: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -237,7 +237,12 @@
     },
     {
       "name": "@org/app-vite-react: loadTranslationTypes",
-      "runtimeArgs": ["run", "loadTranslationTypes", "--prefix", "packages/app-vite-react"],
+      "runtimeArgs": [
+        "run",
+        "loadTranslationTypes",
+        "--prefix",
+        "packages/mern-sample-app/app-vite-react"
+      ],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -250,7 +255,20 @@
     },
     {
       "name": "@org/lib-commons: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/lib-commons"],
+      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-commons: test - coverage",
+      "runtimeArgs": ["run", "test:coverage", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -263,7 +281,7 @@
     },
     {
       "name": "@org/lib-commons: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/lib-commons"],
+      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -276,7 +294,7 @@
     },
     {
       "name": "@org/lib-commons: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/lib-commons"],
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -289,7 +307,7 @@
     },
     {
       "name": "@org/lib-commons: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/lib-commons"],
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -302,7 +320,7 @@
     },
     {
       "name": "@org/lib-api-client: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/lib-api-client"],
+      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -315,7 +333,7 @@
     },
     {
       "name": "@org/lib-api-client: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/lib-api-client"],
+      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -328,7 +346,7 @@
     },
     {
       "name": "@org/lib-api-client: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/lib-api-client"],
+      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -341,7 +359,7 @@
     },
     {
       "name": "@org/lib-api-client: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/lib-api-client"],
+      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
