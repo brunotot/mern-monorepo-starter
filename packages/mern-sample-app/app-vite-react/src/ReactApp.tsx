@@ -1,27 +1,38 @@
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import ReactDOM from "react-dom/client";
-import type { RouteObject } from "react-router-dom";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { type RouteObject, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
-
-import { type NavigationRoutes } from "@org/app-vite-react/routeTypes";
-
-import { Layout } from "@org/app-vite-react/components/layout/Layout";
-import { Providers, type Provider } from "@org/app-vite-react/components/providers/Providers";
-import { StylesProvider, ThemeProvider } from "@org/app-vite-react/lib/@mui";
+import { type NavigationRoute } from "@org/app-vite-react/route-typings";
+import { MuiStylesProvider, MuiThemeProvider } from "@org/app-vite-react/lib/@mui";
 import { QueryClientProvider } from "@org/app-vite-react/lib/@tanstack";
-
-import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
-import { RootErrorPage } from "@org/app-vite-react/app/pages/RootError";
 import { KeycloakProvider } from "@org/app-vite-react/lib/keycloak-js";
+import { initI18n } from "@org/app-vite-react/lib/i18next";
+
+type Provider = React.FC<{ children: React.ReactNode }>;
+
+// Function to nest children within a component
+const nest = (children: React.ReactNode, Provider: React.FC<{ children: React.ReactNode }>) => (
+  <Provider>{children}</Provider>
+);
+
+/** @hidden */
+type ProvidersProps = React.PropsWithChildren<{
+  list: Array<React.FC<{ children: React.ReactNode }>>;
+}>;
+
+// Providers component definition
+const Providers: React.FC<ProvidersProps> = ({ children, list }) => {
+  return <>{list.reduceRight(nest, children)}</>;
+};
 
 type ReactAppConfig = {
   providers?: Provider[];
-  errorElement?: ReactNode;
-  routes: NavigationRoutes;
+  layoutElement: Provider;
+  errorElement: ReactNode;
+  routes: NavigationRoute[];
 };
 
-function convertToRoutes(data: NavigationRoutes): RouteObject[] {
+function convertToRoutes(data: NavigationRoute[]): RouteObject[] {
   const routes: RouteObject[] = [];
 
   for (const item of data) {
@@ -36,27 +47,21 @@ function convertToRoutes(data: NavigationRoutes): RouteObject[] {
 }
 
 export class ReactApp {
-  static readonly #DEFAULT_ROOT_ERROR_PAGE = (<RootErrorPage />);
   static readonly #COMMON_PROVIDERS = [
     KeycloakProvider,
     QueryClientProvider,
-    StylesProvider,
-    ThemeProvider,
+    MuiStylesProvider,
+    MuiThemeProvider,
   ];
 
-  // prettier-ignore
-  static readonly #COMMON_ROUTES: NavigationRoutes = [
-      //{ label: () => "Configure Colors", Component: ThemeColorConfigurationPage, path: "/configure-colors", icon: <Home /> },
-      { label: () => "",                 Component: Status404Page,               path: "*",                 hidden: true },
-    ];
-
   config!: ReactAppConfig;
-  routes!: NavigationRoutes;
+  routes!: NavigationRoute[];
+  layoutElement!: Provider;
   providers!: Provider[];
   router!: ReturnType<typeof createBrowserRouter>;
 
   constructor() {
-    // NOOP
+    initI18n();
   }
 
   run(config: ReactAppConfig) {
@@ -73,15 +78,17 @@ export class ReactApp {
 
   #loadConfig(config: ReactAppConfig) {
     this.config = config;
-    this.routes = [...config.routes, ...ReactApp.#COMMON_ROUTES];
+    this.routes = [...config.routes];
+    this.layoutElement = config.layoutElement;
     this.providers = [...(config.providers ?? []), ...ReactApp.#COMMON_PROVIDERS];
     this.router = this.#createBrowserRouter();
   }
 
   #createBrowserRouter() {
+    const Layout = this.layoutElement;
     return createBrowserRouter([
       {
-        errorElement: this.config.errorElement ?? ReactApp.#DEFAULT_ROOT_ERROR_PAGE,
+        errorElement: this.config.errorElement,
         children: convertToRoutes(this.routes),
         element: (
           <Providers list={this.providers}>

@@ -1,7 +1,7 @@
 import * as mui from "@mui/material";
 import * as icons from "@mui/icons-material";
 
-import { Logo } from "@org/app-vite-react/components/semantics";
+import { Logo } from "@org/app-vite-react/app/components/Logo";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { ObjectId, Role, type TODO } from "@org/lib-commons";
 import type { ChangeEvent, MouseEvent } from "react";

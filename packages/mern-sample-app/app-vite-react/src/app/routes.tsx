@@ -1,9 +1,10 @@
 import * as icons from "@mui/icons-material";
 
-import type { NavigationRoutes } from "@org/app-vite-react/routeTypes";
+import type { NavigationRoute } from "@org/app-vite-react/route-typings";
 import { HomePage } from "@org/app-vite-react/app/pages/Home";
+import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
 
-export const routes: NavigationRoutes = [
+export const routes: NavigationRoute[] = [
   {
     label: t => t("dashboard"),
     icon: <icons.Home />,
@@ -70,4 +71,5 @@ export const routes: NavigationRoutes = [
       },
     ],
   },
-] satisfies NavigationRoutes;
+  { label: () => "", Component: Status404Page, path: "*", hidden: true },
+];

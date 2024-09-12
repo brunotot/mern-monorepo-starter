@@ -1,2 +1,2 @@
-export * from "./providers/MuiStylesProvider";
-export * from "./providers/MuiThemeProvider";
+export * from "./MuiStylesProvider";
+export * from "./MuiThemeProvider";

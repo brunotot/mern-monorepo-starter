@@ -1,5 +1,5 @@
 {
-  "include": ["src", "vite-env.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite-env.d.ts", "test/*.test.ts", "test/*.test.tsx"],
   "references": [
     { "path": "./tsconfig.node.json" },
     { "path": "../lib-commons" },
@@ -16,7 +16,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["./vite-env.d.ts"],
+    "types": ["./vite-env.d.ts", "vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

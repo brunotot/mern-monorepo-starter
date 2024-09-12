@@ -5,15 +5,25 @@ import { initReactI18next } from "react-i18next";
 
 export type I18nTranslateFn = TFunction<"translation", undefined>;
 
-export type Locale = "hr" | "en";
+export const LANGUAGE_LIST = ["en", "hr"] as const satisfies string[];
 
-i18n
-  .use(Backend)
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    fallbackLng: "en",
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+export type I18nLocale = (typeof LANGUAGE_LIST)[number];
+
+export const I18N_DEFAULT_LANGUAGE: I18nLocale = "en";
+
+export async function changeLanguage(language: string) {
+  return await i18n.changeLanguage(language);
+}
+
+export function initI18n() {
+  i18n
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .use(Backend)
+    .init({
+      fallbackLng: I18N_DEFAULT_LANGUAGE,
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+}

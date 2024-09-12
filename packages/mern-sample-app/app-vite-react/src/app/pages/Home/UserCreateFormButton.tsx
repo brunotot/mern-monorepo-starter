@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { TODO, User } from "@org/lib-commons";
 import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
 import { Add } from "@mui/icons-material";
-import { apiClient } from "@org/app-vite-react/lib/@ts-rest";
+import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
 
 export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
@@ -34,7 +34,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     event.preventDefault();
     // Handle form submission
     console.log("Form submitted:", user);
-    await apiClient.User.createOne({
+    await tsRestApiClient.User.createOne({
       body: user,
     });
     setUser(DEFAULT_FORM_STATE);
