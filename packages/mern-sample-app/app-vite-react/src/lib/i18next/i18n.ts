@@ -3,13 +3,13 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
-export type I18nTranslateFn = TFunction<"translation", undefined>;
-
-export const LANGUAGE_LIST = ["en", "hr"] as const satisfies string[];
-
-export type I18nLocale = (typeof LANGUAGE_LIST)[number];
+export const I18N_LANGUAGE_LIST = ["en", "hr"] as const satisfies string[];
 
 export const I18N_DEFAULT_LANGUAGE: I18nLocale = "en";
+
+export type I18nTranslateFn = TFunction<"translation", undefined>;
+
+export type I18nLocale = (typeof I18N_LANGUAGE_LIST)[number];
 
 export async function changeLanguage(language: string) {
   return await i18n.changeLanguage(language);

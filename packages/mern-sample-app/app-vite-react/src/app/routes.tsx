@@ -6,6 +6,7 @@ import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
 
 export const routes: NavigationRoute[] = [
   {
+    variant: "single",
     label: t => t("dashboard"),
     icon: <icons.Home />,
     path: "/",
@@ -15,6 +16,7 @@ export const routes: NavigationRoute[] = [
     },
   },
   {
+    variant: "single",
     label: () => "Klijenti",
     icon: <icons.SupportAgent />,
     path: "/clients",
@@ -25,18 +27,21 @@ export const routes: NavigationRoute[] = [
     variant: "group",
     children: [
       {
+        variant: "single",
         label: () => "Izlazni računi",
         path: "/invoice",
         icon: <icons.ReceiptTwoTone />,
         Component: () => <div>Izlazni računi</div>,
       },
       {
+        variant: "single",
         label: () => "Ponude",
         path: "/offer",
         icon: <icons.LocalOffer />,
         Component: () => <div>Ponude</div>,
       },
       {
+        variant: "single",
         label: () => "Otpremnice",
         path: "/dispatch",
         icon: <icons.SendTimeExtension />,
@@ -52,6 +57,7 @@ export const routes: NavigationRoute[] = [
     },
     children: [
       {
+        variant: "single",
         label: () => "Profil",
         path: "/settings",
         icon: <icons.AccountCircleTwoTone />,
@@ -61,6 +67,7 @@ export const routes: NavigationRoute[] = [
         },
       },
       {
+        variant: "single",
         label: () => "Korisničko sučelje",
         path: "/ui",
         icon: <icons.GridView />,
@@ -71,5 +78,11 @@ export const routes: NavigationRoute[] = [
       },
     ],
   },
-  { label: () => "", Component: Status404Page, path: "*", hidden: true },
+  {
+    variant: "single",
+    label: () => "",
+    Component: Status404Page,
+    path: "*",
+    hidden: true,
+  },
 ];

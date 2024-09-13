@@ -1,14 +1,15 @@
-import { ChevronRight, ExpandMore } from "@mui/icons-material";
-import type { Breakpoint } from "@mui/material";
 import * as mui from "@mui/material";
+import type { Breakpoint } from "@mui/material";
 import type { TODO } from "@org/lib-commons";
+import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import * as RouteTypes from "@org/app-vite-react/route-typings";
 import { reactServer } from "@org/app-vite-react/server";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
 import { ButtonHoverMenu, type OriginPosition } from "./ButtonHoverMenu";
 import { isAnyRouteActive } from "../Layout";
+import type * as RouteTypes from "@org/app-vite-react/route-typings";
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
 
 export type HorizontalNavItemProps = {
   item: RouteTypes.NavigationRoute;
@@ -78,7 +79,7 @@ function HorizontalNavItem({
     );
   }
 
-  const itemSingle = item as RouteTypes.NavigationRouteSingle;
+  const itemSingle = item as RouteTypes.NavigationRouteItem;
 
   if (itemSingle.hidden === true) {
     return <></>;
@@ -124,11 +125,15 @@ export function HorizontalLayout({
     >
       <mui.Container sx={{ paddingInline: `0 !important` }} maxWidth={maxWidth}>
         <mui.List dense component={mui.Stack} direction="row">
-          {reactServer.routes.map((item, index) => (
-            <Fragment key={index}>
-              <HorizontalNavItem item={item} />
-            </Fragment>
-          ))}
+          {reactServer.routes.map((item, index) => {
+            let isAuthorized = true;
+            if ("secure" in item && item.secure) {
+              isAuthorized = item.secure(sigUser.value);
+            }
+            return (
+              <Fragment key={index}>{isAuthorized && <HorizontalNavItem item={item} />}</Fragment>
+            );
+          })}
         </mui.List>
       </mui.Container>
     </mui.Box>

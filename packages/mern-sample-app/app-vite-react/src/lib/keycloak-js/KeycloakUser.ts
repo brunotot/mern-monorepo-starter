@@ -1,10 +1,7 @@
+export type KeycloakUserRole = "admin" | "user";
+
 export interface KeycloakUser {
-  firstName?: string;
-  lastName?: string;
-  userName?: string;
-  token?: string;
-  locale?: string;
-  companyId?: string;
-  roles: string[];
-  email?: string;
+  username: string;
+  token: string;
+  roles: KeycloakUserRole[];
 }

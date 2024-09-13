@@ -5,8 +5,9 @@ import { CssBaseline } from "@mui/material";
 import { type NavigationRoute } from "@org/app-vite-react/route-typings";
 import { MuiStylesProvider, MuiThemeProvider } from "@org/app-vite-react/lib/@mui";
 import { QueryClientProvider } from "@org/app-vite-react/lib/@tanstack";
-import { KeycloakProvider } from "@org/app-vite-react/lib/keycloak-js";
+import { KeycloakProvider, KeycloakRoute } from "@org/app-vite-react/lib/keycloak-js";
 import { initI18n } from "@org/app-vite-react/lib/i18next";
+import { sigUser } from "./signals/sigUser";
 
 type Provider = React.FC<{ children: React.ReactNode }>;
 
@@ -20,7 +21,7 @@ type ProvidersProps = React.PropsWithChildren<{
   list: Array<React.FC<{ children: React.ReactNode }>>;
 }>;
 
-// Providers component definition
+// eslint-disable-next-line react-refresh/only-export-components
 const Providers: React.FC<ProvidersProps> = ({ children, list }) => {
   return <>{list.reduceRight(nest, children)}</>;
 };
@@ -31,20 +32,6 @@ type ReactAppConfig = {
   errorElement: ReactNode;
   routes: NavigationRoute[];
 };
-
-function convertToRoutes(data: NavigationRoute[]): RouteObject[] {
-  const routes: RouteObject[] = [];
-
-  for (const item of data) {
-    if ("path" in item || "handle" in item) {
-      routes.push(item);
-      continue;
-    }
-    routes.push(...convertToRoutes(item.children));
-  }
-
-  return routes;
-}
 
 export class ReactApp {
   static readonly #COMMON_PROVIDERS = [
@@ -58,30 +45,26 @@ export class ReactApp {
   routes!: NavigationRoute[];
   layoutElement!: Provider;
   providers!: Provider[];
-  router!: ReturnType<typeof createBrowserRouter>;
+  #domRoutes: RouteObject[] = [];
 
   constructor() {
-    initI18n();
+    // NOOP
   }
 
   run(config: ReactAppConfig) {
+    initI18n();
     this.#loadConfig(config);
-    /*ReactDOM.createRoot(document.getElementById("root")!).render(
-      <React.StrictMode>
-        <RouterProvider router={this.router} />
-      </React.StrictMode>,
-    );*/
-    ReactDOM.createRoot(document.getElementById("root")!).render(
-      <RouterProvider router={this.router} />,
-    );
+    const rootDiv = document.getElementById("root")!;
+    const domRoot = ReactDOM.createRoot(rootDiv);
+    domRoot.render(<RouterProvider router={this.#createBrowserRouter()} />);
   }
 
   #loadConfig(config: ReactAppConfig) {
     this.config = config;
     this.routes = [...config.routes];
+    this.#domRoutes = this.#convertNavigationToRoutes(this.routes);
     this.layoutElement = config.layoutElement;
-    this.providers = [...(config.providers ?? []), ...ReactApp.#COMMON_PROVIDERS];
-    this.router = this.#createBrowserRouter();
+    this.providers = [...ReactApp.#COMMON_PROVIDERS, ...(config.providers ?? [])];
   }
 
   #createBrowserRouter() {
@@ -89,7 +72,7 @@ export class ReactApp {
     return createBrowserRouter([
       {
         errorElement: this.config.errorElement,
-        children: convertToRoutes(this.routes),
+        children: this.#domRoutes,
         element: (
           <Providers list={this.providers}>
             <CssBaseline />
@@ -100,5 +83,39 @@ export class ReactApp {
         ),
       },
     ]);
+  }
+
+  #convertNavigationToRoutes(data: NavigationRoute[]): RouteObject[] {
+    const routes: RouteObject[] = [];
+
+    for (const item of data) {
+      if (item.variant === "single") {
+        const Component = item.Component;
+        const secure = item.secure;
+
+        if (secure) {
+          // prettier-ignore
+          const ProtectedComponent = () => <KeycloakRoute
+            user={sigUser.value} 
+            secure={secure} 
+            Component={Component}
+          />;
+
+          item.Component = ProtectedComponent;
+        }
+
+        routes.push(item);
+        continue;
+      }
+
+      // Register route for displaying breadcrumbs on menus and groups if `handle` is provided.
+      if ("handle" in item && item.handle) {
+        routes.push(item);
+      }
+
+      routes.push(...this.#convertNavigationToRoutes(item.children));
+    }
+
+    return routes;
   }
 }

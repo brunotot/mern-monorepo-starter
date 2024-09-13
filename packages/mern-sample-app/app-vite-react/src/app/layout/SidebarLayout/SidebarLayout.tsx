@@ -1,13 +1,13 @@
+import type { TODO } from "@org/lib-commons";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import type { TODO } from "@org/lib-commons";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { reactServer } from "@org/app-vite-react/server";
-import * as RouteTypes from "@org/app-vite-react/route-typings";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
 import { isAnyRouteActive } from "../Layout";
+import type * as RouteTypes from "@org/app-vite-react/route-typings";
 
 export type SidebarNavItemProps = {
   item: RouteTypes.NavigationRoute;
@@ -76,7 +76,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  const itemSingle = item as RouteTypes.NavigationRouteSingle;
+  const itemSingle = item as RouteTypes.NavigationRouteItem;
 
   if (itemSingle.hidden === true) {
     return <></>;

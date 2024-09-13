@@ -1,34 +1,27 @@
-import type { Role, User } from "@org/lib-commons";
 import type { ReactNode } from "react";
 import type { RouteObject } from "react-router-dom";
 import type { I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
+import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 
-export type NavigationRouteAnchorSecure = Role[] | ((user: User) => boolean | Role[]);
-
-export type NavigationRouteRender = {
+export type NavigationRouteUi = {
   icon?: ReactNode;
   label: (translator: I18nTranslateFn) => string;
 };
 
-export type NavigationRouteAnchor = {
+// prettier-ignore
+export type NavigationRouteItem = RouteObject & NavigationRouteUi & {
+  variant: "single";
   path: string;
-  secure?: NavigationRouteAnchorSecure;
+  secure?: (user: KeycloakUser | null) => boolean;
   hidden?: boolean;
-} & RouteObject;
-
-export type NavigationRouteChildren = {
-  children: NavigationRoute[];
+  Component: NonNullable<RouteObject["Component"]>;
 };
 
-export type NavigationRouteSingle = NavigationRouteRender &
-  NavigationRouteAnchor & {
-    variant?: "single";
-  };
+// prettier-ignore
+export type NavigationRouteItems = NavigationRouteUi & {
+  variant: "menu" | "group";
+  children: NavigationRoute[];
+  handle?: NonNullable<RouteObject["handle"]>;
+};
 
-export type NavigationRouteMultiple = NavigationRouteRender &
-  RouteObject &
-  NavigationRouteChildren & {
-    variant: "group" | "menu";
-  };
-
-export type NavigationRoute = NavigationRouteSingle | NavigationRouteMultiple;
+export type NavigationRoute = NavigationRouteItem | NavigationRouteItems;

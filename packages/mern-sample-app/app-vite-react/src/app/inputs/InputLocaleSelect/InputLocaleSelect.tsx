@@ -1,7 +1,11 @@
 import { Translate } from "@mui/icons-material";
 import { Box, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
-import { LANGUAGE_LIST, useTranslation, type I18nLocale } from "@org/app-vite-react/lib/i18next";
-import { TODO } from "@org/lib-commons";
+import {
+  I18N_LANGUAGE_LIST,
+  useTranslation,
+  type I18nLocale,
+} from "@org/app-vite-react/lib/i18next";
+import { type TODO } from "@org/lib-commons";
 import { useMemo, useState } from "react";
 
 function getLocaleNativeName(locale: I18nLocale) {
@@ -18,7 +22,7 @@ export type InputLocaleSelectProps = {
 
 export function InputLocaleSelect({ value, onChange }: InputLocaleSelectProps) {
   const t = useTranslation();
-  const items = LANGUAGE_LIST;
+  const items = I18N_LANGUAGE_LIST;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: TODO) => {
@@ -36,7 +40,6 @@ export function InputLocaleSelect({ value, onChange }: InputLocaleSelectProps) {
 
   const selectedItem: I18nLocale | undefined = useMemo(
     () => items.find(item => value === item),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [items, value],
   );
 

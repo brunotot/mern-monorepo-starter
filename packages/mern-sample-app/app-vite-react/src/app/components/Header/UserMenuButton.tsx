@@ -80,7 +80,7 @@ export function UserMenuButton() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> {sigUser.value?.userName}
+          <Avatar /> {sigUser.value?.username}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Avatar /> My account

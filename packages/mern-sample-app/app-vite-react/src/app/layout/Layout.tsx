@@ -4,13 +4,13 @@ import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
 import { Header } from "@org/app-vite-react/app/components/Header";
 import { Footer } from "@org/app-vite-react/app/components/Footer";
 import { sigLayout } from "@org/app-vite-react/signals/sigLayout";
-import { sigPreferences } from "@org/app-vite-react/signals/sigPreferences";
 import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
 import { Logo } from "@org/app-vite-react/app/components/Logo";
 import { SidebarLayout } from "./SidebarLayout";
 import { HorizontalLayout } from "./HorizontalLayout";
-import { NavigationRoute } from "@org/app-vite-react/route-typings";
+import { type NavigationRoute } from "@org/app-vite-react/route-typings";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function isAnyRouteActive(children: NavigationRoute[]): boolean {
   return children.some(child => {
     if ("children" in child) {
@@ -26,7 +26,9 @@ export function Layout({ children }: PropsWithChildren) {
   const isHorizontal = matchesDesktop && layout === "HorizontalLayout";
   const sidebarOpen = sigSidebarOpen.value;
   const sidebarWidth = 300;
-  const maxWidthPreference = sigPreferences.value.containerWidth;
+
+  // TODO: Maybe in the future? const maxWidthPreference = sigPreferences.value.containerWidth;
+  const maxWidthPreference = "xl";
 
   return (
     <>
@@ -52,12 +54,9 @@ export function Layout({ children }: PropsWithChildren) {
         <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
           <Header
             maxWidth={isHorizontal ? maxWidthPreference : false}
-            sx={{
-              paddingTop: 1.5,
-              paddingBottom: 1.5,
-            }}
             backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
             borderBottom={isHorizontal}
+            sx={{ paddingTop: 1.5, paddingBottom: 1.5 }}
           />
 
           <HorizontalLayout
