@@ -1,15 +1,10 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { type RouteObject, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
-import { type NavigationRoute } from "@org/app-vite-react/route-typings";
-import { MuiStylesProvider, MuiThemeProvider } from "@org/app-vite-react/lib/@mui";
-import { QueryClientProvider } from "@org/app-vite-react/lib/@tanstack";
-import { KeycloakProvider, KeycloakRoute } from "@org/app-vite-react/lib/keycloak-js";
-import { initI18n } from "@org/app-vite-react/lib/i18next";
-import { sigUser } from "./signals/sigUser";
+import * as RouterDOM from "react-router-dom";
+import { type NavigationRouteItem, type NavigationRoute } from "@org/app-vite-react/route-typings";
+import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 
-type Provider = React.FC<{ children: React.ReactNode }>;
+export type Provider = React.FC<{ children: React.ReactNode }>;
 
 // Function to nest children within a component
 const nest = (children: React.ReactNode, Provider: React.FC<{ children: React.ReactNode }>) => (
@@ -29,55 +24,62 @@ const Providers: React.FC<ProvidersProps> = ({ children, list }) => {
 type ReactAppConfig = {
   providers?: Provider[];
   layoutElement: Provider;
-  errorElement: ReactNode;
+  errorElement: React.FC;
   routes: NavigationRoute[];
+  cssBaseline: React.FC;
+  protectedRoute: React.FC<{
+    secure: (user: KeycloakUser | null) => boolean;
+    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
+  }>;
 };
 
 export class ReactApp {
-  static readonly #COMMON_PROVIDERS = [
-    KeycloakProvider,
-    QueryClientProvider,
-    MuiStylesProvider,
-    MuiThemeProvider,
-  ];
-
-  config!: ReactAppConfig;
   routes!: NavigationRoute[];
   layoutElement!: Provider;
   providers!: Provider[];
-  #domRoutes: RouteObject[] = [];
+  errorElement!: React.FC;
+  cssBaseline!: React.FC;
+  #domRoutes!: RouterDOM.RouteObject[];
+  #protectedRoute!: React.FC<{
+    secure: (user: KeycloakUser | null) => boolean;
+    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
+  }>;
 
   constructor() {
     // NOOP
   }
 
   run(config: ReactAppConfig) {
-    initI18n();
     this.#loadConfig(config);
     const rootDiv = document.getElementById("root")!;
     const domRoot = ReactDOM.createRoot(rootDiv);
-    domRoot.render(<RouterProvider router={this.#createBrowserRouter()} />);
+    domRoot.render(<RouterDOM.RouterProvider router={this.#createBrowserRouter()} />);
   }
 
   #loadConfig(config: ReactAppConfig) {
-    this.config = config;
     this.routes = [...config.routes];
+    this.#protectedRoute = config.protectedRoute;
+    this.cssBaseline = config.cssBaseline;
+    this.errorElement = config.errorElement;
     this.#domRoutes = this.#convertNavigationToRoutes(this.routes);
     this.layoutElement = config.layoutElement;
-    this.providers = [...ReactApp.#COMMON_PROVIDERS, ...(config.providers ?? [])];
+    this.providers = [...(config.providers ?? [])];
   }
 
   #createBrowserRouter() {
     const Layout = this.layoutElement;
-    return createBrowserRouter([
+    const CssBaseline = this.cssBaseline;
+    const ErrorElement = this.errorElement;
+
+    return RouterDOM.createBrowserRouter([
       {
-        errorElement: this.config.errorElement,
+        errorElement: <ErrorElement />,
         children: this.#domRoutes,
         element: (
           <Providers list={this.providers}>
             <CssBaseline />
             <Layout>
-              <Outlet />
+              <RouterDOM.Outlet />
             </Layout>
           </Providers>
         ),
@@ -85,25 +87,28 @@ export class ReactApp {
     ]);
   }
 
-  #convertNavigationToRoutes(data: NavigationRoute[]): RouteObject[] {
-    const routes: RouteObject[] = [];
+  #convertNavigationToRoutes(data: NavigationRoute[]): RouterDOM.RouteObject[] {
+    const routes: RouterDOM.RouteObject[] = [];
+
+    const protectComponentIfNeeded = (item: NavigationRouteItem) => {
+      const Component = item.Component;
+      const secure = item.secure;
+      if (!secure) return;
+
+      const ProtectedRoute = this.#protectedRoute;
+
+      // prettier-ignore
+      const ProtectedComponent = () => <ProtectedRoute
+        secure={secure} 
+        Component={Component}
+      />;
+
+      item.Component = ProtectedComponent;
+    };
 
     for (const item of data) {
       if (item.variant === "single") {
-        const Component = item.Component;
-        const secure = item.secure;
-
-        if (secure) {
-          // prettier-ignore
-          const ProtectedComponent = () => <KeycloakRoute
-            user={sigUser.value} 
-            secure={secure} 
-            Component={Component}
-          />;
-
-          item.Component = ProtectedComponent;
-        }
-
+        protectComponentIfNeeded(item);
         routes.push(item);
         continue;
       }

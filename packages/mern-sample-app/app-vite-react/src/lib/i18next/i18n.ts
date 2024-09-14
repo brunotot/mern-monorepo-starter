@@ -5,7 +5,7 @@ import { initReactI18next } from "react-i18next";
 
 export const I18N_LANGUAGE_LIST = ["en", "hr"] as const satisfies string[];
 
-export const I18N_DEFAULT_LANGUAGE: I18nLocale = "en";
+export const I18N_DEFAULT_LANGUAGE = "en" as const satisfies I18nLocale;
 
 export type I18nTranslateFn = TFunction<"translation", undefined>;
 

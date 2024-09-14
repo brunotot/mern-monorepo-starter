@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
-import type { RouteObject } from "react-router-dom";
-import type { I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
+import { type ReactNode } from "react";
+import { type RouteObject } from "react-router-dom";
+import { type I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 
 export type NavigationRouteUi = {
   icon?: ReactNode;
-  label: (translator: I18nTranslateFn) => string;
+  label: (translate: I18nTranslateFn) => string;
 };
 
 // prettier-ignore

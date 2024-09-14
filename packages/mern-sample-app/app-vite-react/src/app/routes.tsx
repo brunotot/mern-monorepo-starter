@@ -1,5 +1,4 @@
 import * as icons from "@mui/icons-material";
-
 import type { NavigationRoute } from "@org/app-vite-react/route-typings";
 import { HomePage } from "@org/app-vite-react/app/pages/Home";
 import { Status404Page } from "@org/app-vite-react/app/pages/Status404";

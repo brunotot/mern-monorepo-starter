@@ -1,15 +1,13 @@
-import type { PropsWithChildren } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { type RouteObject } from "react-router-dom";
+import { KeycloakRoute, type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 
-export default function ProtectedRoute({ children }: PropsWithChildren) {
-  const user = sigUser.value;
-  const location = useLocation();
-  const isAuthenticated = !!user;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  return children;
+export function ProtectedRoute({
+  secure,
+  Component,
+}: {
+  secure: (user: KeycloakUser | null) => boolean;
+  Component: NonNullable<RouteObject["Component"]>;
+}) {
+  return <KeycloakRoute user={sigUser.value} secure={secure} Component={Component} />;
 }
