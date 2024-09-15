@@ -4,6 +4,8 @@ export const BASE_ENTITY_SCHEMA = {
   _id: z.instanceof(String).optional(),
 } as const satisfies z.ZodRawShape;
 
+// TODO Use Entity on User model from lib-api-client !!!
+
 export function Entity<const T extends z.ZodRawShape>(
   name: string,
   shape: T,

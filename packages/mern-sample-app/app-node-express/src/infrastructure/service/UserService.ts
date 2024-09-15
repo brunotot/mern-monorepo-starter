@@ -19,7 +19,7 @@ export class UserService {
     return user;
   }
 
-  // TODO
+  // TODO Remove below functions.
 
   async search(options: Partial<PaginationOptions>): Promise<PaginationResult<TODO>> {
     return await this.userRepository.findAllPaginated(PaginationOptions.parse(options));
