@@ -27,6 +27,7 @@ type ReactAppConfig = {
   errorElement: React.FC;
   routes: NavigationRoute[];
   cssBaseline: React.FC;
+  rootId?: string;
   protectedRoute: React.FC<{
     secure: (user: KeycloakUser | null) => boolean;
     Component: NonNullable<RouterDOM.RouteObject["Component"]>;
@@ -39,6 +40,7 @@ export class ReactApp {
   providers!: Provider[];
   errorElement!: React.FC;
   cssBaseline!: React.FC;
+  rootId?: string;
   #domRoutes!: RouterDOM.RouteObject[];
   #protectedRoute!: React.FC<{
     secure: (user: KeycloakUser | null) => boolean;
@@ -51,7 +53,7 @@ export class ReactApp {
 
   run(config: ReactAppConfig) {
     this.#loadConfig(config);
-    const rootDiv = document.getElementById("root")!;
+    const rootDiv = document.getElementById(this.rootId ?? "root")!;
     const domRoot = ReactDOM.createRoot(rootDiv);
     domRoot.render(<RouterDOM.RouterProvider router={this.#createBrowserRouter()} />);
   }
@@ -60,6 +62,7 @@ export class ReactApp {
     this.routes = [...config.routes];
     this.#protectedRoute = config.protectedRoute;
     this.cssBaseline = config.cssBaseline;
+    this.rootId = config.rootId;
     this.errorElement = config.errorElement;
     this.#domRoutes = this.#convertNavigationToRoutes(this.routes);
     this.layoutElement = config.layoutElement;

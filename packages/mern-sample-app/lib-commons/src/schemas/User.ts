@@ -1,12 +1,12 @@
-import { z } from "../config/Zod.config";
-import { Role, Entity } from "../config";
+import { z } from "zod";
+import { Entity, zodAny } from "../config";
 
 /** @hidden */
 export const User = Entity("User", {
   username: z.string().openapi({ example: "john_doe" }),
   password: z.string().openapi({ example: "password" }),
   email: z.string().email().openapi({ example: "john.doe@mail.com" }),
-  roles: z.array(Role).openapi({ example: [Role.enum.USER, Role.enum.ADMIN] }),
+  roles: z.array(z.string()).openapi({ example: ["admin", "user"] }),
   refreshToken: z.array(z.string()),
 });
 
@@ -15,7 +15,7 @@ export type User = Entity<typeof User>;
 /** @hidden */
 export const BasePageableResponseDto = z
   .object({
-    data: z.array(z.any()),
+    data: z.array(zodAny()),
     totalPages: z.number().openapi({ example: 75 }),
     totalElements: z.number().openapi({ example: 741 }),
     rowsPerPage: z.number().openapi({ example: 10 }),
@@ -60,7 +60,7 @@ export const PaginationOptions = z.object({
   rowsPerPage: z.number().default(10),
   order: z.array(z.string()).default([]),
   search: z.string().default(""),
-  filters: z.any().default({}),
+  filters: zodAny().default({}),
 });
 
 /** @hidden */

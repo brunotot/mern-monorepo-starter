@@ -1,12 +1,20 @@
 import type { RequestHandler } from "express";
 import type { AppRoute } from "@ts-rest/core";
-import { type TODO } from "@org/lib-commons";
 import { contracts } from "@org/lib-api-client";
 
 export class TsRestRouterService {
   private static instance: TsRestRouterService;
 
-  #routers: TODO;
+  #routers: Record<
+    string,
+    Record<
+      string,
+      {
+        handler: (data: unknown) => Promise<unknown>;
+        middleware: RequestHandler[];
+      }
+    >
+  >;
 
   public static getInstance(): TsRestRouterService {
     TsRestRouterService.instance ??= new TsRestRouterService();
@@ -17,7 +25,11 @@ export class TsRestRouterService {
     this.#routers = {};
   }
 
-  addRouter(routeContract: AppRoute, handler: TODO, middleware: RequestHandler[]) {
+  addRouter(
+    routeContract: AppRoute,
+    handler: (data: unknown) => Promise<unknown>,
+    middleware: RequestHandler[],
+  ) {
     for (const [controllerName, controllerRoutes] of Object.entries(contracts)) {
       for (const [functionName, route] of Object.entries(controllerRoutes)) {
         if (route !== routeContract) continue;

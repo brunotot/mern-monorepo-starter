@@ -1,6 +1,6 @@
 /// <reference types="@types/jest" />
 
-import { User } from "../src/domain/User";
+import { User } from "../src/schemas/User";
 
 describe("User", () => {
   describe("given the User entity is properly configured", () => {

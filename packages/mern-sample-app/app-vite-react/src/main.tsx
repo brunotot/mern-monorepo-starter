@@ -12,6 +12,7 @@ import "@org/app-vite-react/main.css";
 initI18n();
 
 reactServer.run({
+  rootId: "root",
   routes,
   providers,
   errorElement,

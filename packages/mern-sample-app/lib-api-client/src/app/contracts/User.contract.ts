@@ -1,12 +1,11 @@
 import { initContract } from "@ts-rest/core";
-import { z } from "@org/lib-commons";
-
-import { routeCommonConfigFactory } from "../config/Contract.config";
+import { routeCommonProps } from "./../../lib/@ts-rest";
+import { z } from "zod";
 import { JsonQueryParam, PaginationOptions, User, UserPageableResponseDto } from "@org/lib-commons";
-import { RestError } from "../errors/RestError";
-import { RestError500 } from "../errors/RestError500";
+import { RestErrorSchema } from "../../schemas/RestErrorSchema";
+import { RestError500Schema } from "../../schemas/RestError500Schema";
 
-const routeDefaults = routeCommonConfigFactory({
+const routeDefaults = routeCommonProps({
   groupName: "UserController",
   contextPath: "/users",
 });
@@ -19,8 +18,8 @@ export const userContract = initContract().router({
     description: `Get all users`,
     responses: {
       200: z.array(User).describe("Users"),
-      401: RestError.describe("Unauthorized"),
-      //500: RestError500,
+      401: RestErrorSchema.describe("Unauthorized"),
+      //500: RestError500Schema,
     },
   },
   findOneByUsername: {
@@ -33,9 +32,9 @@ export const userContract = initContract().router({
     }),
     responses: {
       200: User,
-      401: RestError.describe("Unauthorized"),
-      404: RestError.describe("User not found"),
-      500: RestError500,
+      401: RestErrorSchema.describe("Unauthorized"),
+      404: RestErrorSchema.describe("User not found"),
+      500: RestError500Schema,
     },
   },
   findAllPaginated: {
@@ -48,7 +47,7 @@ export const userContract = initContract().router({
     }),
     responses: {
       200: UserPageableResponseDto,
-      500: RestError500,
+      500: RestError500Schema,
     },
   },
   createOne: {
@@ -59,7 +58,7 @@ export const userContract = initContract().router({
     body: User,
     responses: {
       201: User,
-      500: RestError500,
+      500: RestError500Schema,
     },
   },
   deleteByUsername: {
@@ -72,7 +71,7 @@ export const userContract = initContract().router({
     }),
     responses: {
       201: z.string(),
-      500: RestError500,
+      500: RestError500Schema,
     },
   },
 });

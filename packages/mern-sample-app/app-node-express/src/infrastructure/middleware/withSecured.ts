@@ -5,7 +5,7 @@ import { env } from "@org/app-node-express/env";
 import { type Authorization } from "@org/app-node-express/interface/Authorization";
 import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
 
-import * as utils from "@org/lib-commons";
+import { RestError, getTypedError } from "@org/lib-api-client";
 import * as bottlejs from "@org/app-node-express/lib/bottlejs";
 import type * as KC from "@org/app-node-express/lib/keycloak-connect";
 
@@ -28,13 +28,13 @@ export function withSecured(...roles: KC.KeycloakRole[]): RequestHandler[] {
       const hasRole = flattenedRoles.some(role => roles.includes(role));
 
       if (!hasRole) {
-        throw new utils.ErrorResponse(403, "User does not have the required role");
+        throw new RestError(403, "User does not have the required role");
       }
 
       next();
     } catch (error: unknown) {
       console.log("error in withSecured", error);
-      next(utils.getTypedError(error));
+      next(getTypedError(error));
     }
   };
 
@@ -45,7 +45,7 @@ export function withSecured(...roles: KC.KeycloakRole[]): RequestHandler[] {
       handler(req, res, next);
     } catch (error: unknown) {
       console.log("Error in keycloak.protect()", error);
-      next(utils.getTypedError(error));
+      next(getTypedError(error));
     }
   };
 

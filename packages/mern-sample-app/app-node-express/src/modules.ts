@@ -4,7 +4,6 @@ import { KeycloakAuthorization } from "@org/app-node-express/lib/keycloak-connec
 import { UserController } from "@org/app-node-express/infrastructure/controllers/UserController";
 import { UserRepository } from "@org/app-node-express/infrastructure/repository/impl/UserRepository";
 import { KeycloakRepository } from "@org/app-node-express/lib/keycloak-connect";
-import { ErrorLogRepository } from "@org/app-node-express/infrastructure/repository/impl/ErrorLogRepository";
 import { UserService } from "@org/app-node-express/infrastructure/service/UserService";
 
 export function scanIocModules() {
@@ -12,7 +11,6 @@ export function scanIocModules() {
     Authorization: KeycloakAuthorization,
     UserController,
     UserRepository,
-    ErrorLogRepository,
     UserService,
     AuthorizationRepository: KeycloakRepository,
   } as const satisfies Record<string, new () => TODO>;

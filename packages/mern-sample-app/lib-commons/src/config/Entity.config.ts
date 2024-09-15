@@ -1,8 +1,7 @@
-import { ObjectId } from "./Types.config";
-import { z } from "./Zod.config";
+import { z } from "zod";
 
 export const BASE_ENTITY_SCHEMA = {
-  _id: z.instanceof(ObjectId).optional(),
+  _id: z.instanceof(String).optional(),
 } as const satisfies z.ZodRawShape;
 
 export function Entity<const T extends z.ZodRawShape>(
