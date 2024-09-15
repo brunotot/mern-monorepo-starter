@@ -5,7 +5,6 @@ import { server } from "@org/app-node-express/server";
   try {
     await server.init();
     await server.startListening();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
     console.log(error);
     if (typeof error === "object" && error !== null && "message" in error) {

@@ -5,11 +5,13 @@ import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 
 import { UserCreateFormButton } from "@org/app-vite-react/app/pages/Home/UserCreateFormButton";
-import { ServerDatatable } from "@org/app-vite-react/components/semantics/Datatable/impl/ServerDatatable";
-import { DEFAULT_PAGINATION_OPTIONS } from "@org/app-vite-react/components/semantics/Datatable/types";
-import { DatatableContainer } from "@org/app-vite-react/components/semantics/Datatable/components/DatatableContainer";
 import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
-import { apiClient } from "@org/app-vite-react/lib/@ts-rest";
+import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
+import {
+  DatatableContainer,
+  ServerDatatable,
+  DEFAULT_PAGINATION_OPTIONS,
+} from "@org/app-vite-react/app/components/Datatable";
 
 function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -26,14 +28,14 @@ export function HomePage() {
 
   const fetchUsers = useCallback(async () => {
     const query = buildPaginationQueryParams(paginationOptions);
-    const users = await apiClient.User.findAllPaginated({ query });
+    const users = await tsRestApiClient.User.findAllPaginated({ query });
     if (users.status !== 200) throw new Error("Failed to fetch users.");
     setUserResponse(users.body);
   }, [paginationOptions]);
 
   const deleteUser = useCallback(
     async (username: string) => {
-      const response = await apiClient.User.deleteByUsername({ body: { username } });
+      const response = await tsRestApiClient.User.deleteByUsername({ body: { username } });
       if (response.status !== 201) throw new Error("Failed to delete user.");
       fetchUsers();
     },

@@ -1,59 +1,51 @@
-import type { ReactNode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import type { RouteObject } from "react-router-dom";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import * as RouterDOM from "react-router-dom";
+import { type NavigationRouteItem, type NavigationRoute } from "@org/app-vite-react/route-typings";
+import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 
-import { type NavigationRoutes } from "@org/app-vite-react/routeTypes";
+export type Provider = React.FC<{ children: React.ReactNode }>;
 
-import { Layout } from "@org/app-vite-react/components/layout/Layout";
-import { Providers, type Provider } from "@org/app-vite-react/components/providers/Providers";
-import { StylesProvider, ThemeProvider } from "@org/app-vite-react/lib/@mui";
-import { QueryClientProvider } from "@org/app-vite-react/lib/@tanstack";
+// Function to nest children within a component
+const nest = (children: React.ReactNode, Provider: React.FC<{ children: React.ReactNode }>) => (
+  <Provider>{children}</Provider>
+);
 
-import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
-import { RootErrorPage } from "@org/app-vite-react/app/pages/RootError";
-import { KeycloakProvider } from "@org/app-vite-react/lib/keycloak-js";
+/** @hidden */
+type ProvidersProps = React.PropsWithChildren<{
+  list: Array<React.FC<{ children: React.ReactNode }>>;
+}>;
+
+// eslint-disable-next-line react-refresh/only-export-components
+const Providers: React.FC<ProvidersProps> = ({ children, list }) => {
+  return <>{list.reduceRight(nest, children)}</>;
+};
 
 type ReactAppConfig = {
   providers?: Provider[];
-  errorElement?: ReactNode;
-  routes: NavigationRoutes;
+  layoutElement: Provider;
+  errorElement: React.FC;
+  routes: NavigationRoute[];
+  cssBaseline: React.FC;
+  rootId?: string;
+  protectedRoute: React.FC<{
+    secure: (user: KeycloakUser | null) => boolean;
+    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
+  }>;
 };
 
-function convertToRoutes(data: NavigationRoutes): RouteObject[] {
-  const routes: RouteObject[] = [];
-
-  for (const item of data) {
-    if ("path" in item || "handle" in item) {
-      routes.push(item);
-      continue;
-    }
-    routes.push(...convertToRoutes(item.children));
-  }
-
-  return routes;
-}
-
 export class ReactApp {
-  static readonly #DEFAULT_ROOT_ERROR_PAGE = (<RootErrorPage />);
-  static readonly #COMMON_PROVIDERS = [
-    KeycloakProvider,
-    QueryClientProvider,
-    StylesProvider,
-    ThemeProvider,
-  ];
-
-  // prettier-ignore
-  static readonly #COMMON_ROUTES: NavigationRoutes = [
-      //{ label: () => "Configure Colors", Component: ThemeColorConfigurationPage, path: "/configure-colors", icon: <Home /> },
-      { label: () => "",                 Component: Status404Page,               path: "*",                 hidden: true },
-    ];
-
-  config!: ReactAppConfig;
-  routes!: NavigationRoutes;
+  routes!: NavigationRoute[];
+  layoutElement!: Provider;
   providers!: Provider[];
-  router!: ReturnType<typeof createBrowserRouter>;
+  errorElement!: React.FC;
+  cssBaseline!: React.FC;
+  rootId?: string;
+  #domRoutes!: RouterDOM.RouteObject[];
+  #protectedRoute!: React.FC<{
+    secure: (user: KeycloakUser | null) => boolean;
+    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
+  }>;
 
   constructor() {
     // NOOP
@@ -61,37 +53,77 @@ export class ReactApp {
 
   run(config: ReactAppConfig) {
     this.#loadConfig(config);
-    /*ReactDOM.createRoot(document.getElementById("root")!).render(
-      <React.StrictMode>
-        <RouterProvider router={this.router} />
-      </React.StrictMode>,
-    );*/
-    ReactDOM.createRoot(document.getElementById("root")!).render(
-      <RouterProvider router={this.router} />,
-    );
+    const rootDiv = document.getElementById(this.rootId ?? "root")!;
+    const domRoot = ReactDOM.createRoot(rootDiv);
+    domRoot.render(<RouterDOM.RouterProvider router={this.#createBrowserRouter()} />);
   }
 
   #loadConfig(config: ReactAppConfig) {
-    this.config = config;
-    this.routes = [...config.routes, ...ReactApp.#COMMON_ROUTES];
-    this.providers = [...(config.providers ?? []), ...ReactApp.#COMMON_PROVIDERS];
-    this.router = this.#createBrowserRouter();
+    this.routes = [...config.routes];
+    this.#protectedRoute = config.protectedRoute;
+    this.cssBaseline = config.cssBaseline;
+    this.rootId = config.rootId;
+    this.errorElement = config.errorElement;
+    this.#domRoutes = this.#convertNavigationToRoutes(this.routes);
+    this.layoutElement = config.layoutElement;
+    this.providers = [...(config.providers ?? [])];
   }
 
   #createBrowserRouter() {
-    return createBrowserRouter([
+    const Layout = this.layoutElement;
+    const CssBaseline = this.cssBaseline;
+    const ErrorElement = this.errorElement;
+
+    return RouterDOM.createBrowserRouter([
       {
-        errorElement: this.config.errorElement ?? ReactApp.#DEFAULT_ROOT_ERROR_PAGE,
-        children: convertToRoutes(this.routes),
+        errorElement: <ErrorElement />,
+        children: this.#domRoutes,
         element: (
           <Providers list={this.providers}>
             <CssBaseline />
             <Layout>
-              <Outlet />
+              <RouterDOM.Outlet />
             </Layout>
           </Providers>
         ),
       },
     ]);
+  }
+
+  #convertNavigationToRoutes(data: NavigationRoute[]): RouterDOM.RouteObject[] {
+    const routes: RouterDOM.RouteObject[] = [];
+
+    const protectComponentIfNeeded = (item: NavigationRouteItem) => {
+      const Component = item.Component;
+      const secure = item.secure;
+      if (!secure) return;
+
+      const ProtectedRoute = this.#protectedRoute;
+
+      // prettier-ignore
+      const ProtectedComponent = () => <ProtectedRoute
+        secure={secure} 
+        Component={Component}
+      />;
+
+      item.Component = ProtectedComponent;
+    };
+
+    for (const item of data) {
+      if (item.variant === "single") {
+        protectComponentIfNeeded(item);
+        routes.push(item);
+        continue;
+      }
+
+      // Register route for displaying breadcrumbs on menus and groups if `handle` is provided.
+      if ("handle" in item && item.handle) {
+        routes.push(item);
+      }
+
+      routes.push(...this.#convertNavigationToRoutes(item.children));
+    }
+
+    return routes;
   }
 }

@@ -1,10 +1,11 @@
-import { ErrorResponse, PaginationOptions, type TODO } from "@org/lib-commons";
+import { PaginationOptions, type TODO } from "@org/lib-commons";
 import { type PaginationResult } from "@org/lib-commons";
 import { type UserRepository } from "@org/app-node-express/infrastructure/repository/impl/UserRepository";
 import { type User } from "@org/lib-commons";
 import { autowired } from "@org/app-node-express/decorators/autowired";
 import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
 import type * as KC from "@org/app-node-express/lib/keycloak-connect";
+import { RestError } from "@org/lib-api-client";
 
 export class UserService {
   @autowired private userRepository: UserRepository;
@@ -20,7 +21,7 @@ export class UserService {
 
   async findOneByUsername(username: string): Promise<KC.KeycloakUser> {
     const user = await this.authorizationRepository.findUserByUsername(username);
-    if (user === null) throw new ErrorResponse(404, "User not found");
+    if (user === null) throw new RestError(404, "User not found");
     return user;
   }
 

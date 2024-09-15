@@ -19,7 +19,6 @@
     "@anatine/zod-openapi": "^2.2.5",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/open-api": "^3.45.0",
-    "http-status": "^1.7.4",
     "zod": "^3.22.5"
   },
   "devDependencies": {

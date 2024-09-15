@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material";
-import { computed, signal } from "@preact/signals-react";
+import { computed, effect, signal } from "@preact/signals-react";
 
-type ThemeOptsInternal = Parameters<typeof createTheme>[0];
+type ThemeOptsInternal = NonNullable<Parameters<typeof createTheme>[0]>;
 
 type ThemeOptsBase = Omit<ThemeOptsInternal, "cssVariables" | "colorSchemes">;
 
@@ -19,7 +19,7 @@ export type ThemeOpts = ThemeOptsBase & {
  *
  * @default
  * ```ts
- * { dark: window.matchMedia("(prefers-color-scheme: dark)").matches }
+ * { dark: localStorage.getItem("dark") OR window.matchMedia("(prefers-color-scheme: dark)").matches }
  * ```
  *
  * @example
@@ -30,7 +30,15 @@ export type ThemeOpts = ThemeOptsBase & {
  * ```
  */
 export const sigThemeOpts = signal<ThemeOpts>({
-  dark: window.matchMedia("(prefers-color-scheme: dark)").matches,
+  dark:
+    localStorage.getItem("dark") !== undefined
+      ? localStorage.getItem("dark") === "true"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches,
+});
+
+effect(() => {
+  const value = sigThemeOpts.value.dark;
+  localStorage.setItem("dark", `${value}`);
 });
 
 /**

@@ -1,6 +1,7 @@
 import express from "express";
 
 import * as utils from "@org/lib-commons";
+import * as apiClientUtils from "@org/lib-api-client";
 import * as tsRest from "@org/app-node-express/lib/@ts-rest";
 import * as bottleJs from "@org/app-node-express/lib/bottlejs";
 import * as mongodb from "@org/app-node-express/lib/mongodb";
@@ -8,9 +9,11 @@ import * as mongodb from "@org/app-node-express/lib/mongodb";
 import { log } from "@org/app-node-express/logger";
 import { env } from "@org/app-node-express/env";
 
+type Class = new () => utils.TODO;
+
 export type ExpressAppConfig = Partial<{
   middleware: tsRest.RouteMiddlewareFactory[];
-  modules: Record<string, new () => utils.TODO>;
+  modules: Record<string, Class>;
 }>;
 
 export class ExpressApp {
@@ -19,10 +22,10 @@ export class ExpressApp {
   public readonly url: string;
   public readonly keycloakUrl?: string;
   public readonly middleware: tsRest.RouteMiddlewareFactory[];
-  public readonly modules: Record<string, new () => utils.TODO>;
+  public readonly modules: Record<string, Class>;
 
   #mongoClient: mongodb.MongoClient;
-  #mockModules: Record<string, new () => utils.TODO>;
+  #mockModules: Record<string, Class>;
 
   constructor(config: ExpressAppConfig = {}) {
     this.middleware = config.middleware ?? [];
@@ -45,7 +48,7 @@ export class ExpressApp {
     return `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`;
   }
 
-  public async init(mocks: Record<string, new () => utils.TODO> = {}): Promise<void> {
+  public async init(mocks: Record<string, Class> = {}): Promise<void> {
     log.info("Initializing Swagger");
     this.#initializeSwagger();
     log.info("Initializing IoC container");
@@ -88,10 +91,10 @@ export class ExpressApp {
     await this.#mongoClient.connect();
   }
 
-  #initializeIoc(mocks: Record<string, new () => utils.TODO>) {
+  #initializeIoc(mocks: Record<string, Class>) {
     this.#mockModules = mocks;
     const modules = this.modules;
-    const localModules: Record<string, new () => utils.TODO> = {};
+    const localModules: Record<string, Class> = {};
     Object.entries(modules).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
     Object.entries(mocks).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
     bottleJs.iocRegistry.iocStartup(localModules);
@@ -121,7 +124,7 @@ export class ExpressApp {
   #initializeErrorHandlerMiddleware() {
     const errorHandler: express.ErrorRequestHandler = (error: unknown, req, res, next) => {
       if (res.headersSent) return next(error);
-      const err = utils.getTypedError(error);
+      const err = apiClientUtils.getTypedError(error);
       log.warn(`Headers sent before reaching main error handler`, err);
       res.status(err.content.status).json(err.content);
     };

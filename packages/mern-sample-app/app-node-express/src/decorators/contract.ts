@@ -1,12 +1,14 @@
-import { type TODO } from "@org/lib-commons";
-import { ErrorLogRepository } from "@org/app-node-express/infrastructure/repository/impl/ErrorLogRepository";
 import type { AppRoute } from "@ts-rest/core";
 import { iocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { withSecured } from "@org/app-node-express/infrastructure/middleware/withSecured";
-import { getTypedError } from "@org/lib-commons";
+import { getTypedError } from "@org/lib-api-client";
 import type { RequestHandler } from "express";
-import { type RouteHandler, TsRestRouterService } from "@org/app-node-express/lib/@ts-rest";
+import {
+  type RouteHandler,
+  RouteInput,
+  TsRestRouterService,
+} from "@org/app-node-express/lib/@ts-rest";
 import { type KeycloakRole } from "@org/app-node-express/lib/keycloak-connect";
 
 export function contract<const Route extends AppRoute, This, Fn extends RouteHandler<Route>>(
@@ -20,20 +22,17 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
   ).flat();
 
   return function (target: Fn, context: ClassMethodDecoratorContext<This, Fn>) {
-    async function handler(data: TODO): Promise<TODO> {
+    async function handler(data: unknown): Promise<unknown> {
       const session = MongoDatabaseService.getInstance().client.startSession();
       try {
         MongoDatabaseService.getInstance().startTransaction(session);
         const container = iocRegistry.inject(context);
-        const result = await target.call(container, data);
+        const result = await target.call(container, data as RouteInput<Route>);
         await MongoDatabaseService.getInstance().commitTransaction(session);
         return result;
       } catch (error: unknown) {
         await MongoDatabaseService.getInstance().rollbackTransaction(session);
         const typedError = getTypedError(error);
-        await iocRegistry
-          .inject<ErrorLogRepository>(ErrorLogRepository.name)
-          .insertOne(typedError.content);
         return { status: typedError.content.status, body: typedError.content };
       } finally {
         session.endSession();

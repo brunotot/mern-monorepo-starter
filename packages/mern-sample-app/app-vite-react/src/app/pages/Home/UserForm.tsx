@@ -1,7 +1,6 @@
 import React from "react";
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
 import type { User } from "@org/lib-commons";
-import { Role } from "@org/lib-commons";
 
 export type UserFormProps = {
   value: User;
@@ -49,7 +48,7 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
       <Autocomplete
         multiple
         id="tags-outlined"
-        options={Role.options}
+        options={["admin", "user"]}
         getOptionLabel={option => option}
         onChange={(_, newValue) => mutate({ roles: newValue })}
         value={value.roles}

@@ -3,7 +3,7 @@ import { env } from "@org/app-node-express/env";
 import Keycloak, { type Keycloak as KeycloakType, type KeycloakConfig } from "keycloak-connect";
 import { z } from "zod";
 import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak-connect/KeycloakMemoryStore";
-import { ErrorResponse } from "@org/lib-commons";
+import { RestError } from "@org/lib-api-client";
 import { type Authorization } from "@org/app-node-express/interface/Authorization";
 
 export class KeycloakAuthorization implements Authorization {
@@ -61,7 +61,7 @@ export class KeycloakAuthorization implements Authorization {
 
     // Overriding keycloak access denied to return 401 status code and custom message.
     this.keycloak.accessDenied = () => {
-      throw new ErrorResponse(401, "Unauthorized");
+      throw new RestError(401, "Unauthorized");
     };
   }
 

@@ -1,5 +1,7 @@
-import { type TODO, type Class } from "@org/lib-commons";
+import { type TODO } from "@org/lib-commons";
 import type { DecoratorMetadataEntry } from "./DecoratorMetadataEntry";
+
+type Class<T = TODO> = new (...args: TODO[]) => T;
 
 export type DecoratorMetadataEntryInstance<T extends DecoratorMetadataEntryConstructor> =
   T extends DecoratorMetadataEntryConstructor<infer U> ? U : never;
