@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import type { PaginationOptions, TODO, User } from "@org/lib-commons";
+import type { PaginationOptions, TODO } from "@org/lib-commons";
+import type { User } from "@org/lib-api-client";
 import { type UserPageableResponseDto } from "@org/lib-commons";
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -160,12 +161,6 @@ export function HomePage() {
               renderHeader: () => "Username",
               renderBody: user => user.username,
               sort: "username",
-            },
-            {
-              id: "email",
-              renderHeader: () => "Email",
-              renderBody: user => user.email,
-              sort: "email",
             },
             {
               id: "roles",

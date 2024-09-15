@@ -2,7 +2,7 @@ import { type RequestHandler } from "express";
 import { env } from "@org/app-node-express/env";
 import Keycloak, { type Keycloak as KeycloakType, type KeycloakConfig } from "keycloak-connect";
 import { z } from "zod";
-import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak-connect/KeycloakMemoryStore";
+import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak/KeycloakMemoryStore";
 import { RestError } from "@org/lib-api-client";
 import { type Authorization } from "@org/app-node-express/interface/Authorization";
 

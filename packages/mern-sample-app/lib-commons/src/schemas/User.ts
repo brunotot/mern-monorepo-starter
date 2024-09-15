@@ -1,16 +1,5 @@
 import { z } from "zod";
-import { Entity, zodAny } from "../config";
-
-/** @hidden */
-export const User = Entity("User", {
-  username: z.string().openapi({ example: "john_doe" }),
-  password: z.string().openapi({ example: "password" }),
-  email: z.string().email().openapi({ example: "john.doe@mail.com" }),
-  roles: z.array(z.string()).openapi({ example: ["admin", "user"] }),
-  refreshToken: z.array(z.string()),
-});
-
-export type User = Entity<typeof User>;
+import { zodAny } from "../config";
 
 /** @hidden */
 export const BasePageableResponseDto = z
@@ -41,8 +30,16 @@ export type PaginationResult<T> = {
   page: number;
 };
 
+// TODO Move all user related stuff to lib-api-client/app
+
 /** @hidden */
-export const UserPageableResponseDto = PageableResponseDto(User);
+export const UserPageableResponseDto = PageableResponseDto(
+  z.object({
+    id: z.string(),
+    username: z.string(),
+    roles: z.array(z.union([z.literal("admin"), z.literal("user")])),
+  }),
+);
 
 export type UserPageableResponseDto = z.infer<typeof UserPageableResponseDto>;
 

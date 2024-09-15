@@ -1,15 +1,12 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-
 import { env } from "@org/app-node-express/env";
 import { type Authorization } from "@org/app-node-express/interface/Authorization";
 import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
+import { RestError, type Role, getTypedError } from "@org/lib-api-client";
+import { iocRegistry } from "@org/app-node-express/lib/bottlejs";
 
-import { RestError, getTypedError } from "@org/lib-api-client";
-import * as bottlejs from "@org/app-node-express/lib/bottlejs";
-import type * as KC from "@org/app-node-express/lib/keycloak-connect";
-
-export function withSecured(...roles: KC.KeycloakRole[]): RequestHandler[] {
+export function withSecured(...roles: Role[]): RequestHandler[] {
   const flattenedRoles = roles.flat();
 
   const roleSecuredMiddleware: RequestHandler = async (req, res, next) => {
@@ -21,8 +18,15 @@ export function withSecured(...roles: KC.KeycloakRole[]): RequestHandler[] {
     try {
       const bearerToken = req.headers.authorization!;
       const token = bearerToken.split(" ")[1];
-      const { sub: userId } = jwt.decode(token) as KC.KeycloakTokenData;
-      const roles = await bottlejs.iocRegistry
+
+      const { sub: userId } = jwt.decode(token) as {
+        email_verified: boolean;
+        preferred_username: string;
+        sub: string;
+        scope: string;
+      };
+
+      const roles = await iocRegistry
         .inject<AuthorizationRepository>("AuthorizationRepository")
         .findRolesByUserId(userId);
       const hasRole = flattenedRoles.some(role => roles.includes(role));
@@ -40,7 +44,7 @@ export function withSecured(...roles: KC.KeycloakRole[]): RequestHandler[] {
 
   const protect = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const keycloakAuthorization = bottlejs.iocRegistry.inject<Authorization>("Authorization");
+      const keycloakAuthorization = iocRegistry.inject<Authorization>("Authorization");
       const handler = keycloakAuthorization.protect();
       handler(req, res, next);
     } catch (error: unknown) {

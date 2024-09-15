@@ -28,6 +28,7 @@
     "@preact/signals-react": "^2.0.1",
     "@react-keycloak/web": "^3.4.0",
     "@tanstack/react-query": "^5.32.1",
+    "@testing-library/react": "^16.0.1",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/react-query": "^3.45.0",
     "color": "^4.2.3",

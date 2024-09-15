@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
-import type { TODO, User } from "@org/lib-commons";
+import type { User } from "@org/lib-api-client";
+import type { TODO } from "@org/lib-commons";
 import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
 import { Add } from "@mui/icons-material";
 import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
@@ -10,11 +11,9 @@ export type UserCreateFormButtonProps = {
 };
 
 const DEFAULT_FORM_STATE: User = {
-  refreshToken: [],
+  id: "",
   username: "",
-  email: "",
-  password: "",
-  roles: ["USER"],
+  roles: ["user"],
 };
 
 export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps) {

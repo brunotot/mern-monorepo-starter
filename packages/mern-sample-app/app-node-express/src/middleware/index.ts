@@ -1,7 +1,7 @@
 import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 
-import { withCompression } from "@org/app-node-express/middleware/withCompression";
 import { withContext } from "@org/app-node-express/middleware/withContext";
+import { withCompression } from "@org/app-node-express/middleware/withCompression";
 import { withCookieParser } from "@org/app-node-express/middleware/withCookieParser";
 import { withCors } from "@org/app-node-express/middleware/withCors";
 import { withCredentials } from "@org/app-node-express/middleware/withCredentials";
@@ -15,8 +15,8 @@ import { withSession } from "@org/app-node-express/middleware/withSession";
 import { withAuthorization } from "@org/app-node-express/middleware/withAuthorization";
 
 export const middleware = [
-  withCompression,
   withContext,
+  withCompression,
   withCookieParser,
   withCors,
   withCredentials,

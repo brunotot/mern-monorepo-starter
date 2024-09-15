@@ -1,24 +1,6 @@
 import { env } from "@org/app-node-express/env";
 import { z } from "zod";
 
-export type KeycloakRole = "admin" | "user";
-
-export type KeycloakTokenData = {
-  email_verified: boolean;
-  preferred_username: string;
-  sub: string;
-  scope: string;
-};
-
-export type KeycloakUser = {
-  id: string;
-  username: string;
-};
-
-export type KeycloakUserRoles = {
-  name: string;
-}[];
-
 export class KeycloakTokenManager {
   private readonly KEYCLOAK_LOGIN_URL: string;
   private readonly KEYCLOAK_LOGIN_CREDENTIALS: URLSearchParams;
@@ -94,39 +76,5 @@ export class KeycloakTokenManager {
     return (
       !!this.cachedToken && !!this.cachedTokenExpiresAt && Date.now() < this.cachedTokenExpiresAt
     );
-  }
-}
-
-export class KeycloakDao {
-  private readonly TOKEN_MANAGER: KeycloakTokenManager;
-  private readonly ADMIN_API_URL: string;
-
-  constructor() {
-    const { KEYCLOAK_URL, KEYCLOAK_REALM } = env;
-    this.TOKEN_MANAGER = new KeycloakTokenManager();
-    this.ADMIN_API_URL = `${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}`;
-  }
-
-  protected async get<T>(path: string): Promise<T> {
-    const endpoint = this.endpoint(path);
-    const response = await fetch(endpoint, await this.buildConfig());
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
-    }
-    return response.json();
-  }
-
-  private endpoint(path: string): string {
-    const constructedPath = path.startsWith("/") ? path : `/${path}`;
-    return `${this.ADMIN_API_URL}${constructedPath}`;
-  }
-
-  private async buildConfig() {
-    const token = await this.TOKEN_MANAGER.getToken();
-    return {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    };
   }
 }

@@ -2,17 +2,16 @@ import type { AppRoute } from "@ts-rest/core";
 import { iocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { withSecured } from "@org/app-node-express/infrastructure/middleware/withSecured";
-import { getTypedError } from "@org/lib-api-client";
+import { getTypedError, type Role } from "@org/lib-api-client";
 import type { RequestHandler } from "express";
 import {
   type RouteHandler,
-  RouteInput,
+  type RouteInput,
   TsRestRouterService,
 } from "@org/app-node-express/lib/@ts-rest";
-import { type KeycloakRole } from "@org/app-node-express/lib/keycloak-connect";
 
 export function contract<const Route extends AppRoute, This, Fn extends RouteHandler<Route>>(
-  routeContractData: { contract: Route; roles?: KeycloakRole[] },
+  routeContractData: { contract: Route; roles?: Role[] },
   ...middlewareData: (RequestHandler | RequestHandler[])[]
 ) {
   const routeContract = routeContractData.contract;

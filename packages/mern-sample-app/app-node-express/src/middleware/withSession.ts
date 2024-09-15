@@ -4,7 +4,7 @@
 
 import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import session from "express-session";
-import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak-connect";
+import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
 
 export const withSession: RouteMiddlewareFactory = () => {
   return session({

@@ -1,9 +1,10 @@
 import { initContract } from "@ts-rest/core";
 import { routeCommonProps } from "./../../lib/@ts-rest";
 import { z } from "zod";
-import { JsonQueryParam, PaginationOptions, User, UserPageableResponseDto } from "@org/lib-commons";
+import { JsonQueryParam, PaginationOptions, UserPageableResponseDto } from "@org/lib-commons";
 import { RestErrorSchema } from "../../schemas/RestErrorSchema";
 import { RestError500Schema } from "../../schemas/RestError500Schema";
+import { User } from "../models";
 
 const routeDefaults = routeCommonProps({
   groupName: "UserController",

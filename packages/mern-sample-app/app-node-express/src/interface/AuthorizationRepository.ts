@@ -1,7 +1,7 @@
-import type * as KC from "@org/app-node-express/lib/keycloak-connect";
+import { type User } from "@org/lib-api-client";
 
 export interface AuthorizationRepository {
-  findAllUsers(): Promise<KC.KeycloakUser[]>;
+  findAllUsers(): Promise<User[]>;
   findRolesByUserId(id: string): Promise<string[]>;
-  findUserByUsername(username: string): Promise<KC.KeycloakUser | null>;
+  findUserByUsername(username: string): Promise<User | null>;
 }

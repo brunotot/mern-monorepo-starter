@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import type { User } from "@org/lib-commons";
+import type { User } from "@org/lib-api-client";
 
 export type UserFormProps = {
   value: User;
@@ -27,22 +27,6 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
         name="username"
         value={value.username}
         onChange={e => mutate({ username: e.target.value })}
-        required
-      />
-      <TextField
-        label="Email"
-        name="email"
-        type="email"
-        value={value.email}
-        onChange={e => mutate({ email: e.target.value })}
-        required
-      />
-      <TextField
-        label="Password"
-        name="password"
-        type="password"
-        value={value.password}
-        onChange={e => mutate({ password: e.target.value })}
         required
       />
       <Autocomplete

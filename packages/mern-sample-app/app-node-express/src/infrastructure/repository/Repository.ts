@@ -1,11 +1,17 @@
 import { type AnyZodObject, type ZodSchema } from "zod";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
-import { type TODO, type PaginationOptions } from "@org/lib-commons";
+import { type PaginationOptions } from "@org/lib-commons";
 import { type PaginationResult } from "@org/lib-commons";
-import type { ClientSession, Collection, WithId } from "mongodb";
+import type {
+  ClientSession,
+  Collection,
+  Document,
+  OptionalUnlessRequiredId,
+  WithId,
+} from "mongodb";
 import { type Entity } from "@org/lib-commons";
-import * as storage from "@org/app-node-express/config/SessionStorage";
 import type { MongoFilters, MongoSearch, MongoSort } from "@org/app-node-express/lib/mongodb";
+import { getSession } from "@org/app-node-express/config/SessionStorage";
 
 export abstract class Repository<T extends Entity<AnyZodObject>> {
   private readonly schema: ZodSchema<T>;
@@ -21,7 +27,8 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
 
     const session = isFromTest
       ? MongoDatabaseService.getInstance().testSession
-      : (storage.asyncLocalStorage.getStore()!.get(storage.SESSION_STORAGE_KEY)! as ClientSession);
+      : getSession().mongoClientSession;
+
     return session;
   }
 
@@ -37,12 +44,12 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     return await this.collection.findOne(doc, { session: this.session });
   }
 
-  public async insertOne(doc: Omit<T, "_id">): Promise<T> {
+  public async insertOne(doc: OptionalUnlessRequiredId<T>): Promise<T> {
     const candidate = { ...doc };
-    const { insertedId } = await this.collection.insertOne(candidate as TODO, {
+    const { insertedId } = await this.collection.insertOne(candidate, {
       session: this.session,
     });
-    return { ...candidate, _id: insertedId } as unknown as T;
+    return { ...candidate, _id: insertedId } as T;
   }
 
   public async updateOne(newValue: T): Promise<T> {
@@ -61,10 +68,10 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
   }
 
   private async paginate(
-    collection: Collection<TODO>,
+    collection: Collection<T>,
     searchFields: string[],
     options?: PaginationOptions,
-  ): Promise<PaginationResult<TODO>> {
+  ): Promise<PaginationResult<T>> {
     const limit = options?.rowsPerPage ?? 0;
     const page = options?.page ?? 0;
     const search = options?.search ?? "";
@@ -72,7 +79,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     const filters = options?.filters ?? {};
     const skip = page * limit;
 
-    const pipeline: TODO[] = [];
+    const pipeline: Document[] = [];
 
     pipeline.push(...this.buildMatchPipeline({ fields: searchFields, regex: search }, filters));
     pipeline.push(
@@ -80,7 +87,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
         order.map(s => {
           const [field, sortOrder] = s.split(" ");
           return [field, sortOrder as "asc" | "desc"];
-        }) as TODO,
+        }),
       ),
     );
 
@@ -109,7 +116,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     const aggregation = collection.aggregate(pipeline);
     const arrayResult = await aggregation.toArray();
     return arrayResult[0]
-      ? (arrayResult[0] as PaginationResult<TODO>)
+      ? (arrayResult[0] as PaginationResult<T>)
       : {
           data: [],
           totalElements: 0,
@@ -130,7 +137,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
   }
 
   private buildMatchPipeline(search: MongoSearch, filters: MongoFilters) {
-    const $and: TODO[] = [];
+    const $and: unknown[] = [];
     const useSearch = search.fields.length > 0 && search.regex;
     const useFilter = Object.keys(filters).length > 0;
 

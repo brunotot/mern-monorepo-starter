@@ -3,11 +3,10 @@ import { TsRestRouterService } from "./TsRestRouterService";
 import { initServer, createExpressEndpoints } from "@ts-rest/express";
 import type express from "express";
 import swaggerUi from "swagger-ui-express";
-import { type TODO } from "@org/lib-commons";
 
 export function initializeExpressRoutes(app: express.Application): void {
   const s = initServer();
-  const unsafeRouters: TODO = TsRestRouterService.getInstance().getRouters();
+  const unsafeRouters = TsRestRouterService.getInstance().getRouters();
   const router = s.router(contracts, unsafeRouters);
   function suppressConsole<T>(handler: () => T): T {
     const originalConsole = {

@@ -5,7 +5,6 @@
 import dotenv from "dotenv";
 import path from "path";
 import z from "zod";
-import type { TODO } from "@org/lib-commons";
 
 initDotenv();
 
@@ -74,7 +73,8 @@ function parseEnvironmentVars() {
 function filterEnvBySchema() {
   return Object.keys(ENVIRONMENT_VARS.shape).reduce((acc, key) => {
     const value = process.env[key];
-    if (value !== undefined) (acc as TODO)[key] = value;
+    // @ts-ignore
+    if (value !== undefined) acc[key] = value;
     return acc;
   }, {});
 }

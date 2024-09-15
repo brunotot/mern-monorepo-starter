@@ -1,6 +1,6 @@
 import { default as BottleJs } from "bottlejs";
 import { IocServiceDecoratorMetadataEntry } from "@org/app-node-express/lib/bottlejs";
-import { type TODO } from "@org/lib-commons";
+import { type TODO, type NoArgsClass } from "@org/lib-commons";
 
 export class IocRegistry {
   private readonly bottle: BottleJs;
@@ -11,7 +11,7 @@ export class IocRegistry {
     this.container = this.bottle.container;
   }
 
-  public inject<T>(nameOrContext: string | DecoratorContext): T {
+  public inject<T = TODO>(nameOrContext: string | DecoratorContext): T {
     if (typeof nameOrContext === "string") {
       return this.container[nameOrContext.toLowerCase()] as T;
     }
@@ -19,10 +19,7 @@ export class IocRegistry {
     return this.container[containerName.toLowerCase()] as T;
   }
 
-  #getSortedInjectionClasses(
-    classes: (new () => TODO)[],
-    dependencySchema: Record<string, string[]>,
-  ) {
+  #getSortedInjectionClasses(classes: NoArgsClass[], dependencySchema: Record<string, string[]>) {
     return [...classes].sort((classA, classB) => {
       const { name: nameA } = IocServiceDecoratorMetadataEntry.for(classA).value;
       const { name: nameB } = IocServiceDecoratorMetadataEntry.for(classB).value;
@@ -34,21 +31,21 @@ export class IocRegistry {
     });
   }
 
-  #getDependencySchema(classes: (new () => TODO)[]): Record<string, string[]> {
+  #getDependencySchema(classes: NoArgsClass[]): Record<string, string[]> {
     return classes.reduce((acc, Class) => {
       const { name, dependencies = [] } = IocServiceDecoratorMetadataEntry.for(Class).value;
       return { ...acc, [name]: dependencies };
     }, {});
   }
 
-  #setupComponentNameMetadata(registryData: Record<string, new () => TODO>) {
+  #setupComponentNameMetadata(registryData: Record<string, NoArgsClass>) {
     Object.entries(registryData).forEach(([className, constructor]) => {
       const componentName = className.toLowerCase();
       IocServiceDecoratorMetadataEntry.for(constructor).setName(componentName);
     });
   }
 
-  public iocStartup(registryData: Record<string, new () => TODO>) {
+  public iocStartup(registryData: Record<string, NoArgsClass>) {
     this.#setupComponentNameMetadata(registryData);
 
     const componentClasses = Object.values(registryData);

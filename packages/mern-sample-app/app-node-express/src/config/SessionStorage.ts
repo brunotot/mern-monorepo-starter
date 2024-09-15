@@ -1,18 +1,24 @@
-import { type TODO } from "@org/lib-commons";
+import { type ClientSession } from "mongodb";
 import { AsyncLocalStorage } from "async_hooks";
 
-export const asyncLocalStorage = new AsyncLocalStorage<Map<string, TODO>>();
+export type Session = {
+  mongoClientSession: ClientSession;
+};
 
-export const SESSION_STORAGE_KEY = "session";
+const STORAGE = new AsyncLocalStorage<Session>();
 
-export function setRequestContext(key: string, value: TODO) {
-  const store = asyncLocalStorage.getStore();
-  if (store) {
-    store.set(key, value);
-  }
+export function getSession(): Session {
+  return STORAGE.getStore()!;
 }
 
-export function runWithContext(fn: () => void) {
-  const store = new Map<string, TODO>();
-  asyncLocalStorage.run(store, fn);
+export function registerSession(session: Session) {
+  const store = STORAGE.getStore();
+  if (!store) return;
+  Object.entries(session).forEach(([key, value]) => (store[key as keyof typeof store] = value));
+}
+
+export function runWithSession(fn: () => void) {
+  const store = STORAGE.getStore();
+  if (!store) return;
+  STORAGE.run(store, fn);
 }

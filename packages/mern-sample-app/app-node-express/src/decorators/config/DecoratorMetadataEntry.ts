@@ -13,6 +13,6 @@ export abstract class DecoratorMetadataEntry<Value> {
 
   public get value(): Value {
     if (!this.#metadata.hasKey(this.#key)) this.#metadata.setValue(this.#key, this.#initialState());
-    return this.#metadata.getValue(this.#key);
+    return this.#metadata.getValue(this.#key) as Value;
   }
 }

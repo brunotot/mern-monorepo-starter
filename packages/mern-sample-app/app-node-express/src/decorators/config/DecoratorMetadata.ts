@@ -1,14 +1,4 @@
-import { type TODO } from "@org/lib-commons";
-import type { DecoratorMetadataEntry } from "./DecoratorMetadataEntry";
-
-type Class<T = TODO> = new (...args: TODO[]) => T;
-
-export type DecoratorMetadataEntryInstance<T extends DecoratorMetadataEntryConstructor> =
-  T extends DecoratorMetadataEntryConstructor<infer U> ? U : never;
-
-export type DecoratorMetadataEntryConstructor<T = TODO> = Class<DecoratorMetadataEntry<T>>;
-
-export const METADATA_KEY: unique symbol = Symbol("Symbol.metadata");
+import type { Class } from "@org/lib-commons";
 
 // @ts-expect-error Stage 3 decorators polyfill.
 Symbol.metadata ??= Symbol("Symbol.metadata");
@@ -39,11 +29,11 @@ export class DecoratorMetadata {
     return key in this.#metadataRef;
   }
 
-  public getValue<T = TODO>(key: string): T {
-    return this.#metadataRef[key] as T;
+  public getValue(key: string): unknown {
+    return this.#metadataRef[key];
   }
 
-  public setValue<T = TODO>(key: string, value: T) {
+  public setValue(key: string, value: unknown) {
     this.#metadataRef[key] = value;
   }
 
