@@ -4,8 +4,7 @@ import { RestErrorSchema } from "../../schemas/RestErrorSchema";
 import { RestError500Schema } from "../../schemas/RestError500Schema";
 import { JsonQueryParam, PaginationOptions, User } from "../models";
 import { UserPaginationResultDto } from "../dto";
-import { zod } from "@org/lib-commons";
-const z = zod();
+import { z } from "@org/lib-commons";
 
 const routeDefaults = routeCommonProps({
   groupName: "UserController",

@@ -1,5 +1,4 @@
-import { zod } from "@org/lib-commons";
-const z = zod();
+import { z } from "@org/lib-commons";
 
 export const RestError500Schema = z
   .object({

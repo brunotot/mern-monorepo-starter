@@ -1,6 +1,5 @@
-import { zod, type z as zodTypes } from "@org/lib-commons";
-const z = zod();
+import { z, type zod } from "@org/lib-commons";
 
 export const ApiKeycloakRoles = z.array(z.object({ name: z.string() }));
 
-export type ApiKeycloakRoles = zodTypes.infer<typeof ApiKeycloakRoles>;
+export type ApiKeycloakRoles = zod.infer<typeof ApiKeycloakRoles>;

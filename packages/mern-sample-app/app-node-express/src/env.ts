@@ -2,10 +2,9 @@
  * @packageDocumentation Environment setup.
  */
 
-import { zod } from "@org/lib-commons";
+import { z } from "@org/lib-commons";
 import dotenv from "dotenv";
 import path from "path";
-const z = zod();
 initDotenv();
 
 const ENVIRONMENT_VARS = z.object({

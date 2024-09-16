@@ -1,10 +1,10 @@
-import { zod } from "../lib";
+import { z } from "../lib";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TODO = any;
 
 export function zodAny() {
-  return zod().any();
+  return z.any();
 }
 
 export type NoArgsClass = new () => TODO;

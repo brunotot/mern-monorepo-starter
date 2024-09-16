@@ -1,16 +1,15 @@
-import { zod, type z as zodTypes } from "../lib";
-const z = zod();
+import { z, type zod } from "../lib";
 
 export const BASE_ENTITY_SCHEMA = {
   _id: z.instanceof(String).optional(),
-} as const satisfies zodTypes.ZodRawShape;
+} as const satisfies zod.ZodRawShape;
 
 // TODO Use Entity on User model from lib-api-client !!!
 
-export function Entity<const T extends zodTypes.ZodRawShape>(
+export function Entity<const T extends zod.ZodRawShape>(
   name: string,
   shape: T,
-): zodTypes.ZodObject<T & typeof BASE_ENTITY_SCHEMA> {
+): zod.ZodObject<T & typeof BASE_ENTITY_SCHEMA> {
   if (!name) {
     throw new Error("entity name must not be blank");
   }
@@ -23,4 +22,4 @@ export function Entity<const T extends zodTypes.ZodRawShape>(
     .describe(name);
 }
 
-export type Entity<T extends zodTypes.AnyZodObject> = zodTypes.infer<T & typeof BASE_ENTITY_SCHEMA>;
+export type Entity<T extends zod.AnyZodObject> = zod.infer<T & typeof BASE_ENTITY_SCHEMA>;

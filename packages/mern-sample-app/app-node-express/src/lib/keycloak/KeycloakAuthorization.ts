@@ -4,8 +4,7 @@ import Keycloak, { type Keycloak as KeycloakType, type KeycloakConfig } from "ke
 import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak/KeycloakMemoryStore";
 import { RestError } from "@org/lib-api-client";
 import { type Authorization } from "@org/app-node-express/interface/Authorization";
-import { zod } from "@org/lib-commons";
-const z = zod();
+import { z } from "@org/lib-commons";
 
 export class KeycloakAuthorization implements Authorization {
   private readonly keycloak: KeycloakType;

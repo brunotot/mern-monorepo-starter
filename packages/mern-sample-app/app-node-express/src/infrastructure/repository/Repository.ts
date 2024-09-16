@@ -1,4 +1,3 @@
-import { type AnyZodObject, type ZodSchema } from "zod";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { type PaginationOptions, type PaginationResult } from "@org/lib-api-client";
 import type {
@@ -8,18 +7,18 @@ import type {
   OptionalUnlessRequiredId,
   WithId,
 } from "mongodb";
-import { type Entity } from "@org/lib-commons";
+import { type Entity, type zod } from "@org/lib-commons";
 import type { MongoFilters, MongoSearch, MongoSort } from "@org/app-node-express/lib/mongodb";
 import { getSession } from "@org/app-node-express/config/SessionStorage";
 
 // Do not remove!
 import { type TODO } from "@org/lib-commons";
 
-export abstract class Repository<T extends Entity<AnyZodObject>> {
-  private readonly schema: ZodSchema<T>;
+export abstract class Repository<T extends Entity<zod.AnyZodObject>> {
+  private readonly schema: zod.ZodSchema<T>;
   private readonly searchFields: string[];
 
-  constructor(schema: ZodSchema<T>, searchFields: string[] = []) {
+  constructor(schema: zod.ZodSchema<T>, searchFields: string[] = []) {
     this.schema = schema;
     this.searchFields = searchFields;
   }

@@ -1,6 +1,5 @@
 import { TypedPaginationResult } from "../models";
-import { zod, type z as zodTypes } from "@org/lib-commons";
-const z = zod();
+import { z, type zod } from "@org/lib-commons";
 
 /** @hidden */
 export const UserPaginationResultDto = TypedPaginationResult(
@@ -11,4 +10,4 @@ export const UserPaginationResultDto = TypedPaginationResult(
   }),
 );
 
-export type UserPaginationResultDto = zodTypes.infer<typeof UserPaginationResultDto>;
+export type UserPaginationResultDto = zod.infer<typeof UserPaginationResultDto>;

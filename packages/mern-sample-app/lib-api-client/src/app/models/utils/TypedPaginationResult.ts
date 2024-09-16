@@ -1,9 +1,8 @@
-import { zod, type z as zodTypes } from "@org/lib-commons";
 import { PaginationResult } from "./PaginationResult";
-const z = zod();
+import { z, type zod } from "@org/lib-commons";
 
 /** @hidden */
-export function TypedPaginationResult<T extends zodTypes.AnyZodObject>(schema: T) {
+export function TypedPaginationResult<T extends zod.AnyZodObject>(schema: T) {
   return PaginationResult.extend({
     data: z.array(schema),
   })

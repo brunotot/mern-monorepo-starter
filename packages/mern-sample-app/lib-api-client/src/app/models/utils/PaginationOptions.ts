@@ -1,5 +1,4 @@
-import { zod, zodAny, type z as zodTypes } from "@org/lib-commons";
-const z = zod();
+import { z, zodAny, type zod } from "@org/lib-commons";
 
 /** @hidden */
 export const PaginationOptions = z.object({
@@ -11,4 +10,4 @@ export const PaginationOptions = z.object({
 });
 
 /** @hidden */
-export type PaginationOptions = zodTypes.infer<typeof PaginationOptions>;
+export type PaginationOptions = zod.infer<typeof PaginationOptions>;

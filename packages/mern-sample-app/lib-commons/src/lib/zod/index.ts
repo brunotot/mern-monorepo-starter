@@ -1,19 +1,23 @@
-import { extendZodWithOpenApi } from "@anatine/zod-openapi";
-import { z } from "zod";
+import * as zod from "zod";
 import { type TODO } from "../../config";
+import { extendZodWithOpenApi } from "@anatine/zod-openapi";
 
-export type AugmentedZod = typeof z & { openapi: (data: TODO) => void };
+type AnatineZodOpenapi = (data: TODO) => TODO;
+
+type AugmentedZod = typeof zod & { openapi: AnatineZodOpenapi };
 
 declare module "zod" {
   interface ZodType {
-    openapi: (data: TODO) => TODO;
+    openapi: AnatineZodOpenapi;
   }
 }
 
-export function zod(): AugmentedZod {
-  if ("openapi" in z && typeof z.openapi === "function") return z as AugmentedZod;
-  extendZodWithOpenApi(z);
-  return z as AugmentedZod;
+function initZod(): AugmentedZod {
+  if ("openapi" in z && typeof z.openapi === "function") return zod as AugmentedZod;
+  extendZodWithOpenApi(zod);
+  return zod as AugmentedZod;
 }
 
-export type { z };
+export const z = initZod();
+
+export type { zod };

@@ -1,6 +1,6 @@
 import { env } from "@org/app-node-express/env";
 import { MongoClient, type Db, type ClientSession } from "mongodb";
-import { type ZodSchema, type z as zodTypes } from "zod";
+import { type zod } from "@org/lib-commons";
 import { server } from "@org/app-node-express/server";
 
 export class MongoDatabaseService {
@@ -71,13 +71,13 @@ export class MongoDatabaseService {
     return this.#db;
   }
 
-  collection<const T extends ZodSchema>(zodSchema: T) {
+  collection<const T extends zod.ZodSchema>(zodSchema: T) {
     const documentName = zodSchema.description;
     if (!documentName) throw new Error("No document name provided.");
     const lowerCaseName = documentName.toLowerCase();
     const suffix = "s";
     const computedSuffix = lowerCaseName.endsWith(suffix) ? "" : suffix;
     const name = lowerCaseName + computedSuffix;
-    return this.db.collection<zodTypes.infer<T>>(name, {});
+    return this.db.collection<zod.infer<T>>(name, {});
   }
 }

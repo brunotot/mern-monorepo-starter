@@ -1,6 +1,5 @@
 import { env } from "@org/app-node-express/env";
-import { zod } from "@org/lib-commons";
-const z = zod();
+import { z } from "@org/lib-commons";
 
 export class KeycloakTokenManager {
   private readonly KEYCLOAK_LOGIN_URL: string;

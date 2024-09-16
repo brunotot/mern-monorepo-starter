@@ -1,11 +1,9 @@
 /// <reference types="@types/jest" />
 
 import { Entity } from "../src/config/Entity.config";
-import { zod } from "../src/lib";
+import { z } from "../src/lib";
 
 describe("Entity", () => {
-  const z = zod();
-
   describe("given the entity name is present", () => {
     it("should return a valid entity", () => {
       const o1Name = "o1 test";
