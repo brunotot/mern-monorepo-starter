@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "prepublishOnly": "pnpm run build",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && tsc-alias",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
     "lint": "eslint src",

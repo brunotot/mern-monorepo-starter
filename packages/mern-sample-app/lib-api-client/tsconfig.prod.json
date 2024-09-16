@@ -10,7 +10,7 @@
 
     "baseUrl": "./",
     "paths": {
-      "@org/lib-commons": ["./../../lib-commons/dist/src/index"],
+      "@org/lib-commons": ["./../lib-commons/dist/src/index"],
       "*": ["./node_modules/*"]
     }
   },
