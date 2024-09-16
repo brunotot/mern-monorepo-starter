@@ -1,6 +1,5 @@
 import * as mui from "@mui/material";
 import type { Breakpoint } from "@mui/material";
-import type { TODO } from "@org/lib-commons";
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,8 +26,8 @@ function HorizontalNavItem({
 }: HorizontalNavItemProps) {
   const t = useTranslation();
   const navigate = useNavigate();
-  const hasChildren = "children" in item && item.children;
-  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const hasChildren = item.variant !== "single";
+  const children: RouteTypes.NavigationRoute[] = hasChildren ? item.children : [];
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 1 : undefined;
 

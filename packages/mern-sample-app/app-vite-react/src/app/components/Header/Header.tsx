@@ -13,8 +13,7 @@ import {
 import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
 import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
 import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
-import { useMatches } from "react-router-dom";
-import type { TODO } from "@org/lib-commons";
+import { type UIMatch, useMatches } from "react-router-dom";
 import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
 import { UserMenuButton } from "./UserMenuButton";
 import { useState } from "react";
@@ -31,21 +30,40 @@ export type HeaderProps = {
   sx?: MuiSxProps;
 };
 
+function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): string[] {
+  const crumbs: string[] = [];
+
+  for (const match of matches) {
+    if (
+      "handle" in match &&
+      match.handle &&
+      typeof match.handle === "object" &&
+      "crumb" in match.handle &&
+      match.handle.crumb &&
+      typeof match.handle.crumb === "function"
+    ) {
+      crumbs.push(match.handle.crumb(match.data));
+    }
+  }
+
+  return crumbs;
+}
+
 function ComputedBreadcrumbs() {
   const matchesDesktop = useMediaQuery("(min-width:678px)");
-  const matches: TODO[] = useMatches();
-  const crumbs = matches
-    .filter(match => Boolean(match.handle?.crumb))
-    .map(match => match.handle.crumb(match.data));
+  const matches = useMatches();
+  const crumbs = convertToCrumbs(matches);
+  //.filter(match => "handle" in match && match.handle && typeof match.handle === "object" && "crumb" in match.handle && match.handle.crumb && typeof match.handle.crumb === "function")
+  //.map(match => match.handle.crumb(match.data));
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleOpen = (event: TODO) => {
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

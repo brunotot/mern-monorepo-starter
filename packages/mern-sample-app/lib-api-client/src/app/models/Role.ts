@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { zod, type z as zodTypes } from "@org/lib-commons";
+const z = zod();
 
 // prettier-ignore
 export const Role = z.union([
@@ -6,4 +7,4 @@ export const Role = z.union([
   z.literal("user"),
 ]);
 
-export type Role = z.infer<typeof Role>;
+export type Role = zodTypes.infer<typeof Role>;

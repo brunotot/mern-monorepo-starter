@@ -7,12 +7,12 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import type { TODO } from "@org/lib-commons";
 import type { MouseEvent } from "react";
 import { Fragment, useCallback } from "react";
 import type { ServerDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ServerDatatable/types";
 import type { DtBaseSortItem } from "@org/app-vite-react/app/components/Datatable/types";
 import { DtSortableCell } from "@org/app-vite-react/app/components/Datatable/components/DtSortableCell";
+import { type TODO } from "@org/lib-commons";
 
 export function ServerDatatable<T>({
   data,
@@ -23,7 +23,7 @@ export function ServerDatatable<T>({
   count,
 }: ServerDatatableProps<T>) {
   const sortData =
-    paginationOptions?.order.map(order => {
+    paginationOptions?.order.map((order: TODO) => {
       const [id, direction] = order.split(" ");
       return { id, direction } as DtBaseSortItem;
     }) ?? [];
@@ -37,9 +37,10 @@ export function ServerDatatable<T>({
   };
 
   const onSortColumnClick = useCallback(
-    (id: string, event: MouseEvent<TODO>) => {
-      console.log(event);
-      const sortIndex = sortData.findIndex(v => v.id === id);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (id: string, _event: MouseEvent<unknown>) => {
+      //console.log(_event);
+      const sortIndex = sortData.findIndex((v: TODO) => v.id === id);
       if (sortIndex < 0) {
         onPaginationOptionsChange({ ...paginationOptions, order: [`${id} asc`] });
         return;
@@ -63,7 +64,7 @@ export function ServerDatatable<T>({
           <TableHead>
             <TableRow>
               {columns.map(({ id, renderHeader, align, sort }) => {
-                const sortIndex = sortData.findIndex(v => v.id === id);
+                const sortIndex = sortData.findIndex((v: TODO) => v.id === id);
                 const sortCount = sortData.length;
                 const sortProps = sortData[sortIndex];
                 const active = !!sortProps;

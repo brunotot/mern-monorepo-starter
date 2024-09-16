@@ -20,7 +20,7 @@
     "@org/lib-api-client": "workspace:*",
     "@org/lib-commons": "workspace:*",
     "@ts-rest/core": "^3.45.0",
-    "@ts-rest/express": "^3.45.0",
+    "@ts-rest/express": "^3.51.0",
     "body-parser": "^1.20.2",
     "bottlejs": "^2.0.1",
     "compression": "^1.7.4",
@@ -36,9 +36,9 @@
     "memorystore": "^1.6.7",
     "mongodb": "^6.5.0",
     "morgan": "^1.10.0",
-    "swagger-ui-express": "^5.0.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.11.0",
-    "zod": "^3.22.5"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",

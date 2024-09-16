@@ -2,21 +2,21 @@
  * @packageDocumentation Environment setup.
  */
 
+import { zod } from "@org/lib-commons";
 import dotenv from "dotenv";
 import path from "path";
-import z from "zod";
-
+const z = zod();
 initDotenv();
 
 const ENVIRONMENT_VARS = z.object({
   PACKAGE_JSON_VERSION: z.string().default("?.?.?"),
-  NODE_ENV: z.string().default("development"),
+  NODE_ENV: z.string(),
   SWAGGER_ENDPOINT: z
     .string()
     .default("/api-docs")
     .transform(s => (s.startsWith("/") ? s : `/${s}`)),
   APP_NAME: z.string().default("app-node-express"),
-  PORT: z.string().default("8081"),
+  PORT: z.string(),
   ORIGIN: z.string().default("*"),
   CREDENTIALS: z
     .string()

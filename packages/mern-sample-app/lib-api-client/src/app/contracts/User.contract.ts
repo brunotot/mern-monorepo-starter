@@ -1,10 +1,11 @@
 import { initContract } from "@ts-rest/core";
 import { routeCommonProps } from "./../../lib/@ts-rest";
-import { z } from "zod";
-import { JsonQueryParam, PaginationOptions, UserPageableResponseDto } from "@org/lib-commons";
 import { RestErrorSchema } from "../../schemas/RestErrorSchema";
 import { RestError500Schema } from "../../schemas/RestError500Schema";
-import { User } from "../models";
+import { JsonQueryParam, PaginationOptions, User } from "../models";
+import { UserPaginationResultDto } from "../dto";
+import { zod } from "@org/lib-commons";
+const z = zod();
 
 const routeDefaults = routeCommonProps({
   groupName: "UserController",
@@ -47,7 +48,7 @@ export const userContract = initContract().router({
       paginationOptions: JsonQueryParam(PaginationOptions),
     }),
     responses: {
-      200: UserPageableResponseDto,
+      200: UserPaginationResultDto,
       500: RestError500Schema,
     },
   },

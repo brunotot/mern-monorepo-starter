@@ -1,4 +1,4 @@
-import type { PaginationOptions } from "@org/lib-commons";
+import type { PaginationOptions } from "@org/lib-api-client";
 import type { ReactNode } from "react";
 
 export type DtBaseColumnAlign = "left" | "center" | "right";

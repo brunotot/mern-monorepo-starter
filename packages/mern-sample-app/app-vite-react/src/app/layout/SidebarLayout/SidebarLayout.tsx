@@ -1,4 +1,3 @@
-import type { TODO } from "@org/lib-commons";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useState } from "react";
@@ -15,11 +14,10 @@ export type SidebarNavItemProps = {
 };
 
 function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
-  const hasChildren = "children" in item && item.children;
-  const variant = item?.variant ?? "single";
-  const renderChildrenPersistent = hasChildren && variant === "group";
-  const renderChildrenMenu = hasChildren && variant === "menu";
-  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const hasChildren = item.variant !== "single";
+  const renderChildrenPersistent = hasChildren && item.variant === "group";
+  const renderChildrenMenu = hasChildren && item.variant === "menu";
+  const children: RouteTypes.NavigationRoute[] = hasChildren ? item.children : [];
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

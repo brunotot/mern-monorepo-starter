@@ -1,7 +1,6 @@
 import { type AnyZodObject, type ZodSchema } from "zod";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
-import { type PaginationOptions } from "@org/lib-commons";
-import { type PaginationResult } from "@org/lib-commons";
+import { type PaginationOptions, type PaginationResult } from "@org/lib-api-client";
 import type {
   ClientSession,
   Collection,
@@ -12,6 +11,9 @@ import type {
 import { type Entity } from "@org/lib-commons";
 import type { MongoFilters, MongoSearch, MongoSort } from "@org/app-node-express/lib/mongodb";
 import { getSession } from "@org/app-node-express/config/SessionStorage";
+
+// Do not remove!
+import { type TODO } from "@org/lib-commons";
 
 export abstract class Repository<T extends Entity<AnyZodObject>> {
   private readonly schema: ZodSchema<T>;
@@ -63,7 +65,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
 
   /* Pagination */
 
-  public async findAllPaginated(options?: PaginationOptions): Promise<PaginationResult<T>> {
+  public async findAllPaginated(options?: PaginationOptions): Promise<PaginationResult> {
     return this.paginate(this.collection, this.searchFields, options);
   }
 
@@ -71,7 +73,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     collection: Collection<T>,
     searchFields: string[],
     options?: PaginationOptions,
-  ): Promise<PaginationResult<T>> {
+  ): Promise<PaginationResult> {
     const limit = options?.rowsPerPage ?? 0;
     const page = options?.page ?? 0;
     const search = options?.search ?? "";
@@ -84,7 +86,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     pipeline.push(...this.buildMatchPipeline({ fields: searchFields, regex: search }, filters));
     pipeline.push(
       ...this.buildSortPipeline(
-        order.map(s => {
+        order.map((s: TODO) => {
           const [field, sortOrder] = s.split(" ");
           return [field, sortOrder as "asc" | "desc"];
         }),
@@ -116,7 +118,7 @@ export abstract class Repository<T extends Entity<AnyZodObject>> {
     const aggregation = collection.aggregate(pipeline);
     const arrayResult = await aggregation.toArray();
     return arrayResult[0]
-      ? (arrayResult[0] as PaginationResult<T>)
+      ? (arrayResult[0] as PaginationResult)
       : {
           data: [],
           totalElements: 0,

@@ -1,7 +1,6 @@
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
 import type { User } from "@org/lib-api-client";
-import type { TODO } from "@org/lib-commons";
 import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
 import { Add } from "@mui/icons-material";
 import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
@@ -29,7 +28,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     setOpen(false);
   };
 
-  const handleSubmit = async (event: TODO) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Handle form submission
     console.log("Form submitted:", user);

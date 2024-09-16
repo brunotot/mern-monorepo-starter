@@ -14,9 +14,9 @@
     "pnpm": ">=8.15.7"
   },
   "scripts": {
-    "prepare": "npm run lib-commons:build && npm run lib-api-client:build",
+    "prepare": "npm run build",
     "test": "npm run app-node-express:test && npm run app-vite-react:test && npm run lib-commons:test && npm run lib-api-client:test",
-    "build": "npm run app-node-express:build && npm run app-vite-react:build && npm run lib-commons:build && npm run lib-api-client:build",
+    "build": "npm run lib-commons:build && npm run lib-api-client:build && npm run app-node-express:build && npm run app-vite-react:build",
     "clean": "rm -rf docs && npm run app-node-express:clean && npm run app-vite-react:clean && npm run lib-commons:clean && npm run lib-api-client:clean",
     "reinstall": "rm -rf node_modules packages/mern-sample-app/app-node-express/node_modules packages/mern-sample-app/app-vite-react/node_modules packages/mern-sample-app/lib-commons/node_modules packages/mern-sample-app/lib-api-client/node_modules && npx pnpm i",
     "lint": "npm run app-node-express:lint && npm run app-vite-react:lint && npm run lib-commons:lint && npm run lib-api-client:lint",

@@ -1,6 +1,6 @@
 import { env } from "@org/app-node-express/env";
 import { MongoClient, type Db, type ClientSession } from "mongodb";
-import { type ZodSchema, type z } from "zod";
+import { type ZodSchema, type z as zodTypes } from "zod";
 import { server } from "@org/app-node-express/server";
 
 export class MongoDatabaseService {
@@ -30,7 +30,8 @@ export class MongoDatabaseService {
   async #sneakyThrows<T>(fn: () => Promise<T>): Promise<T | undefined> {
     try {
       return await fn();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
       // NOOP
     }
   }
@@ -77,6 +78,6 @@ export class MongoDatabaseService {
     const suffix = "s";
     const computedSuffix = lowerCaseName.endsWith(suffix) ? "" : suffix;
     const name = lowerCaseName + computedSuffix;
-    return this.db.collection<z.infer<T>>(name, {});
+    return this.db.collection<zodTypes.infer<T>>(name, {});
   }
 }

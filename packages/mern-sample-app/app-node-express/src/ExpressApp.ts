@@ -111,7 +111,7 @@ export class ExpressApp {
   #initializeSwagger() {
     tsRest.initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${env.SERVER_URL}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      oauth2RedirectUrl: `${this.url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
       version: env.PACKAGE_JSON_VERSION,
       endpoint: env.SWAGGER_ENDPOINT,
       cssPath: env.SWAGGER_CSS_PATH,

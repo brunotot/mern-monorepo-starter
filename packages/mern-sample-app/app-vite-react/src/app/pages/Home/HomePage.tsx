@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import type { PaginationOptions, TODO } from "@org/lib-commons";
+import type { PaginationOptions, UserPaginationResultDto } from "@org/lib-api-client";
 import type { User } from "@org/lib-api-client";
-import { type UserPageableResponseDto } from "@org/lib-commons";
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 
@@ -21,7 +20,7 @@ function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
 }
 
 export function HomePage() {
-  const [userResponse, setUserResponse] = useState<UserPageableResponseDto>();
+  const [userResponse, setUserResponse] = useState<UserPaginationResultDto>();
   const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
@@ -49,9 +48,9 @@ export function HomePage() {
 
   const badgeContent: number = 6;
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: TODO) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

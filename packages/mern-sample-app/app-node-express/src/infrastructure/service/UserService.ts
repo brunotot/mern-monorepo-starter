@@ -1,9 +1,13 @@
-import { PaginationOptions, type TODO } from "@org/lib-commons";
-import { type PaginationResult } from "@org/lib-commons";
+import { type TODO } from "@org/lib-commons";
 import { type UserRepository } from "@org/app-node-express/infrastructure/repository/impl/UserRepository";
 import { autowired } from "@org/app-node-express/decorators/autowired";
 import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
-import { RestError, type User } from "@org/lib-api-client";
+import {
+  RestError,
+  type User,
+  PaginationOptions,
+  type PaginationResult,
+} from "@org/lib-api-client";
 
 export class UserService {
   @autowired private userRepository: UserRepository;
@@ -21,7 +25,7 @@ export class UserService {
 
   // TODO Remove below functions.
 
-  async search(options: Partial<PaginationOptions>): Promise<PaginationResult<TODO>> {
+  async search(options: Partial<PaginationOptions>): Promise<PaginationResult> {
     return await this.userRepository.findAllPaginated(PaginationOptions.parse(options));
   }
 

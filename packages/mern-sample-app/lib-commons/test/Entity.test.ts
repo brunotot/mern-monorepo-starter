@@ -1,9 +1,11 @@
 /// <reference types="@types/jest" />
 
-import { z } from "zod";
 import { Entity } from "../src/config/Entity.config";
+import { zod } from "../src/lib";
 
 describe("Entity", () => {
+  const z = zod();
+
   describe("given the entity name is present", () => {
     it("should return a valid entity", () => {
       const o1Name = "o1 test";
@@ -15,6 +17,7 @@ describe("Entity", () => {
       expect(o1.description).toEqual(o1Name);
     });
   });
+
   describe("given the entity name is not present ", () => {
     it("should throw error", () => {
       const o1Name = "";
