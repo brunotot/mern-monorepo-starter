@@ -13,7 +13,7 @@ declare module "zod" {
 }
 
 function initZod(): AugmentedZod {
-  if ("openapi" in z && typeof z.openapi === "function") return zod as AugmentedZod;
+  if ("openapi" in zod && typeof zod.openapi === "function") return zod as AugmentedZod;
   extendZodWithOpenApi(zod);
   return zod as AugmentedZod;
 }
