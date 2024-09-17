@@ -12,7 +12,7 @@ const ENVIRONMENT_VARS = z.object({
   SERVER_DOMAIN: z.string(),
   SERVER_SESSION_SECRET: z.string(),
   SERVER_VERSION: z.string().default("?.?.?"),
-  SERVER_ENV: z.string().default("development"),
+  SERVER_ENV: z.string(),
   SERVER_NAME: z.string().default("app-node-express"),
   SERVER_PORT: z.string().default("8081").transform(v => Number(v)),
 

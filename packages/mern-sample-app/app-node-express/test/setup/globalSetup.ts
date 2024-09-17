@@ -23,13 +23,14 @@ export default async () => {
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
   process.env.SERVER_PORT = String(TEST_PORT);
+  process.env.SERVER_ENV = "test";
   process.env.SERVER_DOMAIN = `http://localhost`;
   process.env.SERVER_SESSION_SECRET = "secret-test-key";
   process.env.DATABASE_URL = `mongodb://${host}:${port}`;
   process.env.DATABASE_NAME = dbDatabase;
-  process.env.KEYCLOAK_URL = "https://keycloak-production-86f5.up.railway.app";
-  process.env.KEYCLOAK_ADMIN_CLI_SECRET = "RVi9hykmCMS5WKUcemDhX8Kar4vQP09E";
-  process.env.CORS_ALLOWED_ORIGINS = "http://localhost:5173";
+  process.env.KEYCLOAK_URL = "";
+  process.env.KEYCLOAK_ADMIN_CLI_SECRET = "";
+  process.env.CORS_ALLOWED_ORIGINS = "";
 
   return async () => {
     if (teardown) throw new Error("teardown called twice");
