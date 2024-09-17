@@ -2,7 +2,7 @@
 import { MongoMemoryReplSet, MongoMemoryServer } from "mongodb-memory-server";
 import { exec } from "child_process";
 
-export const TEST_PORT = 8082;
+export const TEST_PORT = 8083;
 const REPLICA_SET_COUNT = 3;
 const DUMP_PATH = "./test/dump";
 const MONGODB_DATABASE_TOOLS_PATH = "./tools/mongodb-database-tools/bin";
