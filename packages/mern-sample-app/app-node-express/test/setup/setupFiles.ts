@@ -5,7 +5,8 @@ import { MongoDatabaseService } from "../../dist/lib/mongodb/MongoDatabaseServic
 import __mocks__ from "../__mocks__";
 
 beforeAll(async () => {
-  await startup(__mocks__, server => (globalThis.expressApp = server.expressApp));
+  // This doesn't work because startListening shouldn't happen!
+  await startup(__mocks__, server => (globalThis.expressApp = server.expressApp), false);
 });
 
 afterAll(async () => {

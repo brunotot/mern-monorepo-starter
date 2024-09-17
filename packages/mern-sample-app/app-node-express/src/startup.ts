@@ -18,6 +18,7 @@ const IOC_SCANNED_DIRS = ["infrastructure"];
 export async function startup(
   mocks: Record<string, Class> = {},
   onReady?: (app: ExpressApp) => void,
+  listen: boolean = true,
 ) {
   try {
     const modules = await scanIocModules(IOC_SCANNED_DIRS);
@@ -25,7 +26,9 @@ export async function startup(
     await server.init(mocks, onReady);
     const databaseService = MongoDatabaseService.getInstance();
     databaseService.client = server.mongoClient;
-    await server.startListening();
+    if (listen) {
+      await server.startListening();
+    }
   } catch (error: unknown) {
     // eslint-disable-next-line no-console
     console.log(error);
