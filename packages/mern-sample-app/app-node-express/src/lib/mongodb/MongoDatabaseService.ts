@@ -71,7 +71,7 @@ export class MongoDatabaseService {
     return this.#db;
   }
 
-  collection<const T extends zod.ZodSchema>(zodSchema: T) {
+  collection<const T extends zod.Schema>(zodSchema: T) {
     const documentName = zodSchema.description;
     if (!documentName) throw new Error("No document name provided.");
     const lowerCaseName = documentName.toLowerCase();

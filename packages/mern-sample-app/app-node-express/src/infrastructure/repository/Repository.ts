@@ -7,19 +7,19 @@ import type {
   OptionalUnlessRequiredId,
   WithId,
 } from "mongodb";
-import { type Entity, type zod } from "@org/lib-commons";
+import { type zod } from "@org/lib-commons";
 import type { MongoFilters, MongoSearch, MongoSort } from "@org/app-node-express/lib/mongodb";
 import { getSession } from "@org/app-node-express/config/SessionStorage";
 
 // Do not remove!
 import { type TODO } from "@org/lib-commons";
 
-export abstract class Repository<T extends Entity> {
-  private readonly schema: zod.ZodSchema<T>;
+export abstract class Repository<T extends Document> {
+  private readonly schema: zod.Schema<T>;
   private readonly searchFields: string[];
 
-  constructor(object: T, searchFields: string[] = []) {
-    this.schema = object.schema;
+  constructor(schema: zod.Schema<T>, searchFields: string[] = []) {
+    this.schema = schema;
     this.searchFields = searchFields;
   }
 

@@ -1,7 +1,7 @@
 import { z, type zod } from "@org/lib-commons";
-import { Entity } from "./utils";
 
-export const User = Entity("User", {
+export const User = z.object({
+  _id: z.string().optional(),
   username: z.string(),
   roles: z.array(z.string()),
 });
