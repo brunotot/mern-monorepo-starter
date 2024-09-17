@@ -14,6 +14,7 @@
     "pnpm": ">=8.15.7"
   },
   "scripts": {
+    "prepare": "npm run build",
     "test": "npm run app-node-express:test && npm run app-vite-react:test && npm run lib-commons:test && npm run lib-api-client:test",
     "build": "npm run lib-commons:build && npm run lib-api-client:build && npm run app-node-express:build && npm run app-vite-react:build",
     "clean": "rm -rf docs && npm run app-node-express:clean && npm run app-vite-react:clean && npm run lib-commons:clean && npm run lib-api-client:clean",
