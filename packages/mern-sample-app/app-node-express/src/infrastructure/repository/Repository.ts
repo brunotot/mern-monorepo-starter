@@ -14,12 +14,12 @@ import { getSession } from "@org/app-node-express/config/SessionStorage";
 // Do not remove!
 import { type TODO } from "@org/lib-commons";
 
-export abstract class Repository<T extends Entity<zod.AnyZodObject>> {
+export abstract class Repository<T extends Entity> {
   private readonly schema: zod.ZodSchema<T>;
   private readonly searchFields: string[];
 
-  constructor(schema: zod.ZodSchema<T>, searchFields: string[] = []) {
-    this.schema = schema;
+  constructor(object: T, searchFields: string[] = []) {
+    this.schema = object.schema;
     this.searchFields = searchFields;
   }
 

@@ -1,7 +1,8 @@
 import { z, type zod } from "@org/lib-commons";
-import { ApiKeycloakUser } from "../../lib";
+import { Entity } from "./utils";
 
-export const User = ApiKeycloakUser.extend({
+export const User = Entity("User", {
+  username: z.string(),
   roles: z.array(z.string()),
 });
 

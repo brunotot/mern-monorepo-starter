@@ -2,7 +2,7 @@ import { PaginationResult } from "./PaginationResult";
 import { z, type zod } from "@org/lib-commons";
 
 /** @hidden */
-export function TypedPaginationResult<T extends zod.AnyZodObject>(schema: T) {
+export function TypedPaginationResult<const T extends zod.AnyZodObject>(schema: T) {
   return PaginationResult.extend({
     data: z.array(schema),
   })

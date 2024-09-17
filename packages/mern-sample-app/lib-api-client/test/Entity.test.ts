@@ -1,7 +1,7 @@
 /// <reference types="@types/jest" />
 
-import { Entity } from "../src/config/Entity.config";
-import { z } from "../src/lib";
+import { Entity } from "../src/app/models/utils/Entity";
+import { z } from "@org/lib-commons/src/lib";
 
 describe("Entity", () => {
   describe("given the entity name is present", () => {

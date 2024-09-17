@@ -10,7 +10,7 @@ export type UserCreateFormButtonProps = {
 };
 
 const DEFAULT_FORM_STATE: User = {
-  id: "",
+  _id: "",
   username: "",
   roles: ["user"],
 };

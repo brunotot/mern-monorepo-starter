@@ -23,6 +23,10 @@ export class KeycloakRepository extends KeycloakDao implements AuthorizationRepo
   }
 
   private mapper(model: ApiKeycloakUser): User {
-    return { ...model, roles: [] };
+    return {
+      _id: model.id,
+      username: model.username,
+      roles: [],
+    };
   }
 }

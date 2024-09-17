@@ -1,4 +1,4 @@
-import { z } from "@org/lib-commons";
+import { z, type zod } from "@org/lib-commons";
 
 export const RestError500Schema = z
   .object({
@@ -23,3 +23,5 @@ export const RestError500Schema = z
     title: "RestError",
     description: "Rest error 500",
   });
+
+export type RestError500Schema = zod.infer<typeof RestError500Schema>;

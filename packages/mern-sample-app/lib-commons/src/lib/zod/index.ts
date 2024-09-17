@@ -1,6 +1,7 @@
 import * as zod from "zod";
 import { type TODO } from "../../config";
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
+import type { z as zodInternal } from "zod";
 
 type AnatineZodOpenapi = (data: TODO) => TODO;
 
@@ -18,6 +19,6 @@ function initZod(): AugmentedZod {
   return zod as AugmentedZod;
 }
 
-export const z = initZod();
+export const z: typeof zodInternal & { openapi: AnatineZodOpenapi } = initZod();
 
 export type { zod };

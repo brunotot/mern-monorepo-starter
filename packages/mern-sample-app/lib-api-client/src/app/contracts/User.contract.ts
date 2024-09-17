@@ -1,7 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { routeCommonProps } from "./../../lib/@ts-rest";
-import { RestErrorSchema } from "../../schemas/RestErrorSchema";
-import { RestError500Schema } from "../../schemas/RestError500Schema";
+import { RestErrorSchema, RestError500Schema } from "../models";
 import { JsonQueryParam, PaginationOptions, User } from "../models";
 import { UserPaginationResultDto } from "../dto";
 import { z } from "@org/lib-commons";

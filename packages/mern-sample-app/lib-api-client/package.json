@@ -19,8 +19,7 @@
     "@anatine/zod-openapi": "^2.2.5",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/open-api": "^3.45.0",
-    "@org/lib-commons": "workspace:*",
-    "zod": "^3.23.8"
+    "@org/lib-commons": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
