@@ -1,5 +1,5 @@
 import { env } from "@org/app-node-express/env";
-import { z } from "@org/lib-commons";
+import { type ApiKeycloakLogin } from "@org/lib-api-client";
 
 export class KeycloakTokenManager {
   private readonly KEYCLOAK_LOGIN_URL: string;
@@ -8,49 +8,33 @@ export class KeycloakTokenManager {
   private cachedToken: string = "";
   private cachedTokenExpiresAt: number | null = null;
 
+  private get cachedTokenValid(): boolean {
+    return (
+      !!this.cachedToken && !!this.cachedTokenExpiresAt && Date.now() < this.cachedTokenExpiresAt
+    );
+  }
+
   constructor() {
-    const { KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_ADMIN_CLI_ID, KEYCLOAK_ADMIN_CLI_SECRET } = env;
-
-    const parseResult = z
-      .object({
-        KEYCLOAK_URL: z.string(),
-        KEYCLOAK_REALM: z.string(),
-        KEYCLOAK_ADMIN_CLI_ID: z.string(),
-        KEYCLOAK_ADMIN_CLI_SECRET: z.string(),
-      })
-      .safeParse({
-        KEYCLOAK_URL,
-        KEYCLOAK_REALM,
-        KEYCLOAK_ADMIN_CLI_ID,
-        KEYCLOAK_ADMIN_CLI_SECRET,
-      });
-
-    if (!parseResult.success) {
-      throw new Error(
-        `Missing environment variables for Keycloak: "KEYCLOAK_URL", "KEYCLOAK_REALM", "KEYCLOAK_ADMIN_CLI_ID", "KEYCLOAK_ADMIN_CLI_SECRET"`,
-      );
-    }
-
-    this.KEYCLOAK_LOGIN_URL = `${parseResult.data.KEYCLOAK_URL}/realms/${parseResult.data.KEYCLOAK_REALM}/protocol/openid-connect/token`;
-
+    this.KEYCLOAK_LOGIN_URL = `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect/token`;
     this.KEYCLOAK_LOGIN_CREDENTIALS = new URLSearchParams({
-      client_id: parseResult.data.KEYCLOAK_ADMIN_CLI_ID,
-      client_secret: parseResult.data.KEYCLOAK_ADMIN_CLI_SECRET,
+      client_id: env.KEYCLOAK_ADMIN_CLI_ID,
+      client_secret: env.KEYCLOAK_ADMIN_CLI_SECRET,
       grant_type: "client_credentials",
     });
   }
 
   public async getToken(): Promise<string> {
-    if (this.isCachedTokenValid()) {
-      return this.cachedToken;
-    }
+    if (this.cachedTokenValid) return this.cachedToken;
+    const response = await fetch(this.KEYCLOAK_LOGIN_URL, this.buildLoginConfig());
+    if (!response.ok) throw new Error(`Failed to fetch token: ${response.statusText}`);
+    const { access_token, expires_in }: ApiKeycloakLogin = await response.json();
+    this.cachedToken = access_token;
+    this.cachedTokenExpiresAt = Date.now() + expires_in * 1000;
+    return this.cachedToken;
+  }
 
-    type KeycloakLoginResponse = {
-      access_token: string;
-      expires_in: number;
-    };
-
-    const response = await fetch(this.KEYCLOAK_LOGIN_URL, {
+  private buildLoginConfig(): RequestInit {
+    return {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -58,23 +42,6 @@ export class KeycloakTokenManager {
           "default-src 'self' http://localhost:* 'unsafe-inline'; connect-src 'self' http://localhost:* 'unsafe-inline'; script-src 'self' http://localhost:* 'unsafe-inline'; img-src 'self' http://localhost:* 'unsafe-inline'; frame-src 'self' http://localhost:* 'unsafe-inline'",
       },
       body: this.KEYCLOAK_LOGIN_CREDENTIALS.toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch token: ${response.statusText}`);
-    }
-
-    const data: KeycloakLoginResponse = await response.json();
-
-    this.cachedToken = data.access_token;
-    this.cachedTokenExpiresAt = Date.now() + data.expires_in * 1000;
-
-    return this.cachedToken;
-  }
-
-  private isCachedTokenValid(): boolean {
-    return (
-      !!this.cachedToken && !!this.cachedTokenExpiresAt && Date.now() < this.cachedTokenExpiresAt
-    );
+    };
   }
 }

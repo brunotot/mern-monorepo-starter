@@ -8,7 +8,7 @@ import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 export const withCredentials: RouteMiddlewareFactory = () => {
   return (req, res, next) => {
     const origin = req.headers.origin;
-    if (origin && env.ALLOWED_ORIGINS.includes(origin)) {
+    if (origin && env.CORS_ALLOWED_ORIGINS.includes(origin)) {
       res.header("Access-Control-Allow-Credentials", "true");
     }
     next();

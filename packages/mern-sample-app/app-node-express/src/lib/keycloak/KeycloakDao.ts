@@ -13,11 +13,11 @@ export class KeycloakDao {
 
   protected async get<T>(path: string): Promise<T> {
     const endpoint = this.endpoint(path);
-    const response = await fetch(endpoint, await this.buildConfig());
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
-    }
-    return response.json();
+    const config = await this.buildConfig();
+    const response = await fetch(endpoint, config);
+    if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
+    const jsonResponse = await response.json();
+    return jsonResponse;
   }
 
   private endpoint(path: string): string {

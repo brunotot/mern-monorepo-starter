@@ -10,9 +10,9 @@ import cors from "cors";
 
 export const withCors: RouteMiddlewareFactory = () => {
   return cors({
-    origin: env.ALLOWED_ORIGINS,
-    credentials: env.CREDENTIALS,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["*"],
+    origin: env.CORS_ALLOWED_ORIGINS,
+    credentials: env.CORS_CREDENTIALS,
+    methods: env.CORS_ALLOWED_METHODS,
+    allowedHeaders: env.CORS_ALLOWED_HEADERS,
   });
 };

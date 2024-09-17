@@ -20,7 +20,7 @@ npm run build --prefix "${PWD}/packages/mern-sample-app/app-node-express" --sile
 #stop "$(color $GREEN)✓$(color)"
 
 #echo -e "\n$(color $GREEN)✓ $(color $CYAN)4.$(color) Starting...\n"
-export PACKAGE_JSON_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}')
+export SERVER_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}')
 node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node "${PWD}/packages/mern-sample-app/app-node-express/dist/main.js"
 
 #echo -e "\n"

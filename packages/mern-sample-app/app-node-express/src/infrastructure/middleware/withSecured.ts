@@ -10,7 +10,7 @@ export function withSecured(...roles: Role[]): RequestHandler[] {
   const flattenedRoles = roles.flat();
 
   const roleSecuredMiddleware: RequestHandler = async (req, res, next) => {
-    if (flattenedRoles.length === 0 || env.NODE_ENV === "test") {
+    if (flattenedRoles.length === 0 || env.SERVER_ENV === "test") {
       next();
       return;
     }
@@ -37,6 +37,7 @@ export function withSecured(...roles: Role[]): RequestHandler[] {
 
       next();
     } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.log("error in withSecured", error);
       next(getTypedError(error));
     }
@@ -48,6 +49,7 @@ export function withSecured(...roles: Role[]): RequestHandler[] {
       const handler = keycloakAuthorization.protect();
       handler(req, res, next);
     } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.log("Error in keycloak.protect()", error);
       next(getTypedError(error));
     }

@@ -17,7 +17,7 @@ import { withAuthorization } from "@org/app-node-express/middleware/withAuthoriz
 // Order matters!
 
 export const middleware = [
-  withStaticAssets,
+  withStaticAssets, // withStaticAssets should always be on top!
   withContext,
   withCompression,
   withCookieParser,

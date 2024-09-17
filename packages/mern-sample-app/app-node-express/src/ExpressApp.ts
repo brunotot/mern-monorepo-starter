@@ -1,9 +1,10 @@
-import express from "express";
+/* eslint-disable no-console */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { Class } from "@org/lib-commons";
 import type { MongoClient } from "@org/app-node-express/lib/mongodb";
 
+import express from "express";
 import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { getTypedError } from "@org/lib-api-client";
@@ -18,9 +19,9 @@ export type ExpressAppConfig = Partial<{
 
 export class ExpressApp {
   public readonly expressApp: express.Application;
-  public readonly port: string;
+  public readonly port: number;
   public readonly url: string;
-  public readonly keycloakUrl?: string;
+  public readonly keycloakUrl: string;
   public readonly middleware: RouteMiddlewareFactory[];
   public readonly modules: Record<string, Class>;
 
@@ -32,7 +33,7 @@ export class ExpressApp {
     this.modules = config.modules ?? {};
     this.expressApp = express();
     this.keycloakUrl = env.KEYCLOAK_URL;
-    this.port = env.PORT;
+    this.port = env.SERVER_PORT;
     this.url = env.SERVER_URL;
   }
 
@@ -48,7 +49,10 @@ export class ExpressApp {
     return `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`;
   }
 
-  public async init(mocks: Record<string, Class> = {}): Promise<void> {
+  public async init(
+    mocks: Record<string, Class> = {},
+    onReady?: (app: ExpressApp) => void,
+  ): Promise<void> {
     log.info("Initializing Swagger");
     this.#initializeSwagger();
     log.info("Initializing IoC container");
@@ -62,6 +66,7 @@ export class ExpressApp {
     log.info("Connecting to database");
     await this.#initializeDatabase();
     log.info("App successfully initialized!");
+    onReady?.(this);
   }
 
   public async startListening(): Promise<void> {
@@ -69,15 +74,15 @@ export class ExpressApp {
       log.info("Server connecting...");
       this.expressApp.listen(this.port, () => {
         this.#logTable({
-          title: `[Express] ${env.APP_NAME} v${env.PACKAGE_JSON_VERSION}`,
+          title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
           data: {
             "🟢 NodeJS": process.version,
-            "🏠 Env": env.NODE_ENV,
-            "📝 Swagger": env.SWAGGER_ENDPOINT,
+            "🏠 Env": env.SERVER_ENV,
+            "🔑 Keycloak": this.keycloakUrl,
+            "📝 Swagger": env.TS_REST_SWAGGER_ENDPOINT,
             "🆔 PID": `${process.pid}`,
             "🧠 Memory": this.memoryUsage,
             "📅 Started": new Date().toLocaleString(),
-            "🔑 Keycloak": this.keycloakUrl ?? "-",
           },
         });
         log.info(`🚀 App listening on port ${this.port}`);
@@ -113,11 +118,11 @@ export class ExpressApp {
   #initializeSwagger() {
     initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${this.url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
-      version: env.PACKAGE_JSON_VERSION,
-      endpoint: env.SWAGGER_ENDPOINT,
-      cssPath: env.SWAGGER_CSS_PATH,
-      jsPath: env.SWAGGER_JS_PATH,
+      oauth2RedirectUrl: `${this.url}${env.TS_REST_SWAGGER_ENDPOINT}${env.TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      version: env.SERVER_VERSION,
+      endpoint: env.TS_REST_SWAGGER_ENDPOINT,
+      cssPath: env.TS_REST_SWAGGER_CSS_PATH,
+      jsPath: env.TS_REST_SWAGGER_JS_PATH,
     });
   }
 
@@ -173,8 +178,6 @@ export class ExpressApp {
 
     const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
 
-    const hrX = `${"─".repeat(containerWidth)}`;
-
     const content = Object.entries(data).map(([key, value]) => {
       const keyPadding = " ".repeat(maxKeyLength - key.length);
       const text = `${key}${keyPadding}${hrY}${value}`;
@@ -182,6 +185,7 @@ export class ExpressApp {
       return `│${spacer}${text}${remainder}${spacer}│`;
     });
 
+    const hrX = `${"─".repeat(containerWidth)}`;
     console.info(`┌${hrX}┐`);
     console.info(`│${center(title, containerWidth)}│`);
     console.info(`├${hrX}┤`);

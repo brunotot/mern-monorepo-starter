@@ -4,9 +4,11 @@ import { type RouteInput, type RouteOutput } from "@org/app-node-express/lib/@ts
 import { autowired } from "@org/app-node-express/decorators/autowired";
 import { contract } from "@org/app-node-express/decorators/contract";
 import { type UserService } from "../service/UserService";
+import { inject } from "@org/app-node-express/decorators/inject";
 
+@inject()
 export class UserController {
-  @autowired userService: UserService;
+  @autowired() userService: UserService;
 
   @contract({ contract: contracts.User.findOneByUsername, roles: ["admin"] })
   async findOneByUsername(
@@ -33,9 +35,11 @@ export class UserController {
   async findAllPaginated(
     payload: RouteInput<typeof contracts.User.findAllPaginated>,
   ): RouteOutput<typeof contracts.User.findAllPaginated> {
+    // eslint-disable-next-line no-console
+    console.log(payload);
     return {
       status: 200,
-      body: (await this.userService.search(payload.query.paginationOptions)) as TODO,
+      body: {} as TODO,
     };
   }
 
@@ -43,10 +47,11 @@ export class UserController {
   async createOne(
     payload: RouteInput<typeof contracts.User.createOne>,
   ): RouteOutput<typeof contracts.User.createOne> {
-    const user = await this.userService.create(payload.body);
+    // eslint-disable-next-line no-console
+    console.log(payload);
     return {
       status: 201,
-      body: user,
+      body: {} as TODO,
     };
   }
 
@@ -54,7 +59,8 @@ export class UserController {
   async deleteByUsername(
     payload: RouteInput<typeof contracts.User.deleteByUsername>,
   ): RouteOutput<typeof contracts.User.deleteByUsername> {
-    await this.userService.deleteByUsername(payload.body.username);
+    // eslint-disable-next-line no-console
+    console.log(payload);
     return {
       status: 201,
       body: "OK",

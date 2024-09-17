@@ -22,15 +22,16 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
 
   return function (target: Fn, context: ClassMethodDecoratorContext<This, Fn>) {
     async function handler(data: unknown): Promise<unknown> {
-      const session = MongoDatabaseService.getInstance().client.startSession();
+      const databaseService = MongoDatabaseService.getInstance();
+      const session = databaseService.client.startSession();
       try {
-        MongoDatabaseService.getInstance().startTransaction(session);
+        databaseService.startTransaction(session);
         const container = iocRegistry.inject(context);
         const result = await target.call(container, data as RouteInput<Route>);
-        await MongoDatabaseService.getInstance().commitTransaction(session);
+        await databaseService.commitTransaction(session);
         return result;
       } catch (error: unknown) {
-        await MongoDatabaseService.getInstance().rollbackTransaction(session);
+        await databaseService.rollbackTransaction(session);
         const typedError = getTypedError(error);
         return { status: typedError.content.status, body: typedError.content };
       } finally {

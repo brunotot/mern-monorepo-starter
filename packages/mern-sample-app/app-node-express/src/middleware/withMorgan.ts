@@ -17,7 +17,7 @@ function createStream(logger: Winston.Logger): StreamOptions {
 }
 
 export const withMorgan: RouteMiddlewareFactory = () => {
-  if (env.NODE_ENV === "test") {
+  if (env.SERVER_ENV === "test") {
     return (req, res, next) => next();
   }
 

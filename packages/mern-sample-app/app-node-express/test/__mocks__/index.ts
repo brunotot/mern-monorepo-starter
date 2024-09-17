@@ -1,4 +1,4 @@
-import { type NoArgsClass } from "../../../shared/dist/src/index";
+import { type NoArgsClass } from "../../../lib-commons/src/config";
 import { KeycloakAuthorizationMock } from "./KeycloakAuthorizationMock";
 import { KeycloakRepositoryMock } from "./KeycloakRepositoryMock";
 

@@ -1,11 +1,10 @@
 import { env } from "@org/app-node-express/env";
 import { MongoClient, type Db, type ClientSession } from "mongodb";
 import { type zod } from "@org/lib-commons";
-import { server } from "@org/app-node-express/server";
 
 export class MongoDatabaseService {
   static buildMongoClient(): MongoClient {
-    return new MongoClient(env.MONGO_URL, {});
+    return new MongoClient(env.DATABASE_URL, {});
   }
 
   private static instance: MongoDatabaseService;
@@ -20,7 +19,11 @@ export class MongoDatabaseService {
   #db: Db;
 
   private constructor() {
-    this.#client = server.mongoClient;
+    // NOOP
+  }
+
+  public set client(client: MongoClient) {
+    this.#client = client;
   }
 
   public get client() {
@@ -37,7 +40,7 @@ export class MongoDatabaseService {
   }
 
   async rollbackTransaction(session: ClientSession) {
-    if (process.env.NODE_ENV === "test") return;
+    if (process.env.SERVER_ENV === "test") return;
 
     await this.#sneakyThrows(async () => {
       if (!session) return;
@@ -47,7 +50,7 @@ export class MongoDatabaseService {
   }
 
   async commitTransaction(session: ClientSession) {
-    if (process.env.NODE_ENV === "test") return;
+    if (process.env.SERVER_ENV === "test") return;
 
     this.#sneakyThrows(async () => {
       if (!session) return;
@@ -57,7 +60,7 @@ export class MongoDatabaseService {
   }
 
   async startTransaction(session: ClientSession): Promise<ClientSession> {
-    if (process.env.NODE_ENV === "test") return null as unknown as ClientSession;
+    if (process.env.SERVER_ENV === "test") return null as unknown as ClientSession;
 
     return (await this.#sneakyThrows(async () => {
       if (!session.inTransaction()) session.startTransaction();
@@ -67,7 +70,7 @@ export class MongoDatabaseService {
 
   get db() {
     if (this.#db) return this.#db;
-    this.#db = this.#client.db(env.MONGO_DATABASE);
+    this.#db = this.#client.db(env.DATABASE_NAME);
     return this.#db;
   }
 

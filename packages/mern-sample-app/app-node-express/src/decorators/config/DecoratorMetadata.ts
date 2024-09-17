@@ -1,4 +1,4 @@
-import type { Class } from "@org/lib-commons";
+import type { NoArgsClass } from "@org/lib-commons";
 
 // @ts-expect-error Stage 3 decorators polyfill.
 Symbol.metadata ??= Symbol("Symbol.metadata");
@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export type DecoratorMetadataInjectType = Class | DecoratorContext;
+export type DecoratorMetadataInjectType = NoArgsClass | DecoratorContext;
 
 export class DecoratorMetadata {
   public static for(target: DecoratorMetadataInjectType) {

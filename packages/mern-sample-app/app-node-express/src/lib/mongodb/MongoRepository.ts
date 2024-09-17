@@ -1,20 +1,12 @@
-import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
-import { type PaginationOptions, type PaginationResult } from "@org/lib-api-client";
-import type {
-  ClientSession,
-  Collection,
-  Document,
-  OptionalUnlessRequiredId,
-  WithId,
-} from "mongodb";
-import { type zod } from "@org/lib-commons";
-import type { MongoFilters, MongoSearch, MongoSort } from "@org/app-node-express/lib/mongodb";
+import type { PaginationOptions, PaginationResult } from "@org/lib-api-client";
+import type { zod, TODO } from "@org/lib-commons";
+import type * as mongodb from "mongodb";
+
+import type { MongoFilters, MongoSort, MongoSearch } from "./MongoTypes";
+import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
 import { getSession } from "@org/app-node-express/config/SessionStorage";
 
-// Do not remove!
-import { type TODO } from "@org/lib-commons";
-
-export abstract class Repository<T extends Document> {
+export abstract class MongoRepository<T extends mongodb.Document> {
   private readonly schema: zod.Schema<T>;
   private readonly searchFields: string[];
 
@@ -23,29 +15,25 @@ export abstract class Repository<T extends Document> {
     this.searchFields = searchFields;
   }
 
-  protected get session(): ClientSession {
-    const isFromTest = process.env.NODE_ENV === "test";
-
-    const session = isFromTest
+  private get session(): mongodb.ClientSession {
+    return process.env.SERVER_ENV === "test"
       ? MongoDatabaseService.getInstance().testSession
       : getSession().mongoClientSession;
-
-    return session;
   }
 
   private get collection() {
     return MongoDatabaseService.getInstance().collection(this.schema);
   }
 
-  public async findAll(): Promise<WithId<T>[]> {
+  public async findAll(): Promise<mongodb.WithId<T>[]> {
     return await this.collection.find().toArray();
   }
 
-  public async findOne(doc: Parameters<Collection<T>["findOne"]>[0]) {
+  public async findOne(doc: Parameters<mongodb.Collection<T>["findOne"]>[0]) {
     return await this.collection.findOne(doc, { session: this.session });
   }
 
-  public async insertOne(doc: OptionalUnlessRequiredId<T>): Promise<T> {
+  public async insertOne(doc: mongodb.OptionalUnlessRequiredId<T>): Promise<T> {
     const candidate = { ...doc };
     const { insertedId } = await this.collection.insertOne(candidate, {
       session: this.session,
@@ -53,12 +41,12 @@ export abstract class Repository<T extends Document> {
     return { ...candidate, _id: insertedId } as T;
   }
 
-  public async updateOne(newValue: T): Promise<T> {
-    await this.collection.updateOne({ _id: newValue._id }, newValue);
-    return newValue;
+  public async updateOne(doc: T): Promise<T> {
+    await this.collection.updateOne({ _id: doc._id }, doc);
+    return doc;
   }
 
-  public async deleteOne(doc: Parameters<Collection<T>["deleteOne"]>[0]): Promise<void> {
+  public async deleteOne(doc: Parameters<mongodb.Collection<T>["deleteOne"]>[0]): Promise<void> {
     await this.collection.deleteOne(doc, { session: this.session });
   }
 
@@ -69,7 +57,7 @@ export abstract class Repository<T extends Document> {
   }
 
   private async paginate(
-    collection: Collection<T>,
+    collection: mongodb.Collection<T>,
     searchFields: string[],
     options?: PaginationOptions,
   ): Promise<PaginationResult> {
@@ -80,7 +68,7 @@ export abstract class Repository<T extends Document> {
     const filters = options?.filters ?? {};
     const skip = page * limit;
 
-    const pipeline: Document[] = [];
+    const pipeline: mongodb.Document[] = [];
 
     pipeline.push(...this.buildMatchPipeline({ fields: searchFields, regex: search }, filters));
     pipeline.push(

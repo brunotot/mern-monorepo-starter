@@ -2,15 +2,16 @@
  * @packageDocumentation
  */
 
-import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import session from "express-session";
-import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
+import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import { env } from "@org/app-node-express/env";
+import { keycloakMemoryStore as store } from "@org/app-node-express/lib/keycloak";
 
 export const withSession: RouteMiddlewareFactory = () => {
   return session({
-    secret: "secret-key",
+    secret: env.SERVER_SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: keycloakMemoryStore,
+    store,
   });
 };

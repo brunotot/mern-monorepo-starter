@@ -18,12 +18,13 @@ export default async () => {
   const startTime = Date.now();
   await restoreMongoDBDump(mongoUri, dbDatabase);
   const endTime = Date.now();
+  // eslint-disable-next-line no-console
   console.log(`Restored MongoDB dump in ${endTime - startTime}ms`);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
-  process.env.PORT = String(TEST_PORT);
-  process.env.MONGO_URL = `mongodb://${host}:${port}`;
-  process.env.MONGO_DATABASE = dbDatabase;
+  process.env.SERVER_PORT = String(TEST_PORT);
+  process.env.DATABASE_URL = `mongodb://${host}:${port}`;
+  process.env.DATABASE_NAME = dbDatabase;
   return async () => {
     if (teardown) throw new Error("teardown called twice");
     teardown = true;

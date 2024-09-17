@@ -8,7 +8,7 @@ import { runWithSession, registerSession } from "@org/app-node-express/config/Se
 
 export const withContext: RouteMiddlewareFactory = () => {
   return (_req, _res, next) => {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.SERVER_ENV === "test") {
       return next();
     }
     runWithSession(() => {
