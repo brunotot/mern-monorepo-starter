@@ -1,7 +1,6 @@
-import { type User } from "@org/lib-api-client";
+import type { ApiKeycloakUser } from "@org/lib-api-client";
 
 export interface AuthorizationRepository {
-  findAllUsers(): Promise<User[]>;
-  findRolesByUserId(id: string): Promise<string[]>;
-  findUserByUsername(username: string): Promise<User | null>;
+  findAllUsers(): Promise<ApiKeycloakUser[]>;
+  findUserByUsername(username: string): Promise<ApiKeycloakUser | null>;
 }

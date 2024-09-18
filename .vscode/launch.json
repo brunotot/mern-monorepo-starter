@@ -67,6 +67,19 @@
       "autoAttachChildProcesses": false
     },
     {
+      "name": "@org: lint:fix",
+      "runtimeArgs": ["run", "lint:fix"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org: writeTypedoc",
       "runtimeArgs": ["run", "writeTypedoc"],
       "presentation": { "group": "1" },
@@ -158,6 +171,19 @@
       "autoAttachChildProcesses": false
     },
     {
+      "name": "@org/app-node-express: lint:fix",
+      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org/app-vite-react: start",
       "runtimeArgs": ["run", "start", "--prefix", "packages/mern-sample-app/app-vite-react"],
       "presentation": { "group": "4" },
@@ -236,6 +262,19 @@
       "autoAttachChildProcesses": false
     },
     {
+      "name": "@org/app-vite-react: lint:fix",
+      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "presentation": { "group": "4" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org/app-vite-react: loadTranslationTypes",
       "runtimeArgs": [
         "run",
@@ -267,7 +306,7 @@
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org/lib-commons: test - coverage",
+      "name": "@org/lib-commons: test:coverage",
       "runtimeArgs": ["run", "test:coverage", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
@@ -308,6 +347,19 @@
     {
       "name": "@org/lib-commons: lint",
       "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "presentation": { "group": "5" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-commons: lint:fix",
+      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/lib-commons"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -360,6 +412,19 @@
     {
       "name": "@org/lib-api-client: lint",
       "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-api-client: lint:fix",
+      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/lib-api-client"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",

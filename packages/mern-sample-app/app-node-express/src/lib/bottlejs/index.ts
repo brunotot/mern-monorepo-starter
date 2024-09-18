@@ -1,2 +1,3 @@
 export * from "./IocRegistry";
-export * from "./IocServiceDecoratorMetadataEntry";
+export * from "./IocClassMetadata";
+export * from "./IocScanner";

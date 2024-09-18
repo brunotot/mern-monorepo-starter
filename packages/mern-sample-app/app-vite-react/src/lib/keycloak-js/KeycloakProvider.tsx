@@ -1,10 +1,12 @@
-import { StrictMode, type PropsWithChildren } from "react";
-import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
-import { sigUser } from "@org/app-vite-react/signals/sigUser";
+import type * as KC from "@org/app-vite-react/lib/keycloak-js";
+
 import { keycloakClient } from "@org/app-vite-react/lib/keycloak-js/KeycloakClient";
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
+import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
 import { jwtDecode } from "jwt-decode";
 import { type KeycloakTokenParsed } from "keycloak-js";
-import type * as KC from "@org/app-vite-react/lib/keycloak-js";
+import { StrictMode, type PropsWithChildren } from "react";
+
 
 const KeycloakImpl = ({ children }: PropsWithChildren) => {
   const { keycloak, initialized } = useKeycloak();

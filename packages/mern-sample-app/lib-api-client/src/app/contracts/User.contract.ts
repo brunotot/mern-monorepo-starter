@@ -1,12 +1,18 @@
-import { initContract } from "@ts-rest/core";
-import { routeCommonProps } from "./../../lib/@ts-rest";
-import { RestErrorSchema, RestError500Schema } from "../models";
-import { JsonQueryParam, PaginationOptions, User } from "../models";
-import { UserPaginationResultDto } from "../dto";
 import { z } from "@org/lib-commons";
+import { initContract } from "@ts-rest/core";
+
+import { UserPaginationResultDto } from "../dto";
+import {
+  RestErrorSchema,
+  RestError500Schema,
+  JsonQueryParam,
+  PaginationOptions,
+  User,
+} from "../models";
+import { routeCommonProps } from "./../../lib/@ts-rest";
 
 const routeDefaults = routeCommonProps({
-  groupName: "UserController",
+  groupName: "Users",
   contextPath: "/users",
 });
 
@@ -47,30 +53,6 @@ export const userContract = initContract().router({
     }),
     responses: {
       200: UserPaginationResultDto,
-      500: RestError500Schema,
-    },
-  },
-  createOne: {
-    ...routeDefaults("/createOne"),
-    method: "POST",
-    summary: "Create a user",
-    description: "Create a user",
-    body: User,
-    responses: {
-      201: User,
-      500: RestError500Schema,
-    },
-  },
-  deleteByUsername: {
-    ...routeDefaults("/deleteByUsername"),
-    method: "DELETE",
-    summary: "Delete User by username",
-    description: "Delete User by username",
-    body: z.object({
-      username: z.string().openapi({ example: "brunotot" }),
-    }),
-    responses: {
-      201: z.string(),
       500: RestError500Schema,
     },
   },

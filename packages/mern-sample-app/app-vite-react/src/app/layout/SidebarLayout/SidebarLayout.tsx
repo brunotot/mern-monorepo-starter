@@ -1,12 +1,14 @@
+import type * as RouteTypes from "@org/app-vite-react/route-typings";
+
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
-import { reactServer } from "@org/app-vite-react/server";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { reactServer } from "@org/app-vite-react/server";
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { isAnyRouteActive } from "../Layout";
-import type * as RouteTypes from "@org/app-vite-react/route-typings";
 
 export type SidebarNavItemProps = {
   item: RouteTypes.NavigationRoute;

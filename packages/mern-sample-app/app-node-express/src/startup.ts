@@ -1,27 +1,22 @@
-import { type Class } from "@org/lib-commons";
+import path from "path";
 
-import { log } from "@org/app-node-express/logger";
-import { MongoDatabaseService } from "./lib/mongodb";
+import { env } from "@org/app-node-express/env";
 import { ExpressApp } from "@org/app-node-express/ExpressApp";
+import { scanIocModules } from "@org/app-node-express/lib/bottlejs";
+import { log } from "@org/app-node-express/logger";
 import { middleware } from "@org/app-node-express/middleware";
-import { scanIocModules } from "@org/app-node-express/modules";
+import { type NoArgsClass } from "@org/lib-commons";
 
-/**
- * Paths to directories to scan for classes with **\@inject** decorator.
- *
- * @remark Paths are relative to `app-node-express/src`
- * @example
- * ["infrastructure", "lib"]
- */
-const IOC_SCANNED_DIRS = ["infrastructure"];
+import { MongoDatabaseService } from "./lib/mongodb";
 
 export async function startup(
-  mocks: Record<string, Class> = {},
+  mocks: Record<string, NoArgsClass> = {},
   onReady?: (app: ExpressApp) => void,
   listen: boolean = true,
 ) {
   try {
-    const modules = await scanIocModules(IOC_SCANNED_DIRS);
+    const PATH_TO_BUILD_DIR = path.join(process.cwd(), "dist");
+    const modules = await scanIocModules(PATH_TO_BUILD_DIR, env.SERVER_IOC_SCAN_DIRS);
     const server = new ExpressApp({ middleware, modules });
     await server.init(mocks, onReady);
     const databaseService = MongoDatabaseService.getInstance();
@@ -30,13 +25,11 @@ export async function startup(
       await server.startListening();
     }
   } catch (error: unknown) {
-    // eslint-disable-next-line no-console
-    console.log(error);
     if (typeof error === "object" && error !== null && "message" in error) {
       log.error((error as { message: string }).message);
     } else {
       log.error(error);
-    } //
+    }
     process.exit(1);
   }
 }

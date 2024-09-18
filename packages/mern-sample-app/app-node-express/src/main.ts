@@ -1,5 +1,7 @@
 import { startup } from "./startup";
 
-(async () => {
+async function main() {
   await startup();
-})();
+}
+
+main();

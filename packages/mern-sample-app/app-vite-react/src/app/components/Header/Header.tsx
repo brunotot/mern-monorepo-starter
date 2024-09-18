@@ -1,5 +1,6 @@
-import { Menu as MenuIcon } from "@mui/icons-material";
 import type { Breakpoint, SxProps, Theme } from "@mui/material";
+
+import { Menu as MenuIcon } from "@mui/icons-material";
 import {
   Box,
   Menu,
@@ -10,16 +11,18 @@ import {
   Link,
   useMediaQuery,
 } from "@mui/material";
+import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
 import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
 import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
-import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
-import { type UIMatch, useMatches } from "react-router-dom";
-import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
-import { UserMenuButton } from "./UserMenuButton";
-import { useState } from "react";
-import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
-import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
 import { sigLayout } from "@org/app-vite-react/signals/sigLayout";
+import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
+import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
+import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
+import { useState } from "react";
+import { type UIMatch, useMatches } from "react-router-dom";
+
+import { UserMenuButton } from "./UserMenuButton";
+
 
 export type MuiSxProps = SxProps<Theme>;
 

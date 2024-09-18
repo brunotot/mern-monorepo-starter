@@ -2,8 +2,9 @@
  * @packageDocumentation Middleware which enables credentials for cross-origin requests.
  */
 
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+
 import { env } from "@org/app-node-express/env";
-import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 
 export const withCredentials: RouteMiddlewareFactory = () => {
   return (req, res, next) => {

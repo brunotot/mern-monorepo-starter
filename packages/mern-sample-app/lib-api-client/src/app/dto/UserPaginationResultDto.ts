@@ -1,5 +1,6 @@
-import { TypedPaginationResult } from "../models";
 import { z, type zod } from "@org/lib-commons";
+
+import { TypedPaginationResult } from "../models";
 
 /** @hidden */
 export const UserPaginationResultDto = TypedPaginationResult(

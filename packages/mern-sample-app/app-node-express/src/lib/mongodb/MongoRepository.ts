@@ -1,10 +1,11 @@
+import type { MongoFilters, MongoSort, MongoSearch } from "./MongoTypes";
 import type { PaginationOptions, PaginationResult } from "@org/lib-api-client";
 import type { zod, TODO } from "@org/lib-commons";
 import type * as mongodb from "mongodb";
 
-import type { MongoFilters, MongoSort, MongoSearch } from "./MongoTypes";
+import { testMode } from "@org/app-node-express/env";
+import { getSession } from "@org/app-node-express/infrastructure/middleware/withRouteSession";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
-import { getSession } from "@org/app-node-express/config/SessionStorage";
 
 export abstract class MongoRepository<T extends mongodb.Document> {
   private readonly schema: zod.Schema<T>;
@@ -16,9 +17,8 @@ export abstract class MongoRepository<T extends mongodb.Document> {
   }
 
   private get session(): mongodb.ClientSession {
-    return process.env.SERVER_ENV === "test"
-      ? MongoDatabaseService.getInstance().testSession
-      : getSession().mongoClientSession;
+    if (testMode()) return MongoDatabaseService.getInstance().testSession;
+    return getSession().mongoClientSession;
   }
 
   private get collection() {

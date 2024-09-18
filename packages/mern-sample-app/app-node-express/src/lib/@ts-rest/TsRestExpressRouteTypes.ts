@@ -1,5 +1,5 @@
-import type { AppRouteImplementation } from "@ts-rest/express";
 import type { AppRoute, ServerInferResponses } from "@ts-rest/core";
+import type { AppRouteImplementation } from "@ts-rest/express";
 import type { RequestHandler } from "express";
 
 export type RouteOutput<Route extends AppRoute> = Promise<ServerInferResponses<Route>>;

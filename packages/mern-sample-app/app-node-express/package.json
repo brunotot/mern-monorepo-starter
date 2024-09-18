@@ -10,7 +10,8 @@
     "start": "bash start.sh",
     "dev": "nodemon",
     "clean": "rm -rf ./dist",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "keywords": [],
   "author": "Bruno Tot",

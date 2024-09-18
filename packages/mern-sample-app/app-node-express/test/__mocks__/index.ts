@@ -1,8 +1,9 @@
-import { type NoArgsClass } from "../../../lib-commons/src/config";
-import { KeycloakAuthorizationMock } from "./KeycloakAuthorizationMock";
-import { KeycloakRepositoryMock } from "./KeycloakRepositoryMock";
+import type { NoArgsClass } from "../../../lib-commons/dist/src";
+
+import { AuthorizationMock } from "./AuthorizationMock";
+import { AuthorizationRepositoryMock } from "./AuthorizationRepositoryMock";
 
 export default {
-  Authorization: KeycloakAuthorizationMock,
-  AuthorizationRepository: KeycloakRepositoryMock,
+  Authorization: AuthorizationMock,
+  AuthorizationRepository: AuthorizationRepositoryMock,
 } as const satisfies Record<string, NoArgsClass>;

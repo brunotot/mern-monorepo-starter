@@ -1,19 +1,40 @@
-import { autowired } from "@org/app-node-express/decorators/autowired";
-import { inject } from "@org/app-node-express/decorators/inject";
-import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
-import { RestError, type User } from "@org/lib-api-client";
+import type { AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
+import type { ApiKeycloakUser, PaginationResult, Role, User } from "@org/lib-api-client";
+import type { TODO, zod } from "@org/lib-commons";
 
-@inject()
+import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
+import { RestError, ROLE_LIST } from "@org/lib-api-client";
+
+@inject("UserService")
 export class UserService {
-  @autowired() private authorizationRepository: AuthorizationRepository;
+  @autowired("AuthorizationRepository")
+  private userRepository: AuthorizationRepository;
 
   async findAll(): Promise<User[]> {
-    return await this.authorizationRepository.findAllUsers();
+    const users = await this.userRepository.findAllUsers();
+    return users.map(this.userMapper);
+  }
+
+  async findAllPaginated(paginationOptions: TODO): Promise<PaginationResult> {
+    // eslint-disable-next-line no-console
+    console.log(paginationOptions);
+    return null as TODO;
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    const user = await this.authorizationRepository.findUserByUsername(username);
+    const user = await this.userRepository.findUserByUsername(username);
     if (user === null) throw new RestError(404, "User not found");
-    return user;
+    return this.userMapper(user);
+  }
+
+  private userMapper(model: ApiKeycloakUser): User {
+    return {
+      _id: model.id,
+      username: model.username,
+      roles: model.realmRoles.filter(
+        (role: string): role is Role =>
+          !!ROLE_LIST.find((r: zod.ZodLiteral<unknown>) => r.safeParse(role).success),
+      ),
+    };
   }
 }

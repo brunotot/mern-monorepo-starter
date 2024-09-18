@@ -1,8 +1,8 @@
+import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
+import { type NavigationRouteItem, type NavigationRoute } from "@org/app-vite-react/route-typings";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import * as RouterDOM from "react-router-dom";
-import { type NavigationRouteItem, type NavigationRoute } from "@org/app-vite-react/route-typings";
-import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 
 export type Provider = React.FC<{ children: React.ReactNode }>;
 

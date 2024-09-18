@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogContent } from "@mui/material";
-import { useState } from "react";
 import type { User } from "@org/lib-api-client";
-import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
+
 import { Add } from "@mui/icons-material";
+import { Button, Dialog, DialogContent } from "@mui/material";
+import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
 import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
+import { useState } from "react";
 
 export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
@@ -31,6 +32,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Handle form submission
+    // eslint-disable-next-line no-console
     console.log("Form submitted:", user);
     await tsRestApiClient.User.createOne({
       body: user,

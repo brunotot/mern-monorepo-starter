@@ -1,4 +1,6 @@
-import { DecoratorMetadata, type DecoratorMetadataInjectType } from "./DecoratorMetadata";
+import type { DecoratorMetadataInjectType } from "./DecoratorMetadata";
+
+import { DecoratorMetadata } from "./DecoratorMetadata";
 
 export abstract class DecoratorMetadataEntry<Value> {
   #metadata: DecoratorMetadata;

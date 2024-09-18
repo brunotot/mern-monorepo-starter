@@ -1,5 +1,5 @@
-import { initClient } from "@ts-rest/core";
 import { contracts } from "@org/lib-api-client";
+import { initClient } from "@ts-rest/core";
 
 const API_CLIENT_URL = import.meta.env.VITE_API_CLIENT_URL;
 

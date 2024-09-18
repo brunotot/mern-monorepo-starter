@@ -1,7 +1,7 @@
-import { type ReactNode } from "react";
-import { type RouteObject } from "react-router-dom";
 import { type I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
+import { type ReactNode } from "react";
+import { type RouteObject } from "react-router-dom";
 
 export type NavigationRouteUi = {
   icon?: ReactNode;

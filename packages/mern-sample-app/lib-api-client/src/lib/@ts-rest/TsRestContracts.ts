@@ -1,4 +1,5 @@
 import { type AppRouter } from "@ts-rest/core";
+
 import { TS_REST_OPEN_API_TAG } from "./TsRestOpenApi";
 
 export type TsRestContracts = Record<string, AppRouter>;

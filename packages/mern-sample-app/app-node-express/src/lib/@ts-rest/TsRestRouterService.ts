@@ -1,5 +1,6 @@
-import type { RequestHandler } from "express";
 import type { AppRoute } from "@ts-rest/core";
+import type { RequestHandler } from "express";
+
 import { contracts } from "@org/lib-api-client";
 import { type TODO } from "@org/lib-commons";
 

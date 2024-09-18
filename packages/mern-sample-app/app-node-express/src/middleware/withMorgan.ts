@@ -3,12 +3,13 @@
  * @see {@link https://www.npmjs.com/package/morgan|npm specifics}
  */
 
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { StreamOptions } from "morgan";
 import type * as Winston from "winston";
-import morgan from "morgan";
-import { env } from "@org/app-node-express/env";
+
+import { testMode } from "@org/app-node-express/env";
 import { log } from "@org/app-node-express/logger";
-import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import morgan from "morgan";
 
 function createStream(logger: Winston.Logger): StreamOptions {
   return {
@@ -17,9 +18,6 @@ function createStream(logger: Winston.Logger): StreamOptions {
 }
 
 export const withMorgan: RouteMiddlewareFactory = () => {
-  if (env.SERVER_ENV === "test") {
-    return (req, res, next) => next();
-  }
-
+  if (testMode()) return (_req, _res, next) => next();
   return morgan("dev", { stream: createStream(log) });
 };

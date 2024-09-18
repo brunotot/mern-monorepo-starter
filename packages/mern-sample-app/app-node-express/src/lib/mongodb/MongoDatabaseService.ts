@@ -1,6 +1,6 @@
-import { env } from "@org/app-node-express/env";
-import { MongoClient, type Db, type ClientSession } from "mongodb";
+import { env, testMode } from "@org/app-node-express/env";
 import { type zod } from "@org/lib-commons";
+import { MongoClient, type Db, type ClientSession } from "mongodb";
 
 export class MongoDatabaseService {
   static buildMongoClient(): MongoClient {
@@ -40,8 +40,7 @@ export class MongoDatabaseService {
   }
 
   async rollbackTransaction(session: ClientSession) {
-    if (process.env.SERVER_ENV === "test") return;
-
+    if (testMode()) return;
     await this.#sneakyThrows(async () => {
       if (!session) return;
       await session.abortTransaction();
@@ -50,8 +49,7 @@ export class MongoDatabaseService {
   }
 
   async commitTransaction(session: ClientSession) {
-    if (process.env.SERVER_ENV === "test") return;
-
+    if (testMode()) return;
     this.#sneakyThrows(async () => {
       if (!session) return;
       await session.commitTransaction();
@@ -60,8 +58,7 @@ export class MongoDatabaseService {
   }
 
   async startTransaction(session: ClientSession): Promise<ClientSession> {
-    if (process.env.SERVER_ENV === "test") return null as unknown as ClientSession;
-
+    if (testMode()) return null as unknown as ClientSession;
     return (await this.#sneakyThrows(async () => {
       if (!session.inTransaction()) session.startTransaction();
       return session;

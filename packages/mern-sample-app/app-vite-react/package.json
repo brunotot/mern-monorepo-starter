@@ -11,6 +11,7 @@
     "dev": "vite",
     "build": "tsc && vite build --emptyOutDir",
     "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives",
+    "lint:fix": "npx eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "start": "serve -s dist",
     "loadTranslationTypes": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/lib/i18next/@types/resources.d.ts"
   },

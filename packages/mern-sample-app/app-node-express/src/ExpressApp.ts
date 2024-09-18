@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
-import type { Class } from "@org/lib-commons";
 import type { MongoClient } from "@org/app-node-express/lib/mongodb";
+import type { NoArgsClass } from "@org/lib-commons";
 
-import express from "express";
-import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
-import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
-import { getTypedError } from "@org/lib-api-client";
-import { iocRegistry } from "@org/app-node-express/lib/bottlejs";
-import { log } from "@org/app-node-express/logger";
 import { env } from "@org/app-node-express/env";
+import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
+import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
+import { log } from "@org/app-node-express/logger";
+import { getTypedError } from "@org/lib-api-client";
+import express from "express";
 
 export type ExpressAppConfig = Partial<{
   middleware: RouteMiddlewareFactory[];
-  modules: Record<string, Class>;
+  modules: Record<string, NoArgsClass>;
 }>;
 
 export class ExpressApp {
@@ -23,10 +23,10 @@ export class ExpressApp {
   public readonly url: string;
   public readonly keycloakUrl: string;
   public readonly middleware: RouteMiddlewareFactory[];
-  public readonly modules: Record<string, Class>;
+  public readonly modules: Record<string, NoArgsClass>;
 
   #mongoClient: MongoClient;
-  #mockModules: Record<string, Class>;
+  #mockModules: Record<string, NoArgsClass>;
 
   constructor(config: ExpressAppConfig = {}) {
     this.middleware = config.middleware ?? [];
@@ -50,7 +50,7 @@ export class ExpressApp {
   }
 
   public async init(
-    mocks: Record<string, Class> = {},
+    mocks: Record<string, NoArgsClass> = {},
     onReady?: (app: ExpressApp) => void,
   ): Promise<void> {
     log.info("Initializing Swagger");
@@ -96,13 +96,13 @@ export class ExpressApp {
     await this.#mongoClient.connect();
   }
 
-  #initializeIoc(mocks: Record<string, Class>) {
+  #initializeIoc(mocks: Record<string, NoArgsClass>) {
     this.#mockModules = mocks;
     const modules = this.modules;
-    const localModules: Record<string, Class> = {};
+    const localModules: Record<string, NoArgsClass> = {};
     Object.entries(modules).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
     Object.entries(mocks).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
-    iocRegistry.iocStartup(localModules);
+    IocRegistry.getInstance().iocStartup(localModules);
   }
 
   #initializeGlobalMiddlewares() {

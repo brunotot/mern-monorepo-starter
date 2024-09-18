@@ -1,4 +1,5 @@
 import { generateOpenApi } from "@ts-rest/open-api";
+
 import { contracts } from "../../app/contracts";
 
 /** String literal **"openApiTags"**. Keyword recognized by ts-rest OpenAPI for defining a group name. */

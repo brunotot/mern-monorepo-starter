@@ -1,5 +1,6 @@
-import { PaginationResult } from "./PaginationResult";
 import { z, type zod } from "@org/lib-commons";
+
+import { PaginationResult } from "./PaginationResult";
 
 /** @hidden */
 export function TypedPaginationResult<const T extends zod.AnyZodObject>(schema: T) {

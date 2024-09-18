@@ -1,7 +1,7 @@
+import { withKeycloakDefaults } from "@org/app-node-express/infrastructure/middleware/withKeycloakDefaults";
+import { withKeycloakSession } from "@org/app-node-express/infrastructure/middleware/withKeycloakSession";
+import { withRouteSession } from "@org/app-node-express/infrastructure/middleware/withRouteSession";
 import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
-
-import { withStaticAssets } from "@org/app-node-express/middleware/withStaticAssets";
-import { withContext } from "@org/app-node-express/middleware/withContext";
 import { withCompression } from "@org/app-node-express/middleware/withCompression";
 import { withCookieParser } from "@org/app-node-express/middleware/withCookieParser";
 import { withCors } from "@org/app-node-express/middleware/withCors";
@@ -10,15 +10,15 @@ import { withCsp } from "@org/app-node-express/middleware/withCsp";
 import { withHpp } from "@org/app-node-express/middleware/withHpp";
 import { withJsonParser } from "@org/app-node-express/middleware/withJsonParser";
 import { withMorgan } from "@org/app-node-express/middleware/withMorgan";
+import { withStaticAssets } from "@org/app-node-express/middleware/withStaticAssets";
 import { withUrlEncoded } from "@org/app-node-express/middleware/withUrlEncoded";
-import { withSession } from "@org/app-node-express/middleware/withSession";
-import { withAuthorization } from "@org/app-node-express/middleware/withAuthorization";
 
 // Order matters!
 
 export const middleware = [
   withStaticAssets, // withStaticAssets should always be on top!
-  withContext,
+  withKeycloakSession,
+  withRouteSession,
   withCompression,
   withCookieParser,
   withCors,
@@ -28,6 +28,5 @@ export const middleware = [
   withJsonParser,
   withMorgan,
   withUrlEncoded,
-  withSession,
-  withAuthorization,
+  withKeycloakDefaults,
 ] as const satisfies RouteMiddlewareFactory[];

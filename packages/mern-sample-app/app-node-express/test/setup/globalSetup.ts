@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MongoMemoryReplSet, MongoMemoryServer } from "mongodb-memory-server";
 import { exec } from "child_process";
+
+import { MongoMemoryReplSet } from "mongodb-memory-server";
 
 export const TEST_PORT = 8083;
 const REPLICA_SET_COUNT = 3;

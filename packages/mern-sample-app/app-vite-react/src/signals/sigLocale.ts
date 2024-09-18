@@ -1,5 +1,5 @@
-import { effect, signal } from "@preact/signals-react";
 import * as i18n from "@org/app-vite-react/lib/i18next";
+import { effect, signal } from "@preact/signals-react";
 
 export const sigLocale = signal<i18n.I18nLocale>(
   (i18n.I18N_LANGUAGE_LIST.find(value => value === localStorage.getItem("locale")) ??

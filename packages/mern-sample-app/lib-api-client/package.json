@@ -10,7 +10,8 @@
     "build": "npm run clean && tsc && tsc-alias -p tsconfig.prod.json",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "keywords": [],
   "author": "Bruno Tot",

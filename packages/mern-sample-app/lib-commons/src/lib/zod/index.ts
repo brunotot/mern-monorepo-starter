@@ -1,6 +1,8 @@
-import * as zod from "zod";
 import type { z as zodInternal } from "zod";
+
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
+import * as zod from "zod";
+
 import { type TODO } from "../../config";
 
 type AnatineZodOpenapi = (data: TODO) => TODO;

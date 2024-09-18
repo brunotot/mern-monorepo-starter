@@ -1,3 +1,7 @@
+import type { ServerDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ServerDatatable/types";
+import type { DtBaseSortItem } from "@org/app-vite-react/app/components/Datatable/types";
+import type { MouseEvent } from "react";
+
 import {
   TableContainer,
   Table,
@@ -7,12 +11,9 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import type { MouseEvent } from "react";
-import { Fragment, useCallback } from "react";
-import type { ServerDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ServerDatatable/types";
-import type { DtBaseSortItem } from "@org/app-vite-react/app/components/Datatable/types";
 import { DtSortableCell } from "@org/app-vite-react/app/components/Datatable/components/DtSortableCell";
 import { type TODO } from "@org/lib-commons";
+import { Fragment, useCallback } from "react";
 
 export function ServerDatatable<T>({
   data,

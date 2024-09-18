@@ -1,6 +1,7 @@
-import React from "react";
-import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
 import type { User, Role } from "@org/lib-api-client";
+
+import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
+import React from "react";
 
 export type UserFormProps = {
   value: User;

@@ -4,7 +4,8 @@
  * @see {@link https://en.wikipedia.org/wiki/HTTP_parameter_pollution|http parameter pollution wiki}
  */
 
-import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+
 import hpp from "hpp";
 
 export const withHpp: RouteMiddlewareFactory = () => {

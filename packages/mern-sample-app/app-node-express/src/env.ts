@@ -2,19 +2,22 @@
  * @packageDocumentation Environment setup.
  */
 
+import path from "path";
+
 import { z } from "@org/lib-commons";
 import dotenv from "dotenv";
-import path from "path";
 
 // prettier-ignore
 const ENVIRONMENT_VARS = z.object({
   // Express server
   SERVER_DOMAIN: z.string(),
+  SERVER_ENV: z.union([z.literal("test"), z.literal("production"), z.literal("development")]),
   SERVER_SESSION_SECRET: z.string(),
+  SERVER_ASSETS_URI: z.string().default("assets"),
   SERVER_VERSION: z.string().default("?.?.?"),
-  SERVER_ENV: z.string(),
   SERVER_NAME: z.string().default("app-node-express"),
   SERVER_PORT: z.string().default("8081").transform(v => Number(v)),
+  SERVER_IOC_SCAN_DIRS: z.string().default("infrastructure").transform(v => v.split(",").map(s => s.trim())),
 
   // mongodb
   DATABASE_URL: z.string(),
@@ -40,10 +43,14 @@ const ENVIRONMENT_VARS = z.object({
   CORS_ALLOWED_ORIGINS: z.string().transform(s => s.split(",")),
   CORS_CREDENTIALS: z.string().default("true").transform(s => s === "true"),
   CORS_ALLOWED_METHODS: z.string().default("GET,POST,PUT,DELETE,PATCH").transform(s => s.split(",")),
-  CORS_ALLOWED_HEADERS: z.string().default("*").transform(s => s.split(",")),
+  CORS_ALLOWED_HEADERS: z.string().default("*").transform(s => s.split(",").map(chunk => chunk.trim())),
 });
 
 export const env = parseEnvironmentVars();
+
+export function testMode() {
+  return env.SERVER_ENV === "test";
+}
 
 function parseEnvironmentVars() {
   configLocalDotenv();
@@ -67,13 +74,14 @@ function parseEnvironmentVars() {
 function filterEnvBySchema() {
   return Object.keys(ENVIRONMENT_VARS.shape).reduce((acc, key) => {
     const value = process.env[key];
-    // @ts-ignore
+    // @ts-ignore False positive
     if (value !== undefined) acc[key] = value;
     return acc;
   }, {});
 }
 
 function configLocalDotenv() {
+  // Make sure this function only accesses process.env and not local env (it is not initialized yet).
   dotenv.config({
     path: path.join(process.cwd(), `.env.${process.env.SERVER_ENV ?? "development"}.local`),
   });

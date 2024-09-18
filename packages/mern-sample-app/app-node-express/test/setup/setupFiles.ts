@@ -1,7 +1,7 @@
 /// <reference types="@types/jest" />
 
-import { startup } from "../../dist/startup";
 import { MongoDatabaseService } from "../../dist/lib/mongodb/MongoDatabaseService";
+import { startup } from "../../dist/startup";
 import __mocks__ from "../__mocks__";
 
 beforeAll(async () => {
