@@ -8,6 +8,6 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 
 import hpp from "hpp";
 
-export const withHpp: RouteMiddlewareFactory = () => {
-  return hpp();
-};
+export function withHpp(): RouteMiddlewareFactory {
+  return () => [hpp()];
+}

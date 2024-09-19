@@ -7,6 +7,6 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 
 import cookieParser from "cookie-parser";
 
-export const withCookieParser: RouteMiddlewareFactory = () => {
-  return cookieParser();
-};
+export function withCookieParser(): RouteMiddlewareFactory {
+  return () => [cookieParser()];
+}

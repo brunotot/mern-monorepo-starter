@@ -1,8 +1,12 @@
-import type { AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
 import type { ApiKeycloakUser } from "@org/lib-api-client";
 
 import { inject } from "@org/app-node-express/infrastructure/decorators/inject";
 import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
+
+export interface AuthorizationRepository {
+  findAllUsers(): Promise<ApiKeycloakUser[]>;
+  findUserByUsername(username: string): Promise<ApiKeycloakUser | null>;
+}
 
 /**
  * @see {@link https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html Keycloak Admin REST API} documentation.

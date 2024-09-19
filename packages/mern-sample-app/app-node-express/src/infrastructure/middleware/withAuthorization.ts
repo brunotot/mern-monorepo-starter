@@ -1,15 +1,23 @@
-import type { Authorization } from "@org/app-node-express/interface/Authorization";
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { RequestHandler } from "express";
 import type { Keycloak as KeycloakType, KeycloakConfig } from "keycloak-connect";
 
 import { env } from "@org/app-node-express/env";
 import { inject } from "@org/app-node-express/infrastructure/decorators/inject";
+import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
 import { RestError } from "@org/lib-api-client";
 import Keycloak from "keycloak-connect";
 
-@inject("Authorization")
-export class UserAuthorization implements Authorization {
+const IOC_KEY = "withAuthorization";
+
+export interface AuthorizationMiddleware {
+  middleware(): RequestHandler[];
+  protect(): RequestHandler;
+}
+
+@inject(IOC_KEY)
+export class WithAuthorization implements AuthorizationMiddleware {
   private readonly keycloak: KeycloakType;
 
   constructor() {
@@ -37,4 +45,8 @@ export class UserAuthorization implements Authorization {
       "ssl-required": env.KEYCLOAK_SSL_REQUIRED,
     };
   }
+}
+
+export function withAuthorization(): RouteMiddlewareFactory {
+  return () => IocRegistry.getInstance().inject<AuthorizationMiddleware>(IOC_KEY).middleware();
 }

@@ -1,6 +1,9 @@
-import type { RouteHandler, RouteInput } from "@org/app-node-express/lib/@ts-rest";
+import type {
+  RouteHandler,
+  RouteInput,
+  RouteMiddlewareFactory,
+} from "@org/app-node-express/lib/@ts-rest";
 import type { AppRoute } from "@ts-rest/core";
-import type { RequestHandler } from "express";
 
 import { TsRestRouterService } from "@org/app-node-express/lib/@ts-rest";
 import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
@@ -9,9 +12,9 @@ import { getTypedError } from "@org/lib-api-client";
 
 export function contract<const Route extends AppRoute, This, Fn extends RouteHandler<Route>>(
   contract: Route,
-  ...middlewareData: (RequestHandler | RequestHandler[])[]
+  ...middlewareData: (RouteMiddlewareFactory | RouteMiddlewareFactory[])[]
 ) {
-  const middleware = middlewareData.flat();
+  const middlewareFactories = middlewareData.flat();
 
   return function (target: Fn, context: ClassMethodDecoratorContext<This, Fn>) {
     async function handler(data: unknown): Promise<unknown> {
@@ -33,7 +36,7 @@ export function contract<const Route extends AppRoute, This, Fn extends RouteHan
     }
 
     contract.summary = buildContractSummary(contract.summary);
-    TsRestRouterService.getInstance().addRouter(contract, handler, middleware);
+    TsRestRouterService.getInstance().addRouter(contract, handler, middlewareFactories);
     return handler as Fn;
   };
 }

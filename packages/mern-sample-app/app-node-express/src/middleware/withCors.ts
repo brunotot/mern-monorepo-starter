@@ -9,11 +9,13 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 import { env } from "@org/app-node-express/env";
 import cors from "cors";
 
-export const withCors: RouteMiddlewareFactory = () => {
-  return cors({
-    credentials: env.CORS_CREDENTIALS,
-    origin: env.CORS_ALLOWED_ORIGINS,
-    methods: env.CORS_ALLOWED_METHODS,
-    allowedHeaders: env.CORS_ALLOWED_HEADERS,
-  });
-};
+export function withCors(): RouteMiddlewareFactory {
+  return () => [
+    cors({
+      credentials: env.CORS_CREDENTIALS,
+      origin: env.CORS_ALLOWED_ORIGINS,
+      methods: env.CORS_ALLOWED_METHODS,
+      allowedHeaders: env.CORS_ALLOWED_HEADERS,
+    }),
+  ];
+}

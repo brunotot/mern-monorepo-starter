@@ -3,14 +3,14 @@ import type { RouteInput, RouteOutput } from "@org/app-node-express/lib/@ts-rest
 import type { TODO } from "@org/lib-commons";
 
 import { autowired, contract, inject } from "@org/app-node-express/infrastructure/decorators";
-import { withKeycloakSecured } from "@org/app-node-express/infrastructure/middleware/withKeycloakSecured";
+import { withRouteSecured } from "@org/app-node-express/infrastructure/middleware/withRouteSecured";
 import { contracts } from "@org/lib-api-client";
 
 @inject("UserController")
 export class UserController {
-  @autowired() userService: UserService;
+  @autowired("UserService") userService: UserService;
 
-  @contract(contracts.User.findOneByUsername, withKeycloakSecured("admin"))
+  @contract(contracts.User.findOneByUsername, withRouteSecured("admin"))
   async findOneByUsername(
     payload: RouteInput<typeof contracts.User.findOneByUsername>,
   ): RouteOutput<typeof contracts.User.findOneByUsername> {
@@ -20,7 +20,7 @@ export class UserController {
     };
   }
 
-  @contract(contracts.User.findAll, withKeycloakSecured("admin"))
+  @contract(contracts.User.findAll, withRouteSecured("admin"))
   async findAll(): RouteOutput<typeof contracts.User.findAll> {
     return {
       status: 200,
@@ -28,7 +28,7 @@ export class UserController {
     };
   }
 
-  @contract(contracts.User.findAllPaginated, withKeycloakSecured("admin"))
+  @contract(contracts.User.findAllPaginated, withRouteSecured("admin"))
   async findAllPaginated(
     payload: RouteInput<typeof contracts.User.findAllPaginated>,
   ): RouteOutput<typeof contracts.User.findAllPaginated> {

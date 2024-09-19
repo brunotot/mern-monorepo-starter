@@ -1,43 +1,37 @@
 /**
- * @packageDocumentation Middleware which manages context for route sessions.
+ * @packageDocumentation
  */
 
-import { AsyncLocalStorage } from "async_hooks";
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { RequestHandler } from "express";
 
-import { testMode } from "@org/app-node-express/env";
-import { type RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
-import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
-import { type ClientSession } from "mongodb";
+import { env } from "@org/app-node-express/env";
+import { inject } from "@org/app-node-express/infrastructure/decorators";
+import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
+import session from "express-session";
 
-type Session = {
-  mongoClientSession: ClientSession;
-};
+const IOC_KEY = "withRouteSession";
 
-const STORAGE = new AsyncLocalStorage<Session>();
-
-export function getSession(): Session {
-  return STORAGE.getStore()!;
+export interface RouteSessionMiddleware {
+  middleware(): RequestHandler[];
 }
 
-export const withRouteSession: RouteMiddlewareFactory = () => {
-  if (testMode()) return (_req, _res, next) => next();
-  return (_req, _res, next) => {
-    runWithSession(() => {
-      const mongoClientSession = MongoDatabaseService.getInstance().client.startSession();
-      registerSession({ mongoClientSession });
-      next();
-    });
-  };
-};
-
-function registerSession(session: Session) {
-  const store = STORAGE.getStore();
-  if (!store) return;
-  Object.entries(session).forEach(([key, value]) => (store[key as keyof typeof store] = value));
+@inject(IOC_KEY)
+export class WithRouteSession implements RouteSessionMiddleware {
+  middleware(): RequestHandler[] {
+    return [
+      session({
+        secret: env.SERVER_SESSION_SECRET,
+        resave: false,
+        // TODO Check if false is okay (it is verified it works with true)
+        saveUninitialized: false,
+        store: keycloakMemoryStore,
+      }),
+    ];
+  }
 }
 
-function runWithSession(fn: () => void) {
-  const store = STORAGE.getStore();
-  if (!store) return;
-  STORAGE.run(store, fn);
+export function withRouteSession(): RouteMiddlewareFactory {
+  return () => IocRegistry.getInstance().inject<RouteSessionMiddleware>(IOC_KEY).middleware();
 }

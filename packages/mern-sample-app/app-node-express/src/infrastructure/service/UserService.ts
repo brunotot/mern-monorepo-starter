@@ -1,4 +1,4 @@
-import type { AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
+import type { AuthorizationRepository } from "../repository/UserRepository";
 import type { ApiKeycloakUser, PaginationResult, Role, User } from "@org/lib-api-client";
 import type { TODO, zod } from "@org/lib-commons";
 

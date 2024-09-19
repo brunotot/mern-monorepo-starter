@@ -8,4 +8,4 @@ export type RouteInput<Route extends AppRoute> = Parameters<AppRouteImplementati
 
 export type RouteHandler<Route extends AppRoute> = (data: RouteInput<Route>) => RouteOutput<Route>;
 
-export type RouteMiddlewareFactory = () => RequestHandler | RequestHandler[];
+export type RouteMiddlewareFactory = () => RequestHandler[];

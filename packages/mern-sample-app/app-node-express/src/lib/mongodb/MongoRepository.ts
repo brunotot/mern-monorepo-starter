@@ -1,10 +1,11 @@
 import type { MongoFilters, MongoSort, MongoSearch } from "./MongoTypes";
+import type { RouteContextMiddleware } from "@org/app-node-express/infrastructure/middleware/withRouteContext";
 import type { PaginationOptions, PaginationResult } from "@org/lib-api-client";
 import type { zod, TODO } from "@org/lib-commons";
 import type * as mongodb from "mongodb";
 
-import { testMode } from "@org/app-node-express/env";
-import { getSession } from "@org/app-node-express/infrastructure/middleware/withRouteSession";
+//import { testMode } from "@org/app-node-express/env";
+import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
 
 export abstract class MongoRepository<T extends mongodb.Document> {
@@ -16,9 +17,10 @@ export abstract class MongoRepository<T extends mongodb.Document> {
     this.searchFields = searchFields;
   }
 
-  private get session(): mongodb.ClientSession {
-    if (testMode()) return MongoDatabaseService.getInstance().testSession;
-    return getSession().mongoClientSession;
+  private get session(): mongodb.ClientSession | undefined {
+    return IocRegistry.getInstance()
+      .inject<RouteContextMiddleware>("withRouteContext")
+      .getSession();
   }
 
   private get collection() {

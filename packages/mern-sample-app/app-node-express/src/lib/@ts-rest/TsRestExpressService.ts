@@ -9,8 +9,8 @@ import { TsRestRouterService } from "./TsRestRouterService";
 
 export function initializeExpressRoutes(app: express.Application): void {
   const s = initServer();
-  const unsafeRouters = TsRestRouterService.getInstance().getRouters();
-  const router = s.router(contracts, unsafeRouters);
+  const contractsRouter = TsRestRouterService.getInstance().getRouters();
+  const router = s.router(contracts, contractsRouter);
   function suppressConsole<T>(handler: () => T): T {
     const originalConsole = {
       log: console.log,

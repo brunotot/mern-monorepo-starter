@@ -7,6 +7,6 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 
 import compression from "compression";
 
-export const withCompression: RouteMiddlewareFactory = () => {
-  return compression();
-};
+export function withCompression(): RouteMiddlewareFactory {
+  return () => [compression()];
+}
