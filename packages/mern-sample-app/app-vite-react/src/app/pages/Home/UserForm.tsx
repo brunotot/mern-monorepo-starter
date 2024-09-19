@@ -1,6 +1,7 @@
-import React from "react";
+import type { User, Role } from "@org/lib-api-client";
+
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import type { User } from "@org/lib-commons";
+import React from "react";
 
 export type UserFormProps = {
   value: User;
@@ -29,28 +30,12 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
         onChange={e => mutate({ username: e.target.value })}
         required
       />
-      <TextField
-        label="Email"
-        name="email"
-        type="email"
-        value={value.email}
-        onChange={e => mutate({ email: e.target.value })}
-        required
-      />
-      <TextField
-        label="Password"
-        name="password"
-        type="password"
-        value={value.password}
-        onChange={e => mutate({ password: e.target.value })}
-        required
-      />
       <Autocomplete
         multiple
         id="tags-outlined"
         options={["admin", "user"]}
         getOptionLabel={option => option}
-        onChange={(_, newValue) => mutate({ roles: newValue })}
+        onChange={(_, newValue) => mutate({ roles: newValue as Role[] })}
         value={value.roles}
         disableCloseOnSelect
         filterSelectedOptions

@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MongoMemoryReplSet, MongoMemoryServer } from "mongodb-memory-server";
 import { exec } from "child_process";
 
-export const TEST_PORT = 8082;
+import { MongoMemoryReplSet } from "mongodb-memory-server";
+
+export const TEST_PORT = 8083;
 const REPLICA_SET_COUNT = 3;
 const DUMP_PATH = "./test/dump";
 const MONGODB_DATABASE_TOOLS_PATH = "./tools/mongodb-database-tools/bin";
@@ -18,12 +19,20 @@ export default async () => {
   const startTime = Date.now();
   await restoreMongoDBDump(mongoUri, dbDatabase);
   const endTime = Date.now();
+  // eslint-disable-next-line no-console
   console.log(`Restored MongoDB dump in ${endTime - startTime}ms`);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
-  process.env.PORT = String(TEST_PORT);
-  process.env.MONGO_URL = `mongodb://${host}:${port}`;
-  process.env.MONGO_DATABASE = dbDatabase;
+  process.env.SERVER_PORT = String(TEST_PORT);
+  process.env.SERVER_ENV = "test";
+  process.env.SERVER_DOMAIN = `http://localhost`;
+  process.env.SERVER_SESSION_SECRET = "secret-test-key";
+  process.env.DATABASE_URL = `mongodb://${host}:${port}`;
+  process.env.DATABASE_NAME = dbDatabase;
+  process.env.KEYCLOAK_URL = "";
+  process.env.KEYCLOAK_ADMIN_CLI_SECRET = "";
+  process.env.CORS_ALLOWED_ORIGINS = "";
+
   return async () => {
     if (teardown) throw new Error("teardown called twice");
     teardown = true;

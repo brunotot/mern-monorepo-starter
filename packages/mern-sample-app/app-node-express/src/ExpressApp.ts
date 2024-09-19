@@ -1,38 +1,39 @@
+/* eslint-disable no-console */
+
+import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { MongoClient } from "@org/app-node-express/lib/mongodb";
+import type { NoArgsClass } from "@org/lib-commons";
+
+import { env } from "@org/app-node-express/env";
+import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
+import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
+import { log } from "@org/app-node-express/logger";
+import { getTypedError } from "@org/lib-api-client";
 import express from "express";
 
-import * as utils from "@org/lib-commons";
-import * as apiClientUtils from "@org/lib-api-client";
-import * as tsRest from "@org/app-node-express/lib/@ts-rest";
-import * as bottleJs from "@org/app-node-express/lib/bottlejs";
-import * as mongodb from "@org/app-node-express/lib/mongodb";
-
-import { log } from "@org/app-node-express/logger";
-import { env } from "@org/app-node-express/env";
-
-type Class = new () => utils.TODO;
-
 export type ExpressAppConfig = Partial<{
-  middleware: tsRest.RouteMiddlewareFactory[];
-  modules: Record<string, Class>;
+  middleware: RouteMiddlewareFactory[];
+  modules: Record<string, NoArgsClass>;
 }>;
 
 export class ExpressApp {
   public readonly expressApp: express.Application;
-  public readonly port: string;
+  public readonly port: number;
   public readonly url: string;
-  public readonly keycloakUrl?: string;
-  public readonly middleware: tsRest.RouteMiddlewareFactory[];
-  public readonly modules: Record<string, Class>;
+  public readonly keycloakUrl: string;
+  public readonly middleware: RouteMiddlewareFactory[];
+  public readonly modules: Record<string, NoArgsClass>;
 
-  #mongoClient: mongodb.MongoClient;
-  #mockModules: Record<string, Class>;
+  #mongoClient: MongoClient;
+  #mockModules: Record<string, NoArgsClass>;
 
   constructor(config: ExpressAppConfig = {}) {
     this.middleware = config.middleware ?? [];
     this.modules = config.modules ?? {};
     this.expressApp = express();
     this.keycloakUrl = env.KEYCLOAK_URL;
-    this.port = env.PORT;
+    this.port = env.SERVER_PORT;
     this.url = env.SERVER_URL;
   }
 
@@ -40,7 +41,7 @@ export class ExpressApp {
     return this.#mockModules;
   }
 
-  public get mongoClient(): mongodb.MongoClient {
+  public get mongoClient(): MongoClient {
     return this.#mongoClient;
   }
 
@@ -48,7 +49,10 @@ export class ExpressApp {
     return `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`;
   }
 
-  public async init(mocks: Record<string, Class> = {}): Promise<void> {
+  public async init(
+    mocks: Record<string, NoArgsClass> = {},
+    onReady?: (app: ExpressApp) => void,
+  ): Promise<void> {
     log.info("Initializing Swagger");
     this.#initializeSwagger();
     log.info("Initializing IoC container");
@@ -62,6 +66,7 @@ export class ExpressApp {
     log.info("Connecting to database");
     await this.#initializeDatabase();
     log.info("App successfully initialized!");
+    onReady?.(this);
   }
 
   public async startListening(): Promise<void> {
@@ -69,15 +74,15 @@ export class ExpressApp {
       log.info("Server connecting...");
       this.expressApp.listen(this.port, () => {
         this.#logTable({
-          title: `[Express] ${env.APP_NAME} v${env.PACKAGE_JSON_VERSION}`,
+          title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
           data: {
             "🟢 NodeJS": process.version,
-            "🏠 Env": env.NODE_ENV,
-            "📝 Swagger": env.SWAGGER_ENDPOINT,
+            "🏠 Env": env.SERVER_ENV,
+            "🔑 Keycloak": this.keycloakUrl,
+            "📝 Swagger": env.TS_REST_SWAGGER_ENDPOINT,
             "🆔 PID": `${process.pid}`,
             "🧠 Memory": this.memoryUsage,
             "📅 Started": new Date().toLocaleString(),
-            "🔑 Keycloak": this.keycloakUrl ?? "-",
           },
         });
         log.info(`🚀 App listening on port ${this.port}`);
@@ -87,17 +92,17 @@ export class ExpressApp {
   }
 
   async #initializeDatabase() {
-    this.#mongoClient = mongodb.MongoDatabaseService.buildMongoClient();
+    this.#mongoClient = MongoDatabaseService.buildMongoClient();
     await this.#mongoClient.connect();
   }
 
-  #initializeIoc(mocks: Record<string, Class>) {
+  #initializeIoc(mocks: Record<string, NoArgsClass>) {
     this.#mockModules = mocks;
     const modules = this.modules;
-    const localModules: Record<string, Class> = {};
+    const localModules: Record<string, NoArgsClass> = {};
     Object.entries(modules).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
     Object.entries(mocks).forEach(([key, value]) => (localModules[key.toLowerCase()] = value));
-    bottleJs.iocRegistry.iocStartup(localModules);
+    IocRegistry.getInstance().iocStartup(localModules);
   }
 
   #initializeGlobalMiddlewares() {
@@ -107,24 +112,24 @@ export class ExpressApp {
   }
 
   #initializeExpressRoutes() {
-    tsRest.initializeExpressRoutes(this.expressApp);
+    initializeExpressRoutes(this.expressApp);
   }
 
   #initializeSwagger() {
-    tsRest.initializeSwagger({
+    initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${env.SERVER_URL}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
-      version: env.PACKAGE_JSON_VERSION,
-      endpoint: env.SWAGGER_ENDPOINT,
-      cssPath: env.SWAGGER_CSS_PATH,
-      jsPath: env.SWAGGER_JS_PATH,
+      oauth2RedirectUrl: `${this.url}${env.TS_REST_SWAGGER_ENDPOINT}${env.TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      version: env.SERVER_VERSION,
+      endpoint: env.TS_REST_SWAGGER_ENDPOINT,
+      cssPath: env.TS_REST_SWAGGER_CSS_PATH,
+      jsPath: env.TS_REST_SWAGGER_JS_PATH,
     });
   }
 
   #initializeErrorHandlerMiddleware() {
     const errorHandler: express.ErrorRequestHandler = (error: unknown, req, res, next) => {
       if (res.headersSent) return next(error);
-      const err = apiClientUtils.getTypedError(error);
+      const err = getTypedError(error);
       log.warn(`Headers sent before reaching main error handler`, err);
       res.status(err.content.status).json(err.content);
     };
@@ -173,8 +178,6 @@ export class ExpressApp {
 
     const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
 
-    const hrX = `${"─".repeat(containerWidth)}`;
-
     const content = Object.entries(data).map(([key, value]) => {
       const keyPadding = " ".repeat(maxKeyLength - key.length);
       const text = `${key}${keyPadding}${hrY}${value}`;
@@ -182,6 +185,7 @@ export class ExpressApp {
       return `│${spacer}${text}${remainder}${spacer}│`;
     });
 
+    const hrX = `${"─".repeat(containerWidth)}`;
     console.info(`┌${hrX}┐`);
     console.info(`│${center(title, containerWidth)}│`);
     console.info(`├${hrX}┤`);

@@ -1,11 +1,10 @@
-import { env } from "@org/app-node-express/env";
+import { env, testMode } from "@org/app-node-express/env";
+import { type zod } from "@org/lib-commons";
 import { MongoClient, type Db, type ClientSession } from "mongodb";
-import { type ZodSchema, type z } from "zod";
-import { server } from "@org/app-node-express/server";
 
 export class MongoDatabaseService {
   static buildMongoClient(): MongoClient {
-    return new MongoClient(env.MONGO_URL, {});
+    return new MongoClient(env.DATABASE_URL, {});
   }
 
   private static instance: MongoDatabaseService;
@@ -20,7 +19,11 @@ export class MongoDatabaseService {
   #db: Db;
 
   private constructor() {
-    this.#client = server.mongoClient;
+    // NOOP
+  }
+
+  public set client(client: MongoClient) {
+    this.#client = client;
   }
 
   public get client() {
@@ -30,14 +33,14 @@ export class MongoDatabaseService {
   async #sneakyThrows<T>(fn: () => Promise<T>): Promise<T | undefined> {
     try {
       return await fn();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
       // NOOP
     }
   }
 
   async rollbackTransaction(session: ClientSession) {
-    if (process.env.NODE_ENV === "test") return;
-
+    if (testMode()) return;
     await this.#sneakyThrows(async () => {
       if (!session) return;
       await session.abortTransaction();
@@ -46,8 +49,7 @@ export class MongoDatabaseService {
   }
 
   async commitTransaction(session: ClientSession) {
-    if (process.env.NODE_ENV === "test") return;
-
+    if (testMode()) return;
     this.#sneakyThrows(async () => {
       if (!session) return;
       await session.commitTransaction();
@@ -56,8 +58,7 @@ export class MongoDatabaseService {
   }
 
   async startTransaction(session: ClientSession): Promise<ClientSession> {
-    if (process.env.NODE_ENV === "test") return null as unknown as ClientSession;
-
+    if (testMode()) return null as unknown as ClientSession;
     return (await this.#sneakyThrows(async () => {
       if (!session.inTransaction()) session.startTransaction();
       return session;
@@ -66,17 +67,17 @@ export class MongoDatabaseService {
 
   get db() {
     if (this.#db) return this.#db;
-    this.#db = this.#client.db(env.MONGO_DATABASE);
+    this.#db = this.#client.db(env.DATABASE_NAME);
     return this.#db;
   }
 
-  collection<const T extends ZodSchema>(zodSchema: T) {
+  collection<const T extends zod.Schema>(zodSchema: T) {
     const documentName = zodSchema.description;
     if (!documentName) throw new Error("No document name provided.");
     const lowerCaseName = documentName.toLowerCase();
     const suffix = "s";
     const computedSuffix = lowerCaseName.endsWith(suffix) ? "" : suffix;
     const name = lowerCaseName + computedSuffix;
-    return this.db.collection<z.infer<T>>(name, {});
+    return this.db.collection<zod.infer<T>>(name, {});
   }
 }

@@ -11,6 +11,7 @@
     "dev": "vite",
     "build": "tsc && vite build --emptyOutDir",
     "lint": "npx eslint . --ext ts,tsx --report-unused-disable-directives",
+    "lint:fix": "npx eslint . --ext ts,tsx --report-unused-disable-directives --fix",
     "start": "serve -s dist",
     "loadTranslationTypes": "i18next-resources-for-ts interface -i ./public/locales/en -o ./src/lib/i18next/@types/resources.d.ts"
   },
@@ -28,6 +29,7 @@
     "@preact/signals-react": "^2.0.1",
     "@react-keycloak/web": "^3.4.0",
     "@tanstack/react-query": "^5.32.1",
+    "@testing-library/react": "^16.0.1",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/react-query": "^3.45.0",
     "color": "^4.2.3",

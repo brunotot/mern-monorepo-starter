@@ -1,3 +1,7 @@
+import type { ClientDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ClientDatatable/types";
+import type { DtBaseOrder } from "@org/app-vite-react/app/components/Datatable/types";
+import type { MouseEvent } from "react";
+
 import {
   TableContainer,
   Table,
@@ -7,13 +11,10 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import type { TODO } from "@org/lib-commons";
-import type { MouseEvent } from "react";
-import { Fragment, useMemo, useState } from "react";
 import { DtSortableCell } from "@org/app-vite-react/app/components/Datatable/components/DtSortableCell/DtSortableCell";
-import type { DtBaseOrder } from "@org/app-vite-react/app/components/Datatable/types";
 import { DEFAULT_PAGINATION_OPTIONS } from "@org/app-vite-react/app/components/Datatable/types";
-import type { ClientDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ClientDatatable/types";
+import { Fragment, useMemo, useState } from "react";
+
 
 export function ClientDatatable<T>({
   data,
@@ -51,8 +52,9 @@ export function ClientDatatable<T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, paginationOptions, disablePagination, sortData]);
 
-  const onSortColumnClick = (id: string, event: MouseEvent<TODO>) => {
-    console.log(event);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSortColumnClick = (id: string, _event: MouseEvent<unknown>) => {
+    //console.log(_event);
     const sortIndex = sortData.findIndex(v => v.id === id);
     if (sortIndex < 0) {
       setSortData([{ id, direction: "asc" }]);

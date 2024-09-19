@@ -1,14 +1,16 @@
-import { buildOpenAPIObject, contracts } from "@org/lib-api-client";
-import { TsRestRouterService } from "./TsRestRouterService";
-import { initServer, createExpressEndpoints } from "@ts-rest/express";
+/* eslint-disable no-console */
 import type express from "express";
+
+import { buildOpenAPIObject, contracts } from "@org/lib-api-client";
+import { initServer, createExpressEndpoints } from "@ts-rest/express";
 import swaggerUi from "swagger-ui-express";
-import { type TODO } from "@org/lib-commons";
+
+import { TsRestRouterService } from "./TsRestRouterService";
 
 export function initializeExpressRoutes(app: express.Application): void {
   const s = initServer();
-  const unsafeRouters: TODO = TsRestRouterService.getInstance().getRouters();
-  const router = s.router(contracts, unsafeRouters);
+  const contractsRouter = TsRestRouterService.getInstance().getRouters();
+  const router = s.router(contracts, contractsRouter);
   function suppressConsole<T>(handler: () => T): T {
     const originalConsole = {
       log: console.log,

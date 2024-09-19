@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import type { PaginationOptions, TODO, User } from "@org/lib-commons";
-import { type UserPageableResponseDto } from "@org/lib-commons";
+import type { PaginationOptions, UserPaginationResultDto , User } from "@org/lib-api-client";
+
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-
-import { UserCreateFormButton } from "@org/app-vite-react/app/pages/Home/UserCreateFormButton";
-import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
-import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
 import {
   DatatableContainer,
   ServerDatatable,
   DEFAULT_PAGINATION_OPTIONS,
 } from "@org/app-vite-react/app/components/Datatable";
+import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
+import { UserCreateFormButton } from "@org/app-vite-react/app/pages/Home/UserCreateFormButton";
+import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
+import { useCallback, useEffect, useState } from "react";
 
 function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -20,7 +19,7 @@ function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
 }
 
 export function HomePage() {
-  const [userResponse, setUserResponse] = useState<UserPageableResponseDto>();
+  const [userResponse, setUserResponse] = useState<UserPaginationResultDto>();
   const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
@@ -48,9 +47,9 @@ export function HomePage() {
 
   const badgeContent: number = 6;
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: TODO) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -160,12 +159,6 @@ export function HomePage() {
               renderHeader: () => "Username",
               renderBody: user => user.username,
               sort: "username",
-            },
-            {
-              id: "email",
-              renderHeader: () => "Email",
-              renderBody: user => user.email,
-              sort: "email",
             },
             {
               id: "roles",

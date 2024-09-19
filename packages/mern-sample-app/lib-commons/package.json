@@ -7,10 +7,11 @@
   "type": "module",
   "scripts": {
     "prepublishOnly": "pnpm run build",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && tsc-alias",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test:coverage": "npm run build --silent && vitest --run --coverage"
   },
   "keywords": [],
@@ -19,7 +20,7 @@
   "dependencies": {
     "@org/lib-commons": "workspace:*",
     "@anatine/zod-openapi": "^2.2.5",
-    "zod": "^3.22.5"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

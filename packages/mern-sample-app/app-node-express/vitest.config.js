@@ -1,7 +1,12 @@
+import path from "path";
+
+import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
+
 import { TEST_PORT } from "./test/setup/globalSetup";
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   server: {
     port: TEST_PORT,
   },
@@ -16,7 +21,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@org/app-node-express/*": new URL("./dist/*", import.meta.url).pathname,
+      // eslint-disable-next-line no-undef
+      "@org/app-node-express/*": path.resolve(__dirname, "./dist/*"),
     },
   },
 });

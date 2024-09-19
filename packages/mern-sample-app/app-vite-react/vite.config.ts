@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
 
-import react from "@vitejs/plugin-react";
 import path from "path";
+
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 function pwd(...args: string[]): string {

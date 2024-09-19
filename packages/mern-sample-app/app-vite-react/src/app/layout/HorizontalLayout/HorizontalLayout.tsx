@@ -1,15 +1,18 @@
-import * as mui from "@mui/material";
 import type { Breakpoint } from "@mui/material";
-import type { TODO } from "@org/lib-commons";
+import type * as RouteTypes from "@org/app-vite-react/route-typings";
+
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
+import * as mui from "@mui/material";
+import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { reactServer } from "@org/app-vite-react/server";
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import { reactServer } from "@org/app-vite-react/server";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
+
 import { ButtonHoverMenu, type OriginPosition } from "./ButtonHoverMenu";
 import { isAnyRouteActive } from "../Layout";
-import type * as RouteTypes from "@org/app-vite-react/route-typings";
-import { sigUser } from "@org/app-vite-react/signals/sigUser";
+
+
 
 export type HorizontalNavItemProps = {
   item: RouteTypes.NavigationRoute;
@@ -27,8 +30,8 @@ function HorizontalNavItem({
 }: HorizontalNavItemProps) {
   const t = useTranslation();
   const navigate = useNavigate();
-  const hasChildren = "children" in item && item.children;
-  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const hasChildren = item.variant !== "single";
+  const children: RouteTypes.NavigationRoute[] = hasChildren ? item.children : [];
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 1 : undefined;
 

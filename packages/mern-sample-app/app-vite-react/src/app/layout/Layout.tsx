@@ -1,14 +1,16 @@
-import { Box, Container, useMediaQuery } from "@mui/material";
 import type { PropsWithChildren } from "react";
-import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
-import { Header } from "@org/app-vite-react/app/components/Header";
+
+import { Box, Container, useMediaQuery } from "@mui/material";
 import { Footer } from "@org/app-vite-react/app/components/Footer";
+import { Header } from "@org/app-vite-react/app/components/Header";
+import { Logo } from "@org/app-vite-react/app/components/Logo";
+import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
+import { type NavigationRoute } from "@org/app-vite-react/route-typings";
 import { sigLayout } from "@org/app-vite-react/signals/sigLayout";
 import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
-import { Logo } from "@org/app-vite-react/app/components/Logo";
-import { SidebarLayout } from "./SidebarLayout";
+
 import { HorizontalLayout } from "./HorizontalLayout";
-import { type NavigationRoute } from "@org/app-vite-react/route-typings";
+import { SidebarLayout } from "./SidebarLayout";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function isAnyRouteActive(children: NavigationRoute[]): boolean {

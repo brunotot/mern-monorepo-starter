@@ -3,16 +3,64 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", 
+  "plugin:import/errors",
+  "plugin:import/warnings",
+  "plugin:import/typescript"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "import"],
   "ignorePatterns": ["node_modules/", "dist/", "docs/", "assets/"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/ban-ts-comment": "off"
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": [
+          // Order as per your requirements:
+          "private-static-field",
+          "private-instance-field",
+          "public-static-field",
+          "public-instance-field",
+          "constructor",
+          "public-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "import/no-unresolved": "off",
+    "import/no-named-as-default-member": "off",
+    "import/namespace": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["type"], // Type imports first
+          "builtin",  // Node built-ins (e.g., fs, path)
+          "external", // External libraries
+          "internal", // Internal paths
+          ["sibling", "parent"], // Local imports
+          "index"  // Index file imports
+        ],
+        "pathGroups": [
+          {
+            "pattern": "{.,..}/**/*.css",
+            "group": "index",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["type"],
+        "newlines-between": "always", // Enforce newlines between groups
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   }
 }

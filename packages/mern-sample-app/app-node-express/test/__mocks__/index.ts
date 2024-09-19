@@ -1,8 +1,15 @@
-import { type NoArgsClass } from "../../../shared/dist/src/index";
-import { KeycloakAuthorizationMock } from "./KeycloakAuthorizationMock";
-import { KeycloakRepositoryMock } from "./KeycloakRepositoryMock";
+import type { NoArgsClass } from "../../../lib-commons/dist/src";
+
+import { AuthorizationRepositoryMock } from "./AuthorizationRepositoryMock";
+import { WithAuthorizationMock } from "./WithAuthorizationMock";
+import { WithMorganMock } from "./WithMorganMock";
+import { WithRouteContextMock } from "./WithRouteContextMock";
+import { WithRouteSecuredMock } from "./WithRouteSecuredMock";
 
 export default {
-  Authorization: KeycloakAuthorizationMock,
-  AuthorizationRepository: KeycloakRepositoryMock,
+  withAuthorization: WithAuthorizationMock,
+  withMorgan: WithMorganMock,
+  withRouteContext: WithRouteContextMock,
+  withRouteSecured: WithRouteSecuredMock,
+  AuthorizationRepository: AuthorizationRepositoryMock,
 } as const satisfies Record<string, NoArgsClass>;

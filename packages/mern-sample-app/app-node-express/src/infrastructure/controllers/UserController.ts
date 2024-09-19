@@ -1,63 +1,41 @@
+import type { UserService } from "@org/app-node-express/infrastructure/service/UserService";
+import type { RouteInput, RouteOutput } from "@org/app-node-express/lib/@ts-rest";
+import type { TODO } from "@org/lib-commons";
+
+import { autowired, contract, inject } from "@org/app-node-express/infrastructure/decorators";
+import { withRouteSecured } from "@org/app-node-express/infrastructure/middleware/withRouteSecured";
 import { contracts } from "@org/lib-api-client";
-import { type TODO } from "@org/lib-commons";
-import { type RouteInput, type RouteOutput } from "@org/app-node-express/lib/@ts-rest";
-import { autowired } from "@org/app-node-express/decorators/autowired";
-import { contract } from "@org/app-node-express/decorators/contract";
-import { type UserService } from "../service/UserService";
 
+@inject("UserController")
 export class UserController {
-  @autowired userService: UserService;
+  @autowired("UserService") userService: UserService;
 
-  @contract({ contract: contracts.User.findOneByUsername, roles: ["admin"] })
+  @contract(contracts.User.findOneByUsername, withRouteSecured("admin"))
   async findOneByUsername(
     payload: RouteInput<typeof contracts.User.findOneByUsername>,
   ): RouteOutput<typeof contracts.User.findOneByUsername> {
     return {
       status: 200,
-      body: (await this.userService.findOneByUsername(payload.query.username)) as TODO,
+      body: await this.userService.findOneByUsername(payload.query.username),
     };
   }
 
-  @contract({
-    contract: contracts.User.findAll,
-    roles: ["admin"],
-  })
+  @contract(contracts.User.findAll, withRouteSecured("admin"))
   async findAll(): RouteOutput<typeof contracts.User.findAll> {
     return {
       status: 200,
-      body: (await this.userService.findAll()) as TODO,
+      body: await this.userService.findAll(),
     };
   }
 
-  @contract({ contract: contracts.User.findAllPaginated })
+  @contract(contracts.User.findAllPaginated, withRouteSecured("admin"))
   async findAllPaginated(
     payload: RouteInput<typeof contracts.User.findAllPaginated>,
   ): RouteOutput<typeof contracts.User.findAllPaginated> {
+    const paginationOptions: TODO = payload.query.paginationOptions;
     return {
       status: 200,
-      body: (await this.userService.search(payload.query.paginationOptions)) as TODO,
-    };
-  }
-
-  @contract({ contract: contracts.User.createOne })
-  async createOne(
-    payload: RouteInput<typeof contracts.User.createOne>,
-  ): RouteOutput<typeof contracts.User.createOne> {
-    const user = await this.userService.create(payload.body);
-    return {
-      status: 201,
-      body: user,
-    };
-  }
-
-  @contract({ contract: contracts.User.deleteByUsername })
-  async deleteByUsername(
-    payload: RouteInput<typeof contracts.User.deleteByUsername>,
-  ): RouteOutput<typeof contracts.User.deleteByUsername> {
-    await this.userService.deleteByUsername(payload.body.username);
-    return {
-      status: 201,
-      body: "OK",
+      body: await this.userService.findAllPaginated(paginationOptions),
     };
   }
 }

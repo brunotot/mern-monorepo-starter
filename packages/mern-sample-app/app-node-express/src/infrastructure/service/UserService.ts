@@ -1,35 +1,40 @@
-import { PaginationOptions, type TODO } from "@org/lib-commons";
-import { type PaginationResult } from "@org/lib-commons";
-import { type UserRepository } from "@org/app-node-express/infrastructure/repository/impl/UserRepository";
-import { type User } from "@org/lib-commons";
-import { autowired } from "@org/app-node-express/decorators/autowired";
-import { type AuthorizationRepository } from "@org/app-node-express/interface/AuthorizationRepository";
-import type * as KC from "@org/app-node-express/lib/keycloak-connect";
-import { RestError } from "@org/lib-api-client";
+import type { AuthorizationRepository } from "../repository/UserRepository";
+import type { ApiKeycloakUser, PaginationResult, Role, User } from "@org/lib-api-client";
+import type { TODO, zod } from "@org/lib-commons";
 
+import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
+import { RestError, ROLE_LIST } from "@org/lib-api-client";
+
+@inject("UserService")
 export class UserService {
-  @autowired private userRepository: UserRepository;
-  @autowired private authorizationRepository: AuthorizationRepository;
+  @autowired("AuthorizationRepository")
+  private userRepository: AuthorizationRepository;
 
-  async search(options: Partial<PaginationOptions>): Promise<PaginationResult<User>> {
-    return await this.userRepository.findAllPaginated(PaginationOptions.parse(options));
+  async findAll(): Promise<User[]> {
+    const users = await this.userRepository.findAllUsers();
+    return users.map(this.userMapper);
   }
 
-  async findAll(): Promise<KC.KeycloakUser[]> {
-    return await this.authorizationRepository.findAllUsers();
+  async findAllPaginated(paginationOptions: TODO): Promise<PaginationResult> {
+    // eslint-disable-next-line no-console
+    console.log(paginationOptions);
+    return null as TODO;
   }
 
-  async findOneByUsername(username: string): Promise<KC.KeycloakUser> {
-    const user = await this.authorizationRepository.findUserByUsername(username);
+  async findOneByUsername(username: string): Promise<User> {
+    const user = await this.userRepository.findUserByUsername(username);
     if (user === null) throw new RestError(404, "User not found");
-    return user;
+    return this.userMapper(user);
   }
 
-  async create(user: User): Promise<User> {
-    return (await this.userRepository.insertOne(user)) as TODO;
-  }
-
-  async deleteByUsername(username: string): Promise<void> {
-    return await this.userRepository.deleteOneByUsername(username);
+  private userMapper(model: ApiKeycloakUser): User {
+    return {
+      _id: model.id,
+      username: model.username,
+      roles: model.realmRoles.filter(
+        (role: string): role is Role =>
+          !!ROLE_LIST.find((r: zod.ZodLiteral<unknown>) => r.safeParse(role).success),
+      ),
+    };
   }
 }

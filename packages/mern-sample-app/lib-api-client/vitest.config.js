@@ -16,7 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      //"@org/app-node-express/*": new URL("./dist/*", import.meta.url).pathname,
+      //"@org/lib-commons/*": new URL("./../lib-commons/src/*", import.meta.url).pathname,
     },
   },
 });

@@ -1,5 +1,5 @@
-import { Navigate, useLocation, type RouteObject } from "react-router-dom";
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js/KeycloakUser";
+import { Navigate, useLocation, type RouteObject } from "react-router-dom";
 
 export function KeycloakRoute({
   secure,

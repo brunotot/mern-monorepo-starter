@@ -1,17 +1,7 @@
-import { log } from "@org/app-node-express/logger";
-import { server } from "@org/app-node-express/server";
+import { startup } from "./startup";
 
-(async () => {
-  try {
-    await server.init();
-    await server.startListening();
-  } catch (error: unknown) {
-    console.log(error);
-    if (typeof error === "object" && error !== null && "message" in error) {
-      log.error((error as { message: string }).message);
-    } else {
-      log.error(error);
-    } //
-    process.exit(1);
-  }
-})();
+async function main() {
+  await startup();
+}
+
+main();

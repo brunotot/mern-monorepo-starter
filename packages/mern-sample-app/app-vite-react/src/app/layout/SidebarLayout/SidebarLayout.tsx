@@ -1,13 +1,14 @@
-import type { TODO } from "@org/lib-commons";
+import type * as RouteTypes from "@org/app-vite-react/route-typings";
+
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
-import { reactServer } from "@org/app-vite-react/server";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { reactServer } from "@org/app-vite-react/server";
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { isAnyRouteActive } from "../Layout";
-import type * as RouteTypes from "@org/app-vite-react/route-typings";
 
 export type SidebarNavItemProps = {
   item: RouteTypes.NavigationRoute;
@@ -15,11 +16,10 @@ export type SidebarNavItemProps = {
 };
 
 function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
-  const hasChildren = "children" in item && item.children;
-  const variant = item?.variant ?? "single";
-  const renderChildrenPersistent = hasChildren && variant === "group";
-  const renderChildrenMenu = hasChildren && variant === "menu";
-  const children: RouteTypes.NavigationRoute[] = (hasChildren ? item.children : []) as TODO;
+  const hasChildren = item.variant !== "single";
+  const renderChildrenPersistent = hasChildren && item.variant === "group";
+  const renderChildrenMenu = hasChildren && item.variant === "menu";
+  const children: RouteTypes.NavigationRoute[] = hasChildren ? item.children : [];
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

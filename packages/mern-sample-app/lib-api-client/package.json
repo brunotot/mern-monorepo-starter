@@ -10,7 +10,8 @@
     "build": "npm run clean && tsc && tsc-alias -p tsconfig.prod.json",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "keywords": [],
   "author": "Bruno Tot",
@@ -19,7 +20,7 @@
     "@anatine/zod-openapi": "^2.2.5",
     "@ts-rest/core": "^3.45.0",
     "@ts-rest/open-api": "^3.45.0",
-    "zod": "^3.22.5"
+    "@org/lib-commons": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

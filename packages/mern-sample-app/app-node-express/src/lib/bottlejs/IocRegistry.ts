@@ -1,31 +1,49 @@
+import { IocClassMetadata } from "@org/app-node-express/lib/bottlejs";
+import { type TODO, type NoArgsClass } from "@org/lib-commons";
 import { default as BottleJs } from "bottlejs";
-import { IocServiceDecoratorMetadataEntry } from "@org/app-node-express/lib/bottlejs";
-import { type TODO } from "@org/lib-commons";
 
 export class IocRegistry {
-  private readonly bottle: BottleJs;
-  readonly container: BottleJs.IContainer<string>;
+  private static instance: IocRegistry;
 
-  constructor() {
+  private readonly bottle: BottleJs;
+  private readonly container: BottleJs.IContainer<string>;
+
+  public static getInstance() {
+    IocRegistry.instance ??= new IocRegistry();
+    return IocRegistry.instance;
+  }
+
+  private constructor() {
     this.bottle = new BottleJs();
     this.container = this.bottle.container;
   }
 
-  public inject<T>(nameOrContext: string | DecoratorContext): T {
-    if (typeof nameOrContext === "string") {
-      return this.container[nameOrContext.toLowerCase()] as T;
-    }
-    const containerName = IocServiceDecoratorMetadataEntry.for(nameOrContext).value.name;
+  public inject<T = TODO>(nameOrContext: string | DecoratorContext): T {
+    if (typeof nameOrContext === "string") return this.container[nameOrContext.toLowerCase()] as T;
+    const containerName = IocClassMetadata.getInstance(nameOrContext).value.name;
     return this.container[containerName.toLowerCase()] as T;
   }
 
-  #getSortedInjectionClasses(
-    classes: (new () => TODO)[],
-    dependencySchema: Record<string, string[]>,
-  ) {
+  public iocStartup(registryData: Record<string, NoArgsClass>) {
+    this.#setupComponentNameMetadata(registryData);
+    const componentClasses = Object.values(registryData);
+    const dependencySchema = this.#getDependencySchema(componentClasses);
+    const sortedInjectionClasses = this.#getSortedInjectionClasses(
+      componentClasses,
+      dependencySchema,
+    );
+    sortedInjectionClasses.forEach(Class => {
+      const manager = IocClassMetadata.getInstance(Class);
+      const decoration = manager.value;
+      const name = decoration.name;
+      this.bottle.service(name, Class, ...dependencySchema[name]);
+    });
+  }
+
+  #getSortedInjectionClasses(classes: NoArgsClass[], dependencySchema: Record<string, string[]>) {
     return [...classes].sort((classA, classB) => {
-      const { name: nameA } = IocServiceDecoratorMetadataEntry.for(classA).value;
-      const { name: nameB } = IocServiceDecoratorMetadataEntry.for(classB).value;
+      const { name: nameA } = IocClassMetadata.getInstance(classA).value;
+      const { name: nameB } = IocClassMetadata.getInstance(classB).value;
       if (dependencySchema[nameA].length === 0) return -1;
       if (dependencySchema[nameB].length === 0) return 1;
       if (dependencySchema[nameA].includes(nameB)) return 1;
@@ -34,39 +52,16 @@ export class IocRegistry {
     });
   }
 
-  #getDependencySchema(classes: (new () => TODO)[]): Record<string, string[]> {
+  #getDependencySchema(classes: NoArgsClass[]): Record<string, string[]> {
     return classes.reduce((acc, Class) => {
-      const { name, dependencies = [] } = IocServiceDecoratorMetadataEntry.for(Class).value;
+      const { name, dependencies = [] } = IocClassMetadata.getInstance(Class).value;
       return { ...acc, [name]: dependencies };
     }, {});
   }
 
-  #setupComponentNameMetadata(registryData: Record<string, new () => TODO>) {
-    Object.entries(registryData).forEach(([className, constructor]) => {
-      const componentName = className.toLowerCase();
-      IocServiceDecoratorMetadataEntry.for(constructor).setName(componentName);
-    });
-  }
-
-  public iocStartup(registryData: Record<string, new () => TODO>) {
-    this.#setupComponentNameMetadata(registryData);
-
-    const componentClasses = Object.values(registryData);
-
-    const dependencySchema = this.#getDependencySchema(componentClasses);
-
-    const sortedInjectionClasses = this.#getSortedInjectionClasses(
-      componentClasses,
-      dependencySchema,
-    );
-
-    sortedInjectionClasses.forEach(Class => {
-      const manager = IocServiceDecoratorMetadataEntry.for(Class);
-      const decoration = manager.value;
-      const name = decoration.name;
-      this.bottle.service(name, Class, ...dependencySchema[name]);
+  #setupComponentNameMetadata(config: Record<string, NoArgsClass>) {
+    Object.entries(config).forEach(([key, constructor]) => {
+      IocClassMetadata.getInstance(constructor).setName(key);
     });
   }
 }
-
-export const iocRegistry = new IocRegistry();
