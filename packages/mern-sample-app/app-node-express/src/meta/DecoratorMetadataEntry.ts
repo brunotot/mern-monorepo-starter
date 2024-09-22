@@ -9,12 +9,23 @@ export abstract class DecoratorMetadataEntry<Value> {
 
   protected constructor(target: DecoratorMetadataInjectType, initialState: () => Value) {
     this.#initialState = initialState;
-    this.#metadata = DecoratorMetadata.for(target);
+    this.#metadata = new DecoratorMetadata(target);
     this.#key = this.constructor.name;
   }
 
   public get value(): Value {
-    if (!this.#metadata.hasKey(this.#key)) this.#metadata.setValue(this.#key, this.#initialState());
+    this.populateIfEmpty();
     return this.#metadata.getValue(this.#key) as Value;
+  }
+
+  public set value(value: Value) {
+    this.populateIfEmpty();
+    this.#metadata.setValue(this.#key, value);
+  }
+
+  private populateIfEmpty() {
+    const metadataExists = this.#metadata.hasKey(this.#key);
+    if (metadataExists) return;
+    this.#metadata.setValue(this.#key, this.#initialState());
   }
 }

@@ -5,19 +5,11 @@
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { RequestHandler } from "express";
-import type { StreamOptions } from "morgan";
-import type * as Winston from "winston";
 
 import { inject } from "@org/app-node-express/infrastructure/decorators";
 import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
-import { log } from "@org/app-node-express/logger";
+import { createStream, log } from "@org/app-node-express/lib/winston";
 import morgan from "morgan";
-
-function createStream(logger: Winston.Logger): StreamOptions {
-  return {
-    write: (msg: string) => logger.info(msg.substring(0, msg.lastIndexOf("\n"))),
-  };
-}
 
 export interface MorganMiddleware {
   middleware(): RequestHandler[];

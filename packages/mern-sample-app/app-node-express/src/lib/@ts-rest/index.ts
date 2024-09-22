@@ -1,3 +1,58 @@
+/**
+ * @packageDocumentation
+ *
+ * ## Overview
+ * This module provides functionality for defining and managing routes within an Express application using `@ts-rest`.
+ * It includes utilities for initializing routes and Swagger documentation, as well as a service for managing and adding routers
+ * with customizable middleware. The `TsRestRouterService` acts as a singleton, ensuring consistent management of all defined routes and their middleware.
+ *
+ * ## Features
+ * - Initialize Express routes using `@ts-rest`.
+ * - Build and serve Swagger documentation with customizable OAuth2 redirect, CSS, and JS paths.
+ * - Define routes with associated handlers and middleware using the `TsRestRouterService`.
+ * - Manage routes and middleware dynamically, allowing for easy extension and configuration.
+ * - Suppresses console logs during endpoint creation for cleaner output.
+ *
+ * ## How to Use
+ *
+ * ### Initialize Express Routes
+ * ```ts
+ * import { initializeExpressRoutes } from "@org/app-node-express/lib/@ts-rest";
+ * import express from "express";
+ *
+ * const app = express();
+ * initializeExpressRoutes(app);
+ * ```
+ *
+ * ### Initialize Swagger Documentation
+ * ```ts
+ * import { initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
+ *
+ * initializeSwagger({
+ *   app,
+ *   oauth2RedirectUrl: "/oauth2-redirect",
+ *   version: "1.0.0",
+ *   cssPath: "/css/swagger.css",
+ *   jsPath: "/js/swagger.js",
+ *   endpoint: "/api-docs",
+ * });
+ * ```
+ *
+ * ### Add Routers and Middleware
+ * ```ts
+ * import { TsRestRouterService } from "@org/app-node-express/lib/@ts-rest";
+ *
+ * const routerService = TsRestRouterService.getInstance();
+ * routerService.addRouter(someRouteContract, handler, [someMiddlewareFactory]);
+ * const routers = routerService.getRouters();
+ * ```
+ *
+ * ## Customization
+ * - **Add Routers**: Use `TsRestRouterService` to add routers by specifying a route contract, handler, and middleware factories.
+ * - **Custom Swagger**: Adjust Swagger's OAuth2 redirect URL, CSS, and JS paths by passing them to `initializeSwagger()`.
+ * - **Dynamic Middleware**: Define middleware dynamically by using `RouteMiddlewareFactory` functions that return `express.RequestHandler[]`.
+ */
+
 export * from "./TsRestRouterService";
 export * from "./TsRestExpressRouteTypes";
 export * from "./TsRestExpressService";

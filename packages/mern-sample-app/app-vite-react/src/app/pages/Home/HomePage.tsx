@@ -1,4 +1,4 @@
-import type { PaginationOptions, UserPaginationResultDto , User } from "@org/lib-api-client";
+import type { PaginationOptions, UserPaginationResultDto, User } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -34,6 +34,7 @@ export function HomePage() {
 
   const deleteUser = useCallback(
     async (username: string) => {
+      // @ts-expect-error Remove later
       const response = await tsRestApiClient.User.deleteByUsername({ body: { username } });
       if (response.status !== 201) throw new Error("Failed to delete user.");
       fetchUsers();

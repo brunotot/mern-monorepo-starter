@@ -1,11 +1,15 @@
 /// <reference types="@types/jest" />
 
 import { MongoDatabaseService } from "../../dist/lib/mongodb/MongoDatabaseService";
-import { startup } from "../../dist/startup";
+import { initServer } from "../../dist/initServer";
 import __mocks__ from "../__mocks__";
+import { initServer } from "@ts-rest/express";
 
 beforeAll(async () => {
-  await startup(__mocks__, server => (globalThis.expressApp = server.expressApp), false);
+  const server = await initServer({
+    mocks: __mocks__,
+  });
+  globalThis.expressApp = server.expressApp;
 });
 
 afterAll(async () => {

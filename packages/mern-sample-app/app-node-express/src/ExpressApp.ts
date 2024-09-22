@@ -1,4 +1,85 @@
-/* eslint-disable no-console */
+/**
+ * @packageDocumentation
+ *
+ * ## Overview
+ * The `ExpressApp` class serves as the main class responsible for configuring and running an Express-based server.
+ * It handles the initialization of key components such as middleware, IoC modules, routes, and Swagger documentation.
+ * Additionally, it manages the MongoDB connection and provides detailed logging throughout the application lifecycle.
+ * This class provides the foundation for running and managing the server, making it extensible and configurable.
+ *
+ * ## Features
+ * - **Middleware Setup**: Supports adding and managing global middleware.
+ * - **IoC Module Integration**: Automatically scans and loads IoC (Inversion of Control) modules for dependency injection.
+ * - **MongoDB Integration**: Establishes a connection to MongoDB and injects the client into the server lifecycle.
+ * - **Swagger Documentation**: Integrates Swagger for API documentation, configured via environment variables.
+ * - **Global Error Handling**: Implements a global error handler to catch and log errors gracefully.
+ * - **Server Information Logging**: Logs detailed information about the server's environment, such as Node.js version, memory usage, and startup time.
+ *
+ * ## How to Use
+ *
+ * To create and initialize an `ExpressApp` instance:
+ *
+ * ```ts
+ * import { ExpressApp } from "@org/app-node-express/ExpressApp";
+ *
+ * const app = new ExpressApp();
+ *
+ * await app.init();
+ * await app.startListening();
+ * ```
+ *
+ * You can also pass custom middleware and IoC modules during instantiation:
+ *
+ * ```ts
+ * const app = new ExpressApp({
+ *   middleware: [customMiddleware1, customMiddleware2],
+ *   modules: { CustomModule: CustomModuleClass },
+ * });
+ * ```
+ *
+ * To execute additional logic when the app is fully initialized, use the `onReady` callback in the `init` method:
+ *
+ * ```ts
+ * await app.init({}, (app) => {
+ *   console.log('App is fully initialized and ready!');
+ * });
+ * ```
+ *
+ * ## Key Methods and Components
+ *
+ * - **init**: Initializes the server by loading middleware, routes, IoC modules, and connecting to MongoDB.
+ * - **startListening**: Starts the server and begins listening for incoming HTTP requests on the configured port.
+ * - **#initializeDatabase**: Establishes the connection to MongoDB using `MongoDatabaseService`.
+ * - **#initializeIoc**: Configures and loads Inversion of Control (IoC) modules for dependency injection.
+ * - **#initializeGlobalMiddlewares**: Adds global middleware to the Express app.
+ * - **#initializeSwagger**: Integrates Swagger for API documentation.
+ * - **#initializeErrorHandlerMiddleware**: Sets up the global error handler for catching and logging application errors.
+ * - **#logTable**: Logs a table of detailed server information (Node.js version, memory usage, PID, etc.) when the server starts.
+ *
+ * ## Customization
+ * - **Middleware**: Add or override global middleware by passing an array of middleware functions to the `ExpressApp` constructor.
+ * - **IoC Modules**: Inject custom services or modules by passing them to the `modules` option when initializing the `ExpressApp`.
+ * - **Mocking Services**: During testing, you can mock services and modules by passing a `mocks` object to the `init` method.
+ * - **Error Handling**: Customize error handling by extending or modifying the `#initializeErrorHandlerMiddleware` method.
+ *
+ * ## Example Usage
+ *
+ * ```ts
+ * import { ExpressApp } from "@org/app-node-express/ExpressApp";
+ *
+ * const app = new ExpressApp({
+ *   middleware: [myCustomMiddleware],
+ *   modules: { MyService: MyServiceClass },
+ * });
+ *
+ * await app.init();
+ * await app.startListening();
+ * ```
+ *
+ * The server will automatically load Swagger documentation and connect to MongoDB. Any errors during startup will be logged, and the process will exit gracefully if critical issues occur.
+ *
+ * @module ExpressApp
+ */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { MongoClient } from "@org/app-node-express/lib/mongodb";
@@ -8,7 +89,7 @@ import { env } from "@org/app-node-express/env";
 import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
 import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
-import { log } from "@org/app-node-express/logger";
+import { log, logBanner } from "@org/app-node-express/lib/winston";
 import { getTypedError } from "@org/lib-api-client";
 import express from "express";
 
@@ -49,10 +130,7 @@ export class ExpressApp {
     return `${Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100} MB`;
   }
 
-  public async init(
-    mocks: Record<string, NoArgsClass> = {},
-    onReady?: (app: ExpressApp) => void,
-  ): Promise<void> {
+  public async init(mocks: Record<string, NoArgsClass> = {}): Promise<void> {
     log.info("Initializing Swagger");
     this.#initializeSwagger();
     log.info("Initializing IoC container");
@@ -66,34 +144,31 @@ export class ExpressApp {
     log.info("Connecting to database");
     await this.#initializeDatabase();
     log.info("App successfully initialized!");
-    onReady?.(this);
   }
 
-  public async startListening(): Promise<void> {
-    return new Promise(resolve => {
-      log.info("Server connecting...");
-      this.expressApp.listen(this.port, () => {
-        this.#logTable({
-          title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
-          data: {
-            "🟢 NodeJS": process.version,
-            "🏠 Env": env.SERVER_ENV,
-            "🔑 Keycloak": this.keycloakUrl,
-            "📝 Swagger": env.TS_REST_SWAGGER_ENDPOINT,
-            "🆔 PID": `${process.pid}`,
-            "🧠 Memory": this.memoryUsage,
-            "📅 Started": new Date().toLocaleString(),
-          },
-        });
-        log.info(`🚀 App listening on port ${this.port}`);
-        resolve();
+  public startListening(): void {
+    log.info("Server connecting...");
+    this.expressApp.listen(this.port, () => {
+      logBanner({
+        title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
+        data: {
+          "🟢 NodeJS": process.version,
+          "🏠 Env": env.SERVER_ENV,
+          "🔑 Keycloak": this.keycloakUrl,
+          "📝 Swagger": env.TS_REST_SWAGGER_ENDPOINT,
+          "🆔 PID": `${process.pid}`,
+          "🧠 Memory": this.memoryUsage,
+          "📅 Started": new Date().toLocaleString(),
+        },
       });
+      log.info(`🚀 Server listening on port ${this.port}`);
     });
   }
 
   async #initializeDatabase() {
     this.#mongoClient = MongoDatabaseService.buildMongoClient();
     await this.#mongoClient.connect();
+    MongoDatabaseService.getInstance().client = this.#mongoClient;
   }
 
   #initializeIoc(mocks: Record<string, NoArgsClass>) {
@@ -134,62 +209,5 @@ export class ExpressApp {
       res.status(err.content.status).json(err.content);
     };
     this.expressApp.use(errorHandler);
-  }
-
-  /**
-   *
-   * An example output might be:
-   *
-   * ```
-   * ┌──────────────────────────────────────┐
-   * │   [Express] app-node-express v0.0.1  │
-   * ├──────────────────────────────────────┤
-   * │  🟢 NodeJS  : v21.7.0                │
-   * │  🏠 Env     : development            │
-   * │  📝 Swagger : /api-docs              │
-   * │  🆔 PID     : 61178                  │
-   * │  🧠 Memory  : 24.65 MB               │
-   * │  📅 Started : 8/19/2024, 7:40:59 PM  │
-   * └──────────────────────────────────────┘
-   * ```
-   */
-  #logTable(props: { title: string; data: Record<string, string> }) {
-    const title = props.title;
-    const data = props.data;
-    const kvSeparator = " : ";
-    const padding = 2;
-
-    const center = (text: string, length: number) => {
-      const remainingSpace = length - text.length;
-      const leftBorderCount = Math.floor(remainingSpace / 2);
-      const rightBorderCount = remainingSpace - leftBorderCount;
-      const left = " ".repeat(leftBorderCount);
-      const right = " ".repeat(rightBorderCount);
-      return `${left}${text}${right}`;
-    };
-
-    const spacer = " ".repeat(padding);
-    const hrY = kvSeparator;
-    const maxKeyLength = Math.max(...Object.keys(data).map(key => key.length));
-
-    const keyValueLengths = Object.values(data).map(
-      value => maxKeyLength + hrY.length + value.length,
-    );
-
-    const containerWidth = Math.max(title.length, ...keyValueLengths) + padding * 2;
-
-    const content = Object.entries(data).map(([key, value]) => {
-      const keyPadding = " ".repeat(maxKeyLength - key.length);
-      const text = `${key}${keyPadding}${hrY}${value}`;
-      const remainder = " ".repeat(containerWidth - text.length - spacer.length * 2);
-      return `│${spacer}${text}${remainder}${spacer}│`;
-    });
-
-    const hrX = `${"─".repeat(containerWidth)}`;
-    console.info(`┌${hrX}┐`);
-    console.info(`│${center(title, containerWidth)}│`);
-    console.info(`├${hrX}┤`);
-    content.forEach(text => console.info(text));
-    console.info(`└${hrX}┘`);
   }
 }

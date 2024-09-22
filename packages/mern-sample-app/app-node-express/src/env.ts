@@ -1,5 +1,43 @@
 /**
- * @packageDocumentation Environment setup.
+ * @packageDocumentation
+ *
+ * ## Overview
+ * This module is responsible for parsing, validating, and managing environment variables for the Express application.
+ * It uses `zod` schemas to ensure that all required environment variables are present and correctly typed. The module
+ * also integrates `dotenv` to load variables from `.env` files, allowing configuration across different environments like
+ * development, testing, and production.
+ *
+ * ## Features
+ * - Validates environment variables using `zod` schemas
+ * - Automatically loads environment variables from `.env.[environment].local`
+ * - Handles MongoDB and Keycloak configuration
+ * - Parses and transforms CORS, Keycloak, and Swagger-related settings
+ * - Provides fallback default values for non-mandatory variables
+ *
+ * ## How to Use
+ * ```ts
+ * import { env } from "@org/app-node-express/env";
+ *
+ * // Access the validated environment variables
+ * console.log(env.SERVER_PORT);
+ * console.log(env.DATABASE_URL);
+ * ```
+ *
+ * For test environments, you can check with:
+ * ```ts
+ * import { testMode } from "@org/app-node-express/env";
+ *
+ * if (testMode()) {
+ *   console.log("Running in test mode");
+ * }
+ * ```
+ *
+ * ## Customization
+ * - **Add New Variables**: To extend the schema, add new fields to the `ENVIRONMENT_VARS` schema.
+ * - **Change Defaults**: Modify default values in the schema definition for any variables.
+ * - **Error Handling**: Customize error handling logic within the `parseEnvironmentVars()` function to provide more tailored error messages.
+ *
+ * @module env
  */
 
 import path from "path";
@@ -35,9 +73,9 @@ const ENVIRONMENT_VARS = z.object({
 
   // @ts-rest
   TS_REST_SWAGGER_ENDPOINT: z.string().default("/api-docs").transform(s => (s.startsWith("/") ? s : `/${s}`)),
-  TS_REST_SWAGGER_CSS_PATH: z.string().default("/css/swagger.css"),
-  TS_REST_SWAGGER_JS_PATH: z.string().default("/js/swagger.js"),
-  TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT: z.string().default("/oauth2-redirect.html"),
+  TS_REST_SWAGGER_CSS_PATH: z.string().default("/css/swagger.css").transform(s => (s.startsWith("/") ? s : `/${s}`)),
+  TS_REST_SWAGGER_JS_PATH: z.string().default("/js/swagger.js").transform(s => (s.startsWith("/") ? s : `/${s}`)),
+  TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT: z.string().default("/oauth2-redirect.html").transform(s => (s.startsWith("/") ? s : `/${s}`)),
 
   // cors
   CORS_ALLOWED_ORIGINS: z.string().transform(s => s.split(",")),

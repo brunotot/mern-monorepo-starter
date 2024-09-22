@@ -1,28 +1,19 @@
 import type { NoArgsClass } from "@org/lib-commons";
 
-// @ts-expect-error Stage 3 decorators polyfill.
-Symbol.metadata ??= Symbol("Symbol.metadata");
-
-declare global {
-  interface Function {
-    // @ts-expect-error Stage 3 decorators polyfill.
-    [Symbol.metadata]: DecoratorMetadataObject;
-  }
-}
-
 export type DecoratorMetadataInjectType = NoArgsClass | DecoratorContext;
 
 export class DecoratorMetadata {
-  public static for(target: DecoratorMetadataInjectType) {
-    return new DecoratorMetadata(target);
-  }
-
   #target: DecoratorMetadataInjectType;
   #metadataRef: DecoratorMetadataObject;
 
-  private constructor(target: DecoratorMetadataInjectType) {
+  public constructor(target: DecoratorMetadataInjectType) {
+    // Cannot assign to 'metadata' because it is a read-only property. ts(2540)
+    // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#decorator-metadata
+    // @ts-expect-error TypeScript v5.2 decorators polyfill
+    Symbol.metadata ??= Symbol("Symbol.metadata");
+
     this.#target = target;
-    this.#metadataRef = this.#getMetadataRef(this.#target);
+    this.#metadataRef = this.getMetadataRef(this.#target);
   }
 
   public hasKey(key: string) {
@@ -37,15 +28,20 @@ export class DecoratorMetadata {
     this.#metadataRef[key] = value;
   }
 
-  #getMetadataRef(target: DecoratorMetadataInjectType): DecoratorMetadataObject {
-    if (typeof target === "function") {
-      // @ts-expect-error Stage 3 decorators polyfill.
+  private getMetadataRef(target: DecoratorMetadataInjectType): DecoratorMetadataObject {
+    if (this.isClass(target)) {
       target[Symbol.metadata] ??= {};
-      // @ts-expect-error Stage 3 decorators polyfill.
       return target[Symbol.metadata]!;
     }
-    // @ts-expect-error Stage 3 decorators polyfill.
+
+    // Cannot assign to 'metadata' because it is a read-only property. ts(2540)
+    // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#decorator-metadata
+    // @ts-expect-error TypeScript v5.2 decorators polyfill
     target.metadata ??= {};
     return target.metadata;
+  }
+
+  private isClass(target: DecoratorMetadataInjectType): target is NoArgsClass {
+    return typeof target === "function";
   }
 }

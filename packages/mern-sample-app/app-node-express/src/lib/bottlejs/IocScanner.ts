@@ -8,18 +8,18 @@ import { IocClassMetadata } from "@org/app-node-express/lib/bottlejs/IocClassMet
 /**
  * Scans the specified directories for classes containing **\@inject** decorator.
  *
- * @param packageRoot - The absolute path to the root directory of the package.
+ * @param outDir - The absolute path to the build directory of the package.
  * @param relativeDirs - An array of directory paths relative to the package root that should be scanned for components.
  * @returns A promise that resolves to a record containing component names and their corresponding classes.
  */
 export async function scanIocModules(
-  packageRoot: string,
+  outDir: string,
   relativeDirs: string[],
 ): Promise<Record<string, NoArgsClass>> {
   const registeredComponents: Record<string, NoArgsClass> = {};
 
   for (const dir of relativeDirs) {
-    const components = await loadComponentsFromDir(packageRoot, dir);
+    const components = await loadComponentsFromDir(outDir, dir);
     components.forEach(component => {
       registeredComponents[component.name] = component.class;
     });

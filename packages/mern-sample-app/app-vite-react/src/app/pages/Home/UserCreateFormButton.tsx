@@ -34,6 +34,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     // Handle form submission
     // eslint-disable-next-line no-console
     console.log("Form submitted:", user);
+    // @ts-expect-error Remove later
     await tsRestApiClient.User.createOne({
       body: user,
     });
