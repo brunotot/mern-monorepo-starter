@@ -17,7 +17,7 @@ export class KeycloakDao {
     const config = await this.buildConfig();
     const response = await fetch(endpoint, config);
     if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
-    const jsonResponse = await response.json();
+    const jsonResponse = (await response.json()) as T;
     return jsonResponse;
   }
 
