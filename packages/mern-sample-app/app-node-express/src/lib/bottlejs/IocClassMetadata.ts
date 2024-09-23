@@ -19,15 +19,27 @@ export class IocClassMetadata extends DecoratorMetadataEntry<{
     }));
   }
 
-  setName(name: string) {
+  public getName() {
+    return this.value.name;
+  }
+
+  public getDependencies() {
+    return this.value.dependencies;
+  }
+
+  public getClazz() {
+    return this.value.clazz;
+  }
+
+  public setName(name: string) {
     this.value.name = name;
   }
 
-  addDependency(name: string) {
+  public addDependency(name: string) {
     this.value.dependencies.push(name);
   }
 
-  setClass(clazz: NoArgsClass) {
+  public setClass(clazz: NoArgsClass) {
     this.value.clazz = clazz;
   }
 }

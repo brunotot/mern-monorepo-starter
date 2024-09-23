@@ -4,7 +4,6 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 import type { Role } from "@org/lib-api-client";
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 
-import { env } from "@org/app-node-express/env";
 import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
 import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { RestError, getTypedError } from "@org/lib-api-client";
@@ -18,16 +17,15 @@ const IOC_KEY = "withRouteSecured";
 
 @inject(IOC_KEY)
 export class WithRouteSecured implements RouteSecuredMiddleware {
-  @autowired("UserService") userService: UserService;
-  @autowired("withAuthorization") authorization: AuthorizationMiddleware;
+  @autowired() private userService: UserService;
+  @autowired() private authorizationMiddleware: AuthorizationMiddleware;
 
-  middleware(...roles: Role[]): RequestHandler[] {
+  public middleware(...roles: Role[]): RequestHandler[] {
     const flattenedRoles = roles.flat();
 
     const roleSecuredMiddleware: RequestHandler = async (req, res, next) => {
-      if (flattenedRoles.length === 0 || env.SERVER_ENV === "test") {
-        next();
-        return;
+      if (flattenedRoles.length === 0) {
+        return next();
       }
 
       try {
@@ -61,7 +59,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
 
     const protect = async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const handler = this.authorization.protect();
+        const handler = this.authorizationMiddleware.protect();
         handler(req, res, next);
       } catch (error: unknown) {
         // eslint-disable-next-line no-console

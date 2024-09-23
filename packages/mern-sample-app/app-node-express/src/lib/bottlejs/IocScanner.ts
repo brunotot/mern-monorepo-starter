@@ -46,11 +46,13 @@ async function loadComponentsFromDir(
 
     for (const file of files) {
       const filePath = path.resolve(directory, file);
+      const isFileDirectory = fs.lstatSync(filePath).isDirectory();
+      const isFileJavaScript = file.match(/\.js$/);
 
-      if (fs.lstatSync(filePath).isDirectory()) {
+      if (isFileDirectory) {
         await processDirectory(filePath);
-      } else if (file.match(/\.(js)$/)) {
-        const module: Record<string, unknown> = await import(filePath);
+      } else if (isFileJavaScript) {
+        const module: Record<string, unknown> = await import(`file://${filePath}`);
         const keys = Object.keys(module);
 
         for (const key of keys) {
@@ -58,10 +60,11 @@ async function loadComponentsFromDir(
           if (typeof exportedClass !== "function") continue;
           const exportedNoArgsClass = exportedClass as NoArgsClass;
           const meta = IocClassMetadata.getInstance(exportedNoArgsClass);
-          if (!meta.value.name) continue;
+          const exportedNoArgsClassName = meta.getName();
+          if (!exportedNoArgsClassName) continue;
 
           components.push({
-            name: meta.value.name,
+            name: exportedNoArgsClassName,
             class: exportedNoArgsClass,
           });
         }

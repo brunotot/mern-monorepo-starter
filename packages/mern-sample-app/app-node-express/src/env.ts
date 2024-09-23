@@ -36,7 +36,7 @@
  *
  * | Name                    | Description                                     | Default value                  | Example value                 | Mandatory |
  * |-------------------------|-------------------------------------------------|--------------------------------|-------------------------------|-----------|
- * | __CORS_CREDENTIALS__    | Use CORS credentials                            | `true`                         | `true`                        |    ⚫     |
+ * | CORS_CREDENTIALS        | Use CORS credentials                            | `true`                         | `true`                        |    ⚫     |
  * | CORS_ALLOWED_ORIGINS    | List of comma-separated allowed origin patterns | `*`                            | `http://localhost:5173`       |    ⚫     |
  * | CORS_ALLOWED_METHODS    | List of comma-separated allowed request methods | `GET,POST,PUT,DELETE,PATCH`    | `GET,POST`                    |    ⚫     |
  * | CORS_ALLOWED_HEADERS    | List of comma-separated allowed request headers | `*`                            | `X-Custom-Header`             |    ⚫     |
@@ -109,17 +109,17 @@ function parseEnvironmentVars() {
   const parsedResults = ENVIRONMENT_VARS.safeParse(typedEnvData);
 
   if (!parsedResults.success) {
-    const currentIssue = parsedResults.error.issues[0];
-    const { path, ...rest } = currentIssue;
-    const zodPath = path.join(".");
-    const errorJson = JSON.stringify(rest, null, 2);
-    const errorTitle = `Unable to parse environment variable: ${zodPath}`;
-    const errorMessage = `${errorTitle}\n${errorJson}`;
-    throw new Error(errorMessage);
+    let error = `Environment variables validation failed\n`;
+    for (const issue of parsedResults.error.issues) {
+      const path = issue.path.join(".");
+      const message = issue.message;
+      const code = issue.code;
+      error += `    ❌ ${path}: ${message} (${code})\n`;
+    }
+    throw new Error(error);
   }
 
-  const serverUrl = `${process.env.SERVER_DOMAIN}:${process.env.SERVER_PORT}`;
-  return { ...parsedResults.data, SERVER_URL: serverUrl } as const;
+  return { ...parsedResults.data } as const;
 }
 
 function filterEnvBySchema() {

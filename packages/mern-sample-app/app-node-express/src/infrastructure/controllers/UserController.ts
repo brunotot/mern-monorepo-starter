@@ -8,7 +8,7 @@ import { contracts } from "@org/lib-api-client";
 
 @inject("UserController")
 export class UserController {
-  @autowired("UserService") userService: UserService;
+  @autowired() private userService: UserService;
 
   @contract(contracts.User.findOneByUsername, withRouteSecured("admin"))
   async findOneByUsername(

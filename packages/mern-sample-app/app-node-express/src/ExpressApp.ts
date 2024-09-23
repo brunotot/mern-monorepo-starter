@@ -84,6 +84,7 @@
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { MongoClient } from "@org/app-node-express/lib/mongodb";
 import type { NoArgsClass } from "@org/lib-commons";
+import type { IncomingMessage, Server, ServerResponse } from "http";
 
 import { env } from "@org/app-node-express/env";
 import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
@@ -101,11 +102,11 @@ export type ExpressAppConfig = Partial<{
 export class ExpressApp {
   public readonly expressApp: express.Application;
   public readonly port: number;
-  public readonly url: string;
   public readonly keycloakUrl: string;
   public readonly middleware: RouteMiddlewareFactory[];
   public readonly modules: Record<string, NoArgsClass>;
 
+  #url: string;
   #mongoClient: MongoClient;
   #mockModules: Record<string, NoArgsClass>;
 
@@ -115,7 +116,7 @@ export class ExpressApp {
     this.expressApp = express();
     this.keycloakUrl = env.KEYCLOAK_URL;
     this.port = env.SERVER_PORT;
-    this.url = env.SERVER_URL;
+    this.#url = "";
   }
 
   public get mockModules() {
@@ -148,7 +149,8 @@ export class ExpressApp {
 
   public startListening(): void {
     log.info("Server connecting...");
-    this.expressApp.listen(this.port, () => {
+    const server = this.expressApp.listen(this.port, () => {
+      this.setupServerUrl(server);
       logBanner({
         title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
         data: {
@@ -193,7 +195,7 @@ export class ExpressApp {
   #initializeSwagger() {
     initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${this.url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT}`,
+      oauth2RedirectUrl: `${this.#url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT}`,
       version: env.SERVER_VERSION,
       endpoint: env.SWAGGER_ENDPOINT,
       cssPath: env.SWAGGER_CSS_PATH,
@@ -209,5 +211,12 @@ export class ExpressApp {
       res.status(err.content.status).json(err.content);
     };
     this.expressApp.use(errorHandler);
+  }
+
+  private setupServerUrl(server: Server<typeof IncomingMessage, typeof ServerResponse>) {
+    const address = server.address();
+    const host = typeof address === "string" ? address : (address?.address ?? "localhost");
+    const protocol = env.SERVER_ENV === "production" ? "https://" : "http://";
+    this.#url = `${protocol}${host}${this.port}`;
   }
 }

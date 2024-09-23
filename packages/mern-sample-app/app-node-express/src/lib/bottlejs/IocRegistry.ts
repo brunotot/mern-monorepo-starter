@@ -20,7 +20,7 @@ export class IocRegistry {
 
   public inject<T = TODO>(nameOrContext: string | DecoratorContext): T {
     if (typeof nameOrContext === "string") return this.container[nameOrContext.toLowerCase()] as T;
-    const containerName = IocClassMetadata.getInstance(nameOrContext).value.name;
+    const containerName = IocClassMetadata.getInstance(nameOrContext).getName();
     return this.container[containerName.toLowerCase()] as T;
   }
 
@@ -33,17 +33,15 @@ export class IocRegistry {
       dependencySchema,
     );
     sortedInjectionClasses.forEach(Class => {
-      const manager = IocClassMetadata.getInstance(Class);
-      const decoration = manager.value;
-      const name = decoration.name;
+      const name = IocClassMetadata.getInstance(Class).getName();
       this.bottle.service(name, Class, ...dependencySchema[name]);
     });
   }
 
   #getSortedInjectionClasses(classes: NoArgsClass[], dependencySchema: Record<string, string[]>) {
     return [...classes].sort((classA, classB) => {
-      const { name: nameA } = IocClassMetadata.getInstance(classA).value;
-      const { name: nameB } = IocClassMetadata.getInstance(classB).value;
+      const nameA = IocClassMetadata.getInstance(classA).getName();
+      const nameB = IocClassMetadata.getInstance(classB).getName();
       if (dependencySchema[nameA].length === 0) return -1;
       if (dependencySchema[nameB].length === 0) return 1;
       if (dependencySchema[nameA].includes(nameB)) return 1;
@@ -54,7 +52,9 @@ export class IocRegistry {
 
   #getDependencySchema(classes: NoArgsClass[]): Record<string, string[]> {
     return classes.reduce((acc, Class) => {
-      const { name, dependencies = [] } = IocClassMetadata.getInstance(Class).value;
+      const iocClassMetadata = IocClassMetadata.getInstance(Class);
+      const name = iocClassMetadata.getName();
+      const dependencies = iocClassMetadata.getDependencies();
       return { ...acc, [name]: dependencies };
     }, {});
   }

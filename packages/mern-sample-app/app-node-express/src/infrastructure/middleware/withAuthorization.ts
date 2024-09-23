@@ -9,7 +9,7 @@ import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
 import { RestError } from "@org/lib-api-client";
 import Keycloak from "keycloak-connect";
 
-const IOC_KEY = "withAuthorization";
+const IOC_KEY = "AuthorizationMiddleware";
 
 export interface AuthorizationMiddleware {
   middleware(): RequestHandler[];

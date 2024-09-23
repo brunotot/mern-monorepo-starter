@@ -7,11 +7,10 @@ import { RestError, ROLE_LIST } from "@org/lib-api-client";
 
 @inject("UserService")
 export class UserService {
-  @autowired("AuthorizationRepository")
-  private userRepository: AuthorizationRepository;
+  @autowired() private authorizationRepository: AuthorizationRepository;
 
   async findAll(): Promise<User[]> {
-    const users = await this.userRepository.findAllUsers();
+    const users = await this.authorizationRepository.findAllUsers();
     return users.map(this.userMapper);
   }
 
@@ -22,7 +21,7 @@ export class UserService {
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    const user = await this.userRepository.findUserByUsername(username);
+    const user = await this.authorizationRepository.findUserByUsername(username);
     if (user === null) throw new RestError(404, "User not found");
     return this.userMapper(user);
   }
