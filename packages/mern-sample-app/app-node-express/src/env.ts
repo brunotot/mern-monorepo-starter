@@ -32,18 +32,31 @@
  * }
  * ```
  *
- * ## Customization
- * - **Add New Variables**: To extend the schema, add new fields to the `ENVIRONMENT_VARS` schema.
- * - **Change Defaults**: Modify default values in the schema definition for any variables.
- * - **Error Handling**: Customize error handling logic within the `parseEnvironmentVars()` function to provide more tailored error messages.
+ * ## Environment variables list
  *
- * @module env
+ * | Name                    | Description                                     | Default value                  | Example value                 | Mandatory |
+ * |-------------------------|-------------------------------------------------|--------------------------------|-------------------------------|-----------|
+ * | __CORS_CREDENTIALS__    | Use CORS credentials                            | `true`                         | `true`                        |    ⚫     |
+ * | CORS_ALLOWED_ORIGINS    | List of comma-separated allowed origin patterns | `*`                            | `http://localhost:5173`       |    ⚫     |
+ * | CORS_ALLOWED_METHODS    | List of comma-separated allowed request methods | `GET,POST,PUT,DELETE,PATCH`    | `GET,POST`                    |    ⚫     |
+ * | CORS_ALLOWED_HEADERS    | List of comma-separated allowed request headers | `*`                            | `X-Custom-Header`             |    ⚫     |
+ * | SWAGGER_ENDPOINT        | Swagger endpoint                                | `/api-docs`                    | `/my-swagger-endpoint`        |    ⚫     |
+ * | SWAGGER_CSS_PATH        | Swagger CSS path                                | `/css/swagger.css`             | `http://localhost:5173`       |    ⚫     |
+ * | SWAGGER_JS_PATH         | Swagger JS path                                 | `/js/swagger.js`               | `GET,POST`                    |    ⚫     |
+ * | SWAGGER_OAUTH2_REDIRECT | Swagger OAuth2 redirect URL                     | `/oauth2-redirect.html`        | `/oauth2-redirect.html`       |    ⚫     |
  */
 
 import path from "path";
 
 import { z } from "@org/lib-commons";
 import dotenv from "dotenv";
+
+const Transform = {
+  BOOLEAN: value => value.toLowerCase() === "true",
+  NUMBER: value => Number(value),
+  ARRAY: value => value.split(",").map(s => s.trim()),
+  URL: value => (value.startsWith("/") ? value : `/${value}`),
+} as const satisfies Record<string, (value: string) => unknown>;
 
 // prettier-ignore
 const ENVIRONMENT_VARS = z.object({
@@ -54,8 +67,8 @@ const ENVIRONMENT_VARS = z.object({
   SERVER_ASSETS_URI: z.string().default("assets"),
   SERVER_VERSION: z.string().default("?.?.?"),
   SERVER_NAME: z.string().default("app-node-express"),
-  SERVER_PORT: z.string().default("8081").transform(v => Number(v)),
-  SERVER_IOC_SCAN_DIRS: z.string().default("infrastructure").transform(v => v.split(",").map(s => s.trim())),
+  SERVER_PORT: z.string().default("8081").transform(Transform.NUMBER),
+  SERVER_IOC_SCAN_DIRS: z.string().default("infrastructure").transform(Transform.ARRAY),
 
   // mongodb
   DATABASE_URL: z.string(),
@@ -66,22 +79,22 @@ const ENVIRONMENT_VARS = z.object({
   KEYCLOAK_ADMIN_CLI_SECRET: z.string(),
   KEYCLOAK_ADMIN_CLI_ID: z.string().default("admin-cli"),
   KEYCLOAK_REALM: z.string().default("master"),
-  KEYCLOAK_AUTHORIZATION_ENDPOINT: z.string().default("/realms/master/protocol/openid-connect/auth"),
+  KEYCLOAK_AUTHORIZATION_ENDPOINT: z.string().default("/realms/master/protocol/openid-connect/auth").transform(Transform.URL),
   KEYCLOAK_SSL_REQUIRED: z.string().default("none"),
   KEYCLOAK_CONFIDENTIAL_PORT: z.string().default("0"),
-  KEYCLOAK_BEARER_ONLY: z.string().default("true").transform(v => v === "true"),
+  KEYCLOAK_BEARER_ONLY: z.string().default("true").transform(Transform.BOOLEAN),
 
-  // @ts-rest
-  TS_REST_SWAGGER_ENDPOINT: z.string().default("/api-docs").transform(s => (s.startsWith("/") ? s : `/${s}`)),
-  TS_REST_SWAGGER_CSS_PATH: z.string().default("/css/swagger.css").transform(s => (s.startsWith("/") ? s : `/${s}`)),
-  TS_REST_SWAGGER_JS_PATH: z.string().default("/js/swagger.js").transform(s => (s.startsWith("/") ? s : `/${s}`)),
-  TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT: z.string().default("/oauth2-redirect.html").transform(s => (s.startsWith("/") ? s : `/${s}`)),
+  // @ts-rest/openapi
+  SWAGGER_ENDPOINT: z.string().default("/api-docs").transform(Transform.URL),
+  SWAGGER_CSS_PATH: z.string().default("/css/swagger.css").transform(Transform.URL),
+  SWAGGER_JS_PATH: z.string().default("/js/swagger.js").transform(Transform.URL),
+  SWAGGER_OAUTH2_REDIRECT: z.string().default("/oauth2-redirect.html").transform(Transform.URL),
 
   // cors
-  CORS_ALLOWED_ORIGINS: z.string().transform(s => s.split(",")),
-  CORS_CREDENTIALS: z.string().default("true").transform(s => s === "true"),
-  CORS_ALLOWED_METHODS: z.string().default("GET,POST,PUT,DELETE,PATCH").transform(s => s.split(",")),
-  CORS_ALLOWED_HEADERS: z.string().default("*").transform(s => s.split(",").map(chunk => chunk.trim())),
+  CORS_ALLOWED_ORIGINS: z.string().default("*").transform(Transform.ARRAY),
+  CORS_CREDENTIALS: z.string().default("true").transform(Transform.BOOLEAN),
+  CORS_ALLOWED_METHODS: z.string().default("GET,POST,PUT,DELETE,PATCH").transform(Transform.ARRAY),
+  CORS_ALLOWED_HEADERS: z.string().default("*").transform(Transform.ARRAY),
 });
 
 export const env = parseEnvironmentVars();

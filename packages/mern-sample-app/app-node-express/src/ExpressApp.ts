@@ -155,7 +155,7 @@ export class ExpressApp {
           "🟢 NodeJS": process.version,
           "🏠 Env": env.SERVER_ENV,
           "🔑 Keycloak": this.keycloakUrl,
-          "📝 Swagger": env.TS_REST_SWAGGER_ENDPOINT,
+          "📝 Swagger": env.SWAGGER_ENDPOINT,
           "🆔 PID": `${process.pid}`,
           "🧠 Memory": this.memoryUsage,
           "📅 Started": new Date().toLocaleString(),
@@ -193,11 +193,11 @@ export class ExpressApp {
   #initializeSwagger() {
     initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${this.url}${env.TS_REST_SWAGGER_ENDPOINT}${env.TS_REST_SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      oauth2RedirectUrl: `${this.url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT}`,
       version: env.SERVER_VERSION,
-      endpoint: env.TS_REST_SWAGGER_ENDPOINT,
-      cssPath: env.TS_REST_SWAGGER_CSS_PATH,
-      jsPath: env.TS_REST_SWAGGER_JS_PATH,
+      endpoint: env.SWAGGER_ENDPOINT,
+      cssPath: env.SWAGGER_CSS_PATH,
+      jsPath: env.SWAGGER_JS_PATH,
     });
   }
 
