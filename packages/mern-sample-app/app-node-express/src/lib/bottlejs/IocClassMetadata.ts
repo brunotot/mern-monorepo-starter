@@ -20,7 +20,7 @@ export class IocClassMetadata extends DecoratorMetadataEntry<{
   }
 
   public getName() {
-    return this.value.name;
+    return this.value.name.toLowerCase();
   }
 
   public getDependencies() {

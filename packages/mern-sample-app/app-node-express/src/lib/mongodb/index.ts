@@ -19,9 +19,9 @@
  * ```ts
  * import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
  * 
- * const dbService = MongoDatabaseService.getInstance();
- * dbService.client = MongoDatabaseService.buildMongoClient();
- * await dbService.client.connect();
+ * const db = MongoDatabaseService.getInstance();
+ * db.client = MongoDatabaseService.buildMongoClient();
+ * await db.client.connect();
  * ```
  * 
  * ### Use the MongoRepository for CRUD Operations
@@ -46,11 +46,6 @@
 // perform database operations...
  * await dbService.commitTransaction(session);
  * ```
- * 
- * ## Customization
- * - **Repository Customization**: Extend the `MongoRepository` class to implement additional methods or adjust the default CRUD behavior for your collections.
- * - **Advanced Search and Filter**: Use the `buildMatchPipeline` and `buildSortPipeline` methods for complex querying of MongoDB collections.
- * - **Transaction Handling**: Customize the transaction handling in `MongoDatabaseService` by overriding `commitTransaction` or `rollbackTransaction` methods for advanced use cases.
  */
 
 export * from "./MongoDatabaseService";

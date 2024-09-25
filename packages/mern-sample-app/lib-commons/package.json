@@ -18,8 +18,9 @@
   "author": "Bruno Tot",
   "license": "MIT",
   "dependencies": {
-    "@org/lib-commons": "workspace:*",
     "@anatine/zod-openapi": "^2.2.5",
+    "@org/lib-commons": "workspace:*",
+    "openapi3-ts": "^4.4.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

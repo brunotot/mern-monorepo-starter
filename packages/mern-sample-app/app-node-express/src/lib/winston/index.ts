@@ -21,11 +21,6 @@
  * log.info('This is an informational message');
  * log.debug('This is a debug message');
  * ```
- *
- * ## Customization
- * - **Change Log Format**: Modify the `format` in `createLogger()` to add or adjust log metadata.
- * - **Add Transports**: Extend the logger by adding new transports (e.g., file logging, remote logging services).
- * - **Adjust Log Level Colors**: Customize the colors for different log levels by changing the `LOGGER_COLORS` object.
  */
 
 /* eslint-disable no-console */

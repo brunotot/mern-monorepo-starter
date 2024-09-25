@@ -37,26 +37,15 @@ export class WithRouteContext implements RouteContextMiddleware {
 
   public middleware(): RequestHandler[] {
     const handler: RequestHandler = (_req, _res, next) => {
-      this.runWithSession(() => {
-        const mongoClientSession = MongoDatabaseService.getInstance().client.startSession();
-        this.registerSession({ mongoClientSession });
+      const mongoClientSession = MongoDatabaseService.getInstance().client.startSession();
+      const sessionProps: RouteContextProps = { mongoClientSession };
+
+      this.STORAGE.run(sessionProps, () => {
         next();
       });
     };
 
     return [handler];
-  }
-
-  private registerSession(session: RouteContextProps) {
-    const store = this.STORAGE.getStore();
-    if (!store) return;
-    Object.entries(session).forEach(([key, value]) => (store[key as keyof typeof store] = value));
-  }
-
-  private runWithSession(fn: () => void) {
-    const store = this.STORAGE.getStore();
-    if (!store) return;
-    this.STORAGE.run(store, fn);
   }
 }
 

@@ -23,5 +23,7 @@ export class WithRouteSession implements RouteSessionMiddleware {
 }
 
 export function withRouteSession(): RouteMiddlewareFactory {
-  return () => IocRegistry.getInstance().inject<RouteSessionMiddleware>(IOC_KEY).middleware();
+  return () => {
+    return IocRegistry.getInstance().inject<RouteSessionMiddleware>(IOC_KEY).middleware();
+  };
 }

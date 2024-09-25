@@ -1,12 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
- * @packageDocumentation Provides response compression middleware to optimize client-server communication, supporting deflate, gzip, and custom compression configurations.
- * @see {@link https://www.npmjs.com/package/compression|npm specifics}
+ * @packageDocumentation Provides a middleware factory to enable HTTP response compression.
+ * @see {@link https://www.npmjs.com/package/compression compression}
+ * @why Enables response compression to improve performance and reduce bandwidth usage in the application.
  */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { middleware } from "@org/app-node-express/middleware/index";
 
 import compression from "compression";
 
+/**
+ * Provides a middleware factory to enable HTTP response compression.
+ * @returns Express middleware factory
+ * @see {@link middleware All global middleware}
+ */
 export function withCompression(): RouteMiddlewareFactory {
   return () => [compression()];
 }

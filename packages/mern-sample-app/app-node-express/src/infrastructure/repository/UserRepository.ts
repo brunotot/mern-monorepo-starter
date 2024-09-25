@@ -1,4 +1,4 @@
-import type { ApiKeycloakUser } from "@org/lib-api-client";
+import type { ApiKeycloakRoles, ApiKeycloakUser } from "@org/lib-api-client";
 
 import { inject } from "@org/app-node-express/infrastructure/decorators/inject";
 import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
@@ -6,6 +6,7 @@ import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
 export interface AuthorizationRepository {
   findAllUsers(): Promise<ApiKeycloakUser[]>;
   findUserByUsername(username: string): Promise<ApiKeycloakUser | null>;
+  findRolesByUserId(userId: string): Promise<string[]>;
 }
 
 /**
@@ -23,5 +24,10 @@ export class UserRepository extends KeycloakDao implements AuthorizationReposito
   public async findAllUsers(): Promise<ApiKeycloakUser[]> {
     const users = await this.get<ApiKeycloakUser[]>(`/users`);
     return users;
+  }
+
+  public async findRolesByUserId(userId: string): Promise<string[]> {
+    const res = await this.get<ApiKeycloakRoles>(`/users/${userId}/role-mappings/realm`);
+    return res.map(({ name }: { name: string }) => name);
   }
 }

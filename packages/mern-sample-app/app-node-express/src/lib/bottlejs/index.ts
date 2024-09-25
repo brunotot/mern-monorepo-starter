@@ -35,11 +35,6 @@
  * ```ts
  * const serviceInstance = registry.inject<MyService>("MyService");
  * ```
- *
- * ## Customization
- * - **Add New Components**: Extend the IoC container by adding classes with the **`@inject`** decorator.
- * - **Custom Metadata**: Use `IocClassMetadata` to manually set class names or dependencies when needed.
- * - **Modify Component Scanning**: Adjust the directories scanned for components by modifying the paths passed to `scanIocModules`.
  */
 
 export * from "./IocRegistry";

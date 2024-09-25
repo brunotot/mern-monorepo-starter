@@ -29,6 +29,7 @@ export function initializeExpressRoutes(app: express.Application): void {
     }
   }
   suppressConsole(() => createExpressEndpoints(contracts, router, app));
+  // createExpressEndpoints(contracts, router, app);
 }
 
 export function initializeSwagger(props: {

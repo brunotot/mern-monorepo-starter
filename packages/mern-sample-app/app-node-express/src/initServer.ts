@@ -64,8 +64,6 @@
  *   // server.startListening();
  * });
  * ```
- *
- * @module initServer
  */
 
 import type { NoArgsClass } from "@org/lib-commons";

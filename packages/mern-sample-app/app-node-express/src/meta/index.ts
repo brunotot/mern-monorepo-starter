@@ -44,12 +44,6 @@
  * const newReference = new MyMetadata(SomeClass);
  * console.log(newReference.value);  // Outputs 'foo'
  * ```
- *
- * ## Customization
- * - **Extend `DecoratorMetadataEntry`**: Create custom metadata entry classes by extending `DecoratorMetadataEntry` and providing your own initial state.
- * - **Manage Metadata Keys**: Add, retrieve, or check the existence of custom metadata keys with the `DecoratorMetadata` class.
- *
- * @module meta
  */
 
 export * from "./DecoratorMetadata";

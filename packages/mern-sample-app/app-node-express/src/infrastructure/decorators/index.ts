@@ -50,11 +50,6 @@
  *   }
  * }
  * ```
- *
- * ## Customization
- * - **Inject Custom Names**: Specify a custom name for a class or field when using `inject` or `autowired` to avoid name collisions.
- * - **Middleware Integration**: Use the `contract` decorator with middleware factories to add middleware to routes before execution.
- * - **Transaction Handling**: Customize the transaction handling in `contract` by modifying the logic inside the decorator or transaction methods.
  */
 
 export * from "./autowired";

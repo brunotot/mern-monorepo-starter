@@ -11,7 +11,8 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     const users = await this.authorizationRepository.findAllUsers();
-    return users.map(this.userMapper);
+    const mappedUsers = await Promise.all(users.map(async user => await this.userMapper(user)));
+    return mappedUsers;
   }
 
   async findAllPaginated(paginationOptions: TODO): Promise<PaginationResult> {
@@ -26,11 +27,12 @@ export class UserService {
     return this.userMapper(user);
   }
 
-  private userMapper(model: ApiKeycloakUser): User {
+  private async userMapper(model: ApiKeycloakUser): Promise<User> {
+    const roles = await this.authorizationRepository.findRolesByUserId(model.id);
     return {
       _id: model.id,
       username: model.username,
-      roles: model.realmRoles.filter(
+      roles: roles.filter(
         (role: string): role is Role =>
           !!ROLE_LIST.find((r: zod.ZodLiteral<unknown>) => r.safeParse(role).success),
       ),

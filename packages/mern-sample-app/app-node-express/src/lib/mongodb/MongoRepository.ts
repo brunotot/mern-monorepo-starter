@@ -4,7 +4,6 @@ import type { PaginationOptions, PaginationResult } from "@org/lib-api-client";
 import type { zod, TODO } from "@org/lib-commons";
 import type * as mongodb from "mongodb";
 
-//import { testMode } from "@org/app-node-express/env";
 import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
 
