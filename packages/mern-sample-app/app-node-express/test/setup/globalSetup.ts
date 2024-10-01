@@ -23,9 +23,9 @@ export default async () => {
   console.log(`Restored MongoDB dump in ${endTime - startTime}ms`);
   const mongoUrl = mongoUri.replace("mongodb://", "");
   const [host, port] = mongoUrl.split(":");
+  process.env.SERVER_DOMAIN = "http://localhost";
   process.env.SERVER_PORT = String(TEST_PORT);
   process.env.SERVER_ENV = "test";
-  process.env.SERVER_DOMAIN = `http://localhost`;
   process.env.SERVER_SESSION_SECRET = "secret-test-key";
   process.env.DATABASE_URL = `mongodb://${host}:${port}`;
   process.env.DATABASE_NAME = dbDatabase;

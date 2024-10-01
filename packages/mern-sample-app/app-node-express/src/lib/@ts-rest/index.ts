@@ -46,11 +46,6 @@
  * routerService.addRouter(someRouteContract, handler, [someMiddlewareFactory]);
  * const routers = routerService.getRouters();
  * ```
- *
- * ## Customization
- * - **Add Routers**: Use `TsRestRouterService` to add routers by specifying a route contract, handler, and middleware factories.
- * - **Custom Swagger**: Adjust Swagger's OAuth2 redirect URL, CSS, and JS paths by passing them to `initializeSwagger()`.
- * - **Dynamic Middleware**: Define middleware dynamically by using `RouteMiddlewareFactory` functions that return `express.RequestHandler[]`.
  */
 
 export * from "./TsRestRouterService";

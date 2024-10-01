@@ -23,48 +23,17 @@
  *
  * ## How to Use
  *
- * ### Using Controllers
- * Define routes in `UserController` using contracts and secured middleware:
- * ```ts
- * import { UserController } from "@org/app-node-express/infrastructure/controllers";
+ * ### Create custom `Service`
  *
- * const userController = new UserController();
- * await userController.findAll();
- * ```
- *
- * ### Using Custom Decorators
- * The `inject` and `autowired` decorators provide dependency injection and autowiring of services:
  * ```ts
  * import { inject, autowired } from "@org/app-node-express/infrastructure/decorators";
+ * import { UserService } from "@org/app-node-express/infrastructure/services";
+ * import { AnotherService } from "@org/app-node-express/infrastructure/services";
  *
  * @inject()
  * class MyService {
- *   @autowired("UserService")
- *   private userService: UserService;
+ *   @autowired() private userService: UserService;
+ *   @autowired() private anotherService: AnotherService;
  * }
  * ```
- *
- * ### Middleware Integration
- * Use middleware to handle authorization, logging, session management, and route contexts:
- * ```ts
- * import { withAuthorization, withMorgan, withRouteSession, withRouteContext } from "@org/app-node-express/infrastructure/middleware";
- *
- * app.use(withAuthorization());
- * app.use(withMorgan());
- * app.use(withRouteSession());
- * app.use(withRouteContext());
- * ```
- *
- * ### Repositories and Services
- * The `UserRepository` and `UserService` abstract interactions with Keycloak and provide business logic for user data:
- * ```ts
- * const userService = new UserService();
- * const users = await userService.findAll();
- * ```
- *
- * ## Customization
- * - **Controllers**: Extend or create new controllers using the contract pattern with decorators like `contract` and secured middleware.
- * - **Decorators**: Add custom decorators as needed by extending the core decorators in the `decorators` subdirectory.
- * - **Middleware**: Adjust or create custom middleware for handling requests, authorization, logging, or context management based on specific project needs.
- * - **Repositories and Services**: Extend or modify the repository and service layers to handle additional business logic or external API interactions.
  */

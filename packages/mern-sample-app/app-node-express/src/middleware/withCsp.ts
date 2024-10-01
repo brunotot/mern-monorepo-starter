@@ -1,11 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
- * @packageDocumentation Middleware which passes manages context for route sessions.
+ * @packageDocumentation Provides a middleware factory to configure Content Security Policy (CSP) and other security headers using Helmet.
+ * @see {@link https://www.npmjs.com/package/helmet helmet}
+ * @why Adds security headers to protect the application from common vulnerabilities. Specifically adjusts CSP and Cross-Origin Opener Policy for compatibility with Swagger UI.
  */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { middleware } from "@org/app-node-express/middleware/index";
 
 import helmet from "helmet";
 
+/**
+ * Provides a middleware factory to configure Content Security Policy (CSP) and other security headers using Helmet.
+ * @returns Express middleware factory
+ * @see {@link middleware All global middleware}
+ */
 export function withCsp(): RouteMiddlewareFactory {
   // TODO Check if this is still necessary. It used to be a fix for swagger js not loading
   return () => [

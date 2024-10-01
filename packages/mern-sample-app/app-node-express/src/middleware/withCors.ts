@@ -1,14 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
- * @packageDocumentation Connect/Express middleware that can be used to enable CORS with various options.
- * @see {@link https://www.npmjs.com/package/cors|npm specifics}
- * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing|cors wiki}
+ * @packageDocumentation Provides a middleware factory to configure and enable CORS (Cross-Origin Resource Sharing).
+ * @see {@link https://www.npmjs.com/package/cors cors}
+ * @see {@link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing cors wiki}
+ * @why Configures CORS to allow or restrict cross-origin requests based on the application's environment variables, enhancing security and flexibility.
  */
 
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
+import type { middleware } from "@org/app-node-express/middleware/index";
 
 import { env } from "@org/app-node-express/env";
 import cors from "cors";
 
+/**
+ * Provides a middleware factory to configure and enable CORS (Cross-Origin Resource Sharing).
+ * @returns Express middleware factory
+ * @see {@link middleware All global middleware}
+ */
 export function withCors(): RouteMiddlewareFactory {
   return () => [
     cors({

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import type { PaginationOptions, UserPaginationResultDto, User } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";

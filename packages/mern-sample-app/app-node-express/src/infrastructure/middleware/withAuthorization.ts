@@ -4,12 +4,12 @@ import type { Keycloak as KeycloakType, KeycloakConfig } from "keycloak-connect"
 
 import { env } from "@org/app-node-express/env";
 import { inject } from "@org/app-node-express/infrastructure/decorators/inject";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocRegistry } from "@org/app-node-express/ioc";
 import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
 import { RestError } from "@org/lib-api-client";
 import Keycloak from "keycloak-connect";
 
-const IOC_KEY = "withAuthorization";
+const IOC_KEY = "AuthorizationMiddleware";
 
 export interface AuthorizationMiddleware {
   middleware(): RequestHandler[];

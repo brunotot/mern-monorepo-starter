@@ -7,6 +7,3 @@ export function JsonQueryParam<T extends zod.Schema>(schema: T) {
     return schema.parse(result);
   });
 }
-
-/** @hidden */
-export type JsonQueryParam = unknown;

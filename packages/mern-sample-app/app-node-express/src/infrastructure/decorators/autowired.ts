@@ -1,9 +1,9 @@
-import { IocClassMetadata, IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocClassMetadata, IocRegistry } from "@org/app-node-express/ioc";
 
 export function autowired(name?: string) {
   return function (_target: undefined, context: ClassFieldDecoratorContext) {
-    const fieldName = String(context.name);
-    const computedName = name?.toLowerCase() ?? fieldName.toLowerCase();
+    let computedName = String(context.name).toLowerCase();
+    if (name) computedName = name.toLowerCase();
     IocClassMetadata.getInstance(context).addDependency(computedName);
 
     return function () {

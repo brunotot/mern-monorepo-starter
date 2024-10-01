@@ -1,7 +1,7 @@
 /// <reference types="@types/jest" />
 
 import { z } from "../../lib-commons/src/lib/zod";
-import { JsonQueryParam } from "../src/app/models/utils/JsonQueryParam";
+import { JsonQueryParam } from "../src/app/utils/query-params/JsonQueryParam";
 
 describe("JsonQueryParam", () => {
   const queryParamInstance = JsonQueryParam(

@@ -38,11 +38,6 @@
  *
  * app.use(buildKeycloakSession());
  * ```
- *
- * ## Customization
- * - **Token Configuration**: Adjust the token request configuration in `KeycloakTokenManager` by modifying `KEYCLOAK_LOGIN_CREDENTIALS` or headers in `buildLoginConfig()`.
- * - **API Requests**: Extend `KeycloakDao` to add more request methods for interacting with different Keycloak endpoints.
- * - **Session Management**: Customize the session store by adjusting the `keycloakMemoryStore` configuration or using a different store implementation.
  */
 
 export * from "./KeycloakMemoryStore";

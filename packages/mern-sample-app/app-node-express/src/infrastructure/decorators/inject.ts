@@ -1,13 +1,15 @@
 import type { NoArgsClass } from "@org/lib-commons";
 
-import { IocClassMetadata } from "@org/app-node-express/lib/bottlejs";
+import { IocClassMetadata } from "@org/app-node-express/ioc";
 
 export function inject<T extends NoArgsClass>(name?: string) {
   return function (target: T, context: ClassDecoratorContext<T>) {
-    const className = String(context.name);
-    const computedName = name?.toLowerCase() ?? className.toLowerCase();
-    const iocClassMetadata = IocClassMetadata.getInstance(context);
-    iocClassMetadata.setName(computedName);
-    iocClassMetadata.setClass(target);
+    let computedName = context.name?.toLowerCase();
+    if (name) computedName = name.toLowerCase();
+    if (!computedName)
+      throw new Error("Parameter 'name' must be provided when using @inject() on anonymous class");
+    IocClassMetadata.getInstance(target).setName(computedName);
+    IocClassMetadata.getInstance(context).setName(computedName);
+    return target;
   };
 }
