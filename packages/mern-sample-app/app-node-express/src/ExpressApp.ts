@@ -114,7 +114,7 @@ export class ExpressApp {
 
   public startListening(): void {
     log.info("Server connecting...");
-    const port = Number(process.env.PORT ?? env.SERVER_PORT);
+    const port = Number(process.env.PORT || env.SERVER_PORT);
     this.#httpServer = this.expressApp.listen(port, "0.0.0.0", () => {
       logBanner({
         title: `[Express] ${env.SERVER_NAME} v${env.SERVER_VERSION}`,
