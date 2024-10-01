@@ -81,7 +81,7 @@
  */
 
 export * from "./@ts-rest";
-export * from "./bottlejs";
+export * from "../ioc";
 export * from "./keycloak";
 export * from "./mongodb";
 export * from "./winston";

@@ -47,8 +47,12 @@ import type { NoArgsClass } from "@org/lib-commons";
 import type { IncomingMessage, Server, ServerResponse } from "http";
 
 import { env } from "@org/app-node-express/env";
-import { initializeExpressRoutes, initializeSwagger } from "@org/app-node-express/lib/@ts-rest";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocRegistry } from "@org/app-node-express/ioc";
+import {
+  initializeExpressRoutes,
+  initializeSwagger,
+  TsRestRouterService,
+} from "@org/app-node-express/lib/@ts-rest";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { log, logBanner } from "@org/app-node-express/lib/winston";
 import { getTypedError } from "@org/lib-api-client";
@@ -99,7 +103,7 @@ export class ExpressApp {
     this.#initializeIoc(mocks);
     log.info(`Initializing global middleware (${this.middleware.length})`);
     this.#initializeGlobalMiddlewares();
-    log.info("Initializing routes");
+    log.info(`Initializing routes (${TsRestRouterService.getInstance().getTotalRouteCount()})`);
     this.#initializeExpressRoutes();
     log.info("Initializing global error handler");
     this.#initializeErrorHandlerMiddleware();
@@ -126,6 +130,8 @@ export class ExpressApp {
       log.info(`🚀 Server listening on port ${this.port}`);
     });
 
+    const oneMinuteInMsec = 60 * 1000;
+    this.#httpServer.setTimeout(env.SERVER_TIMEOUT_IN_MINS * oneMinuteInMsec);
     this.#httpServer.on("timeout", socket => {
       socket.destroy();
     });
@@ -153,13 +159,16 @@ export class ExpressApp {
   }
 
   #initializeExpressRoutes() {
+    TsRestRouterService.getInstance().validateAllRoutesToBeImplemented();
     initializeExpressRoutes(this.expressApp);
   }
 
   #initializeSwagger() {
     initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${this.#url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT}`,
+      oauth2RedirectUrl: `${this.#url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      oauth2AuthorizationUrl: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect${env.KEYCLOAK_LOGIN_ENDPOINT}`,
+      oauth2TokenUrl: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect${env.KEYCLOAK_TOKEN_ENDPOINT}`,
       version: env.SERVER_VERSION,
       endpoint: env.SWAGGER_ENDPOINT,
       cssPath: env.SWAGGER_CSS_PATH,

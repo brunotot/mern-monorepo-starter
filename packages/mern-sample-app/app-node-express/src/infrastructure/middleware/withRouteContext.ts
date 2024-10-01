@@ -9,7 +9,7 @@ import type { ClientSession } from "mongodb";
 import { AsyncLocalStorage } from "async_hooks";
 
 import { inject } from "@org/app-node-express/infrastructure/decorators";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocRegistry } from "@org/app-node-express/ioc";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
 
 type RouteContextProps = {

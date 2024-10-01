@@ -1,15 +1,11 @@
 import { z } from "@org/lib-commons";
 import { initContract } from "@ts-rest/core";
 
-import { UserPaginationResultDto } from "../dto";
-import {
-  RestErrorSchema,
-  RestError500Schema,
-  JsonQueryParam,
-  PaginationOptions,
-  User,
-} from "../models";
-import { routeCommonProps } from "./../../lib/@ts-rest";
+import { User } from "../models";
+import { PaginationOptionsQueryParam } from "../utils/common-models";
+import * as errors from "../utils/error-responses";
+import * as responses from "../utils/valid-responses";
+import { routeCommonProps, zodResponse } from "./../../lib/@ts-rest";
 
 const routeDefaults = routeCommonProps({
   groupName: "Users",
@@ -18,42 +14,56 @@ const routeDefaults = routeCommonProps({
 
 export const userContract = initContract().router({
   findAll: {
-    ...routeDefaults("/findAll"),
+    ...routeDefaults({
+      path: "/findAll",
+      secured: true,
+    }),
     method: "GET",
-    summary: "Get all users",
-    description: `Get all users`,
+    summary: "Find all users",
+    description: `Finds all existing users`,
     responses: {
-      200: z.array(User).describe("Users"),
-      401: RestErrorSchema.describe("Unauthorized"),
-      //500: RestError500Schema,
+      200: zodResponse(z.array(User), "List of all users"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
     },
   },
   findOneByUsername: {
-    ...routeDefaults("/findOneByUsername"),
+    ...routeDefaults({
+      path: "/findOneByUsername",
+      secured: true,
+    }),
     method: "GET",
-    summary: "Get a user by id",
-    description: "Get a user by id",
+    summary: "Find user by username",
+    description:
+      "Finds a single user whose username matches the one provided in 'username' query parameter.",
     query: z.object({
-      username: z.string().openapi({ example: "brunotot" }),
+      username: z.string().openapi({ example: "admin" }),
     }),
     responses: {
-      200: User,
-      401: RestErrorSchema.describe("Unauthorized"),
-      404: RestErrorSchema.describe("User not found"),
-      500: RestError500Schema,
+      200: zodResponse(User, "Single user"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      404: zodResponse(errors.RestErrorResponse404, "User not found"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
     },
   },
   findAllPaginated: {
-    ...routeDefaults("/findAllPaginated"),
+    ...routeDefaults({
+      path: "/findAllPaginated",
+      secured: true,
+    }),
     method: "GET",
-    summary: "Get all users",
-    description: "Get all users",
+    summary: "Find paginated users",
+    description: "Finds paginated users",
     query: z.object({
-      paginationOptions: JsonQueryParam(PaginationOptions),
+      paginationOptions: PaginationOptionsQueryParam,
     }),
     responses: {
-      200: UserPaginationResultDto,
-      500: RestError500Schema,
+      200: zodResponse(responses.TypedPaginationResponse(User), "Paginated users"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
     },
   },
 });

@@ -41,7 +41,6 @@ import { withCsp } from "@org/app-node-express/middleware/withCsp";
 import { withHpp } from "@org/app-node-express/middleware/withHpp";
 import { withJsonParser } from "@org/app-node-express/middleware/withJsonParser";
 import { withStaticAssets } from "@org/app-node-express/middleware/withStaticAssets";
-import { withTimeout } from "@org/app-node-express/middleware/withTimeout";
 import { withUrlEncoded } from "@org/app-node-express/middleware/withUrlEncoded";
 import { getTypedError } from "@org/lib-api-client";
 
@@ -65,23 +64,21 @@ function __debug_middleware__(
 /**
  * Express app global middleware collection (executed in order):
  *
- * - &nbsp;&nbsp;1 &nbsp;{@link withTimeout withTimeout}
- * - &nbsp;&nbsp;2 &nbsp;{@link withStaticAssets withStaticAssets}
- * - &nbsp;&nbsp;3 &nbsp;{@link withJsonParser withJsonParser}
- * - &nbsp;&nbsp;4 &nbsp;{@link withRouteSession withRouteSession}
- * - &nbsp;&nbsp;5 &nbsp;{@link withCompression withCompression}
- * - &nbsp;&nbsp;6 &nbsp;{@link withRouteContext withRouteContext}
- * - &nbsp;&nbsp;7 &nbsp;{@link withCookieParser withCookieParser}
- * - &nbsp;&nbsp;8 &nbsp;{@link withCors withCors}
- * - &nbsp;&nbsp;9 &nbsp;{@link withCredentials withCredentials}
- * - 10 &nbsp;{@link withCsp withCsp}
- * - 11 &nbsp;{@link withHpp withHpp}
- * - 12 &nbsp;{@link withMorgan withMorgan}
- * - 13 &nbsp;{@link withUrlEncoded withUrlEncoded}
- * - 14 &nbsp;{@link withAuthorization withAuthorization}
+ * - &nbsp;&nbsp;1 &nbsp;{@link withStaticAssets withStaticAssets}
+ * - &nbsp;&nbsp;2 &nbsp;{@link withJsonParser withJsonParser}
+ * - &nbsp;&nbsp;3 &nbsp;{@link withRouteSession withRouteSession}
+ * - &nbsp;&nbsp;4 &nbsp;{@link withCompression withCompression}
+ * - &nbsp;&nbsp;5 &nbsp;{@link withRouteContext withRouteContext}
+ * - &nbsp;&nbsp;6 &nbsp;{@link withCookieParser withCookieParser}
+ * - &nbsp;&nbsp;7 &nbsp;{@link withCors withCors}
+ * - &nbsp;&nbsp;8 &nbsp;{@link withCredentials withCredentials}
+ * - &nbsp;&nbsp;9 &nbsp;{@link withCsp withCsp}
+ * - 10 &nbsp;{@link withHpp withHpp}
+ * - 11 &nbsp;{@link withMorgan withMorgan}
+ * - 12 &nbsp;{@link withUrlEncoded withUrlEncoded}
+ * - 13 &nbsp;{@link withAuthorization withAuthorization}
  */
 export const middleware = [
-  __debug_middleware__(withTimeout.name, withTimeout()),
   __debug_middleware__(withStaticAssets.name, withStaticAssets()),
   __debug_middleware__(withJsonParser.name, withJsonParser()),
   __debug_middleware__(withRouteSession.name, withRouteSession()),

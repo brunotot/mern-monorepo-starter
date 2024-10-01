@@ -1,5 +1,5 @@
 import type { AuthorizationRepository } from "../repository/UserRepository";
-import type { ApiKeycloakUser, PaginationResult, Role, User } from "@org/lib-api-client";
+import type { ApiKeycloakUser, Role, TypedPaginationResponse, User } from "@org/lib-api-client";
 import type { TODO, zod } from "@org/lib-commons";
 
 import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
@@ -15,7 +15,7 @@ export class UserService {
     return mappedUsers;
   }
 
-  async findAllPaginated(paginationOptions: TODO): Promise<PaginationResult> {
+  async findAllPaginated(paginationOptions: TODO): Promise<TypedPaginationResponse<User>> {
     // eslint-disable-next-line no-console
     console.log(paginationOptions);
     return null as TODO;

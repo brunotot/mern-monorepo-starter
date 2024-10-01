@@ -72,7 +72,7 @@ import path from "path";
 
 import { env } from "@org/app-node-express/env";
 import { ExpressApp } from "@org/app-node-express/ExpressApp";
-import { scanIocModules } from "@org/app-node-express/lib/bottlejs";
+import { scanIocModules } from "@org/app-node-express/ioc";
 import { log } from "@org/app-node-express/lib/winston";
 import { middleware } from "@org/app-node-express/middleware";
 

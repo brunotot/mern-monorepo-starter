@@ -50,28 +50,29 @@
  *
  * #### Optional variables
  *
- * | Name                       | Description                                       | Default value               | Example value                         | Mandatory |
- * |----------------------------|---------------------------------------------------|-----------------------------|---------------------------------------|-----------|
- * | SERVER_TIMEOUT_IN_MINS     | Timeout duration in minutes for incoming requests | `4`                         | `4`                              |    ⚫     |
- * | SERVER_ASSETS_URI          | URI path to Express server's static assets        | `assets`                    | `assets`                              |    ⚫     |
- * | SERVER_VERSION             | Server version (controlled in package.json)       | `?.?.?`                     | `0.0.1`                               |    ⚫     |
- * | SERVER_NAME                | Custom server name displayed on the initial load  | `app-node-express`          | `my-node-express-app`                 |    ⚫     |
- * | SERVER_PORT                | Port on which the server should be listening      | `8081`                      | `1337`                                |    ⚫     |
- * | SERVER_IOC_SCAN_DIRS       | Directory names for IoC scan (relative to /src)   | `infrastructure`            | `infrastructure,lib`                  |    ⚫     |
- * | KEYCLOAK_ADMIN_CLI_ID      | Name of admin-privileged Keycloak client          | `admin-cli`                 | `admin-cli`                           |    ⚫     |
- * | KEYCLOAK_REALM             | Keycloak realm name                               | `master`                    | `master`                              |    ⚫     |
- * | KEYCLOAK_SSL_REQUIRED      | Keycloak SSL required (use 'all' for prod)        | `none`                      | `all`                                 |    ⚫     |
- * | KEYCLOAK_CONFIDENTIAL_PORT | Keycloak confidential port (non-zero for prod)    | `0`                         | `1`                                   |    ⚫     |
- * | KEYCLOAK_BEARER_ONLY       | Only use Keycloak via JWT authorization           | `true`                      | `true`                                |    ⚫     |
- * | DATABASE_NAME              | Database name                                     | `development`               | `production`, `test` or `development` |    ⚫     |
- * | CORS_CREDENTIALS           | Use CORS credentials                              | `true`                      | `true`                                |    ⚫     |
- * | CORS_ALLOWED_ORIGINS       | List of comma-separated allowed origin patterns   | `*`                         | `http://localhost:5173`               |    ⚫     |
- * | CORS_ALLOWED_METHODS       | List of comma-separated allowed request methods   | `GET,POST,PUT,DELETE,PATCH` | `GET,POST`                            |    ⚫     |
- * | CORS_ALLOWED_HEADERS       | List of comma-separated allowed request headers   | `*`                         | `X-Custom-Header`                     |    ⚫     |
- * | SWAGGER_ENDPOINT           | Swagger endpoint                                  | `/api-docs`                 | `/my-swagger-endpoint`                |    ⚫     |
- * | SWAGGER_CSS_PATH           | Swagger CSS path                                  | `/css/swagger.css`          | `http://localhost:5173`               |    ⚫     |
- * | SWAGGER_JS_PATH            | Swagger JS path                                   | `/js/swagger.js`            | `GET,POST`                            |    ⚫     |
- * | SWAGGER_OAUTH2_REDIRECT    | Swagger OAuth2 redirect URL                       | `/oauth2-redirect.html`     | `/oauth2-redirect.html`               |    ⚫     |
+ * | Name                              | Description                                        | Default value               | Example value                         | Mandatory |
+ * |-----------------------------------|----------------------------------------------------|-----------------------------|---------------------------------------|-----------|
+ * | KEYCLOAK_SESSION_EXPIRES_IN_HOURS | Hours after which the Keycloak session will expire | `24`                        | `24`                                  |    ⚫     |
+ * | SERVER_TIMEOUT_IN_MINS            | Timeout duration in minutes for incoming requests  | `4`                         | `4`                                   |    ⚫     |
+ * | SERVER_ASSETS_URI                 | URI path to Express server's static assets         | `assets`                    | `assets`                              |    ⚫     |
+ * | SERVER_VERSION                    | Server version (controlled in package.json)        | `?.?.?`                     | `0.0.1`                               |    ⚫     |
+ * | SERVER_NAME                       | Custom server name displayed on the initial load   | `app-node-express`          | `my-node-express-app`                 |    ⚫     |
+ * | SERVER_PORT                       | Port on which the server should be listening       | `8081`                      | `1337`                                |    ⚫     |
+ * | SERVER_IOC_SCAN_DIRS              | Directory names for IoC scan (relative to /src)    | `infrastructure`            | `infrastructure,lib`                  |    ⚫     |
+ * | KEYCLOAK_ADMIN_CLI_ID             | Name of admin-privileged Keycloak client           | `admin-cli`                 | `admin-cli`                           |    ⚫     |
+ * | KEYCLOAK_REALM                    | Keycloak realm name                                | `master`                    | `master`                              |    ⚫     |
+ * | KEYCLOAK_SSL_REQUIRED             | Keycloak SSL required (use 'all' for prod)         | `none`                      | `all`                                 |    ⚫     |
+ * | KEYCLOAK_CONFIDENTIAL_PORT        | Keycloak confidential port (non-zero for prod)     | `0`                         | `1`                                   |    ⚫     |
+ * | KEYCLOAK_BEARER_ONLY              | Only use Keycloak via JWT authorization            | `true`                      | `true`                                |    ⚫     |
+ * | DATABASE_NAME                     | Database name                                      | `development`               | `production`, `test` or `development` |    ⚫     |
+ * | CORS_CREDENTIALS                  | Use CORS credentials                               | `true`                      | `true`                                |    ⚫     |
+ * | CORS_ALLOWED_ORIGINS              | List of comma-separated allowed origin patterns    | `*`                         | `http://localhost:5173`               |    ⚫     |
+ * | CORS_ALLOWED_METHODS              | List of comma-separated allowed request methods    | `GET,POST,PUT,DELETE,PATCH` | `GET,POST`                            |    ⚫     |
+ * | CORS_ALLOWED_HEADERS              | List of comma-separated allowed request headers    | `*`                         | `X-Custom-Header`                     |    ⚫     |
+ * | SWAGGER_ENDPOINT                  | Swagger endpoint                                   | `/api-docs`                 | `/my-swagger-endpoint`                |    ⚫     |
+ * | SWAGGER_CSS_PATH                  | Swagger CSS path                                   | `/css/swagger.css`          | `http://localhost:5173`               |    ⚫     |
+ * | SWAGGER_JS_PATH                   | Swagger JS path                                    | `/js/swagger.js`            | `GET,POST`                            |    ⚫     |
+ * | SWAGGER_OAUTH2_REDIRECT_ENDPOINT           | Swagger OAuth2 redirect URL                        | `/oauth2-redirect.html`     | `/oauth2-redirect.html`               |    ⚫     |
  */
 
 import path from "path";
@@ -88,6 +89,12 @@ const Transform = {
 
 // prettier-ignore
 const ENVIRONMENT_VARS = z.object({
+  /**
+   * Hours after which the Keycloak session will expire.
+   * @default 24
+   */
+  KEYCLOAK_SESSION_EXPIRES_IN_HOURS: z.string().default("24").transform(Transform.NUMBER),
+
   /**
    * Timeout duration in minutes for incoming requests.
    * Used to set both the request timeout and the connection timeout.
@@ -214,7 +221,19 @@ const ENVIRONMENT_VARS = z.object({
    * The URL to redirect to for OAuth2 authentication with Swagger.
    * @default "/oauth2-redirect.html"
    */
-  SWAGGER_OAUTH2_REDIRECT: z.string().default("/oauth2-redirect.html").transform(Transform.URL),
+  SWAGGER_OAUTH2_REDIRECT_ENDPOINT: z.string().default("/oauth2-redirect.html").transform(Transform.URL),
+
+  /**
+   * The Keycloak login endpoint for OAuth2 authentication with Swagger.
+   * @default "/auth"
+   */
+  KEYCLOAK_LOGIN_ENDPOINT: z.string().default("/auth").transform(Transform.URL),
+
+  /**
+   * The Keycloak token endpoint for OAuth2 authentication with Swagger.
+   * @default "/token"
+   */
+  KEYCLOAK_TOKEN_ENDPOINT: z.string().default("/token").transform(Transform.URL),
 
   /**
    * Allowed origins for CORS requests.

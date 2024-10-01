@@ -1,14 +1,10 @@
-import { IocClassMetadata } from "@org/app-node-express/lib/bottlejs";
+import { IocClassMetadata } from "@org/app-node-express/ioc";
 import { type TODO, type NoArgsClass } from "@org/lib-commons";
-//import { default as BottleJs } from "bottlejs";
 
 export class IocRegistry {
   private static instance: IocRegistry;
 
   private readonly registry: Map<string, unknown>;
-
-  //private readonly bottle: BottleJs;
-  //private readonly container: BottleJs.IContainer<string>;
 
   public static getInstance() {
     IocRegistry.instance ??= new IocRegistry();
@@ -17,12 +13,9 @@ export class IocRegistry {
 
   private constructor() {
     this.registry = new Map();
-    //this.bottle = new BottleJs();
-    //this.container = this.bottle.container;
   }
 
   #injectLocal<T = TODO>(name: string): T {
-    //return this.container[name.toLowerCase()] as T;
     return this.registry.get(name.toLowerCase()) as T;
   }
 
@@ -45,7 +38,6 @@ export class IocRegistry {
       const name = IocClassMetadata.getInstance(Class).getName();
       const instance = new Class();
       this.registry.set(name, instance);
-      //this.bottle.service(name, Class, ...dependencySchema[name]);
     });
   }
 

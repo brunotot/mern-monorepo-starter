@@ -1,4 +1,4 @@
-import { IocClassMetadata, IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocClassMetadata, IocRegistry } from "@org/app-node-express/ioc";
 
 export function autowired(name?: string) {
   return function (_target: undefined, context: ClassFieldDecoratorContext) {

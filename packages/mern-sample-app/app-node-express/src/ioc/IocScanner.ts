@@ -3,7 +3,7 @@ import type { NoArgsClass } from "@org/lib-commons";
 import fs from "fs";
 import path from "path";
 
-import { IocClassMetadata } from "@org/app-node-express/lib/bottlejs/IocClassMetadata";
+import { IocClassMetadata } from "@org/app-node-express/ioc/IocClassMetadata";
 
 /**
  * Scans the specified directories for classes containing **\@inject** decorator.

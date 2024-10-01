@@ -1,7 +1,7 @@
 import type { AppRoute } from "@ts-rest/core";
 
+import { IocRegistry } from "@org/app-node-express/ioc";
 import * as TsRest from "@org/app-node-express/lib/@ts-rest";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { getTypedError } from "@org/lib-api-client";
 

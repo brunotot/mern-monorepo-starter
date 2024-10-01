@@ -2,16 +2,23 @@ import type { AuthorizationMiddleware } from "@org/app-node-express/infrastructu
 import type { UserService } from "@org/app-node-express/infrastructure/service/UserService";
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { Role } from "@org/lib-api-client";
-import type { NextFunction, Request, RequestHandler, Response } from "express";
+import type { RequestHandler } from "express";
 
 import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocRegistry } from "@org/app-node-express/ioc";
 import { RestError, getTypedError } from "@org/lib-api-client";
 import jwt from "jsonwebtoken";
 
 export interface RouteSecuredMiddleware {
   middleware(...roles: Role[]): RequestHandler[];
 }
+
+export type TokenData = {
+  email_verified: boolean;
+  preferred_username: string;
+  sub: string;
+  scope: string;
+};
 
 const IOC_KEY = "withRouteSecured";
 
@@ -21,43 +28,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
   @autowired() private authorizationMiddleware: AuthorizationMiddleware;
 
   public middleware(...roles: Role[]): RequestHandler[] {
-    const flattenedRoles = roles.flat();
-
-    const roleSecuredMiddleware: RequestHandler = async (req, res, next) => {
-      if (flattenedRoles.length === 0) {
-        return next();
-      }
-
-      try {
-        const bearerToken = req.headers.authorization!;
-        const token = bearerToken.split(" ")[1];
-
-        const tokenData = jwt.decode(token) as {
-          email_verified: boolean;
-          preferred_username: string;
-          sub: string;
-          scope: string;
-        };
-
-        const userResponse = await this.userService.findOneByUsername(tokenData.preferred_username);
-
-        const roles = userResponse.roles;
-
-        const hasRole = flattenedRoles.some(role => roles.includes(role));
-
-        if (!hasRole) {
-          throw new RestError(403, "User does not have the required role");
-        }
-
-        next();
-      } catch (error: unknown) {
-        // eslint-disable-next-line no-console
-        console.log("error in withSecured", error);
-        next(getTypedError(error));
-      }
-    };
-
-    const protect = async (req: Request, res: Response, next: NextFunction) => {
+    const protect: RequestHandler = async (req, res, next) => {
       try {
         const handler = this.authorizationMiddleware.protect();
         handler(req, res, next);
@@ -66,7 +37,48 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
       }
     };
 
+    const roleSecuredMiddleware: RequestHandler = async (req, _res, next) => {
+      if (roles.length === 0) return next();
+
+      try {
+        const token = this.getToken(req);
+
+        const tokenData = this.decodeToken(token);
+
+        const { roles: userRoles } = await this.userService.findOneByUsername(
+          tokenData.preferred_username,
+        );
+
+        const hasAtLeastOneRole = userRoles.some(userRole => roles.includes(userRole));
+
+        if (!hasAtLeastOneRole) {
+          throw new RestError(403, "User does not have the required role");
+        }
+
+        next();
+      } catch (error: unknown) {
+        next(getTypedError(error));
+      }
+    };
+
     return [protect, roleSecuredMiddleware];
+  }
+
+  private getToken(req: Parameters<RequestHandler>[0]): string {
+    /**
+     * The `authorization` header is guaranteed to exist at this point since the
+     * preceding `protect` middleware validates the presence of a valid token.
+     * Therefore, the `!` non-null assertion operator is safely used here to
+     * access the `authorization` header without additional null or undefined checks.
+     */
+    const bearerToken = req.headers.authorization!;
+    const token = bearerToken.split(" ")[1];
+    return token;
+  }
+
+  private decodeToken(token: string): TokenData {
+    const tokenData = jwt.decode(token) as TokenData;
+    return tokenData;
   }
 }
 

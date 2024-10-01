@@ -7,7 +7,7 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 import type { RequestHandler } from "express";
 
 import { inject } from "@org/app-node-express/infrastructure/decorators";
-import { IocRegistry } from "@org/app-node-express/lib/bottlejs";
+import { IocRegistry } from "@org/app-node-express/ioc";
 import { createStream, log } from "@org/app-node-express/lib/winston";
 import morgan from "morgan";
 
