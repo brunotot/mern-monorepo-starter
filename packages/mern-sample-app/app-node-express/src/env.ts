@@ -286,9 +286,11 @@ function parseEnvironmentVars() {
     throw new Error(error);
   }
 
+  const PORT = process.env.PORT ?? process.env.SERVER_PORT;
+
   return {
     ...parsedResults.data,
-    SERVER_URL: `${process.env.SERVER_DOMAIN!}:${process.env.SERVER_PORT!}`,
+    SERVER_URL: `${process.env.SERVER_DOMAIN!}:${PORT!}`,
   } as const;
 }
 
