@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+html {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
 #root {
   margin: 0;
   padding: 0;

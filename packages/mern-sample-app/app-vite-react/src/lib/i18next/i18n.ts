@@ -15,15 +15,15 @@ export async function changeLanguage(language: string) {
   return await i18n.changeLanguage(language);
 }
 
-export function initI18n() {
-  i18n
-    .use(initReactI18next)
-    .use(LanguageDetector)
-    .use(Backend)
-    .init({
-      fallbackLng: I18N_DEFAULT_LANGUAGE,
-      interpolation: {
-        escapeValue: false,
-      },
-    });
-}
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .use(Backend)
+  .init({
+    fallbackLng: I18N_DEFAULT_LANGUAGE,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+export { i18n };

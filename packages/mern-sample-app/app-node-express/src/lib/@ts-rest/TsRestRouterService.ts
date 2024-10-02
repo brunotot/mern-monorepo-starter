@@ -1,5 +1,5 @@
 import type { RouteMiddlewareFactory } from "./TsRestExpressRouteTypes";
-import type { AppRoute } from "@ts-rest/core";
+import type { AppRoute } from "@org/lib-api-client";
 import type { RouterImplementation } from "@ts-rest/express/src/lib/types";
 import type { RequestHandler } from "express";
 

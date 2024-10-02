@@ -1,6 +1,6 @@
 import type { ApiKeycloakRoles, ApiKeycloakUser } from "@org/lib-api-client";
 
-import { inject } from "@org/app-node-express/infrastructure/decorators/inject";
+import { inject } from "@org/app-node-express/ioc";
 import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
 
 export interface AuthorizationRepository {

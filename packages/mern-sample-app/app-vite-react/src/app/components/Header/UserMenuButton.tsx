@@ -1,17 +1,15 @@
-import Logout from "@mui/icons-material/Logout";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
+import * as icons from "@mui/icons-material";
+import * as mui from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import { keycloakLogout } from "@org/app-vite-react/lib/keycloak-js";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import React from "react";
+
+import LogoutButton from "./LogoutButton";
 
 export function UserMenuButton() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -27,17 +25,28 @@ export function UserMenuButton() {
   };
   return (
     <React.Fragment>
+      <mui.Box display="flex" alignItems="center" paddingRight={0.75}>
+        <mui.Typography>{sigUser.value?.name}</mui.Typography>
+      </mui.Box>
+
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
-            size="small"
             sx={{ mr: 2 }}
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "unset",
+                width: 32,
+                height: 32,
+              }}
+            >
+              <icons.Face fontSize="large" color="info" />
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -78,31 +87,43 @@ export function UserMenuButton() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> {sigUser.value?.username}
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        <mui.Box width={220}>
+          <mui.Box paddingInline="0.75rem">
+            <mui.Typography variant="h6">{sigUser.value?.name}</mui.Typography>
+            <mui.Typography variant="body2" color="textSecondary">
+              {sigUser.value?.username}
+            </mui.Typography>
+
+            <mui.Divider sx={{ marginBlock: "0.5rem" }} />
+
+            {/*<mui.Typography variant="body2">Roles:</mui.Typography>
+            <mui.List dense>
+              <mui.ListItem disablePadding>
+                <mui.ListItemText primary="Admin" />
+              </mui.ListItem>
+              <mui.ListItem disablePadding>
+                <mui.ListItemText primary="Editor" />
+              </mui.ListItem>
+            </mui.List>*/}
+
+            <mui.MenuItem sx={{ paddingInline: "0.5rem" }} onClick={handleClose}>
+              <mui.ListItemIcon>
+                <icons.Settings />
+              </mui.ListItemIcon>
+              <mui.ListItemText primary={"Settings"} />
+            </mui.MenuItem>
+            <mui.MenuItem sx={{ paddingInline: "0.5rem" }} onClick={handleClose}>
+              <mui.ListItemIcon>
+                <icons.Notifications />
+              </mui.ListItemIcon>
+              <mui.ListItemText primary={"Notifications"} />
+            </mui.MenuItem>
+
+            <mui.Divider />
+
+            <LogoutButton handleLogout={handleLogout} />
+          </mui.Box>
+        </mui.Box>
       </Menu>
     </React.Fragment>
   );

@@ -1,7 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
-import type { PaginationOptions, UserPaginationResultDto, User } from "@org/lib-api-client";
+import type { PaginationOptions, User } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -12,42 +9,36 @@ import {
 } from "@org/app-vite-react/app/components/Datatable";
 import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
 import { UserCreateFormButton } from "@org/app-vite-react/app/pages/Home/UserCreateFormButton";
-import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
-import { useCallback, useEffect, useState } from "react";
+import { tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
+import { useState } from "react";
 
-function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
+/*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
 } {
   return { paginationOptions: JSON.stringify(paginationOptions) };
-}
+}*/
 
 export function HomePage() {
-  const [userResponse, setUserResponse] = useState<UserPaginationResultDto>();
+  const { data, isPending } = tsrQuery.User.findAll.useQuery({
+    queryKey: ["User.findAll"],
+    staleTime: 1000,
+  });
+
   const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
   });
 
-  const fetchUsers = useCallback(async () => {
+  /*const fetchUsers = useCallback(async () => {
     const query = buildPaginationQueryParams(paginationOptions);
-    const users = await tsRestApiClient.User.findAllPaginated({ query });
+    const users = await tsrClient.User.findAllPaginated({ query });
     if (users.status !== 200) throw new Error("Failed to fetch users.");
     setUserResponse(users.body);
-  }, [paginationOptions]);
+  }, [paginationOptions]);*/
 
-  const deleteUser = useCallback(
-    async (username: string) => {
-      // @ts-expect-error Remove later
-      const response = await tsRestApiClient.User.deleteByUsername({ body: { username } });
-      if (response.status !== 201) throw new Error("Failed to delete user.");
-      fetchUsers();
-    },
-    [fetchUsers],
-  );
-
-  useEffect(() => {
+  /*useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+  }, [fetchUsers]);*/
 
   const badgeContent: number = 6;
 
@@ -59,6 +50,14 @@ export function HomePage() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (isPending) {
+    return <div>Loading on home page...</div>;
+  }
+
+  if (data?.status !== 200) {
+    return <div>Error</div>;
+  }
 
   return (
     <>
@@ -149,11 +148,11 @@ export function HomePage() {
               </mui.Box>
             </div>
           </mui.Menu>
-          <UserCreateFormButton afterUpdate={fetchUsers} />
+          <UserCreateFormButton afterUpdate={() => alert("Not implemented yet")} />
         </mui.Box>
         <ServerDatatable<User>
-          data={userResponse?.data ?? []}
-          count={userResponse?.totalElements ?? 0}
+          data={data.body}
+          count={data.body.length}
           keyMapper={user => user.username}
           paginationOptions={paginationOptions}
           onPaginationOptionsChange={paginationOptions => setPaginationOptions(paginationOptions)}
@@ -172,11 +171,11 @@ export function HomePage() {
             {
               id: "actions",
               renderHeader: () => "Actions",
-              renderBody: user => (
+              renderBody: () => (
                 <mui.Button
                   variant="contained"
                   color="error"
-                  onClick={() => deleteUser(user.username)}
+                  onClick={() => alert("Not implemented yet")}
                 >
                   Delete
                 </mui.Button>

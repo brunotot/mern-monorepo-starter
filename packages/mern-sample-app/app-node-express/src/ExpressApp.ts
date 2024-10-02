@@ -178,7 +178,7 @@ export class ExpressApp {
   }
 
   #initializeErrorHandlerMiddleware() {
-    const errorHandler: express.ErrorRequestHandler = (error: unknown, req, res, next) => {
+    const errorHandler: express.ErrorRequestHandler = (error: unknown, _req, res, next) => {
       const err = getTypedError(error);
       if (res.headersSent) {
         log.warn(`Headers sent before reaching main error handler`, err);

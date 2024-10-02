@@ -6,7 +6,7 @@
  * @why These types standardize how route input, output, and middleware are defined and handled in the application, ensuring strong typing and consistency across routes.
  */
 
-import type { AppRoute, ServerInferResponses } from "@ts-rest/core";
+import type { AppRoute, ServerInferResponses } from "@org/lib-api-client";
 import type { AppRouteImplementation } from "@ts-rest/express";
 import type { RequestHandler } from "express";
 

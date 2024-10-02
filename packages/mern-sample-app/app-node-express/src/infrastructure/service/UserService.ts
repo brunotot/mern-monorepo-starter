@@ -2,7 +2,7 @@ import type { AuthorizationRepository } from "../repository/UserRepository";
 import type { ApiKeycloakUser, Role, TypedPaginationResponse, User } from "@org/lib-api-client";
 import type { TODO, zod } from "@org/lib-commons";
 
-import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
+import { autowired, inject } from "@org/app-node-express/ioc";
 import { RestError, ROLE_LIST } from "@org/lib-api-client";
 
 @inject("UserService")

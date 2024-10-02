@@ -1,6 +1,6 @@
 import type { NoArgsClass } from "@org/lib-commons";
 
-import { IocClassMetadata } from "@org/app-node-express/ioc";
+import { IocClassMetadata } from "@org/app-node-express/ioc/IocClassMetadata";
 
 export function inject<T extends NoArgsClass>(name?: string) {
   return function (target: T, context: ClassDecoratorContext<T>) {
