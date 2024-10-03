@@ -14,7 +14,6 @@ html {
 #root {
   margin: 0;
   padding: 0;
-  height: 100svh;
   display: flex;
   flex-direction: column;
 }

@@ -50,7 +50,7 @@ export function Layout({ children }: PropsWithChildren) {
           onOpen={() => (sigSidebarOpen.value = true)}
         >
           <Logo />
-          <SidebarLayout />
+          <SidebarLayout gutterTop />
         </Sidebar>
 
         <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
@@ -67,6 +67,7 @@ export function Layout({ children }: PropsWithChildren) {
             backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
           />
           <Container
+            data-driver="content"
             maxWidth={isHorizontal ? maxWidthPreference : false}
             sx={{ paddingInline: 0.5, marginTop: 1.5 }}
           >

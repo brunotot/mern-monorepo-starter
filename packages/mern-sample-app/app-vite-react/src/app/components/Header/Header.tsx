@@ -7,9 +7,10 @@ import {
   Breadcrumbs,
   Button,
   Container,
-  IconButton,
   Link,
   useMediaQuery,
+  IconButton,
+  Divider,
 } from "@mui/material";
 import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
 import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
@@ -21,8 +22,10 @@ import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
 import { useState } from "react";
 import { type UIMatch, useMatches } from "react-router-dom";
 
-import { UserMenuButton } from "./UserMenuButton";
+import "./Header.css";
 
+import { UserMenuButton } from "./UserMenuButton";
+import { Logo } from "../Logo";
 
 export type MuiSxProps = SxProps<Theme>;
 
@@ -73,7 +76,7 @@ function ComputedBreadcrumbs() {
   if (!matchesDesktop) {
     return (
       <>
-        <Button variant="outlined" onClick={handleOpen}>
+        <Button variant="outlined" onClick={handleOpen} data-driver="breadcrumbs">
           <Box
             sx={{
               whiteSpace: "nowrap",
@@ -116,7 +119,7 @@ function ComputedBreadcrumbs() {
   }
 
   return (
-    <Breadcrumbs aria-label="breadcrumb">
+    <Breadcrumbs aria-label="breadcrumb" data-driver="breadcrumbs">
       {crumbs.map((crumb, index) => (
         <Link
           key={index}
@@ -143,6 +146,7 @@ export function Header({
   return (
     <Box
       component="header"
+      className="app-header"
       sx={{
         backgroundColor,
         borderBottom: borderBottom ? "1px solid var(--mui-palette-divider)" : undefined,
@@ -157,31 +161,50 @@ export function Header({
           sx={sx}
         >
           {!matchesDesktop && (
-            <IconButton onClick={() => (sigSidebarOpen.value = !sigSidebarOpen.value)}>
-              <MenuIcon />
-            </IconButton>
+            <>
+              {/*<Button
+                variant="outlined"
+                onClick={() => (sigSidebarOpen.value = !sigSidebarOpen.value)}
+                startIcon={<MenuIcon />}
+              />*/}
+              <IconButton onClick={() => (sigSidebarOpen.value = !sigSidebarOpen.value)}>
+                <MenuIcon />
+              </IconButton>
+            </>
           )}
 
-          <Box ml={matchesDesktop ? 3 : undefined} flexGrow={1}>
-            <ComputedBreadcrumbs />
+          <Box flexGrow={1}>
+            <Box display="flex" alignItems="center" gap={2}>
+              {sigLayout.value === "HorizontalLayout" && (
+                <>
+                  <Logo />
+                  <Divider orientation="vertical" sx={{ height: 48 }} />
+                </>
+              )}
+              <Box ml={sigLayout.value === "SidebarLayout" && matchesDesktop ? 4 : undefined}>
+                <ComputedBreadcrumbs />
+              </Box>
+            </Box>
             {/*<InputFuzzySearch placeholder={t("doSearch")} />*/}
           </Box>
 
           <Box display="flex" alignItems="center">
-            <InputDarkThemeToggle
-              value={!!sigThemeOpts.value?.dark}
-              onChange={dark => (sigThemeOpts.value = { dark })}
-            />
-            <InputLocaleSelect
-              value={sigLocale.value}
-              onChange={locale => (sigLocale.value = locale)}
-            />
-            {matchesDesktop && (
-              <InputLayoutToggle
-                value={sigLayout.value}
-                onChange={layout => (sigLayout.value = layout)}
+            <Box display="flex" alignItems="center" mr={2}>
+              <InputDarkThemeToggle
+                value={!!sigThemeOpts.value?.dark}
+                onChange={dark => (sigThemeOpts.value = { dark })}
               />
-            )}
+              {matchesDesktop && (
+                <InputLayoutToggle
+                  value={sigLayout.value}
+                  onChange={layout => (sigLayout.value = layout)}
+                />
+              )}
+              <InputLocaleSelect
+                value={sigLocale.value}
+                onChange={locale => (sigLocale.value = locale)}
+              />
+            </Box>
             <UserMenuButton />
           </Box>
         </Box>

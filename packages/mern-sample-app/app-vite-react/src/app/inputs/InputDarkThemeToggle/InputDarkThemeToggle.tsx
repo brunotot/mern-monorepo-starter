@@ -17,7 +17,7 @@ export function InputDarkThemeToggle({ value: dark, onChange }: InputDarkThemeTo
   };
 
   return (
-    <Tooltip title={title}>
+    <Tooltip title={title} data-driver="darkTheme">
       <IconButton onClick={onClick}>{icon}</IconButton>
     </Tooltip>
   );

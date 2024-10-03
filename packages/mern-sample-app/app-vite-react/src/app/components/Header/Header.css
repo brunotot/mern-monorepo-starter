@@ -1,0 +1,6 @@
+header.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1199;
+  background-color: var(--mui-palette-background-default);
+}

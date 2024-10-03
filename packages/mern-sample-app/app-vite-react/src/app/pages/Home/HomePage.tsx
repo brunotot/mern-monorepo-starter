@@ -61,6 +61,7 @@ export function HomePage() {
 
   return (
     <>
+      {/*<mui.Typography variant="h5">Manage users</mui.Typography>*/}
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
           <mui.Button

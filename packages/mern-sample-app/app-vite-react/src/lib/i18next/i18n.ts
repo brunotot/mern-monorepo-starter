@@ -1,3 +1,4 @@
+import * as flags from "country-flag-icons/react/3x2";
 import i18n, { type TFunction } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
@@ -11,8 +12,17 @@ export type I18nTranslateFn = TFunction<"translation", undefined>;
 
 export type I18nLocale = (typeof I18N_LANGUAGE_LIST)[number];
 
+const LOCALE_FLAG_MAPPER = {
+  en: "US",
+  hr: "HR",
+} as const satisfies Record<I18nLocale, string>;
+
 export async function changeLanguage(language: string) {
   return await i18n.changeLanguage(language);
+}
+
+export function getLocaleFlag(locale: I18nLocale) {
+  return flags[LOCALE_FLAG_MAPPER[locale]];
 }
 
 i18n

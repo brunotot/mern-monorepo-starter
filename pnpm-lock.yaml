@@ -228,6 +228,12 @@ importers:
       color:
         specifier: ^4.2.3
         version: 4.2.3
+      country-flag-icons:
+        specifier: ^1.5.13
+        version: 1.5.13
+      driver.js:
+        specifier: ^1.3.1
+        version: 1.3.1
       i18next:
         specifier: ^23.10.1
         version: 23.15.1
@@ -261,9 +267,15 @@ importers:
       react-router-dom:
         specifier: ^6.22.3
         version: 6.26.2(react-dom@18.3.1)(react@18.3.1)
+      react-shepherd:
+        specifier: ^6.1.1
+        version: 6.1.1(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2)
       react-use:
         specifier: ^17.5.0
         version: 17.5.1(react-dom@18.3.1)(react@18.3.1)
+      shepherd.js:
+        specifier: ^13.0.3
+        version: 13.0.3
       styled-components:
         specifier: ^6.1.13
         version: 6.1.13(react-dom@18.3.1)(react@18.3.1)
@@ -2068,6 +2080,11 @@ packages:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
     dev: true
 
+  /@scarf/scarf@1.3.0:
+    resolution: {integrity: sha512-lHKK8M5CTcpFj2hZDB3wIjb0KAbEOgDmiJGDv1WBRfQgRm/a8/XMEkG/N1iM01xgbUDsPQwi42D+dFo1XPAKew==}
+    requiresBuild: true
+    dev: false
+
   /@shikijs/core@1.21.0:
     resolution: {integrity: sha512-zAPMJdiGuqXpZQ+pWNezQAk5xhzRXBNiECFPcJLtUdsFM3f//G95Z15EHTnHchYycU8kIIysqGgxp8OVSj1SPQ==}
     dependencies:
@@ -3612,8 +3629,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /chromedriver@129.0.1:
-    resolution: {integrity: sha512-thJqK3c7p9rIhmjBvs/cgaK0Hk30g7LbnmMXQ2aLnn75ZOiEl/2GBcgc6fw+4GIw1SmOYhnNmaEI1iTP3qob0w==}
+  /chromedriver@129.0.2:
+    resolution: {integrity: sha512-rUEFCJAmAwOdFfaDFtveT97fFeA7NOxlkgyPyN+G09Ws4qGW39aLDxMQBbS9cxQQHhTihqZZobgF5CLVYXnmGA==}
     engines: {node: '>=18'}
     hasBin: true
     requiresBuild: true
@@ -3864,6 +3881,10 @@ packages:
       yaml: 1.10.2
     dev: false
 
+  /country-flag-icons@1.5.13:
+    resolution: {integrity: sha512-4JwHNqaKZ19doQoNcBjsoYA+I7NqCH/mC/6f5cBWvdKzcK5TMmzLpq3Z/syVHMHJuDGFwJ+rPpGizvrqJybJow==}
+    dev: false
+
   /create-jest@29.7.0(@types/node@20.16.10)(ts-node@10.9.2):
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -4086,6 +4107,11 @@ packages:
   /deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
+  /deepmerge-ts@5.1.0:
+    resolution: {integrity: sha512-eS8dRJOckyo9maw9Tu5O5RUi/4inFLrnoLkBe3cPfDMx3WZioXtmOew4TXQaxq7Rhl4xjDtR7c6x8nNTxOvbFw==}
+    engines: {node: '>=16.0.0'}
+    dev: false
+
   /deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -4235,6 +4261,10 @@ packages:
   /dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
+
+  /driver.js@1.3.1:
+    resolution: {integrity: sha512-MvUdXbqSgEsgS/H9KyWb5Rxy0aE6BhOVT4cssi2x2XjmXea6qQfgdx32XKVLLSqTaIw7q/uxU5Xl3NV7+cN6FQ==}
+    dev: false
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -6424,7 +6454,7 @@ packages:
     dependencies:
       jwk-to-pem: 2.0.6
     optionalDependencies:
-      chromedriver: 129.0.1
+      chromedriver: 129.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -7718,6 +7748,19 @@ packages:
       react: 18.3.1
     dev: false
 
+  /react-shepherd@6.1.1(react-dom@18.3.1)(react@18.3.1)(typescript@5.6.2):
+    resolution: {integrity: sha512-lylVKsH8w9gV7674RznDhl4uPrTXLYuc2E0+gYJPrz4FymHrhUpDqYvYvqESPODigRK+TFFpTZAUdAZzwzPvRg==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      typescript: ^5.0.0
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      shepherd.js: 13.0.3
+      typescript: 5.6.2
+    dev: false
+
   /react-transition-group@4.4.5(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -8125,6 +8168,15 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
     dev: true
+
+  /shepherd.js@13.0.3:
+    resolution: {integrity: sha512-1lQtQUNQYi+8k9BAmbUZh7D2QxFfkxiWKU0XFTbzYaIrCkB4nR0DLQuarH5G7Ym6L8wfbadxP3hJhZ2HzVktaA==}
+    engines: {node: 18.* || >= 20}
+    dependencies:
+      '@floating-ui/dom': 1.6.11
+      '@scarf/scarf': 1.3.0
+      deepmerge-ts: 5.1.0
+    dev: false
 
   /shiki@1.21.0:
     resolution: {integrity: sha512-apCH5BoWTrmHDPGgg3RF8+HAAbEL/CdbYr8rMw7eIrdhCkZHdVGat5mMNlRtd1erNG01VPMIKHNQ0Pj2HMAiog==}

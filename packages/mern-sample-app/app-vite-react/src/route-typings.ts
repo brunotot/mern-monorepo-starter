@@ -6,13 +6,13 @@ import { type RouteObject } from "react-router-dom";
 export type NavigationRouteUi = {
   icon?: ReactNode;
   label: (translate: I18nTranslateFn) => string;
+  secure?: (user: KeycloakUser | null) => boolean;
 };
 
 // prettier-ignore
 export type NavigationRouteItem = RouteObject & NavigationRouteUi & {
   variant: "single";
   path: string;
-  secure?: (user: KeycloakUser | null) => boolean;
   hidden?: boolean;
   Component: NonNullable<RouteObject["Component"]>;
 };

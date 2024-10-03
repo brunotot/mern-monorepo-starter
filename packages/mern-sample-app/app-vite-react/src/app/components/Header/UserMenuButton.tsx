@@ -4,7 +4,6 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import Tooltip from "@mui/material/Tooltip";
 import { keycloakLogout } from "@org/app-vite-react/lib/keycloak-js";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import React from "react";
@@ -24,31 +23,29 @@ export function UserMenuButton() {
     keycloakLogout();
   };
   return (
-    <React.Fragment>
-      <mui.Box display="flex" alignItems="center" paddingRight={0.75}>
+    <mui.Box data-driver="userPanel" display="flex" alignItems="center">
+      <mui.Box display="flex" alignItems="center" paddingRight={0.25}>
         <mui.Typography>{sigUser.value?.name}</mui.Typography>
       </mui.Box>
 
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            sx={{ mr: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
+        <IconButton
+          onClick={handleClick}
+          sx={{ mr: 2 }}
+          aria-controls={open ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Avatar
+            sx={{
+              backgroundColor: "unset",
+              width: 32,
+              height: 32,
+            }}
           >
-            <Avatar
-              sx={{
-                backgroundColor: "unset",
-                width: 32,
-                height: 32,
-              }}
-            >
-              <icons.Face fontSize="large" color="info" />
-            </Avatar>
-          </IconButton>
-        </Tooltip>
+            <icons.Face fontSize="large" color="info" />
+          </Avatar>
+        </IconButton>
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -125,6 +122,6 @@ export function UserMenuButton() {
           </mui.Box>
         </mui.Box>
       </Menu>
-    </React.Fragment>
+    </mui.Box>
   );
 }

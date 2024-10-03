@@ -2,13 +2,13 @@ import type * as RouteTypes from "@org/app-vite-react/route-typings";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { isAnyRouteActive } from "@org/app-vite-react/app/layout/Layout";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
 import { reactServer } from "@org/app-vite-react/server";
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import { isAnyRouteActive } from "../Layout";
 
 export type SidebarNavItemProps = {
   item: RouteTypes.NavigationRoute;
@@ -34,6 +34,8 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
       <Fragment>
         <Divider
           sx={{
+            color: "var(--mui-palette-info-main)",
+            //fontWeight: "bold",
             marginTop: indent === 0 ? "1.75rem" : "0.25rem",
             marginBottom: indent === 0 ? "0.5rem" : "0.25rem",
             paddingLeft: indent === 0 ? undefined : `calc(1.5rem + ${indent}rem)`,
@@ -86,24 +88,31 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     <ListItemButton
       sx={{
         paddingLeft: `calc(1.5rem + ${indent}rem)`,
-        borderTopRightRadius: "2rem",
-        borderBottomRightRadius: "2rem",
+        borderRadius: "0.5rem",
       }}
       selected={location.pathname === itemSingle.path}
       onClick={() => navigate(itemSingle.path)}
     >
-      {itemSingle.icon && <ListItemIcon>{itemSingle.icon}</ListItemIcon>}
+      {itemSingle.icon && <ListItemIcon sx={{ minWidth: 24 }}>{itemSingle.icon}</ListItemIcon>}
       <ListItemText primary={itemSingle.label(t)} />
     </ListItemButton>
   );
 }
 
-export function SidebarLayout() {
+export function SidebarLayout({ gutterTop = false }: { gutterTop?: boolean }) {
   return (
-    <List dense sx={{ paddingRight: "1.75rem !important" }}>
-      {reactServer.routes.map((item, index) => (
-        <SidebarNavItem key={index} item={item} />
-      ))}
+    <List
+      data-driver="navigation"
+      dense
+      sx={{ paddingRight: "1.75rem !important", marginTop: gutterTop ? 2.5 : undefined }}
+    >
+      {reactServer.routes.map((item, index) => {
+        let isAuthorized = true;
+        if (item.secure) {
+          isAuthorized = item.secure(sigUser.value);
+        }
+        return <Fragment key={index}>{isAuthorized && <SidebarNavItem item={item} />}</Fragment>;
+      })}
     </List>
   );
 }
