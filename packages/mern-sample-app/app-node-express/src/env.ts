@@ -251,7 +251,7 @@ const ENVIRONMENT_VARS = z.object({
    * HTTP methods allowed in CORS requests.
    * @default "GET,POST,PUT,DELETE,PATCH"
    */
-  CORS_ALLOWED_METHODS: z.string().default("GET,POST,PUT,DELETE,PATCH").transform(Transform.ARRAY),
+  CORS_ALLOWED_METHODS: z.string().default("GET,POST,PUT,DELETE,PATCH,OPTIONS").transform(Transform.ARRAY),
 
   /**
    * Headers allowed in CORS requests.
