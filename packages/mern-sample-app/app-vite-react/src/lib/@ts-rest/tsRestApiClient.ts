@@ -1,5 +1,8 @@
-import { contracts } from "@org/lib-api-client";
-import { initClient } from "@ts-rest/core";
+import type { ClientArgs } from "@ts-rest/core";
+
+import { sigUser } from "@org/app-vite-react/signals/sigUser";
+import { contracts, initClient } from "@org/lib-api-client";
+import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 
 const API_CLIENT_URL = import.meta.env.VITE_API_CLIENT_URL;
 
@@ -7,7 +10,16 @@ if (!API_CLIENT_URL) {
   throw new Error("Env variable: 'API_CLIENT_URL' is not defined");
 }
 
-export const tsRestApiClient = initClient(contracts, {
+const BASE_HEADERS: ClientArgs[keyof ClientArgs] = {
+  authorization: () => (sigUser.value ? `bearer ${sigUser.value.token}` : ""),
+};
+
+export const tsrQuery = initTsrReactQuery(contracts, {
   baseUrl: API_CLIENT_URL,
-  baseHeaders: {},
+  baseHeaders: BASE_HEADERS,
+});
+
+export const tsrClient = initClient(contracts, {
+  baseUrl: API_CLIENT_URL,
+  baseHeaders: BASE_HEADERS,
 });

@@ -5,8 +5,7 @@
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { RequestHandler } from "express";
 
-import { inject } from "@org/app-node-express/infrastructure/decorators";
-import { IocRegistry } from "@org/app-node-express/ioc";
+import { IocRegistry, inject } from "@org/app-node-express/ioc";
 import { buildKeycloakSession } from "@org/app-node-express/lib/keycloak";
 
 const IOC_KEY = "withRouteSession";

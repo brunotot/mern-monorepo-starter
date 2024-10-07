@@ -24,8 +24,9 @@ export function isAnyRouteActive(children: NavigationRoute[]): boolean {
 
 export function Layout({ children }: PropsWithChildren) {
   const matchesDesktop = useMediaQuery("(min-width:678px)");
+  const matchesTablet = useMediaQuery("(max-width:900px)");
   const layout = sigLayout.value;
-  const isHorizontal = matchesDesktop && layout === "HorizontalLayout";
+  const isHorizontal = matchesDesktop && (layout === "HorizontalLayout" || matchesTablet);
   const sidebarOpen = sigSidebarOpen.value;
   const sidebarWidth = 300;
 
@@ -49,8 +50,10 @@ export function Layout({ children }: PropsWithChildren) {
           onClose={() => (sigSidebarOpen.value = false)}
           onOpen={() => (sigSidebarOpen.value = true)}
         >
-          <Logo />
-          <SidebarLayout />
+          <Box pl={1.5}>
+            <Logo />
+          </Box>
+          <SidebarLayout gutterTop />
         </Sidebar>
 
         <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
@@ -58,7 +61,7 @@ export function Layout({ children }: PropsWithChildren) {
             maxWidth={isHorizontal ? maxWidthPreference : false}
             backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
             borderBottom={isHorizontal}
-            sx={{ paddingTop: 1.5, paddingBottom: 1.5 }}
+            sx={{ padding: 1.5 }}
           />
 
           <HorizontalLayout
@@ -67,6 +70,7 @@ export function Layout({ children }: PropsWithChildren) {
             backgroundColor={isHorizontal ? "var(--mui-palette-background-paper)" : undefined}
           />
           <Container
+            data-driver="content"
             maxWidth={isHorizontal ? maxWidthPreference : false}
             sx={{ paddingInline: 0.5, marginTop: 1.5 }}
           >

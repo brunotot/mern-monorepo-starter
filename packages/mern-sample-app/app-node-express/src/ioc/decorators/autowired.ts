@@ -1,4 +1,5 @@
-import { IocClassMetadata, IocRegistry } from "@org/app-node-express/ioc";
+import { IocClassMetadata } from "@org/app-node-express/ioc/IocClassMetadata";
+import { IocRegistry } from "@org/app-node-express/ioc/IocRegistry";
 
 export function autowired(name?: string) {
   return function (_target: undefined, context: ClassFieldDecoratorContext) {

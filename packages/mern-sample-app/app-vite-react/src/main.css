@@ -4,10 +4,9 @@
   box-sizing: border-box;
 }
 
-#root {
-  margin: 0;
-  padding: 0;
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
+html {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
 }

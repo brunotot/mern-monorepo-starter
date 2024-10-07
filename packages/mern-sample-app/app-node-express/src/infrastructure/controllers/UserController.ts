@@ -2,8 +2,9 @@ import type { UserService } from "@org/app-node-express/infrastructure/service/U
 import type { RouteInput, RouteOutput } from "@org/app-node-express/lib/@ts-rest";
 import type { TODO } from "@org/lib-commons";
 
-import { autowired, contract, inject } from "@org/app-node-express/infrastructure/decorators";
+import { contract } from "@org/app-node-express/infrastructure/decorators";
 import { withRouteSecured } from "@org/app-node-express/infrastructure/middleware/withRouteSecured";
+import { autowired, inject } from "@org/app-node-express/ioc";
 import { contracts } from "@org/lib-api-client";
 
 @inject("UserController")

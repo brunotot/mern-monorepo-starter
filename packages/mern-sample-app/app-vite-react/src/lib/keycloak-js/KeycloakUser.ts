@@ -4,4 +4,5 @@ export interface KeycloakUser {
   username: string;
   token: string;
   roles: KeycloakUserRole[];
+  name: string;
 }

@@ -17,7 +17,10 @@ export function InputLayoutToggle({ value, onChange }: InputLayoutToggleProps) {
   };
 
   return (
-    <Tooltip title={isHorizontalLayout ? t("systemLayoutHorizontal") : t("systemLayoutSidebar")}>
+    <Tooltip
+      title={isHorizontalLayout ? t("systemLayoutHorizontal") : t("systemLayoutSidebar")}
+      data-driver="layout"
+    >
       <IconButton onClick={onClick}>
         {isHorizontalLayout ? <TableChart /> : <ViewSidebar />}
       </IconButton>

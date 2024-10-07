@@ -24,7 +24,7 @@ export function Sidebar({
 
   const paperWidth = matchesDesktop ? width : "100%";
   const drawerWidth = hidden ? 0 : paperWidth;
-  const drawerPosition = matchesDesktop ? "relative" : undefined;
+  const drawerPosition = matchesDesktop ? "sticky" : undefined;
   const paperPosition = matchesDesktop ? "absolute" : undefined;
   const drawerVariant = hidden ? "temporary" : matchesDesktop ? "permanent" : "temporary";
 
@@ -42,11 +42,15 @@ export function Sidebar({
       sx={{
         width: drawerWidth,
         position: drawerPosition,
+        top: drawerPosition === "sticky" && !hidden ? "0" : undefined,
+        zIndex: drawerPosition === "sticky" && !hidden ? "1200" : undefined,
+        height: drawerPosition === "sticky" && !hidden ? "calc(100vh - 24px)" : undefined,
         "& .MuiDrawer-paper": {
           width: paperWidth,
           position: paperPosition,
           maxHeight: paperMaxHeight,
           top: paperTop,
+          padding: "12px 0px",
         },
       }}
     >

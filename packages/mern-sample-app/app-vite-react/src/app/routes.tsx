@@ -1,80 +1,43 @@
 import type { NavigationRoute } from "@org/app-vite-react/route-typings";
 
 import * as icons from "@mui/icons-material";
+import { Protect } from "@org/app-vite-react/app/components/Protect";
 import { HomePage } from "@org/app-vite-react/app/pages/Home";
 import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
+
+import { IndexPage } from "./pages/Home/IndexPage";
 
 export const routes: NavigationRoute[] = [
   {
     variant: "single",
-    label: t => t("dashboard"),
-    icon: <icons.Home />,
+    label: () => "Index",
     path: "/",
-    Component: HomePage,
+    Component: () => <IndexPage />,
     handle: {
-      crumb: () => "Dashboard",
+      crumb: () => "Index",
     },
   },
   {
-    variant: "single",
-    label: () => "Klijenti",
-    icon: <icons.SupportAgent />,
-    path: "/clients",
-    Component: HomePage,
-  },
-  {
-    label: () => "Računi",
+    label: () => "Admin settings",
     variant: "group",
-    children: [
-      {
-        variant: "single",
-        label: () => "Izlazni računi",
-        path: "/invoice",
-        icon: <icons.ReceiptTwoTone />,
-        Component: () => <div>Izlazni računi</div>,
-      },
-      {
-        variant: "single",
-        label: () => "Ponude",
-        path: "/offer",
-        icon: <icons.LocalOffer />,
-        Component: () => <div>Ponude</div>,
-      },
-      {
-        variant: "single",
-        label: () => "Otpremnice",
-        path: "/dispatch",
-        icon: <icons.SendTimeExtension />,
-        Component: () => <div>Otpremnice</div>,
-      },
-    ],
-  },
-  {
-    label: () => "Postavke",
-    variant: "group",
+    secure: user => !!user?.roles.some(r => ["admin"].includes(r)),
     handle: {
-      crumb: () => "Postavke",
+      crumb: () => "Admin settings",
     },
     children: [
       {
         variant: "single",
-        label: () => "Profil",
-        path: "/settings",
-        icon: <icons.AccountCircleTwoTone />,
-        Component: () => <div>Profil</div>,
+        label: () => "Manage users",
+        icon: <icons.ManageAccounts fontSize="inherit" />,
+        path: "/admin/users",
         handle: {
-          crumb: () => "Profil",
+          crumb: () => "Manage users",
         },
-      },
-      {
-        variant: "single",
-        label: () => "Korisničko sučelje",
-        path: "/ui",
-        icon: <icons.GridView />,
-        Component: () => <div>Korisničko sučelje</div>,
-        handle: {
-          crumb: () => "Korisničko sučelje",
-        },
+        Component: () => (
+          <Protect roles={["admin"]}>
+            <HomePage />
+          </Protect>
+        ),
       },
     ],
   },

@@ -12,6 +12,7 @@ export type FooterProps = {
 export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
   return (
     <Box
+      data-driver="footer"
       component="footer"
       sx={{
         mt: 3,
@@ -27,10 +28,7 @@ export function Footer({ backgroundColor, maxWidth = false }: FooterProps) {
             <Link href="https://brunotot.github.io/mern-monorepo-starter/" target="_blank">
               TypeDoc source
             </Link>
-            <Link
-              href="https://monorepo-mern-railway-starter-backend.up.railway.app/api-docs/"
-              target="_blank"
-            >
+            <Link href={`${import.meta.env.VITE_API_CLIENT_URL}/api-docs/`} target="_blank">
               Swagger API
             </Link>
             <Typography>@org © {new Date().getFullYear()}</Typography>

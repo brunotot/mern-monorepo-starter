@@ -3,7 +3,7 @@ import type { User } from "@org/lib-api-client";
 import { Add } from "@mui/icons-material";
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
-import { tsRestApiClient } from "@org/app-vite-react/lib/@ts-rest";
+import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 
 export type UserCreateFormButtonProps = {
@@ -35,7 +35,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     // eslint-disable-next-line no-console
     console.log("Form submitted:", user);
     // @ts-expect-error Remove later
-    await tsRestApiClient.User.createOne({
+    await tsrClient.User.createOne({
       body: user,
     });
     setUser(DEFAULT_FORM_STATE);

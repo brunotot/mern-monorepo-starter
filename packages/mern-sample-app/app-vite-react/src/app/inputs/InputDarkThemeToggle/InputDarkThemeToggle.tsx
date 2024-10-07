@@ -1,5 +1,5 @@
 import { DarkMode, LightMode } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
 
 export type InputDarkThemeToggleProps = {
@@ -17,8 +17,10 @@ export function InputDarkThemeToggle({ value: dark, onChange }: InputDarkThemeTo
   };
 
   return (
-    <Tooltip title={title}>
-      <IconButton onClick={onClick}>{icon}</IconButton>
+    <Tooltip title={title} data-driver="darkTheme">
+      <Box>
+        <IconButton onClick={onClick}>{icon}</IconButton>
+      </Box>
     </Tooltip>
   );
 }

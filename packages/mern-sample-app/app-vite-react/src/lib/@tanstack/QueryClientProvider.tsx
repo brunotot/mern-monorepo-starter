@@ -2,12 +2,18 @@ import type { PropsWithChildren } from "react";
 
 import {
   QueryClient,
-  QueryClientProvider as InternalQueryClientProvider,
+  QueryClientProvider as TanstackQueryClientProvider,
 } from "@tanstack/react-query";
+
+import { tsrQuery } from "../@ts-rest/tsRestApiClient";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const queryClient = new QueryClient();
 
 export function QueryClientProvider({ children }: PropsWithChildren) {
-  return <InternalQueryClientProvider client={queryClient}>{children}</InternalQueryClientProvider>;
+  return (
+    <TanstackQueryClientProvider client={queryClient}>
+      <tsrQuery.ReactQueryProvider>{children}</tsrQuery.ReactQueryProvider>
+    </TanstackQueryClientProvider>
+  );
 }

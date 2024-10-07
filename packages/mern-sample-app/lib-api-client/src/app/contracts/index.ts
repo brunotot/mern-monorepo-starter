@@ -1,4 +1,4 @@
-import type { AppRouter } from "@ts-rest/core";
+import type { AppRouter } from "../../lib/@ts-rest";
 
 import { userContract } from "./User.contract";
 

@@ -1,3 +1,4 @@
+import type { AppRouter as TsRestAppRouter, AppRoute as TsRestAppRoute } from "@ts-rest/core";
 import type { generateOpenApi } from "@ts-rest/open-api";
 
 export type SwaggerBaseProps = {
@@ -55,3 +56,6 @@ export type SwaggerDocument = Parameters<typeof generateOpenApi>[1];
 export type SwaggerOperationObject = Parameters<SwaggerOperationMapper>[0];
 
 export type SwaggerSchema = SwaggerSchemaV3_0 | SwaggerSchemaV3_1;
+
+export type AppRouter = TsRestAppRouter;
+export type AppRoute = TsRestAppRoute;

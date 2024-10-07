@@ -4,8 +4,7 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 import type { Role } from "@org/lib-api-client";
 import type { RequestHandler } from "express";
 
-import { autowired, inject } from "@org/app-node-express/infrastructure/decorators";
-import { IocRegistry } from "@org/app-node-express/ioc";
+import { IocRegistry, autowired, inject } from "@org/app-node-express/ioc";
 import { RestError, getTypedError } from "@org/lib-api-client";
 import jwt from "jsonwebtoken";
 

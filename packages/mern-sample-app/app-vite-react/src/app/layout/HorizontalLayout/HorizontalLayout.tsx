@@ -12,8 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { ButtonHoverMenu, type OriginPosition } from "./ButtonHoverMenu";
 import { isAnyRouteActive } from "../Layout";
 
-
-
 export type HorizontalNavItemProps = {
   item: RouteTypes.NavigationRoute;
   dropdownPosition?: OriginPosition;
@@ -118,11 +116,12 @@ export function HorizontalLayout({
   maxWidth = false,
   hidden = false,
 }: HorizontalNavVariantProps) {
+  if (hidden) return <></>;
   return (
     <mui.Box
+      data-driver="navigation"
       sx={{
         backgroundColor,
-        display: hidden ? "none" : undefined,
       }}
       paddingBlock={1}
     >
@@ -130,7 +129,7 @@ export function HorizontalLayout({
         <mui.List dense component={mui.Stack} direction="row">
           {reactServer.routes.map((item, index) => {
             let isAuthorized = true;
-            if ("secure" in item && item.secure) {
+            if (item.secure) {
               isAuthorized = item.secure(sigUser.value);
             }
             return (

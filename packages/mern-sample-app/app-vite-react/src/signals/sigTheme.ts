@@ -59,6 +59,16 @@ export const sigTheme = computed(() => {
 
   return createTheme({
     ...rest,
+    shape: {
+      borderRadius: rest.shape?.borderRadius ?? 12,
+    },
+    typography: {
+      ...rest.typography,
+      fontFamily: '"DM Sans", sans-serif',
+      allVariants: {
+        fontOpticalSizing: "auto",
+      },
+    },
     cssVariables: true,
     colorSchemes: {
       [dark ? "dark" : "light"]: true,
