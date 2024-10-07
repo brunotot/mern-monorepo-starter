@@ -64,13 +64,13 @@ function __debug_middleware__(
 /**
  * Express app global middleware collection (executed in order):
  *
- * - &nbsp;&nbsp;1 &nbsp;{@link withStaticAssets withStaticAssets}
- * - &nbsp;&nbsp;2 &nbsp;{@link withJsonParser withJsonParser}
- * - &nbsp;&nbsp;3 &nbsp;{@link withRouteSession withRouteSession}
- * - &nbsp;&nbsp;4 &nbsp;{@link withCompression withCompression}
- * - &nbsp;&nbsp;5 &nbsp;{@link withRouteContext withRouteContext}
- * - &nbsp;&nbsp;6 &nbsp;{@link withCookieParser withCookieParser}
- * - &nbsp;&nbsp;7 &nbsp;{@link withCors withCors}
+ * - &nbsp;&nbsp;1 &nbsp;{@link withCors withCors}
+ * - &nbsp;&nbsp;2 &nbsp;{@link withStaticAssets withStaticAssets}
+ * - &nbsp;&nbsp;3 &nbsp;{@link withJsonParser withJsonParser}
+ * - &nbsp;&nbsp;4 &nbsp;{@link withRouteSession withRouteSession}
+ * - &nbsp;&nbsp;5 &nbsp;{@link withCompression withCompression}
+ * - &nbsp;&nbsp;6 &nbsp;{@link withRouteContext withRouteContext}
+ * - &nbsp;&nbsp;7 &nbsp;{@link withCookieParser withCookieParser}
  * - &nbsp;&nbsp;8 &nbsp;{@link withCredentials withCredentials}
  * - &nbsp;&nbsp;9 &nbsp;{@link withCsp withCsp}
  * - 10 &nbsp;{@link withHpp withHpp}
@@ -79,13 +79,13 @@ function __debug_middleware__(
  * - 13 &nbsp;{@link withAuthorization withAuthorization}
  */
 export const middleware = [
+  __debug_middleware__(withCors.name, withCors()),
   __debug_middleware__(withStaticAssets.name, withStaticAssets()),
   __debug_middleware__(withJsonParser.name, withJsonParser()),
   __debug_middleware__(withRouteSession.name, withRouteSession()),
   __debug_middleware__(withCompression.name, withCompression()),
   __debug_middleware__(withRouteContext.name, withRouteContext()),
   __debug_middleware__(withCookieParser.name, withCookieParser()),
-  __debug_middleware__(withCors.name, withCors()),
   __debug_middleware__(withCredentials.name, withCredentials()),
   __debug_middleware__(withCsp.name, withCsp()),
   __debug_middleware__(withHpp.name, withHpp()),
