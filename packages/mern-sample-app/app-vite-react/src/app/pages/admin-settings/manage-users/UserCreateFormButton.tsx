@@ -2,7 +2,7 @@ import type { User } from "@org/lib-api-client";
 
 import { Add } from "@mui/icons-material";
 import { Button, Dialog, DialogContent } from "@mui/material";
-import { UserForm } from "@org/app-vite-react/app/pages/Home/UserForm";
+import { UserForm } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserForm";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 

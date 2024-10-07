@@ -7,8 +7,8 @@ import {
   ServerDatatable,
   DEFAULT_PAGINATION_OPTIONS,
 } from "@org/app-vite-react/app/components/Datatable";
-import { FixedBadge } from "@org/app-vite-react/app/pages/Home/FixedBadge";
-import { UserCreateFormButton } from "@org/app-vite-react/app/pages/Home/UserCreateFormButton";
+import { FixedBadge } from "@org/app-vite-react/app/pages/admin-settings/manage-users/FixedBadge";
+import { UserCreateFormButton } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserCreateFormButton";
 import { tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ import { useState } from "react";
   return { paginationOptions: JSON.stringify(paginationOptions) };
 }*/
 
-export function HomePage() {
+export function ManageUsersPage() {
   const { data, isPending } = tsrQuery.User.findAll.useQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
