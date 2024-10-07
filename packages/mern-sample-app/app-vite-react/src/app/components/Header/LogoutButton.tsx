@@ -1,7 +1,6 @@
 import type { FC } from "react";
 
-import { Logout } from "@mui/icons-material";
-import { MenuItem, ListItemIcon, Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 interface LogoutMenuItemProps {
