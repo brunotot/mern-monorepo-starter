@@ -10,10 +10,3 @@ html {
   font-weight: 700;
   font-style: normal;
 }
-
-#root {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}

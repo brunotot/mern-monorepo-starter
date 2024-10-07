@@ -116,12 +116,12 @@ export function HorizontalLayout({
   maxWidth = false,
   hidden = false,
 }: HorizontalNavVariantProps) {
+  if (hidden) return <></>;
   return (
     <mui.Box
       data-driver="navigation"
       sx={{
         backgroundColor,
-        display: hidden ? "none" : undefined,
       }}
       paddingBlock={1}
     >

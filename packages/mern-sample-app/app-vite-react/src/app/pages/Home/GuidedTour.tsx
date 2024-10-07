@@ -32,6 +32,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "Breadcrumbs",
         onPopoverRender: buildPopoverRender(<div>Breadcrumbs details</div>),
+        side: "over",
       },
     },
     {
@@ -39,6 +40,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "Dark mode",
         onPopoverRender: buildPopoverRender(<div>Choose between dark and light mode</div>),
+        side: "over",
       },
     },
     {
@@ -48,6 +50,7 @@ const driverObj = driverJs.driver({
         onPopoverRender: buildPopoverRender(
           <div>Choose between horizontal and sidebar layout</div>,
         ),
+        side: "over",
       },
     },
     {
@@ -55,6 +58,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "System language",
         onPopoverRender: buildPopoverRender(<div>Choose page language</div>),
+        side: "over",
       },
     },
     {
@@ -62,6 +66,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "User panel",
         onPopoverRender: buildPopoverRender(<div>User panel details</div>),
+        side: "over",
       },
     },
     {
@@ -69,6 +74,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "Navigation",
         onPopoverRender: buildPopoverRender(<div>Navigation details</div>),
+        side: "over",
       },
     },
     {
@@ -76,6 +82,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "Content",
         onPopoverRender: buildPopoverRender(<div>Content details</div>),
+        side: "over",
       },
     },
     {
@@ -83,6 +90,7 @@ const driverObj = driverJs.driver({
       popover: {
         title: "Footer",
         onPopoverRender: buildPopoverRender(<div>Footer details</div>),
+        side: "over",
       },
     },
   ],

@@ -1,6 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
-export function Logo() {
+export type LogoProps = {
+  hideText?: boolean;
+};
+
+export function Logo({ hideText = false }: LogoProps) {
   return (
     <Box display="flex" alignItems="center" gap={1} data-driver="">
       <Box
@@ -12,9 +16,11 @@ export function Logo() {
           width: 48,
         }}
       />
-      <Typography whiteSpace="nowrap" textTransform="uppercase" fontWeight="bold">
-        app-vite-react
-      </Typography>
+      {!hideText && (
+        <Typography whiteSpace="nowrap" textTransform="uppercase" fontWeight="bold">
+          app-vite-react
+        </Typography>
+      )}
     </Box>
   );
 }

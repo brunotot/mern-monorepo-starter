@@ -1,87 +1,86 @@
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import * as React from "react";
 
-import { GuidedTour } from "./GuidedTour";
+export function IndexPage() {
+  const dependencies = [
+    {
+      name: "React",
+      description: "A JavaScript library for building user interfaces.",
+      icon: <icons.Code sx={{ fontSize: 60, color: "var(--mui-palette-primary-main)" }} />,
+    },
+    {
+      name: "Material UI",
+      description: "React components for faster and easier web development.",
+      icon: <icons.Style sx={{ fontSize: 60, color: "var(--mui-palette-secondary-main)" }} />,
+    },
+    {
+      name: "React Router",
+      description: "Declarative routing for React applications.",
+      icon: <icons.Directions sx={{ fontSize: 60, color: "var(--mui-palette-info-main)" }} />,
+    },
+    {
+      name: "React Query",
+      description: "Fetching, caching, and updating data in React.",
+      icon: <icons.Sync sx={{ fontSize: 60, color: "var(--mui-palette-success-main)" }} />,
+    },
+    {
+      name: "Keycloak",
+      description: "Open source identity and access management.",
+      icon: <icons.Security sx={{ fontSize: 60, color: "var(--mui-palette-error-main)" }} />,
+    },
+    {
+      name: "i18next",
+      description: "Internationalization framework for JavaScript.",
+      icon: <icons.Language sx={{ fontSize: 60, color: "var(--mui-palette-warning-main)" }} />,
+    },
+    {
+      name: "@org/lib-api-client",
+      description: "Workspace library for API abstraction.",
+      icon: <icons.Api sx={{ fontSize: 60, color: "var(--mui-palette-text-secondary)" }} />,
+    },
+    {
+      name: "@org/lib-commons",
+      description: "Workspace library for shared logic.",
+      icon: <icons.Share sx={{ fontSize: 60, color: "var(--mui-palette-action-active)" }} />,
+    },
+  ];
 
-export const IndexPage: React.FC = () => {
   return (
-    <mui.Container maxWidth="md" style={{ marginTop: "4rem", textAlign: "center" }}>
-      {/* Title Section */}
-      <mui.Typography variant="h3" gutterBottom>
-        Welcome to TypeScript Monorepo Starter
-      </mui.Typography>
-      <mui.Typography variant="subtitle1" color="textSecondary" gutterBottom>
-        A boilerplate template for scalable full-stack development
-      </mui.Typography>
-
-      {/* Action Button */}
-      <mui.Box marginY={4}>
-        <mui.Button
-          variant="contained"
-          color="primary"
-          startIcon={<icons.PlayArrow />}
-          size="large"
-          href="https://github.com/your-repo-link" // Replace with your repo link
-        >
-          Get Started on GitHub
-        </mui.Button>
-
-        <GuidedTour />
-      </mui.Box>
-
-      {/* Info Cards */}
-      <mui.Grid container spacing={4}>
-        <mui.Grid item xs={12} md={6}>
-          <mui.Card>
-            <mui.CardContent>
-              <mui.Typography variant="h6" gutterBottom>
-                Packages Structure
-              </mui.Typography>
-              <mui.Typography variant="body2" color="textSecondary">
-                Your application is organized into packages under the "packages/{`{APP_NAME}`}/
-                {`{PACKAGE_NAME}`}" structure for easy scaling and modularity.
-              </mui.Typography>
-            </mui.CardContent>
-          </mui.Card>
-        </mui.Grid>
-        <mui.Grid item xs={12} md={6}>
-          <mui.Card>
-            <mui.CardContent>
-              <mui.Typography variant="h6" gutterBottom>
-                MERN Stack Ready
-              </mui.Typography>
-              <mui.Typography variant="body2" color="textSecondary">
-                This monorepo starter comes pre-configured with a full MERN stack setup for fast
-                development of enterprise applications.
-              </mui.Typography>
-            </mui.CardContent>
-          </mui.Card>
-        </mui.Grid>
-      </mui.Grid>
-
-      {/* Quick Start Section */}
-      <mui.Box marginY={4}>
-        <mui.Paper elevation={2} style={{ padding: "1.5rem", textAlign: "left" }}>
-          <mui.Typography variant="h6" gutterBottom>
-            Quick Start
-          </mui.Typography>
-          <mui.Typography variant="body1" gutterBottom>
-            1. Clone the repository:{" "}
-            <mui.Chip label="git clone https://github.com/your-repo-link" variant="outlined" />
-          </mui.Typography>
-          <mui.Typography variant="body1" gutterBottom>
-            2. Navigate to your desired package and start developing!
-          </mui.Typography>
-        </mui.Paper>
-      </mui.Box>
-
-      {/* Footer */}
-      <mui.Box marginTop={6} color="textSecondary">
-        <mui.Typography variant="caption">
-          © 2024 TypeScript Monorepo Starter. Crafted for scalable development.
+    <mui.Container>
+      <mui.Box sx={{ textAlign: "center", mb: 5 }}>
+        <mui.Typography variant="h3" component="h1" pb={2}>
+          TypeScript Monorepo Starter
         </mui.Typography>
+        <mui.Grid2 container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
+          {dependencies.map(dep => (
+            <mui.Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={dep.name}>
+              <mui.Paper
+                elevation={3}
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
+                  height: 250,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "var(--mui-palette-background-paper)",
+                }}
+              >
+                <mui.Box sx={{ mb: 1 }}>{dep.icon}</mui.Box>
+                <mui.Typography variant="h6" gutterBottom>
+                  {dep.name}
+                </mui.Typography>
+                <mui.Typography variant="body2">{dep.description}</mui.Typography>
+              </mui.Paper>
+            </mui.Grid2>
+          ))}
+        </mui.Grid2>
       </mui.Box>
     </mui.Container>
   );
-};
+}
