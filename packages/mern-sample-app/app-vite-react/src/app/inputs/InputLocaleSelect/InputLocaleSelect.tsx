@@ -47,7 +47,6 @@ export function InputLocaleSelect({ value, onChange }: InputLocaleSelectProps) {
       <Tooltip title={t("systemLanguage")} data-driver="systemLanguage">
         <IconButton size="medium" onClick={handleClickListItem}>
           <Box width="1.5rem" height="1.5rem">
-            {/*selectedItem ? <Typography>{selectedItem.toUpperCase()}</Typography> : <Translate />*/}
             {selectedItem ? <Flag locale={selectedItem} /> : <Translate />}
           </Box>
         </IconButton>

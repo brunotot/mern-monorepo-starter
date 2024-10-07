@@ -1,20 +1,17 @@
 import type { NavigationRoute } from "@org/app-vite-react/route-typings";
-
 import * as icons from "@mui/icons-material";
 import { Protect } from "@org/app-vite-react/app/components/Protect";
-import { HomePage } from "@org/app-vite-react/app/pages/Home";
-import { Status404Page } from "@org/app-vite-react/app/pages/Status404";
-
-import { IndexPage } from "./pages/Home/IndexPage";
+import { ManageUsersPage } from "@org/app-vite-react/app/pages/admin-settings/manage-users";
+import { HomePage } from "@org/app-vite-react/app/pages/home";
 
 export const routes: NavigationRoute[] = [
   {
     variant: "single",
-    label: () => "Index",
+    label: () => "Home",
     path: "/",
-    Component: () => <IndexPage />,
+    Component: () => <HomePage />,
     handle: {
-      crumb: () => "Index",
+      crumb: () => "Home",
     },
   },
   {
@@ -35,7 +32,7 @@ export const routes: NavigationRoute[] = [
         },
         Component: () => (
           <Protect roles={["admin"]}>
-            <HomePage />
+            <ManageUsersPage />
           </Protect>
         ),
       },
@@ -44,7 +41,7 @@ export const routes: NavigationRoute[] = [
   {
     variant: "single",
     label: () => "",
-    Component: Status404Page,
+    Component: () => <div>Not found</div>,
     path: "*",
     hidden: true,
   },
