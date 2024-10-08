@@ -9,7 +9,7 @@ import {
 } from "@org/app-vite-react/app/components/Datatable";
 import { FixedBadge } from "@org/app-vite-react/app/pages/admin-settings/manage-users/FixedBadge";
 import { UserCreateFormButton } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserCreateFormButton";
-import { tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
+import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
@@ -19,7 +19,7 @@ import { useState } from "react";
 }*/
 
 export function ManageUsersPage() {
-  const { data, isPending } = tsrQuery.User.findAll.useQuery({
+  const { data, isPending, refetch } = tsrQuery.User.findAll.useQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
   });
@@ -58,6 +58,15 @@ export function ManageUsersPage() {
   if (data?.status !== 200) {
     return <div>Error</div>;
   }
+
+  const handleDelete = async (id: string | undefined) => {
+    await tsrClient.User.deleteUser({
+      query: {
+        id: id!,
+      },
+    });
+    refetch();
+  };
 
   return (
     <>
@@ -149,7 +158,7 @@ export function ManageUsersPage() {
               </mui.Box>
             </div>
           </mui.Menu>
-          <UserCreateFormButton afterUpdate={() => alert("Not implemented yet")} />
+          <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
         <ServerDatatable<User>
           data={data.body}
@@ -172,11 +181,11 @@ export function ManageUsersPage() {
             {
               id: "actions",
               renderHeader: () => "Actions",
-              renderBody: () => (
+              renderBody: user => (
                 <mui.Button
                   variant="contained"
                   color="error"
-                  onClick={() => alert("Not implemented yet")}
+                  onClick={() => handleDelete(user._id)}
                 >
                   Delete
                 </mui.Button>

@@ -1,4 +1,8 @@
-import type { ApiKeycloakRoles, ApiKeycloakUser } from "@org/lib-api-client";
+import type {
+  ApiKeycloakRoles,
+  ApiKeycloakUser /*KcUserRepresentation*/,
+  KcUserRepresentation,
+} from "@org/lib-api-client";
 
 import { inject } from "@org/app-node-express/ioc";
 import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
@@ -7,6 +11,8 @@ export interface AuthorizationRepository {
   findAllUsers(): Promise<ApiKeycloakUser[]>;
   findUserByUsername(username: string): Promise<ApiKeycloakUser | null>;
   findRolesByUserId(userId: string): Promise<string[]>;
+  createUser(model: KcUserRepresentation): Promise<KcUserRepresentation>;
+  deleteUser(id: string): Promise<void>;
 }
 
 /**
@@ -29,5 +35,14 @@ export class UserRepository extends KeycloakDao implements AuthorizationReposito
   public async findRolesByUserId(userId: string): Promise<string[]> {
     const res = await this.get<ApiKeycloakRoles>(`/users/${userId}/role-mappings/realm`);
     return res.map(({ name }: { name: string }) => name);
+  }
+
+  public async createUser(model: KcUserRepresentation): Promise<KcUserRepresentation> {
+    const res = await this.post<KcUserRepresentation>(`/users`, model);
+    return res;
+  }
+
+  public async deleteUser(id: string): Promise<void> {
+    await this.delete(`/users/${id}`);
   }
 }

@@ -27,7 +27,8 @@ export class KeycloakTokenManager {
     if (this.cachedTokenValid) return this.cachedToken;
     const response = await fetch(this.KEYCLOAK_LOGIN_URL, this.buildLoginConfig());
     if (!response.ok) throw new Error(`Failed to fetch token: ${response.statusText}`);
-    const { access_token, expires_in } = (await response.json()) as ApiKeycloakLogin;
+    const result = (await response.json()) as ApiKeycloakLogin;
+    const { access_token, expires_in } = result;
     this.cachedToken = access_token;
     this.cachedTokenExpiresAt = Date.now() + expires_in * 1000;
     return this.cachedToken;

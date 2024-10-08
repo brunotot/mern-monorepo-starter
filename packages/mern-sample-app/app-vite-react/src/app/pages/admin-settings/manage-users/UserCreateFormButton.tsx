@@ -1,4 +1,4 @@
-import type { User } from "@org/lib-api-client";
+import type { KcUserRepresentation } from "@org/lib-api-client";
 
 import { Add } from "@mui/icons-material";
 import { Button, Dialog, DialogContent } from "@mui/material";
@@ -10,14 +10,14 @@ export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
 };
 
-const DEFAULT_FORM_STATE: User = {
-  _id: "",
+const DEFAULT_FORM_STATE: KcUserRepresentation = {
+  id: "",
   username: "",
-  roles: ["user"],
+  realmRoles: ["user"],
 };
 
 export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps) {
-  const [user, setUser] = useState<User>(DEFAULT_FORM_STATE);
+  const [user, setUser] = useState<KcUserRepresentation>(DEFAULT_FORM_STATE);
 
   const [open, setOpen] = useState(false);
 
@@ -34,8 +34,7 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     // Handle form submission
     // eslint-disable-next-line no-console
     console.log("Form submitted:", user);
-    // @ts-expect-error Remove later
-    await tsrClient.User.createOne({
+    await tsrClient.User.createUser({
       body: user,
     });
     setUser(DEFAULT_FORM_STATE);

@@ -1,11 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { exec } from "child_process";
 
 import { MongoMemoryReplSet } from "mongodb-memory-server";
 
 export const TEST_PORT = 8083;
 const REPLICA_SET_COUNT = 3;
-const DUMP_PATH = "./test/dump";
+const DUMP_PATH = "./test/config/dump";
 const MONGODB_DATABASE_TOOLS_PATH = "./tools/mongodb-database-tools/bin";
 
 let teardown = false;

@@ -1,6 +1,12 @@
 import type { AuthorizationRepository } from "../repository/UserRepository";
-import type { ApiKeycloakUser, Role, TypedPaginationResponse, User } from "@org/lib-api-client";
-import type { TODO, zod } from "@org/lib-commons";
+import type {
+  ApiKeycloakUser,
+  KcUserRepresentation,
+  Role,
+  TypedPaginationResponse,
+  User,
+} from "@org/lib-api-client";
+import type { TODO } from "@org/lib-commons";
 
 import { autowired, inject } from "@org/app-node-express/ioc";
 import { RestError, ROLE_LIST } from "@org/lib-api-client";
@@ -27,14 +33,26 @@ export class UserService {
     return this.userMapper(user);
   }
 
+  async createUser(model: KcUserRepresentation): Promise<User> {
+    const user = await this.authorizationRepository.createUser(model);
+    return {
+      _id: user.id,
+      username: user.username,
+      roles: model.realmRoles,
+    };
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.authorizationRepository.deleteUser(id);
+  }
+
   private async userMapper(model: ApiKeycloakUser): Promise<User> {
     const roles = await this.authorizationRepository.findRolesByUserId(model.id);
     return {
       _id: model.id,
       username: model.username,
       roles: roles.filter(
-        (role: string): role is Role =>
-          !!ROLE_LIST.find((r: zod.ZodLiteral<unknown>) => r.safeParse(role).success),
+        (role: string): role is Role => !!ROLE_LIST.find((r: string) => r === role),
       ),
     };
   }

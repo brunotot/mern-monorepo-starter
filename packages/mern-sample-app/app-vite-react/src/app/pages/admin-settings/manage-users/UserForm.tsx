@@ -1,11 +1,10 @@
-import type { User, Role } from "@org/lib-api-client";
-
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
+import { type User, type Role, ROLE_LIST, type KcUserRepresentation } from "@org/lib-api-client";
 import React from "react";
 
 export type UserFormProps = {
-  value: User;
-  onChange: (newState: User) => void;
+  value: KcUserRepresentation;
+  onChange: (newState: KcUserRepresentation) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
@@ -33,10 +32,10 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
       <Autocomplete
         multiple
         id="tags-outlined"
-        options={["admin", "user"]}
+        options={ROLE_LIST}
         getOptionLabel={option => option}
         onChange={(_, newValue) => mutate({ roles: newValue as Role[] })}
-        value={value.roles}
+        value={value.realmRoles}
         disableCloseOnSelect
         filterSelectedOptions
         renderOption={(props, option) => (

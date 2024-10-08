@@ -5,6 +5,7 @@ import { PaginationOptionsQueryParam } from "../utils/common-models";
 import * as errors from "../utils/error-responses";
 import * as responses from "../utils/valid-responses";
 import { routeCommonProps, zodResponse, initContract } from "./../../lib/@ts-rest";
+import { KcUserRepresentation } from "../../lib/keycloak/api/KcUserRepresentation";
 
 const routeDefaults = routeCommonProps({
   groupName: "Users",
@@ -16,8 +17,8 @@ export const userContract = initContract().router({
     ...routeDefaults({
       path: "/findAll",
       secured: true,
+      method: "GET",
     }),
-    method: "GET",
     summary: "Find all users",
     description: `Finds all existing users`,
     responses: {
@@ -31,8 +32,8 @@ export const userContract = initContract().router({
     ...routeDefaults({
       path: "/findOneByUsername",
       secured: true,
+      method: "GET",
     }),
-    method: "GET",
     summary: "Find user by username",
     description:
       "Finds a single user whose username matches the one provided in 'username' query parameter.",
@@ -51,8 +52,8 @@ export const userContract = initContract().router({
     ...routeDefaults({
       path: "/findAllPaginated",
       secured: true,
+      method: "GET",
     }),
-    method: "GET",
     summary: "Find paginated users",
     description: "Finds paginated users",
     query: z.object({
@@ -60,6 +61,40 @@ export const userContract = initContract().router({
     }),
     responses: {
       200: zodResponse(responses.TypedPaginationResponse(User), "Paginated users"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
+    },
+  },
+  createUser: {
+    ...routeDefaults({
+      path: "/createUser",
+      secured: true,
+      method: "POST",
+    }),
+    summary: "Create user",
+    description: `Create new user`,
+    body: KcUserRepresentation,
+    responses: {
+      200: zodResponse(User, "Created User"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
+    },
+  },
+  deleteUser: {
+    ...routeDefaults({
+      path: "/deleteUser",
+      secured: true,
+      method: "DELETE",
+    }),
+    summary: "Delete user",
+    description: `Delete a user by id`,
+    query: z.object({
+      id: z.string(),
+    }),
+    responses: {
+      204: zodResponse(z.void(), "No Content"),
       401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
       403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
       500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),

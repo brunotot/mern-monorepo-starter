@@ -39,4 +39,25 @@ export class UserController {
       body: await this.userService.findAllPaginated(paginationOptions),
     };
   }
+
+  @contract(contracts.User.createUser, withRouteSecured("admin"))
+  async createUser(
+    payload: RouteInput<typeof contracts.User.createUser>,
+  ): RouteOutput<typeof contracts.User.createUser> {
+    return {
+      status: 200,
+      body: await this.userService.createUser(payload.body),
+    };
+  }
+
+  @contract(contracts.User.deleteUser, withRouteSecured("admin"))
+  async deleteUser(
+    payload: RouteInput<typeof contracts.User.deleteUser>,
+  ): RouteOutput<typeof contracts.User.deleteUser> {
+    await this.userService.deleteUser(payload.query.id);
+    return {
+      status: 204,
+      body: undefined,
+    };
+  }
 }
