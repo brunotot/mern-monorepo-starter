@@ -1,7 +1,7 @@
 import type { AuthorizationMiddleware } from "@org/app-node-express/infrastructure/middleware/withAuthorization";
 import type { UserService } from "@org/app-node-express/infrastructure/service/UserService";
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
-import type { Role } from "@org/lib-api-client";
+import type { KcUserRole } from "@org/lib-api-client";
 import type { RequestHandler } from "express";
 
 import { IocRegistry, autowired, inject } from "@org/app-node-express/ioc";
@@ -9,7 +9,7 @@ import { RestError, getTypedError } from "@org/lib-api-client";
 import jwt from "jsonwebtoken";
 
 export interface RouteSecuredMiddleware {
-  middleware(...roles: Role[]): RequestHandler[];
+  middleware(...roles: KcUserRole[]): RequestHandler[];
 }
 
 export type TokenData = {
@@ -26,7 +26,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
   @autowired() private userService: UserService;
   @autowired() private authorizationMiddleware: AuthorizationMiddleware;
 
-  public middleware(...roles: Role[]): RequestHandler[] {
+  public middleware(...roles: KcUserRole[]): RequestHandler[] {
     const protect: RequestHandler = async (req, res, next) => {
       try {
         const handler = this.authorizationMiddleware.protect();
@@ -44,7 +44,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
 
         const tokenData = this.decodeToken(token);
 
-        const { roles: userRoles } = await this.userService.findOneByUsername(
+        const { realmRoles: userRoles } = await this.userService.findOneByUsername(
           tokenData.preferred_username,
         );
 
@@ -81,7 +81,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
   }
 }
 
-export function withRouteSecured(...roles: Role[]): RouteMiddlewareFactory {
+export function withRouteSecured(...roles: KcUserRole[]): RouteMiddlewareFactory {
   return () =>
     IocRegistry.getInstance()
       .inject<RouteSecuredMiddleware>(IOC_KEY)

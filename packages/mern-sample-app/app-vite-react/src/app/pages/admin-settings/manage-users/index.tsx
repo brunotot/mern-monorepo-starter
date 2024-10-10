@@ -1,4 +1,4 @@
-import type { PaginationOptions, User } from "@org/lib-api-client";
+import type { KcUserRepresentation, PaginationOptions } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -7,8 +7,10 @@ import {
   ServerDatatable,
   DEFAULT_PAGINATION_OPTIONS,
 } from "@org/app-vite-react/app/components/Datatable";
-import { FixedBadge } from "@org/app-vite-react/app/pages/admin-settings/manage-users/FixedBadge";
-import { UserCreateFormButton } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserCreateFormButton";
+import {
+  FixedBadge,
+  UserCreateFormButton,
+} from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 
@@ -18,7 +20,7 @@ import { useState } from "react";
   return { paginationOptions: JSON.stringify(paginationOptions) };
 }*/
 
-export function ManageUsersPage() {
+export default function ManageUsersPage() {
   const { data, isPending, refetch } = tsrQuery.User.findAll.useQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
@@ -160,7 +162,7 @@ export function ManageUsersPage() {
           </mui.Menu>
           <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
-        <ServerDatatable<User>
+        <ServerDatatable<KcUserRepresentation>
           data={data.body}
           count={data.body.length}
           keyMapper={user => user.username}
@@ -174,19 +176,27 @@ export function ManageUsersPage() {
               sort: "username",
             },
             {
+              id: "First name",
+              renderHeader: () => "First name",
+              renderBody: user => user.firstName,
+              sort: "firstName",
+            },
+            {
+              id: "Last name",
+              renderHeader: () => "Last name",
+              renderBody: user => user.lastName,
+              sort: "lastName",
+            },
+            {
               id: "roles",
               renderHeader: () => "Roles",
-              renderBody: user => user.roles.join(", "),
+              renderBody: user => user.realmRoles?.join(", "),
             },
             {
               id: "actions",
               renderHeader: () => "Actions",
               renderBody: user => (
-                <mui.Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleDelete(user._id)}
-                >
+                <mui.Button variant="contained" color="error" onClick={() => handleDelete(user.id)}>
                   Delete
                 </mui.Button>
               ),

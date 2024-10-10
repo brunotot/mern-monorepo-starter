@@ -22,7 +22,7 @@ export const userContract = initContract().router({
     summary: "Find all users",
     description: `Finds all existing users`,
     responses: {
-      200: zodResponse(z.array(User), "List of all users"),
+      200: zodResponse(z.array(KcUserRepresentation), "List of all users"),
       401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
       403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
       500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),

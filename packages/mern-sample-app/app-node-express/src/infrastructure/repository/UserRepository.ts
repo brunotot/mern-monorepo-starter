@@ -1,15 +1,11 @@
-import type {
-  ApiKeycloakRoles,
-  ApiKeycloakUser /*KcUserRepresentation*/,
-  KcUserRepresentation,
-} from "@org/lib-api-client";
+import type { KcUserRepresentation } from "@org/lib-api-client";
 
 import { inject } from "@org/app-node-express/ioc";
 import { KeycloakDao } from "@org/app-node-express/lib/keycloak";
 
 export interface AuthorizationRepository {
-  findAllUsers(): Promise<ApiKeycloakUser[]>;
-  findUserByUsername(username: string): Promise<ApiKeycloakUser | null>;
+  findAllUsers(): Promise<KcUserRepresentation[]>;
+  findUserByUsername(username: string): Promise<KcUserRepresentation | null>;
   findRolesByUserId(userId: string): Promise<string[]>;
   createUser(model: KcUserRepresentation): Promise<KcUserRepresentation>;
   deleteUser(id: string): Promise<void>;
@@ -20,21 +16,46 @@ export interface AuthorizationRepository {
  */
 @inject("AuthorizationRepository")
 export class UserRepository extends KeycloakDao implements AuthorizationRepository {
-  public async findUserByUsername(username: string): Promise<ApiKeycloakUser | null> {
-    const users = await this.get<ApiKeycloakUser[]>(`/users?username=${username}`);
+  public async findUserByUsername(username: string): Promise<KcUserRepresentation | null> {
+    const users = await this.get<KcUserRepresentation[]>(`/users?username=${username}`);
     if (users.length === 0) return null;
     const user = users.filter(user => user.username === username)[0];
     return user;
   }
 
-  public async findAllUsers(): Promise<ApiKeycloakUser[]> {
-    const users = await this.get<ApiKeycloakUser[]>(`/users`);
-    return users;
+  public async findAllUsers(): Promise<KcUserRepresentation[]> {
+    // Fetch users without realmRoles
+    const users = await this.get<Omit<KcUserRepresentation, "realmRoles">[]>(`/users`);
+
+    // Map the users array to include realmRoles, awaiting each role fetch using findRolesByUserId
+    const usersWithRealmRoles = await Promise.all(
+      users.map(async user => {
+        const realmRoles = await this.findRolesByUserId(user.id!); // Use existing method to fetch realm roles
+        return {
+          ...user,
+          realmRoles, // Add realmRoles to the user object
+        };
+      }),
+    );
+
+    return usersWithRealmRoles;
   }
 
   public async findRolesByUserId(userId: string): Promise<string[]> {
-    const res = await this.get<ApiKeycloakRoles>(`/users/${userId}/role-mappings/realm`);
-    return res.map(({ name }: { name: string }) => name);
+    type ApiKeycloakRoles = { name: string }[];
+    const res = await this.get<{
+      realmMappings?: ApiKeycloakRoles;
+      clientMappings?: Record<string, { mappings: ApiKeycloakRoles }>;
+    }>(`/users/${userId}/role-mappings`);
+
+    const mapped = [
+      ...(res.realmMappings || []).map(({ name }: { name: string }) => name),
+      ...Object.values(res.clientMappings || {})
+        .map(v => v.mappings.map(({ name }: { name: string }) => name))
+        .flat(),
+    ];
+
+    return mapped;
   }
 
   public async createUser(model: KcUserRepresentation): Promise<KcUserRepresentation> {

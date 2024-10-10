@@ -1,5 +1,5 @@
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import { type User, type Role, ROLE_LIST, type KcUserRepresentation } from "@org/lib-api-client";
+import { type KcUserRole, ROLE_LIST, type KcUserRepresentation } from "@org/lib-api-client";
 import React from "react";
 
 export type UserFormProps = {
@@ -9,10 +9,11 @@ export type UserFormProps = {
 };
 
 export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
-  const mutate = (diff: Partial<User>) => {
+  const mutate = (diff: Partial<KcUserRepresentation>) => {
     onChange({
       ...value,
       ...diff,
+      enabled: true,
     });
   };
 
@@ -24,9 +25,26 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
     >
       <TextField
         label="Username"
-        name="username"
         value={value.username}
         onChange={e => mutate({ username: e.target.value })}
+        required
+      />
+      <TextField
+        label="First name"
+        value={value.firstName}
+        onChange={e => mutate({ firstName: e.target.value })}
+        required
+      />
+      <TextField
+        label="Last name"
+        value={value.lastName}
+        onChange={e => mutate({ lastName: e.target.value })}
+        required
+      />
+      <TextField
+        label="Email"
+        value={value.email}
+        onChange={e => mutate({ email: e.target.value })}
         required
       />
       <Autocomplete
@@ -34,7 +52,7 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
         id="tags-outlined"
         options={ROLE_LIST}
         getOptionLabel={option => option}
-        onChange={(_, newValue) => mutate({ roles: newValue as Role[] })}
+        onChange={(_, newValue) => mutate({ realmRoles: newValue as KcUserRole[] })}
         value={value.realmRoles}
         disableCloseOnSelect
         filterSelectedOptions
@@ -43,7 +61,7 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
             {option}
           </MenuItem>
         )}
-        renderInput={params => <TextField {...params} label="Roles" placeholder="Roles" />}
+        renderInput={params => <TextField {...params} label="Realm roles" placeholder="Roles" />}
         renderTags={(tagValue, getTagProps) =>
           tagValue.map((option, index) => (
             <Chip {...getTagProps({ index })} key={option} label={option} />

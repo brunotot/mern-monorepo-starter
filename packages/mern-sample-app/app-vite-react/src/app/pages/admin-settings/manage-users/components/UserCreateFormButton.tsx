@@ -2,7 +2,7 @@ import type { KcUserRepresentation } from "@org/lib-api-client";
 
 import { Add } from "@mui/icons-material";
 import { Button, Dialog, DialogContent } from "@mui/material";
-import { UserForm } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserForm";
+import { UserForm } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
 
@@ -13,7 +13,8 @@ export type UserCreateFormButtonProps = {
 const DEFAULT_FORM_STATE: KcUserRepresentation = {
   id: "",
   username: "",
-  realmRoles: ["user"],
+  enabled: true,
+  realmRoles: ["avr-user"],
 };
 
 export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps) {

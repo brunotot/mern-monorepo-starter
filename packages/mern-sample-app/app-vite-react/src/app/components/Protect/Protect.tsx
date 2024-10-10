@@ -1,4 +1,4 @@
-import type { Role } from "@org/lib-api-client";
+import type { KcUserRole } from "@org/lib-api-client";
 import type { ReactNode } from "react";
 
 import * as mui from "@mui/material";
@@ -6,7 +6,7 @@ import { sigUser } from "@org/app-vite-react/signals/sigUser";
 
 export type ProtectProps = {
   children: ReactNode;
-  roles: Role[];
+  roles: KcUserRole[];
 };
 
 export function Protect({ children, roles }: ProtectProps) {

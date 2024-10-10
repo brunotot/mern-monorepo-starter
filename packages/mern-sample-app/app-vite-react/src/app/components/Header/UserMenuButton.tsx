@@ -67,16 +67,6 @@ export function UserMenuButton() {
 
             <mui.Divider sx={{ marginBlock: "0.5rem" }} />
 
-            {/*<mui.Typography variant="body2">Roles:</mui.Typography>
-            <mui.List dense>
-              <mui.ListItem disablePadding>
-                <mui.ListItemText primary="Admin" />
-              </mui.ListItem>
-              <mui.ListItem disablePadding>
-                <mui.ListItemText primary="Editor" />
-              </mui.ListItem>
-            </mui.List>*/}
-
             <mui.MenuItem sx={{ paddingInline: "0.5rem" }} onClick={handleClose}>
               <mui.ListItemIcon>
                 <icons.Settings />

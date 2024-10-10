@@ -1,8 +1,7 @@
 import type { AuthorizationRepository } from "../repository/UserRepository";
 import type {
-  ApiKeycloakUser,
   KcUserRepresentation,
-  Role,
+  KcUserRole,
   TypedPaginationResponse,
   User,
 } from "@org/lib-api-client";
@@ -35,24 +34,19 @@ export class UserService {
 
   async createUser(model: KcUserRepresentation): Promise<User> {
     const user = await this.authorizationRepository.createUser(model);
-    return {
-      _id: user.id,
-      username: user.username,
-      roles: model.realmRoles,
-    };
+    return this.userMapper(user);
   }
 
   async deleteUser(id: string): Promise<void> {
     await this.authorizationRepository.deleteUser(id);
   }
 
-  private async userMapper(model: ApiKeycloakUser): Promise<User> {
-    const roles = await this.authorizationRepository.findRolesByUserId(model.id);
+  private async userMapper(model: KcUserRepresentation): Promise<User> {
+    const roles = await this.authorizationRepository.findRolesByUserId(model.id!);
     return {
-      _id: model.id,
-      username: model.username,
-      roles: roles.filter(
-        (role: string): role is Role => !!ROLE_LIST.find((r: string) => r === role),
+      ...model,
+      realmRoles: roles.filter(
+        (role: string): role is KcUserRole => !!ROLE_LIST.find((r: string) => r === role),
       ),
     };
   }

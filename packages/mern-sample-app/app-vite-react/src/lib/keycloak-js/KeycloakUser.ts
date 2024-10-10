@@ -1,8 +1,8 @@
-export type KeycloakUserRole = "admin" | "user";
+import type { KcUserRole } from "@org/lib-api-client";
 
 export interface KeycloakUser {
   username: string;
   token: string;
-  roles: KeycloakUserRole[];
+  roles: KcUserRole[];
   name: string;
 }

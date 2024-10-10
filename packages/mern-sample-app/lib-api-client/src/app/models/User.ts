@@ -1,16 +1,14 @@
-import { z, type zod } from "@org/lib-commons";
+import type { zod } from "@org/lib-commons";
 
-import { Role } from "./Role";
+import { z } from "@org/lib-commons";
 
-export const User = z
-  .object({
-    _id: z.string().optional(),
-    username: z.string(),
-    roles: z.array(Role),
-  })
-  .openapi({
-    title: "User",
-    description: "User",
-  });
+import { KcUserRepresentation, KcUserRole } from "../../lib";
+
+export const User = KcUserRepresentation.extend({
+  realmRoles: z.array(KcUserRole),
+}).openapi({
+  title: "User",
+  description: "User",
+});
 
 export type User = zod.infer<typeof User>;

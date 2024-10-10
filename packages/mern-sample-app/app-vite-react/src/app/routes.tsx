@@ -1,8 +1,9 @@
 import type { NavigationRoute } from "@org/app-vite-react/route-typings";
+
 import * as icons from "@mui/icons-material";
 import { Protect } from "@org/app-vite-react/app/components/Protect";
-import { ManageUsersPage } from "@org/app-vite-react/app/pages/admin-settings/manage-users";
-import { HomePage } from "@org/app-vite-react/app/pages/home";
+import ManageUsersPage from "@org/app-vite-react/app/pages/admin-settings/manage-users";
+import HomePage from "@org/app-vite-react/app/pages/home";
 
 export const routes: NavigationRoute[] = [
   {
@@ -17,7 +18,9 @@ export const routes: NavigationRoute[] = [
   {
     label: () => "Admin settings",
     variant: "group",
-    secure: user => !!user?.roles.some(r => ["admin"].includes(r)),
+    secure: user => {
+      return !!user?.roles.some(r => ["avr-admin"].includes(r));
+    },
     handle: {
       crumb: () => "Admin settings",
     },
@@ -31,7 +34,7 @@ export const routes: NavigationRoute[] = [
           crumb: () => "Manage users",
         },
         Component: () => (
-          <Protect roles={["admin"]}>
+          <Protect roles={["avr-admin"]}>
             <ManageUsersPage />
           </Protect>
         ),
