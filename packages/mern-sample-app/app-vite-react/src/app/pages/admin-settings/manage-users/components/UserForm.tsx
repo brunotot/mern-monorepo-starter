@@ -1,15 +1,15 @@
 import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import { type KcUserRole, ROLE_LIST, type KcUserRepresentation } from "@org/lib-api-client";
+import { type Role, ROLE_LIST, type User } from "@org/lib-api-client";
 import React from "react";
 
 export type UserFormProps = {
-  value: KcUserRepresentation;
-  onChange: (newState: KcUserRepresentation) => void;
+  value: User;
+  onChange: (newState: User) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
 export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
-  const mutate = (diff: Partial<KcUserRepresentation>) => {
+  const mutate = (diff: Partial<User>) => {
     onChange({
       ...value,
       ...diff,
@@ -52,8 +52,8 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
         id="tags-outlined"
         options={ROLE_LIST}
         getOptionLabel={option => option}
-        onChange={(_, newValue) => mutate({ realmRoles: newValue as KcUserRole[] })}
-        value={value.realmRoles}
+        onChange={(_, newValue) => mutate({ roles: newValue as Role[] })}
+        value={value.roles}
         disableCloseOnSelect
         filterSelectedOptions
         renderOption={(props, option) => (

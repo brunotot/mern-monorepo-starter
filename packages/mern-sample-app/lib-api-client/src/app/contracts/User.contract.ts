@@ -5,7 +5,6 @@ import { PaginationOptionsQueryParam } from "../utils/common-models";
 import * as errors from "../utils/error-responses";
 import * as responses from "../utils/valid-responses";
 import { routeCommonProps, zodResponse, initContract } from "./../../lib/@ts-rest";
-import { KcUserRepresentation } from "../../lib/keycloak/api/KcUserRepresentation";
 
 const routeDefaults = routeCommonProps({
   groupName: "Users",
@@ -22,7 +21,7 @@ export const userContract = initContract().router({
     summary: "Find all users",
     description: `Finds all existing users`,
     responses: {
-      200: zodResponse(z.array(KcUserRepresentation), "List of all users"),
+      200: zodResponse(z.array(User), "List of all users"),
       401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
       403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
       500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
@@ -74,7 +73,7 @@ export const userContract = initContract().router({
     }),
     summary: "Create user",
     description: `Create new user`,
-    body: KcUserRepresentation,
+    body: User,
     responses: {
       200: zodResponse(User, "Created User"),
       401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),

@@ -1,5 +1,5 @@
 import type * as KC from "@org/app-vite-react/lib/keycloak-js";
-import type { KcUserRole } from "@org/lib-api-client";
+import type { Role } from "@org/lib-api-client";
 
 import { keycloakClient } from "@org/app-vite-react/lib/keycloak-js/KeycloakClient";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
@@ -80,7 +80,7 @@ function decodeKeycloakToken(keycloakToken: string): KC.KeycloakUser {
   const fromToken: KC.KeycloakUser = {
     username,
     token: keycloakToken,
-    roles: roles as KcUserRole[],
+    roles: roles as Role[],
     name,
   };
 

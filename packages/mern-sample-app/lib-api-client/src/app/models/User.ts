@@ -2,10 +2,11 @@ import type { zod } from "@org/lib-commons";
 
 import { z } from "@org/lib-commons";
 
-import { KcUserRepresentation, KcUserRole } from "../../lib";
+import { UserRepresentation } from "../../lib";
+import { Role } from "../models";
 
-export const User = KcUserRepresentation.extend({
-  realmRoles: z.array(KcUserRole),
+export const User = UserRepresentation.extend({
+  roles: z.array(Role),
 }).openapi({
   title: "User",
   description: "User",

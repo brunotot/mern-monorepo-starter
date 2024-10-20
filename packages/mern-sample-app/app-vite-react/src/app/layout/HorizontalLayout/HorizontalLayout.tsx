@@ -33,7 +33,11 @@ function HorizontalNavItem({
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 1 : undefined;
 
-  if (hasChildren) {
+  if (item.hidden === true) {
+    return <></>;
+  }
+
+  if (item.variant !== "single") {
     const isAnyRouteActiveInGroup = isAnyRouteActive(children);
     return (
       <ButtonHoverMenu
@@ -80,13 +84,7 @@ function HorizontalNavItem({
     );
   }
 
-  const itemSingle = item as RouteTypes.NavigationRouteItem;
-
-  if (itemSingle.hidden === true) {
-    return <></>;
-  }
-
-  const isSelected = location.pathname === itemSingle.path;
+  const isSelected = location.pathname === item.path;
 
   return (
     <mui.ListItemButton
@@ -97,7 +95,7 @@ function HorizontalNavItem({
         outline: isSelected ? "1px solid gray" : undefined,
       }}
       selected={isSelected}
-      onClick={() => navigate(itemSingle.path)}
+      onClick={() => navigate(item.path)}
     >
       {item.icon && <mui.ListItemIcon>{item.icon}</mui.ListItemIcon>}
       <mui.ListItemText primary={item.label(t)} />

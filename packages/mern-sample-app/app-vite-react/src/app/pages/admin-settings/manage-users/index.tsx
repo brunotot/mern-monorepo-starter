@@ -1,4 +1,4 @@
-import type { KcUserRepresentation, PaginationOptions } from "@org/lib-api-client";
+import type { PaginationOptions, User } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -9,10 +9,11 @@ import {
 } from "@org/app-vite-react/app/components/Datatable";
 import {
   FixedBadge,
+  ResponsiveTable,
   UserCreateFormButton,
 } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
-import { useState } from "react";
+import React, { useState } from "react";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -43,7 +44,6 @@ export default function ManageUsersPage() {
   }, [fetchUsers]);*/
 
   const badgeContent: number = 6;
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,6 +73,9 @@ export default function ManageUsersPage() {
   return (
     <>
       {/*<mui.Typography variant="h5">Manage users</mui.Typography>*/}
+
+      <ResponsiveTable />
+
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
           <mui.Button
@@ -162,7 +165,7 @@ export default function ManageUsersPage() {
           </mui.Menu>
           <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
-        <ServerDatatable<KcUserRepresentation>
+        <ServerDatatable<User>
           data={data.body}
           count={data.body.length}
           keyMapper={user => user.username}
@@ -190,7 +193,7 @@ export default function ManageUsersPage() {
             {
               id: "roles",
               renderHeader: () => "Roles",
-              renderBody: user => user.realmRoles?.join(", "),
+              renderBody: user => user.roles?.join(", "),
             },
             {
               id: "actions",

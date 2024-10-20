@@ -1,5 +1,5 @@
 import { env } from "@org/app-node-express/env";
-import { type ApiKeycloakLogin } from "@org/lib-api-client";
+import { type Keycloak } from "@org/lib-api-client";
 
 export class KeycloakTokenManager {
   private readonly KEYCLOAK_LOGIN_URL: string;
@@ -27,7 +27,7 @@ export class KeycloakTokenManager {
     if (this.cachedTokenValid) return this.cachedToken;
     const response = await fetch(this.KEYCLOAK_LOGIN_URL, this.buildLoginConfig());
     if (!response.ok) throw new Error(`Failed to fetch token: ${response.statusText}`);
-    const result = (await response.json()) as ApiKeycloakLogin;
+    const result = (await response.json()) as Keycloak.Authentication;
     const { access_token, expires_in } = result;
     this.cachedToken = access_token;
     this.cachedTokenExpiresAt = Date.now() + expires_in * 1000;

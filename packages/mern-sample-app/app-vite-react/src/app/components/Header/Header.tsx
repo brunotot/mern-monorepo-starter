@@ -5,7 +5,8 @@ import * as mui from "@mui/material";
 import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
 import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
 import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
-import { sigLayout } from "@org/app-vite-react/signals/sigLayout";
+import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@org/app-vite-react/signals/sigLayoutWidth";
 import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
 import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
 import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
@@ -29,6 +30,10 @@ export function Header({
   borderBottom = false,
   sx,
 }: HeaderProps) {
+  const layoutWidth = sigLayoutWidth.value;
+  const matchesSm = layoutWidth === "sm";
+  const matchesXs = layoutWidth === "xs";
+  const layoutWidthMatchesBelowMd = matchesXs || matchesSm;
   const matchesDesktop = mui.useMediaQuery("(min-width:678px)");
   const matchesTablet = mui.useMediaQuery("(max-width:900px)");
   const matchesAboveDesktop = mui.useMediaQuery("(min-width:900px)");
@@ -54,17 +59,19 @@ export function Header({
 
           <mui.Box flexGrow={1}>
             <mui.Box display="flex" alignItems="center" gap={2}>
-              {((matchesAboveDesktop && sigLayout.value === "HorizontalLayout") ||
-                (matchesDesktop && matchesTablet)) && (
+              {sigLayoutVariant.value === "HorizontalLayout" && (
                 <>
-                  <Logo hideText={matchesTablet} />
+                  <Logo hideText={matchesTablet || layoutWidthMatchesBelowMd} />
                   <mui.Divider orientation="vertical" sx={{ height: 48 }} />
                 </>
               )}
               <mui.Box
                 ml={
-                  matchesDesktop && sigLayout.value === "SidebarLayout" && matchesAboveDesktop
-                    ? 2
+                  matchesDesktop &&
+                  sigLayoutVariant.value === "SidebarLayout" &&
+                  matchesAboveDesktop &&
+                  !matchesSm
+                    ? 1.5
                     : undefined
                 }
               >
@@ -75,10 +82,10 @@ export function Header({
 
           <mui.Box display="flex" alignItems="center" columnGap={matchesDesktop ? 2 : undefined}>
             <mui.Box display="flex" alignItems="center">
-              {matchesDesktop && !matchesTablet && (
+              {matchesDesktop && !matchesTablet && !layoutWidthMatchesBelowMd && (
                 <InputLayoutToggle
-                  value={sigLayout.value}
-                  onChange={layout => (sigLayout.value = layout)}
+                  value={sigLayoutVariant.value}
+                  onChange={layout => (sigLayoutVariant.value = layout)}
                 />
               )}
               <InputDarkThemeToggle
