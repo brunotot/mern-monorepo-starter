@@ -1,7 +1,7 @@
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 
-export function HomePage() {
+export default function HomePage() {
   const dependencies = [
     {
       name: "React",

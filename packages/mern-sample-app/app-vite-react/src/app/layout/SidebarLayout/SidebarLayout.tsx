@@ -16,10 +16,7 @@ export type SidebarNavItemProps = {
 };
 
 function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
-  const hasChildren = item.variant !== "single";
-  const renderChildrenPersistent = hasChildren && item.variant === "group";
-  const renderChildrenMenu = hasChildren && item.variant === "menu";
-  const children: RouteTypes.NavigationRoute[] = hasChildren ? item.children : [];
+  const children: RouteTypes.NavigationRoute[] = item.variant !== "single" ? item.children : [];
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,13 +26,16 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     setOpen(!open);
   };
 
-  if (renderChildrenPersistent) {
+  if (item.hidden === true) {
+    return <></>;
+  }
+
+  if (item.variant === "group") {
     return (
       <Fragment>
         <Divider
           sx={{
             color: "var(--mui-palette-info-main)",
-            //fontWeight: "bold",
             marginTop: indent === 0 ? "1.75rem" : "0.25rem",
             marginBottom: indent === 0 ? "0.5rem" : "0.25rem",
             paddingLeft: indent === 0 ? undefined : `calc(1.5rem + ${indent}rem)`,
@@ -51,7 +51,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  if (renderChildrenMenu) {
+  if (item.variant === "menu") {
     return (
       <Fragment>
         <ListItemButton
@@ -78,11 +78,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
     );
   }
 
-  const itemSingle = item as RouteTypes.NavigationRouteItem;
-
-  if (itemSingle.hidden === true) {
-    return <></>;
-  }
+  const path = (item as RouteTypes.NavigationRouteItem).path;
 
   return (
     <ListItemButton
@@ -90,11 +86,11 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
         paddingLeft: `calc(1.5rem + ${indent}rem)`,
         borderRadius: "0.5rem",
       }}
-      selected={location.pathname === itemSingle.path}
-      onClick={() => navigate(itemSingle.path)}
+      selected={location.pathname === path}
+      onClick={() => navigate(path)}
     >
-      {itemSingle.icon && <ListItemIcon sx={{ minWidth: 24 }}>{itemSingle.icon}</ListItemIcon>}
-      <ListItemText primary={itemSingle.label(t)} />
+      {item.icon && <ListItemIcon sx={{ minWidth: 24 }}>{item.icon}</ListItemIcon>}
+      <ListItemText primary={item.label(t)} />
     </ListItemButton>
   );
 }
@@ -104,7 +100,9 @@ export function SidebarLayout({ gutterTop = false }: { gutterTop?: boolean }) {
     <List
       data-driver="navigation"
       dense
-      sx={{ paddingRight: "1.75rem !important", marginTop: gutterTop ? 2.5 : undefined }}
+      sx={{
+        marginTop: gutterTop ? 2.5 : undefined,
+      }}
     >
       {reactServer.routes.map((item, index) => {
         let isAuthorized = true;

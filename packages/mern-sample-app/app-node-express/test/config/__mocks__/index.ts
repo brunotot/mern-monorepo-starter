@@ -1,4 +1,4 @@
-import type { NoArgsClass } from "../../../lib-commons/dist/src";
+import type { NoArgsClass } from "../../../../lib-commons/dist/src";
 
 import { AuthorizationRepositoryMock } from "./AuthorizationRepositoryMock";
 import { WithAuthorizationMock } from "./WithAuthorizationMock";

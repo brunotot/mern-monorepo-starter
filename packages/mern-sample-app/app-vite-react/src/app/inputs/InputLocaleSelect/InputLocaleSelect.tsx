@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 
 import { Flag } from "../../components/Flag/Flag";
 
-function getLocaleNativeName(locale: I18nLocale) {
+export function getLocaleNativeName(locale: I18nLocale) {
   const name: string = new Intl.DisplayNames([locale], {
     type: "language",
   }).of(locale)!;

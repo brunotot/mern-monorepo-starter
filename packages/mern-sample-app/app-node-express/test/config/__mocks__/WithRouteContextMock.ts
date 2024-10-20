@@ -1,4 +1,4 @@
-import type { RouteContextMiddleware } from "../../dist/infrastructure/middleware/withRouteContext";
+import type { RouteContextMiddleware } from "../../../dist/infrastructure/middleware/withRouteContext";
 import type { RequestHandler } from "express";
 import type { ClientSession } from "mongodb";
 

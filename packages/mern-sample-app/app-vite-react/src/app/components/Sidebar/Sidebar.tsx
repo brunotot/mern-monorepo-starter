@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
+import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
+import { sigSidebarPosition } from "@org/app-vite-react/signals/sigSidebarPosition";
 
 export type SidebarProps = {
   width?: number;
@@ -20,11 +22,12 @@ export function Sidebar({
   children,
 }: SidebarProps) {
   const matchesDesktop = useMediaQuery("(min-width:678px)");
-  const computedAnchor = matchesDesktop ? "left" : "bottom";
+  const computedAnchor = matchesDesktop ? sigSidebarPosition.value : "bottom";
 
   const paperWidth = matchesDesktop ? width : "100%";
   const drawerWidth = hidden ? 0 : paperWidth;
-  const drawerPosition = matchesDesktop ? "sticky" : undefined;
+  const drawerPosition =
+    matchesDesktop && sigLayoutVariant.value !== "HorizontalLayout" ? "sticky" : undefined;
   const paperPosition = matchesDesktop ? "absolute" : undefined;
   const drawerVariant = hidden ? "temporary" : matchesDesktop ? "permanent" : "temporary";
 

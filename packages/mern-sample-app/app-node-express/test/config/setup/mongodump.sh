@@ -4,7 +4,7 @@ DATABASE_URL=$1
 DATABASE_NAME=$2
 
 PWD_THIS=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-PWD="${PWD_THIS}/../../../.."
+PWD="${PWD_THIS}/../../../../../.."
 PWD_APP_NODE_EXPRESS="${PWD}/packages/mern-sample-app/app-node-express"
 PWD_MONGODB_TOOLS_BIN="${PWD}/packages/mern-sample-app/app-node-express/tools/mongodb-database-tools/bin"
 PWD_TEST_DUMP="${PWD_APP_NODE_EXPRESS}/test/dump"

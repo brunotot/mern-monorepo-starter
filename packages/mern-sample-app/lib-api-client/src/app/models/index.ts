@@ -1,12 +1,12 @@
 import type { zod } from "@org/lib-commons";
 
-export * from "./User";
 export * from "./Role";
+export * from "./User";
 
 import { Role } from "./Role";
 import { User } from "./User";
 
 export const Schemas = {
-  User,
   Role,
+  User,
 } as const satisfies Record<string, zod.ZodTypeAny>;

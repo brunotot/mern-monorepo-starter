@@ -3,7 +3,7 @@ import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
-import { TEST_PORT } from "./test/setup/globalSetup";
+import { TEST_PORT } from "./test/config/setup/globalSetup";
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -16,8 +16,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    globalSetup: "test/setup/globalSetup.ts",
-    setupFiles: ["test/setup/setupFiles.ts"],
+    globalSetup: "test/config/setup/globalSetup.ts",
+    setupFiles: ["test/config/setup/setupFiles.ts"],
   },
   resolve: {
     alias: {

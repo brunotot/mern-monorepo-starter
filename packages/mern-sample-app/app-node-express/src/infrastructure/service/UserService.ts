@@ -1,9 +1,9 @@
 import type { AuthorizationRepository } from "../repository/UserRepository";
-import type { ApiKeycloakUser, Role, TypedPaginationResponse, User } from "@org/lib-api-client";
-import type { TODO, zod } from "@org/lib-commons";
+import type { TypedPaginationResponse, User } from "@org/lib-api-client";
+import type { TODO } from "@org/lib-commons";
 
 import { autowired, inject } from "@org/app-node-express/ioc";
-import { RestError, ROLE_LIST } from "@org/lib-api-client";
+import { RestError } from "@org/lib-api-client";
 
 @inject("UserService")
 export class UserService {
@@ -11,8 +11,7 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     const users = await this.authorizationRepository.findAllUsers();
-    const mappedUsers = await Promise.all(users.map(async user => await this.userMapper(user)));
-    return mappedUsers;
+    return users;
   }
 
   async findAllPaginated(paginationOptions: TODO): Promise<TypedPaginationResponse<User>> {
@@ -24,18 +23,15 @@ export class UserService {
   async findOneByUsername(username: string): Promise<User> {
     const user = await this.authorizationRepository.findUserByUsername(username);
     if (user === null) throw new RestError(404, "User not found");
-    return this.userMapper(user);
+    return user;
   }
 
-  private async userMapper(model: ApiKeycloakUser): Promise<User> {
-    const roles = await this.authorizationRepository.findRolesByUserId(model.id);
-    return {
-      _id: model.id,
-      username: model.username,
-      roles: roles.filter(
-        (role: string): role is Role =>
-          !!ROLE_LIST.find((r: zod.ZodLiteral<unknown>) => r.safeParse(role).success),
-      ),
-    };
+  async createUser(model: User): Promise<User> {
+    const user = await this.authorizationRepository.createUser(model);
+    return user;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.authorizationRepository.deleteUser(id);
   }
 }
