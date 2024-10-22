@@ -2,7 +2,7 @@ import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest"
 import type { RequestHandler } from "express";
 import type { Keycloak as KeycloakType, KeycloakConfig } from "keycloak-connect";
 
-import { env } from "@org/app-node-express/env";
+import { env } from "@org/app-node-express/server/env";
 import { IocRegistry, inject } from "@org/app-node-express/ioc";
 import { keycloakMemoryStore } from "@org/app-node-express/lib/keycloak";
 import { RestError } from "@org/lib-api-client";

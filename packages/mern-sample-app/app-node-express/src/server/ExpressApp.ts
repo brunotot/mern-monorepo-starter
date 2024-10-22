@@ -46,7 +46,7 @@ import type { MongoClient } from "@org/app-node-express/lib/mongodb";
 import type { NoArgsClass } from "@org/lib-commons";
 import type { IncomingMessage, Server, ServerResponse } from "http";
 
-import { env } from "@org/app-node-express/env";
+import { env } from "@org/app-node-express/server/env";
 import { IocRegistry } from "@org/app-node-express/ioc";
 import {
   initializeExpressRoutes,

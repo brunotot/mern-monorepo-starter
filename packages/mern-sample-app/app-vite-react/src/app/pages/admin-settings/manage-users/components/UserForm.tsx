@@ -1,15 +1,24 @@
-import { TextField, Button, Box, Autocomplete, MenuItem, Chip } from "@mui/material";
-import { type Role, ROLE_LIST, type User } from "@org/lib-api-client";
+import {
+  TextField,
+  Button,
+  Box,
+  Autocomplete,
+  MenuItem,
+  Chip,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
+import { type Role, ROLE_LIST, type UserForm as UserFormModel } from "@org/lib-api-client";
 import React from "react";
 
 export type UserFormProps = {
-  value: User;
-  onChange: (newState: User) => void;
+  value: UserFormModel;
+  onChange: (newState: UserFormModel) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
 export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
-  const mutate = (diff: Partial<User>) => {
+  const mutate = (diff: Partial<UserFormModel>) => {
     onChange({
       ...value,
       ...diff,
@@ -29,6 +38,29 @@ export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
         onChange={e => mutate({ username: e.target.value })}
         required
       />
+      {/* Write code for checkbox on has credentials */}
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={value.hasCredentials}
+            onChange={event => {
+              mutate({ hasCredentials: event.target.checked });
+            }}
+          />
+        }
+        label="Set password"
+      />
+
+      {value.hasCredentials && (
+        <TextField
+          label="Password"
+          type="password"
+          value={value.password}
+          onChange={e => mutate({ password: e.target.value })}
+          required
+        />
+      )}
       <TextField
         label="First name"
         value={value.firstName}

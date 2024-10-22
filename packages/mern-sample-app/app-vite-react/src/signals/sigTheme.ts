@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material";
 import { computed, effect, signal } from "@preact/signals-react";
 
-import { LocalStorage } from "../LocalStorage";
+import { LocalStorage } from "../server/LocalStorage";
 
 type ThemeOptsInternal = NonNullable<Parameters<typeof createTheme>[0]>;
 
@@ -65,6 +65,7 @@ export const sigTheme = computed(() => {
       ...rest.typography,
       fontFamily: '"DM Sans", sans-serif',
       allVariants: {
+        fontWeight: 400,
         fontOpticalSizing: "auto",
       },
     },

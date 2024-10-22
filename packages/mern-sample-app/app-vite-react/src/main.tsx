@@ -5,7 +5,7 @@ import { providers } from "@org/app-vite-react/app/providers";
 import { routes } from "@org/app-vite-react/app/routes";
 import { MuiCssBaseline as cssBaseline } from "@org/app-vite-react/lib/@mui";
 import { KeycloakRoute, type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
-import { reactServer } from "@org/app-vite-react/server";
+import { reactServer } from "@org/app-vite-react/server/server";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { useRouteError } from "react-router-dom";
 import { type RouteObject } from "react-router-dom";

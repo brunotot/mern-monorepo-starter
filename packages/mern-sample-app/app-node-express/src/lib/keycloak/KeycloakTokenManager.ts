@@ -1,4 +1,4 @@
-import { env } from "@org/app-node-express/env";
+import { env } from "@org/app-node-express/server/env";
 import { type Keycloak } from "@org/lib-api-client";
 
 export class KeycloakTokenManager {

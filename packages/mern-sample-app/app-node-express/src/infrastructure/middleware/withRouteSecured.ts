@@ -48,7 +48,7 @@ export class WithRouteSecured implements RouteSecuredMiddleware {
           tokenData.preferred_username,
         );
 
-        const hasAtLeastOneRole = userRoles.some(userRole => roles.includes(userRole));
+        const hasAtLeastOneRole = userRoles.some(userRole => roles.includes(userRole as Role));
 
         if (!hasAtLeastOneRole) {
           throw new RestError(403, "User does not have the required role");

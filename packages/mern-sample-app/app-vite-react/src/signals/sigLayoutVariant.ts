@@ -2,7 +2,7 @@ import type { LayoutVariant } from "../models";
 
 import { effect, signal } from "@preact/signals-react";
 
-import { LocalStorage } from "../LocalStorage";
+import { LocalStorage } from "../server/LocalStorage";
 
 export const sigLayoutVariant = signal<LayoutVariant>(
   LocalStorage.get("layoutVariant", "SidebarLayout"),

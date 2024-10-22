@@ -1,6 +1,6 @@
-import type { NavigationRoute } from "@org/app-vite-react/route-typings";
+import type { NavigationRoute } from "@org/app-vite-react/server/route-typings";
 
-import * as icons from "@mui/icons-material";
+//import * as icons from "@mui/icons-material";
 import { Protect } from "@org/app-vite-react/app/components/Protect";
 import ManageUsersPage from "@org/app-vite-react/app/pages/admin-settings/manage-users";
 import HomePage from "@org/app-vite-react/app/pages/home";

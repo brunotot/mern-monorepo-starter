@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+
 import { TEST_PORT } from "./test/setup/globalSetup";
 
 export default defineConfig({

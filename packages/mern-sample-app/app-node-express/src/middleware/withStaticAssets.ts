@@ -12,7 +12,7 @@ import type { middleware } from "@org/app-node-express/middleware/index";
 import fs from "fs";
 import path from "path";
 
-import { env } from "@org/app-node-express/env";
+import { env } from "@org/app-node-express/server/env";
 import express from "express";
 
 /**

@@ -1,4 +1,4 @@
-import { initServer } from "../../../dist/initServer";
+import { initServer } from "../../../dist/server/initServer";
 import { MongoDatabaseService } from "../../../dist/lib/mongodb/MongoDatabaseService";
 import __mocks__ from "../__mocks__";
 import { cleanup, setApp } from "./utils";

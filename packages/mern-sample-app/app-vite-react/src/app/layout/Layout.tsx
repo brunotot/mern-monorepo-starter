@@ -5,7 +5,7 @@ import { Footer } from "@org/app-vite-react/app/components/Footer";
 import { Header } from "@org/app-vite-react/app/components/Header";
 import { Logo } from "@org/app-vite-react/app/components/Logo";
 import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
-import { type NavigationRoute } from "@org/app-vite-react/route-typings";
+import { type NavigationRoute } from "@org/app-vite-react/server/route-typings";
 import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
 import { sigLayoutWidth } from "@org/app-vite-react/signals/sigLayoutWidth";
 import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";

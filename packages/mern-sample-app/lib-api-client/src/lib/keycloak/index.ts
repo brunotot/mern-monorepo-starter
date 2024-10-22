@@ -1,3 +1,3 @@
 export * from "./api";
 
-export type * as Keycloak from "./api";
+export * as Keycloak from "./api";

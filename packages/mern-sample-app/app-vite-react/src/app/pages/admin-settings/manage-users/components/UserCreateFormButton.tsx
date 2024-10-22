@@ -1,4 +1,4 @@
-import type { User } from "@org/lib-api-client";
+import type { UserForm as UserFormModel } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import { Add } from "@mui/icons-material";
@@ -12,15 +12,16 @@ export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
 };
 
-const DEFAULT_FORM_STATE: User = {
+const DEFAULT_FORM_STATE: UserFormModel = {
   id: "",
   username: "",
   enabled: true,
   roles: ["avr-user"],
+  hasCredentials: true,
 };
 
 export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps) {
-  const [user, setUser] = useState<User>(DEFAULT_FORM_STATE);
+  const [user, setUser] = useState<UserFormModel>(DEFAULT_FORM_STATE);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -3,7 +3,7 @@ import type { SchemaObject } from "openapi3-ts/oas31";
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
 import * as zod from "zod";
 
-import { type TODO } from "../../config";
+import { type TODO } from "../app";
 
 declare module "zod" {
   interface ZodSchema<Output = TODO, Def extends zod.ZodTypeDef = zod.ZodTypeDef, Input = Output> {

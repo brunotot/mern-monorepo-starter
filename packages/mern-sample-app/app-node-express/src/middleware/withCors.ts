@@ -10,7 +10,7 @@
 import type { RouteMiddlewareFactory } from "@org/app-node-express/lib/@ts-rest";
 import type { middleware } from "@org/app-node-express/middleware/index";
 
-import { env } from "@org/app-node-express/env";
+import { env } from "@org/app-node-express/server/env";
 import cors from "cors";
 
 /**

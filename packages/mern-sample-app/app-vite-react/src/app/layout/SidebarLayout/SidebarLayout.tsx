@@ -1,10 +1,10 @@
-import type * as RouteTypes from "@org/app-vite-react/route-typings";
+import type * as RouteTypes from "@org/app-vite-react/server/route-typings";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { isAnyRouteActive } from "@org/app-vite-react/app/layout/Layout";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
-import { reactServer } from "@org/app-vite-react/server";
+import { reactServer } from "@org/app-vite-react/server/server";
 import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";

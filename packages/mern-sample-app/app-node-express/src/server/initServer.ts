@@ -70,11 +70,11 @@ import type { NoArgsClass } from "@org/lib-commons";
 
 import path from "path";
 
-import { env } from "@org/app-node-express/env";
-import { ExpressApp } from "@org/app-node-express/ExpressApp";
 import { scanIocModules } from "@org/app-node-express/ioc";
 import { log } from "@org/app-node-express/lib/winston";
 import { middleware } from "@org/app-node-express/middleware";
+import { env } from "@org/app-node-express/server/env";
+import { ExpressApp } from "@org/app-node-express/server/ExpressApp";
 
 export type InitServerConfig = Partial<{
   mocks: Record<string, NoArgsClass>;
