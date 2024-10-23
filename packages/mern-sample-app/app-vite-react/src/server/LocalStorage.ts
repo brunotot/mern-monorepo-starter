@@ -2,7 +2,7 @@ import type { TODO, zod } from "@org/lib-commons";
 
 import { z } from "@org/lib-commons";
 
-import { LayoutVariant, LayoutWidth, SidebarPosition, Locale } from "../models";
+import { LayoutVariant, LayoutWidth, SidebarPosition, Locale } from "../app/models";
 
 type LocalStorageItem<S extends zod.ZodType<TODO, TODO, TODO> = TODO> = {
   schema: () => S;

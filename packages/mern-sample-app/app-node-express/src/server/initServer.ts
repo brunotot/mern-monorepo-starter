@@ -70,9 +70,9 @@ import type { NoArgsClass } from "@org/lib-commons";
 
 import path from "path";
 
-import { scanIocModules } from "@org/app-node-express/ioc";
+import { middleware } from "@org/app-node-express/app/middleware";
+import { scanIocModules } from "@org/app-node-express/lib/ioc";
 import { log } from "@org/app-node-express/lib/winston";
-import { middleware } from "@org/app-node-express/middleware";
 import { env } from "@org/app-node-express/server/env";
 import { ExpressApp } from "@org/app-node-express/server/ExpressApp";
 

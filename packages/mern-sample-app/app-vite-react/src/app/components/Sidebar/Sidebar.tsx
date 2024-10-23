@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
-import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
-import { sigSidebarPosition } from "@org/app-vite-react/signals/sigSidebarPosition";
+import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
+import { sigSidebarPosition } from "@org/app-vite-react/app/signals/sigSidebarPosition";
 
 export type SidebarProps = {
   width?: number;

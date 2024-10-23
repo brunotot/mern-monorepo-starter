@@ -46,15 +46,15 @@ import type { MongoClient } from "@org/app-node-express/lib/mongodb";
 import type { NoArgsClass } from "@org/lib-commons";
 import type { IncomingMessage, Server, ServerResponse } from "http";
 
-import { env } from "@org/app-node-express/server/env";
-import { IocRegistry } from "@org/app-node-express/ioc";
 import {
   initializeExpressRoutes,
   initializeSwagger,
   TsRestRouterService,
 } from "@org/app-node-express/lib/@ts-rest";
+import { IocRegistry } from "@org/app-node-express/lib/ioc";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
 import { log, logBanner } from "@org/app-node-express/lib/winston";
+import { env } from "@org/app-node-express/server/env";
 import { getTypedError } from "@org/lib-api-client";
 import express from "express";
 

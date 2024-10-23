@@ -1,6 +1,5 @@
 import type * as TsRestTypes from "./TsRestTypes";
-import type { TODO, zod } from "@org/lib-commons";
-import type { OpenAPIV3 } from "openapi-types";
+import type { TODO, zod, SecurityRequirementObject } from "@org/lib-commons";
 
 import { generateSchema } from "@anatine/zod-openapi";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -49,7 +48,7 @@ export function buildOpenAPIObject(props: {
 
   function hasSecurity(
     metadata: unknown,
-  ): metadata is { openApiSecurity: OpenAPIV3.SecurityRequirementObject[] } {
+  ): metadata is { openApiSecurity: SecurityRequirementObject[] } {
     return !!metadata && typeof metadata === "object" && TS_REST_OPEN_API_SECURITY in metadata;
   }
 

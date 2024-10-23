@@ -1,11 +1,11 @@
-import type { LayoutWidth, Locale } from "@org/app-vite-react/models";
+import type { LayoutWidth, Locale } from "@org/app-vite-react/app/models";
 
 import * as mui from "@mui/material";
-import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
-import { sigLayoutWidth } from "@org/app-vite-react/signals/sigLayoutWidth";
-import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
-import { sigSidebarPosition } from "@org/app-vite-react/signals/sigSidebarPosition";
-import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
+import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
+import { sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
+import { sigSidebarPosition } from "@org/app-vite-react/app/signals/sigSidebarPosition";
+import { sigThemeOpts } from "@org/app-vite-react/app/signals/sigTheme";
 import * as React from "react";
 
 import { LabelInputGroup } from "./LabelInputGroup";

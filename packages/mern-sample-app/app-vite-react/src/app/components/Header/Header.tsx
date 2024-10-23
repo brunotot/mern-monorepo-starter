@@ -5,11 +5,11 @@ import * as mui from "@mui/material";
 import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
 import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
 import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
-import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
-import { sigLayoutWidth } from "@org/app-vite-react/signals/sigLayoutWidth";
-import { sigLocale } from "@org/app-vite-react/signals/sigLocale";
-import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
-import { sigThemeOpts } from "@org/app-vite-react/signals/sigTheme";
+import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
+import { sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
+import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
+import { sigThemeOpts } from "@org/app-vite-react/app/signals/sigTheme";
 
 import { UserMenuButton } from "./UserMenuButton";
 import { Logo } from "../Logo";

@@ -1,4 +1,4 @@
-import type { LayoutVariant } from "@org/app-vite-react/models";
+import type { LayoutVariant } from "@org/app-vite-react/app/models";
 
 import { TableChart, ViewSidebar } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";

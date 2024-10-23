@@ -1,9 +1,9 @@
-import type { RouteContextMiddleware } from "@org/app-node-express/infrastructure/middleware/withRouteContext";
+import type { RouteContextMiddleware } from "@org/app-node-express/app/infrastructure/middleware/withRouteContext";
 import type { PaginationOptions, TypedPaginationResponse } from "@org/lib-api-client";
 import type { zod } from "@org/lib-commons";
 import type * as mongodb from "mongodb";
 
-import { IocRegistry } from "@org/app-node-express/ioc";
+import { IocRegistry } from "@org/app-node-express/lib/ioc";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb/MongoDatabaseService";
 import { paginate } from "@org/app-node-express/lib/mongodb/MongoPagination";
 

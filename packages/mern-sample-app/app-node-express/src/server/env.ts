@@ -72,7 +72,7 @@
  * | SWAGGER_ENDPOINT                  | Swagger endpoint                                   | `/api-docs`                 | `/my-swagger-endpoint`                |    ⚫     |
  * | SWAGGER_CSS_PATH                  | Swagger CSS path                                   | `/css/swagger.css`          | `http://localhost:5173`               |    ⚫     |
  * | SWAGGER_JS_PATH                   | Swagger JS path                                    | `/js/swagger.js`            | `GET,POST`                            |    ⚫     |
- * | SWAGGER_OAUTH2_REDIRECT_ENDPOINT           | Swagger OAuth2 redirect URL                        | `/oauth2-redirect.html`     | `/oauth2-redirect.html`               |    ⚫     |
+ * | SWAGGER_OAUTH2_REDIRECT_ENDPOINT  | Swagger OAuth2 redirect URL                        | `/oauth2-redirect.html`     | `/oauth2-redirect.html`               |    ⚫     |
  */
 
 import path from "path";

@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/**/*.ts"],
   "name": "lib-commons",
+  "entryPoints": ["src/**/*.ts"],
   "exclude": ["src/*/**/index.ts"]
 }

@@ -12,15 +12,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    globalSetup: "test/setup/globalSetup.ts",
+    setupFiles: ["test/setup/setupFiles.ts"],
     coverage: {
-      all: true, // Include all files in the coverage report
-      include: ["src/**/*.ts"], // Adjust based on your file structure
+      all: true,
+      include: ["src/**/*.ts"],
       exclude: ["src/**/index.ts"],
       reporter: ["text"],
     },
-
-    //globalSetup: "test/setup/globalSetup.ts",
-    //setupFiles: ["test/setup/setupFiles.ts"],
   },
   resolve: {
     alias: {

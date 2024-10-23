@@ -1,4 +1,4 @@
-import type { SchemaObject } from "openapi3-ts/oas31";
+import type { SchemaObject, SecurityRequirementObject } from "openapi3-ts/oas31";
 
 import { extendZodWithOpenApi } from "@anatine/zod-openapi";
 import * as zod from "zod";
@@ -12,10 +12,11 @@ declare module "zod" {
 }
 
 function initZod() {
-  if ("openapi" in zod && typeof zod.openapi === "function") return zod;
   extendZodWithOpenApi(zod);
   return zod;
 }
+
+export type { SecurityRequirementObject };
 
 export const z = initZod();
 

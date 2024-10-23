@@ -6,7 +6,7 @@
   "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
-    "build": "npm run clean && tsc && tsc-alias -p tsconfig.prod.json",
+    "build": "npm run clean && tsc && tsc-alias -p tsconfig.json",
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
     "lint": "eslint src",
@@ -19,11 +19,9 @@
     "@anatine/zod-openapi": "^2.2.5",
     "@org/lib-commons": "workspace:*",
     "@ts-rest/core": "^3.45.0",
-    "@ts-rest/open-api": "^3.45.0",
-    "openapi-types": "^12.1.3"
+    "@ts-rest/open-api": "^3.45.0"
   },
   "devDependencies": {
-    "rimraf": "^5.0.5",
     "typescript": "^5.3.3"
   }
 }

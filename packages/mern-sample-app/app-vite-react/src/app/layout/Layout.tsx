@@ -5,11 +5,11 @@ import { Footer } from "@org/app-vite-react/app/components/Footer";
 import { Header } from "@org/app-vite-react/app/components/Header";
 import { Logo } from "@org/app-vite-react/app/components/Logo";
 import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
+import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
+import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
+import { sigSidebarPosition } from "@org/app-vite-react/app/signals/sigSidebarPosition";
 import { type NavigationRoute } from "@org/app-vite-react/server/route-typings";
-import { sigLayoutVariant } from "@org/app-vite-react/signals/sigLayoutVariant";
-import { sigLayoutWidth } from "@org/app-vite-react/signals/sigLayoutWidth";
-import { sigSidebarOpen } from "@org/app-vite-react/signals/sigSidebarOpen";
-import { sigSidebarPosition } from "@org/app-vite-react/signals/sigSidebarPosition";
 
 import { HorizontalLayout } from "./HorizontalLayout";
 import { SidebarLayout } from "./SidebarLayout";

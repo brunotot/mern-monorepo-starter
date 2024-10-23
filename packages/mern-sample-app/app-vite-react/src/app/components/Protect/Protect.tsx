@@ -2,7 +2,7 @@ import type { Role } from "@org/lib-api-client";
 import type { ReactNode } from "react";
 
 import * as mui from "@mui/material";
-import { sigUser } from "@org/app-vite-react/signals/sigUser";
+import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 
 export type ProtectProps = {
   children: ReactNode;
