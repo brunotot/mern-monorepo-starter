@@ -55,9 +55,8 @@ export function routeCommonProps<TGroupName extends string, TContextPath extends
 
 export function zodResponse<const T extends zod.ZodTypeAny>(
   zodSchema: T,
-  customDescription: string = "",
+  customDescription: string,
 ): typeof zodSchema {
-  if (!customDescription) return zodSchema;
   const metaOpenApi = (zodSchema as TODO).metaOpenApi ?? {};
   const title: string | undefined = metaOpenApi.title;
   const description: string | undefined = metaOpenApi.description;

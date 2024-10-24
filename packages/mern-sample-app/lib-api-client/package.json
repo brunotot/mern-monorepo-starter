@@ -10,7 +10,8 @@
     "clean": "rm -rf ./dist",
     "test": "npm run build --silent && vitest --run",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "test:coverage": "npm run build --silent && vitest --run --coverage"
   },
   "keywords": [],
   "author": "Bruno Tot",

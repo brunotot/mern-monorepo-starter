@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "npm run build --silent && export SERVER_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run",
+    "test:coverage": "npm run build --silent && export SERVER_VERSION=$(grep -o '\"version\": *\"[^\"]*\"' package.json | awk -F'\"' '{print $4}') && vitest --run --coverage",
     "build": "rm -rf dist && tsc --build && tsc-alias -p tsconfig.prod.json",
-    "start": "bash start.sh",
+    "start": "export SERVER_ENV=production && bash start.sh",
     "dev": "nodemon",
     "clean": "rm -rf ./dist",
     "lint": "eslint src",

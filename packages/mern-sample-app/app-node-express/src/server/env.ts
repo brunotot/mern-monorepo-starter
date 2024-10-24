@@ -69,7 +69,6 @@
  * | CORS_ALLOWED_ORIGINS              | List of comma-separated allowed origin patterns    | `*`                         | `http://localhost:5173`               |    ⚫     |
  * | CORS_ALLOWED_METHODS              | List of comma-separated allowed request methods    | `GET,POST,PUT,DELETE,PATCH` | `GET,POST`                            |    ⚫     |
  * | CORS_ALLOWED_HEADERS              | List of comma-separated allowed request headers    | `*`                         | `X-Custom-Header`                     |    ⚫     |
- * | SWAGGER_ENDPOINT                  | Swagger endpoint                                   | `/api-docs`                 | `/my-swagger-endpoint`                |    ⚫     |
  * | SWAGGER_CSS_PATH                  | Swagger CSS path                                   | `/css/swagger.css`          | `http://localhost:5173`               |    ⚫     |
  * | SWAGGER_JS_PATH                   | Swagger JS path                                    | `/js/swagger.js`            | `GET,POST`                            |    ⚫     |
  * | SWAGGER_OAUTH2_REDIRECT_ENDPOINT  | Swagger OAuth2 redirect URL                        | `/oauth2-redirect.html`     | `/oauth2-redirect.html`               |    ⚫     |
@@ -200,12 +199,6 @@ const ENVIRONMENT_VARS = z.object({
   KEYCLOAK_BEARER_ONLY: z.string().default("true").transform(Transform.BOOLEAN),
 
   /**
-   * The endpoint URL for Swagger documentation.
-   * @default "/api-docs"
-   */
-  SWAGGER_ENDPOINT: z.string().default("/api-docs").transform(Transform.URL),
-
-  /**
    * The path to the Swagger CSS file.
    * @default "/css/swagger.css"
    */
@@ -304,8 +297,10 @@ function filterEnvBySchema() {
 }
 
 function configLocalDotenv() {
-  // Make sure this function only accesses process.env and not local env (it is not initialized yet).
   dotenv.config({
-    path: path.join(process.cwd(), `.env.${process.env.SERVER_ENV ?? "development"}.local`),
+    path: [
+      path.join(process.cwd(), `.env.${process.env.SERVER_ENV!}`),
+      path.join(process.cwd(), `.env.${process.env.SERVER_ENV!}.local`),
+    ],
   });
 }

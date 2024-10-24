@@ -1,6 +1,7 @@
 /// <reference types="@types/jest" />
 
-import { z } from "@org/lib-commons/src/lib/zod/zod";
+import { z } from "@org/lib-commons";
+
 import { JsonQueryParam } from "../src/app/utils/query-params/JsonQueryParam";
 
 describe("JsonQueryParam", () => {

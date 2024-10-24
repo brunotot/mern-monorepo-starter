@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+
 import { TEST_PORT } from "./test/setup/globalSetup";
 
 export default defineConfig({
@@ -11,6 +12,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+
+    coverage: {
+      all: true,
+      include: ["src/**/*.ts"],
+      exclude: ["src/**/index.ts"],
+      reporter: ["text"],
+    },
+
     //globalSetup: "test/setup/globalSetup.ts",
     //setupFiles: ["test/setup/setupFiles.ts"],
   },

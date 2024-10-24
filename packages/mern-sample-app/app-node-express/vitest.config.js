@@ -18,6 +18,13 @@ export default defineConfig({
     environment: "node",
     globalSetup: "test/config/setup/globalSetup.ts",
     setupFiles: ["test/config/setup/setupFiles.ts"],
+
+    coverage: {
+      all: true,
+      include: ["src/**/*.ts"],
+      exclude: ["src/**/index.ts", "src/main.ts"],
+      reporter: ["text"],
+    },
   },
   resolve: {
     alias: {

@@ -2,7 +2,7 @@ import type { zod } from "@org/lib-commons";
 
 import { z } from "@org/lib-commons";
 
-import { UserRepresentation } from "../../../lib";
+import { UserRepresentation } from "../../../lib/keycloak/api/UserRepresentation";
 import { Role } from "../domain/Role";
 
 export const UserForm = UserRepresentation.extend({

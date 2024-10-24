@@ -1,6 +1,7 @@
 /// <reference types="@types/jest" />
 
 import { type TODO } from "@org/lib-commons/src";
+
 import { contracts } from "../src/app/contracts/index";
 
 describe("contracts", () => {

@@ -123,7 +123,7 @@ export class ExpressApp {
           "🟢 NodeJS": process.version,
           "🏠 Env": env.SERVER_ENV,
           "🔑 Keycloak": this.keycloakUrl,
-          "📝 Swagger": env.SWAGGER_ENDPOINT,
+          "📝 Swagger": "/api-docs",
           "🆔 PID": `${process.pid}`,
           "🧠 Memory": this.memoryUsage,
           "📅 Started": new Date().toLocaleString(),
@@ -168,11 +168,11 @@ export class ExpressApp {
   #initializeSwagger() {
     initializeSwagger({
       app: this.expressApp,
-      oauth2RedirectUrl: `${this.#url}${env.SWAGGER_ENDPOINT}${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
+      oauth2RedirectUrl: `${this.#url}/api-docs${env.SWAGGER_OAUTH2_REDIRECT_ENDPOINT}`,
       oauth2AuthorizationUrl: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect${env.KEYCLOAK_LOGIN_ENDPOINT}`,
       oauth2TokenUrl: `${env.KEYCLOAK_URL}/realms/${env.KEYCLOAK_REALM}/protocol/openid-connect${env.KEYCLOAK_TOKEN_ENDPOINT}`,
       version: env.SERVER_VERSION,
-      endpoint: env.SWAGGER_ENDPOINT,
+      endpoint: "/api-docs",
       cssPath: env.SWAGGER_CSS_PATH,
       jsPath: env.SWAGGER_JS_PATH,
     });

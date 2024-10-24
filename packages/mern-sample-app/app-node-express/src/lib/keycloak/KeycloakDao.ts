@@ -33,7 +33,7 @@ export class KeycloakDao {
   protected async put<T>(path: string, body: Partial<T>): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
-    const response = await fetch(endpoint, {
+    const response = await this.doFetch(endpoint, {
       headers: {
         ...config.headers,
         "Content-Type": "application/json",
@@ -45,10 +45,21 @@ export class KeycloakDao {
     return body as T;
   }
 
+  private async doFetch(endpoint: string, config: RequestInit): Promise<Response> {
+    let response: Response;
+    try {
+      response = await fetch(endpoint, config);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error("Keycloak server is not available");
+    }
+    return response;
+  }
+
   protected async get<T>(path: string): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
-    const response = await fetch(endpoint, config);
+    const response = await this.doFetch(endpoint, config);
     if (!response.ok) throw new Error(`Failed to GET data: ${response.statusText}`);
     const jsonResponse = (await response.json()) as T;
     return jsonResponse;
@@ -57,7 +68,7 @@ export class KeycloakDao {
   protected async post<T>(path: string, body: T): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
-    const response = await fetch(endpoint, {
+    const response = await this.doFetch(endpoint, {
       headers: {
         ...config.headers,
         "Content-Type": "application/json",
@@ -72,7 +83,7 @@ export class KeycloakDao {
   protected async delete(path: string): Promise<void> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
-    const response = await fetch(endpoint, {
+    const response = await this.doFetch(endpoint, {
       ...config,
       method: "DELETE",
     });

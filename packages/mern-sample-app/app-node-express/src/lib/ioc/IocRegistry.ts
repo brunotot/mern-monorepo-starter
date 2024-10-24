@@ -34,11 +34,11 @@ export class IocRegistry {
       componentClasses,
       dependencySchema,
     );
-    sortedInjectionClasses.forEach(Class => {
+    for (const Class of sortedInjectionClasses) {
       const name = IocClassMetadata.getInstance(Class).getName();
       const instance = new Class();
       this.registry.set(name, instance);
-    });
+    }
   }
 
   #getSortedInjectionClasses(classes: NoArgsClass[], dependencySchema: Record<string, string[]>) {
