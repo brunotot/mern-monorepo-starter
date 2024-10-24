@@ -2,6 +2,19 @@
   "version": "2.0.0",
   "configurations": [
     {
+      "name": "@org: renameProjectLabels",
+      "runtimeArgs": ["run", "renameProjectLabels"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
       "name": "@org: test",
       "runtimeArgs": ["run", "test"],
       "presentation": { "group": "1" },
@@ -121,6 +134,25 @@
     {
       "name": "@org/app-node-express: test",
       "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/app-node-express: test:coverage",
+      "runtimeArgs": [
+        "run",
+        "test:coverage",
+        "--prefix",
+        "packages/mern-sample-app/app-node-express"
+      ],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
@@ -373,6 +405,25 @@
     {
       "name": "@org/lib-api-client: test",
       "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/lib-api-client: test:coverage",
+      "runtimeArgs": [
+        "run",
+        "test:coverage",
+        "--prefix",
+        "packages/mern-sample-app/lib-api-client"
+      ],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",

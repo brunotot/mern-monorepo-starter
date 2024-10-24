@@ -15,6 +15,7 @@
   },
   "scripts": {
     "prepare": "npm run lib-commons:build && npm run lib-api-client:build",
+    "renameProjectLabels": "node renameProjectLabels.js",
     "test": "npm run app-node-express:test && npm run app-vite-react:test && npm run lib-commons:test && npm run lib-api-client:test",
     "build": "npm run lib-commons:build && npm run lib-api-client:build && npm run app-node-express:build && npm run app-vite-react:build",
     "clean": "rm -rf docs && npm run app-node-express:clean && npm run app-vite-react:clean && npm run lib-commons:clean && npm run lib-api-client:clean",
@@ -52,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^7.0.2",
     "@vitest/coverage-v8": "^2.0.5",
+    "dotenv": "^16.4.5",
     "eslint": "^8.56.0",
     "eslint-plugin-import": "^2.30.0",
     "prettier": "^3.2.5",

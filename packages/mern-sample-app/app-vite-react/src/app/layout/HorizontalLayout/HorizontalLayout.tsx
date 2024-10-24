@@ -1,11 +1,11 @@
 import type { Breakpoint } from "@mui/material";
-import type * as RouteTypes from "@org/app-vite-react/route-typings";
+import type * as RouteTypes from "@org/app-vite-react/server/route-typings";
 
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import * as mui from "@mui/material";
+import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 import { useTranslation } from "@org/app-vite-react/lib/i18next";
-import { reactServer } from "@org/app-vite-react/server";
-import { sigUser } from "@org/app-vite-react/signals/sigUser";
+import { reactServer } from "@org/app-vite-react/server/server";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,7 +33,11 @@ function HorizontalNavItem({
   const isMainNavButton = dropdownPosition.anchorY === "bottom";
   const borderRadius = isMainNavButton ? 1 : undefined;
 
-  if (hasChildren) {
+  if (item.hidden === true) {
+    return <></>;
+  }
+
+  if (item.variant !== "single") {
     const isAnyRouteActiveInGroup = isAnyRouteActive(children);
     return (
       <ButtonHoverMenu
@@ -80,13 +84,7 @@ function HorizontalNavItem({
     );
   }
 
-  const itemSingle = item as RouteTypes.NavigationRouteItem;
-
-  if (itemSingle.hidden === true) {
-    return <></>;
-  }
-
-  const isSelected = location.pathname === itemSingle.path;
+  const isSelected = location.pathname === item.path;
 
   return (
     <mui.ListItemButton
@@ -97,7 +95,7 @@ function HorizontalNavItem({
         outline: isSelected ? "1px solid gray" : undefined,
       }}
       selected={isSelected}
-      onClick={() => navigate(itemSingle.path)}
+      onClick={() => navigate(item.path)}
     >
       {item.icon && <mui.ListItemIcon>{item.icon}</mui.ListItemIcon>}
       <mui.ListItemText primary={item.label(t)} />

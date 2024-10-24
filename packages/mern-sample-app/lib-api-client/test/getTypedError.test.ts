@@ -1,7 +1,7 @@
 /// <reference types="@types/jest" />
 
-import { getTypedError, UNHANDLED_SERVER_ERROR_MSG } from "../src/errors/RestError";
-import { RestError } from "../src/errors/RestError";
+import { getTypedError, UNHANDLED_SERVER_ERROR_MSG } from "../src/app/models/error/RestError";
+import { RestError } from "../src/app/models/error/RestError";
 
 describe("getTypedError", () => {
   describe("given the error is handled by system", () => {

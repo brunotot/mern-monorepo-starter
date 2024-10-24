@@ -1,4 +1,4 @@
-import { env, testMode } from "@org/app-node-express/env";
+import { env, testMode } from "@org/app-node-express/server/env";
 import { type zod } from "@org/lib-commons";
 import { MongoClient, type Db, type ClientSession } from "mongodb";
 

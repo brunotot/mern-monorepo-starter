@@ -4,8 +4,8 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
+import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 import { keycloakLogout } from "@org/app-vite-react/lib/keycloak-js";
-import { sigUser } from "@org/app-vite-react/signals/sigUser";
 import React from "react";
 
 import LogoutButton from "./LogoutButton";
@@ -66,16 +66,6 @@ export function UserMenuButton() {
             </mui.Typography>
 
             <mui.Divider sx={{ marginBlock: "0.5rem" }} />
-
-            {/*<mui.Typography variant="body2">Roles:</mui.Typography>
-            <mui.List dense>
-              <mui.ListItem disablePadding>
-                <mui.ListItemText primary="Admin" />
-              </mui.ListItem>
-              <mui.ListItem disablePadding>
-                <mui.ListItemText primary="Editor" />
-              </mui.ListItem>
-            </mui.List>*/}
 
             <mui.MenuItem sx={{ paddingInline: "0.5rem" }} onClick={handleClose}>
               <mui.ListItemIcon>

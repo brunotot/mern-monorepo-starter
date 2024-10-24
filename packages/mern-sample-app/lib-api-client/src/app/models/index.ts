@@ -1,10 +1,11 @@
 import type { zod } from "@org/lib-commons";
 
-export * from "./User";
-export * from "./Role";
+export * from "./error";
+export * from "./domain";
+export * from "./dto";
+export * from "./form";
 
-import { Role } from "./Role";
-import { User } from "./User";
+import { User, Role } from "./domain";
 
 export const Schemas = {
   User,

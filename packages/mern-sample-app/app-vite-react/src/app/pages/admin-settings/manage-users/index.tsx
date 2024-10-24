@@ -1,4 +1,4 @@
-import type { PaginationOptions, User } from "@org/lib-api-client";
+import type { PaginationOptions, UserDto } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -7,10 +7,13 @@ import {
   ServerDatatable,
   DEFAULT_PAGINATION_OPTIONS,
 } from "@org/app-vite-react/app/components/Datatable";
-import { FixedBadge } from "@org/app-vite-react/app/pages/admin-settings/manage-users/FixedBadge";
-import { UserCreateFormButton } from "@org/app-vite-react/app/pages/admin-settings/manage-users/UserCreateFormButton";
-import { tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
-import { useState } from "react";
+import {
+  FixedBadge,
+  //ResponsiveTable,
+  UserCreateFormButton,
+} from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
+import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
+import React, { useState } from "react";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -18,8 +21,8 @@ import { useState } from "react";
   return { paginationOptions: JSON.stringify(paginationOptions) };
 }*/
 
-export function ManageUsersPage() {
-  const { data, isPending } = tsrQuery.User.findAll.useQuery({
+export default function ManageUsersPage() {
+  const { data, isPending, refetch } = tsrQuery.User.findAll.useQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
   });
@@ -41,7 +44,6 @@ export function ManageUsersPage() {
   }, [fetchUsers]);*/
 
   const badgeContent: number = 6;
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,9 +61,21 @@ export function ManageUsersPage() {
     return <div>Error</div>;
   }
 
+  const handleDelete = async (id: string | undefined) => {
+    await tsrClient.User.deleteUser({
+      query: {
+        id: id!,
+      },
+    });
+    refetch();
+  };
+
   return (
     <>
       {/*<mui.Typography variant="h5">Manage users</mui.Typography>*/}
+
+      {/*<ResponsiveTable />*/}
+
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
           <mui.Button
@@ -149,9 +163,9 @@ export function ManageUsersPage() {
               </mui.Box>
             </div>
           </mui.Menu>
-          <UserCreateFormButton afterUpdate={() => alert("Not implemented yet")} />
+          <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
-        <ServerDatatable<User>
+        <ServerDatatable<UserDto>
           data={data.body}
           count={data.body.length}
           keyMapper={user => user.username}
@@ -165,19 +179,32 @@ export function ManageUsersPage() {
               sort: "username",
             },
             {
+              id: "First name",
+              renderHeader: () => "First name",
+              renderBody: user => user.firstName,
+              sort: "firstName",
+            },
+            {
+              id: "Last name",
+              renderHeader: () => "Last name",
+              renderBody: user => user.lastName,
+              sort: "lastName",
+            },
+            {
               id: "roles",
               renderHeader: () => "Roles",
-              renderBody: user => user.roles.join(", "),
+              renderBody: user => user.roles?.join(", "),
+            },
+            {
+              id: "password",
+              renderHeader: () => "Password",
+              renderBody: user => (user.hasCredentials ? "Yes" : "No"),
             },
             {
               id: "actions",
               renderHeader: () => "Actions",
-              renderBody: () => (
-                <mui.Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => alert("Not implemented yet")}
-                >
+              renderBody: user => (
+                <mui.Button variant="contained" color="error" onClick={() => handleDelete(user.id)}>
                   Delete
                 </mui.Button>
               ),

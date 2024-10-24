@@ -2,5 +2,5 @@
   "watch": ["src", "../lib-commons/src", "../lib-api-client/src"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "exec": "bash start.sh"
+  "exec": "export SERVER_ENV=development && bash start.sh"
 }

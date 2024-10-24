@@ -6,7 +6,7 @@ export type LogoProps = {
 
 export function Logo({ hideText = false }: LogoProps) {
   return (
-    <Box display="flex" alignItems="center" gap={1} data-driver="">
+    <Box display="flex" alignItems="center" gap={1}>
       <Box
         component="img"
         alt="Logo"

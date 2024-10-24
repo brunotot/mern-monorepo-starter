@@ -7,11 +7,11 @@
   </picture>
 </p>
 
-## 🧐 What is `typescript-monorepo-starter`?
+## 🧐 What is `mern-monorepo-starter`?
 
-`typescript-monorepo-starter` is a GitHub template designed to kickstart your next **TypeScript 5** project, offering an opinionated, ready-to-use monorepo structure that takes care of all the tricky configuration for you.
+`mern-monorepo-starter` is a GitHub template designed to kickstart your next **TypeScript 5** project, offering an opinionated, ready-to-use monorepo structure that takes care of all the tricky configuration for you.
 
-The following [packages](https://github.com/brunotot/typescript-monorepo-starter/tree/main/packages) are implemented and at your disposal:
+The following [packages](https://github.com/brunotot/mern-monorepo-starter/tree/main/packages) are implemented and at your disposal:
 
 - [app-node-express](https://expressjs.com/) <sup>[[TS Compiler](https://www.typescriptlang.org/), [NodeJS](https://nodejs.org/en/about), [Express API](https://expressjs.com/en/starter/hello-world.html), [MongoDB](https://www.mongodb.com/company/what-is-mongodb), [Keycloak](https://www.keycloak.org/), [Railway](https://railway.app/)]</sup>
 - [app-vite-react](https://reactjs.org/) <sup>[[Vite](https://vitejs.dev/guide/why.html), [ReactJS](https://react.dev/), [Railway](https://railway.app/)]</sup>
@@ -27,7 +27,7 @@ The following [packages](https://github.com/brunotot/typescript-monorepo-starter
 
 TOC
 
-- [🧐 What is `typescript-monorepo-starter`?](#-what-is-typescript-monorepo-starter)
+- [🧐 What is `mern-monorepo-starter`?](#-what-is-mern-monorepo-starter)
 - [🔧 Prerequisites](#-prerequisites)
 - [💻 Installation](#-installation)
   - [GitHub repository setup](#github-repository-setup)
@@ -61,9 +61,11 @@ TOC
 
 2. <details><summary>Install dependencies</summary><hr>Install dependencies with <code>pnpm</code>.<pre>pnpm install</pre><hr></details>
 
-3. <details><summary>Configure environment variables</summary><hr>Configure <code>.env.development.local</code> variables for <b>app-node-express</b> (see env schema defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/setup/env.setup.ts#L13">env.setup.ts</a><hr></details>
+3. <details><summary>Configure environment variables</summary><hr>Configure <code>.env.development.local</code> variables for <b>app-node-express</b> (see env schema defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/server/env.ts#L13">@org/app-node-express/env</a>)<hr></details>
 
-4. <details><summary>Run a sample app locally</summary><hr>You can now run your <b>app-node-express</b> with:<pre>pnpm run app-node-express:dev</pre><hr></details>
+4. <details><summary>Rename project labels</summary><hr>Configure <code>.env</code> variables, located at root of monorepo (see env file defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/env.ts#L13">@org/env</a>). Afterwards, run the rename script<pre>pnpm run renameProjectLabels</pre><hr></details>
+
+5. <details><summary>Run a sample app locally</summary><hr>You can now run your <b>app-node-express</b> with:<pre>pnpm run app-node-express:dev</pre><hr></details>
 
 ## 🚢 Deploy
 
@@ -73,7 +75,7 @@ TOC
 
 2. <details><summary>Create new Railway project</summary><hr>Create a new project through Railway's dashboard and connect it to your GitHub monorepo<hr></details>
 
-3. <details><summary>Import template to your Railway project</summary><hr><ul><li>Within the project, select <code>+ Create</code> and choose <code>From Template</code></li><li>Select <b><code>typescript-monorepo-starter</code></b></li><li>Follow through with setup (and environment variables)</li></ul><hr></details>
+3. <details><summary>Import template to your Railway project</summary><hr><ul><li>Within the project, select <code>+ Create</code> and choose <code>From Template</code></li><li>Select <b><code>mern-monorepo-starter</code></b></li><li>Follow through with setup (and environment variables)</li></ul><hr></details>
 
 4. <details><summary>Deploy</summary><hr>Deploy all project changes by clicking <code>Deploy</code> button 🚀<hr></details>
 

@@ -18,9 +18,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/styled-engine-sc": "^6.0.2",
     "@mui/icons-material": "^6.0.2",
     "@mui/material": "^6.0.2",
+    "@mui/styled-engine-sc": "^6.0.2",
     "@mui/styles": "^6.0.2",
     "@org/lib-api-client": "workspace:*",
     "@org/lib-commons": "workspace:*",

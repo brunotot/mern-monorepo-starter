@@ -81,7 +81,8 @@
  */
 
 export * from "./@ts-rest";
-export * from "../ioc";
+export * from "./ioc";
+export * from "./meta";
 export * from "./keycloak";
 export * from "./mongodb";
 export * from "./winston";

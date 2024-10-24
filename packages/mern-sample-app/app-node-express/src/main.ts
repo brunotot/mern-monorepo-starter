@@ -1,7 +1,7 @@
 import path from "path";
 
-import { env } from "@org/app-node-express/env";
-import { initServer } from "@org/app-node-express/initServer";
+import { env } from "@org/app-node-express/server/env";
+import { initServer } from "@org/app-node-express/server/initServer";
 
 async function main() {
   // Initialize Express server
