@@ -52,7 +52,16 @@ console.log("Custom Configuration for Search and Replace:", customConfig);
 const directoryPath = dirname;
 
 // 2. String array specifying which file names and folder names should be excluded from the search
-const excludedFiles = ["node_modules", ".git", "dist", "docs", "tools", ".env"];
+const excludedFiles = [
+  "node_modules",
+  ".git",
+  "dist",
+  "docs",
+  "tools",
+  ".env",
+  "dump",
+  "pnpm-lock.yaml",
+];
 
 /**
  * Recursively find all files in a directory, excluding specified files and folders.
