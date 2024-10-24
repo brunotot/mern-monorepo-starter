@@ -52,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^7.0.2",
     "@vitest/coverage-v8": "^2.0.5",
+    "dotenv": "^16.4.5",
     "eslint": "^8.56.0",
     "eslint-plugin-import": "^2.30.0",
     "prettier": "^3.2.5",

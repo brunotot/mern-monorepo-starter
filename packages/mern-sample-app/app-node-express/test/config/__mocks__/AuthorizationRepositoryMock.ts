@@ -1,4 +1,4 @@
-import type { AuthorizationRepository } from "../../../dist/infrastructure/repository/UserRepository";
+import type { AuthorizationRepository } from "../../../dist/app/infrastructure/repository/UserRepository";
 import type { Keycloak } from "@org/lib-api-client";
 
 export class AuthorizationRepositoryMock implements AuthorizationRepository {

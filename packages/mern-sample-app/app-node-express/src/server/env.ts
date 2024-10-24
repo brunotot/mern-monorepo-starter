@@ -144,9 +144,9 @@ const ENVIRONMENT_VARS = z.object({
 
   /**
    * Directory paths to be scanned for IoC (Inversion of Control).
-   * @default "infrastructure"
+   * @default "app/infrastructure"
    */
-  SERVER_IOC_SCAN_DIRS: z.string().default("infrastructure").transform(Transform.ARRAY),
+  SERVER_IOC_SCAN_DIRS: z.string().default("app/infrastructure").transform(Transform.ARRAY),
 
   /**
    * The URL of the database server.

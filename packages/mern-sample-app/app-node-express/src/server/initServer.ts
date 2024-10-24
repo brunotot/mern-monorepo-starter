@@ -51,7 +51,7 @@
  * ```ts
  * const server = await initServer({
  *   scanDirs: [
- *     "infrastructure",
+ *     "app/infrastructure",
  *     "lib",
  *   ],
  * })

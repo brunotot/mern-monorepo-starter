@@ -4,7 +4,7 @@ import { UserDto, UserForm } from "../models";
 import { PaginationOptionsQueryParam } from "../utils/common-models";
 import * as errors from "../utils/error-responses";
 import * as responses from "../utils/valid-responses";
-import { routeCommonProps, zodResponse, initContract } from "./../../lib/@ts-rest";
+import { routeCommonProps, zodResponse, initContract } from "../../lib/@ts-rest";
 
 const routeDefaults = routeCommonProps({
   groupName: "Users",

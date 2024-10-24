@@ -1,6 +1,6 @@
 import { type RequestHandler } from "express";
 
-import { type MorganMiddleware } from "../../../dist/infrastructure/middleware/withMorgan";
+import { type MorganMiddleware } from "../../../dist/app/infrastructure/middleware/withMorgan";
 
 export class WithMorganMock implements MorganMiddleware {
   middleware(): RequestHandler[] {

@@ -1,4 +1,4 @@
-import type { AuthorizationMiddleware } from "../../../dist/infrastructure/middleware/withAuthorization";
+import type { AuthorizationMiddleware } from "../../../dist/app/infrastructure/middleware/withAuthorization";
 
 import { type RequestHandler } from "express";
 
