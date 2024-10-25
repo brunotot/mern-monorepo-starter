@@ -31,6 +31,8 @@ TOC
 - [🔧 Prerequisites](#-prerequisites)
 - [💻 Installation](#-installation)
   - [GitHub repository setup](#github-repository-setup)
+  - [Keycloak installation](#keycloak-installation)
+  - [Keycloak realm configuration](#keycloak-realm-configuration)
   - [Local installation](#local-installation)
 - [🚢 Deploy](#-deploy)
   - [Deploy with Railway](#deploy-with-railway)
@@ -54,6 +56,26 @@ TOC
 3. <details><summary>Configure GitHub actions</summary>Run existing actions for the first time.<ul><li>Go to <b>Actions</b> > <b>typedoc-generator.yml</b></li><li>Click on the <code>Run workflow</code> button.</li><li>Repeat the process for all <code>test-</code> prefixed workflows.</li><li>After all workflows finish, navigate to <b>Settings</b> > <b>Pages</b>.</li><li>Select the <code>gh-pages</code> branch as the deployment source.</li><li>Save changes.</li></ul></details>
 
 4. <details><summary>Configure GitHub ci</summary>Configure branch protection rules to prevent direct pushes to the  <code>main</code> branch, require pull requests for merging, and all status checks to pass before merging.<ul><li>Set the branch name pattern to <code>main</code>.</li><li>Enable the following settings:<ul><li>✅<code>Require a pull request before merging</code></li><li>✅<code>Require status checks to pass before merging</code></li><li>✅<code>Require branches to be up to date before merging</code></li></ul></li><li>Disable the setting:<ul><li>❌ <code>Require approvals</code></li></ul></li><li>Select the following workflows as required for all pull requests:<ul><li><b>test-app-node-express</b></li><li><b>test-app-vite-react</b></li><li><b>test-lib-commons</b></li><li><b>test-lib-api-client</b></li></ul></li><li>Save changes.</li></ul></details>
+
+### Keycloak installation
+
+1. <details><summary>Download Keycloak binary</summary>Download links can be found <a href="https://www.keycloak.org/downloads">here</a>.<hr></details>
+
+2. <details><summary>Unpack files to a desired destination</summary></details>
+
+3. <details><summary>Run Keycloak in dev mode</summary><pre>sh [PATH_TO_KC]/bin/kc.sh start-dev</pre><hr></details>
+
+### Keycloak realm configuration
+
+1. <details><summary>Add admin user (realm-level)</summary><ul><li>Open <a href="http://localhost:8080">http://localhost:8080</a> to access Keycloak admin GUI</li><li>Enter your admin user credentials (which you use for your future logins)</li><li>Save and login to Keycloak admin GUI</li></ul></details>
+
+2. <details><summary>Create a client for your app</summary><ul><li>Navigate to <strong>Clients > Create client</strong></li><li>Enter client data</li><ul><li>Client type: <strong>OpenID Connect</strong></li><li>Client id: <strong>app-vite-react</strong></li><li>Client authentication: <strong>Off</strong></li><li>Authorization: <strong>Off</strong></li><li>Authentication flow: <strong>Standard flow, Implicit flow & Direct access grants</strong></li><li>Valid redirect URIs: <strong>*</strong></li><li>Valid post logout redirect URIs: <strong>*</strong></li><li>Web origins: <strong>*</strong></li></ul><li>Save client</li></ul><hr></details>
+
+3. <details><summary>Add roles to your app client</summary><ul><li>Open <strong>app-vite-react</strong> client</li><li>Navigate to <strong>Roles</strong> tab</li><li>Click on <strong>Create role</strong></li><li>Add the following roles: <ul><li><strong>avr-admin</strong></li><li><strong>avr-user</strong></li></ul></li></ul><hr></details>
+
+4. <details><summary>Set role <strong>avr-admin</strong> on <strong>admin</strong> user</summary><ul><li>Open <strong>admin</strong> user details</li><li>Navigate to <strong>Role mapping</strong> tab</li><li>Click on <strong>Assign role</strong> and select <strong>avr-admin</strong> role</li></ul><hr></details>
+
+5. <details><summary>Configure <strong>admin-cli</strong> client</summary><ul><li>Open <strong>admin-cli</strong> client details</li><li>On <strong>Settings</strong> tab choose the same options as defined in 2nd step with exception of setting Client authentication to <strong>On</strong> and also checking the <strong>Service accounts roles</strong> checkbox</li><li>On <strong>Credentials</strong> tab choose Client Authenticator: <strong>Client Id and Secret</strong> and generate a <strong>Client Secret</strong></li><li>Copy the secret, you will put it in project's .env file</li><li>Save changes</li></ul><hr></details>
 
 ### Local installation
 

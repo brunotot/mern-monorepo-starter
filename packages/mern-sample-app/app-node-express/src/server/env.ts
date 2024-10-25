@@ -150,7 +150,7 @@ const ENVIRONMENT_VARS = z.object({
   /**
    * The URL of the database server.
    */
-  DATABASE_URL: z.string(),
+  DATABASE_URL: z.string().optional().transform(v => v!),
 
   /**
    * The name of the database to use.
