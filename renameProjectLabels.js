@@ -43,9 +43,6 @@ const customConfig = {
   ghAuthorName: envVariables.GH_AUTHOR_NAME || "Bruno Tot",
   customAppId: envVariables.CUSTOM_APP_ID || "mern-sample-app",
   customAppName: envVariables.CUSTOM_APP_NAME || "MERN Sample App",
-  keycloakUrl: envVariables.KEYCLOAK_URL || "https://keycloak-production-86f5.up.railway.app",
-  backendUrl:
-    envVariables.BACKEND_URL || "https://monorepo-mern-railway-starter-backend.up.railway.app",
 };
 
 // Example usage of the customConfig object
@@ -129,8 +126,6 @@ const main = () => {
       "Bruno Tot": customConfig.ghAuthorName,
       "mern-sample-app": customConfig.customAppId,
       "MERN Sample App": customConfig.customAppName,
-      "https://keycloak-production-86f5.up.railway.app": customConfig.keycloakUrl,
-      "https://monorepo-mern-railway-starter-backend.up.railway.app": customConfig.backendUrl,
     });
   });
 };

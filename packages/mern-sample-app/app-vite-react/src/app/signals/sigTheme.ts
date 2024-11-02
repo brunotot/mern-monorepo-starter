@@ -59,7 +59,7 @@ export const sigTheme = computed(() => {
   return createTheme({
     ...rest,
     shape: {
-      borderRadius: rest.shape?.borderRadius ?? 12,
+      borderRadius: rest.shape?.borderRadius ?? 8,
     },
     typography: {
       ...rest.typography,

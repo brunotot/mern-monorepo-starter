@@ -83,11 +83,11 @@ TOC
 
 2. <details><summary>Install dependencies</summary><hr>Install dependencies with <code>pnpm</code>.<pre>pnpm install</pre><hr></details>
 
-3. <details><summary>Configure environment variables</summary><hr>Configure <code>.env.development.local</code> variables for <b>app-node-express</b> (see env schema defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/server/env.ts#L13">@org/app-node-express/env</a>)<hr></details>
+3. <details><summary>Configure environment variables</summary><hr>Configure <code>.env.development.local</code> variables for <b>app-node-express</b> (see full env schema defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/packages/app-node-express/src/server/env.ts#L13">@org/app-node-express/env</a>)<table><tr><td>SERVER_SESSION_SECRET</td><td>Your server session secret string</td></tr><tr><td>KEYCLOAK_ADMIN_CLI_SECRET</td><td>Your Keycloak admin-cli secret</td></tr></table><hr></details>
 
-4. <details><summary>Rename project labels</summary><hr>Configure <code>.env</code> variables, located at root of monorepo (see env file defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/env.ts#L13">@org/env</a>). Afterwards, run the rename script<pre>pnpm run renameProjectLabels</pre><hr></details>
+4. <details><summary>Run a sample app locally</summary><hr>You can now run your <b>app-node-express</b> with:<pre>pnpm run app-node-express:dev</pre><hr></details>
 
-5. <details><summary>Run a sample app locally</summary><hr>You can now run your <b>app-node-express</b> with:<pre>pnpm run app-node-express:dev</pre><hr></details>
+<!--4. <details><summary>Rename project labels</summary><hr>Configure <code>.env</code> variables, located at root of monorepo (see env file defined at <a href="https://github.com/brunotot/mern-monorepo-starter/blob/main/env.ts#L13">@org/env</a>). Afterwards, run the rename script<pre>pnpm run renameProjectLabels</pre><hr></details>-->
 
 ## 🚢 Deploy
 

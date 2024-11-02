@@ -14,13 +14,13 @@ type NavigationRouteUiVisible = {
 };
 
 export type NavigationRouteUi = {
+  path: string;
   secure?: (user: KeycloakUser | null) => boolean;
 } & (NavigationRouteUiVisible | NavigationRouteUiHidden);
 
 // prettier-ignore
 export type NavigationRouteItem = RouteObject & NavigationRouteUi & {
   variant: "single";
-  path: string;
   Component: NonNullable<RouteObject["Component"]>;
 };
 

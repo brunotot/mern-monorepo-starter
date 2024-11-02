@@ -21,6 +21,16 @@ export class UserController {
     };
   }
 
+  @contract(contracts.User.getFormByUsername, withRouteSecured(Role.Enum["avr-admin"]))
+  async getFormByUsername(
+    payload: RouteInput<typeof contracts.User.getFormByUsername>,
+  ): RouteOutput<typeof contracts.User.getFormByUsername> {
+    return {
+      status: 200,
+      body: await this.userService.getFormByUsername(payload.query.username),
+    };
+  }
+
   @contract(contracts.User.findAll, withRouteSecured(Role.Enum["avr-admin"]))
   async findAll(): RouteOutput<typeof contracts.User.findAll> {
     return {
@@ -48,6 +58,16 @@ export class UserController {
     return {
       status: 200,
       body: await this.userService.createUser(payload.body),
+    };
+  }
+
+  @contract(contracts.User.updateUser, withRouteSecured(Role.Enum["avr-admin"]))
+  async updateUser(
+    payload: RouteInput<typeof contracts.User.updateUser>,
+  ): RouteOutput<typeof contracts.User.updateUser> {
+    return {
+      status: 200,
+      body: await this.userService.updateUser(payload.body),
     };
   }
 

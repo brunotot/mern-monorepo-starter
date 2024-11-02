@@ -47,6 +47,26 @@ export const userContract = initContract().router({
       500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
     },
   },
+  getFormByUsername: {
+    ...routeDefaults({
+      path: "/getFormByUsername",
+      secured: true,
+      method: "GET",
+    }),
+    summary: "Find user form by username",
+    description:
+      "Finds a single user form whose username matches the one provided in 'username' query parameter.",
+    query: z.object({
+      username: z.string().openapi({ example: "admin" }),
+    }),
+    responses: {
+      200: zodResponse(UserForm, "Single user"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      404: zodResponse(errors.RestErrorResponse404, "User not found"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
+    },
+  },
   findAllPaginated: {
     ...routeDefaults({
       path: "/findAllPaginated",
@@ -76,6 +96,22 @@ export const userContract = initContract().router({
     body: UserForm,
     responses: {
       200: zodResponse(UserDto, "Created User"),
+      401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
+      403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
+      500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),
+    },
+  },
+  updateUser: {
+    ...routeDefaults({
+      path: "/updateUser",
+      secured: true,
+      method: "PUT",
+    }),
+    summary: "Updates user",
+    description: `Updates the user`,
+    body: UserForm,
+    responses: {
+      200: zodResponse(UserDto, "Updated User"),
       401: zodResponse(errors.RestErrorResponse401, "Unauthorized"),
       403: zodResponse(errors.RestErrorResponse403, "Forbidden"),
       500: zodResponse(errors.RestErrorResponse500, "Unhandled server error"),

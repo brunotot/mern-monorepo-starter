@@ -1,108 +1,139 @@
-import {
-  TextField,
-  Button,
-  Box,
-  Autocomplete,
-  MenuItem,
-  Chip,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import { type Role, ROLE_LIST, type UserForm as UserFormModel } from "@org/lib-api-client";
-import React from "react";
+import * as mui from "@mui/material";
+import { useZodForm, type FormProps } from "@org/app-vite-react/lib/react-hook-form";
+import { ROLE_LIST, UserForm as UserFormModel } from "@org/lib-api-client";
+import { Controller } from "react-hook-form";
 
-export type UserFormProps = {
-  value: UserFormModel;
-  onChange: (newState: UserFormModel) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+export type UserFormProps = FormProps<UserFormModel> & {
+  disableUsername?: boolean;
+  disablePassword?: boolean;
 };
 
-export function UserForm({ value, onChange, onSubmit }: UserFormProps) {
-  const mutate = (diff: Partial<UserFormModel>) => {
-    onChange({
-      ...value,
-      ...diff,
-      enabled: true,
-    });
-  };
+export function UserForm({
+  defaultValue,
+  onSubmit,
+  disablePassword = false,
+  disableUsername = false,
+}: UserFormProps) {
+  const { control, handleSubmit, errors } = useZodForm({
+    schema: UserFormModel,
+    defaultValue,
+  });
 
   return (
-    <Box
+    <mui.Box
       component="form"
-      onSubmit={onSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, width: "300px", margin: "0 auto" }}
+      onSubmit={handleSubmit(onSubmit)}
+      display="flex"
+      flexDirection="column"
+      gap={1.5}
+      width={300}
+      margin="0 auto"
     >
-      <TextField
-        label="Username"
-        value={value.username}
-        onChange={e => mutate({ username: e.target.value })}
-        required
-      />
-      {/* Write code for checkbox on has credentials */}
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={value.hasCredentials}
-            onChange={event => {
-              mutate({ hasCredentials: event.target.checked });
-            }}
+      <Controller
+        control={control}
+        name="username"
+        render={({ field }) => (
+          <mui.TextField
+            {...field}
+            required
+            disabled={disableUsername}
+            label="Username"
+            error={!!errors?.username?.message}
+            helperText={errors?.username?.message}
           />
-        }
-        label="Set password"
+        )}
       />
 
-      {value.hasCredentials && (
-        <TextField
-          label="Password"
-          type="password"
-          value={value.password}
-          onChange={e => mutate({ password: e.target.value })}
-          required
+      {!disablePassword && (
+        <Controller
+          control={control}
+          name="password"
+          render={({ field }) => (
+            <mui.TextField
+              {...field}
+              required
+              label="Password"
+              type="password"
+              error={!!errors?.password?.message}
+              helperText={errors?.password?.message}
+            />
+          )}
         />
       )}
-      <TextField
-        label="First name"
-        value={value.firstName}
-        onChange={e => mutate({ firstName: e.target.value })}
-        required
-      />
-      <TextField
-        label="Last name"
-        value={value.lastName}
-        onChange={e => mutate({ lastName: e.target.value })}
-        required
-      />
-      <TextField
-        label="Email"
-        value={value.email}
-        onChange={e => mutate({ email: e.target.value })}
-        required
-      />
-      <Autocomplete
-        multiple
-        id="tags-outlined"
-        options={ROLE_LIST}
-        getOptionLabel={option => option}
-        onChange={(_, newValue) => mutate({ roles: newValue as Role[] })}
-        value={value.roles}
-        disableCloseOnSelect
-        filterSelectedOptions
-        renderOption={(props, option) => (
-          <MenuItem {...props} key={option}>
-            {option}
-          </MenuItem>
+
+      <Controller
+        control={control}
+        name="firstName"
+        render={({ field }) => (
+          <mui.TextField
+            {...field}
+            label="First name"
+            error={!!errors?.firstName?.message}
+            helperText={errors?.firstName?.message}
+          />
         )}
-        renderInput={params => <TextField {...params} label="Realm roles" placeholder="Roles" />}
-        renderTags={(tagValue, getTagProps) =>
-          tagValue.map((option, index) => (
-            <Chip {...getTagProps({ index })} key={option} label={option} />
-          ))
-        }
       />
-      <Button type="submit" variant="contained" color="primary">
+
+      <Controller
+        control={control}
+        name="lastName"
+        render={({ field }) => (
+          <mui.TextField
+            {...field}
+            label="Last name"
+            helperText={errors?.lastName?.message}
+            error={!!errors?.lastName?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="email"
+        render={({ field }) => (
+          <mui.TextField
+            {...field}
+            label="Email"
+            helperText={errors?.email?.message}
+            error={!!errors?.email?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="roles"
+        render={({ field }) => (
+          <mui.Autocomplete
+            {...field}
+            multiple
+            options={ROLE_LIST}
+            getOptionLabel={option => option}
+            disableCloseOnSelect
+            value={field.value}
+            onChange={(_, value) => field.onChange(value)}
+            filterSelectedOptions
+            renderOption={(props, option) => (
+              <mui.MenuItem {...props} key={option}>
+                {option}
+              </mui.MenuItem>
+            )}
+            renderInput={params => (
+              <mui.TextField
+                {...params}
+                label="Realm roles"
+                placeholder="Roles"
+                error={!!errors?.roles?.message}
+                helperText={errors?.roles?.message}
+              />
+            )}
+          />
+        )}
+      />
+
+      <mui.Button type="submit" variant="contained" color="primary">
         Submit
-      </Button>
-    </Box>
+      </mui.Button>
+    </mui.Box>
   );
 }

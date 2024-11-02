@@ -1,44 +1,48 @@
 import type { UserForm as UserFormModel } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
-import { Add } from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { Button } from "@mui/material";
 import { UserForm } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Sidenav } from "./Sidenav";
 
 export type UserCreateFormButtonProps = {
   afterUpdate?: () => void;
 };
 
-const DEFAULT_FORM_STATE: UserFormModel = {
+export const DEFAULT_USER_FORM_STATE: UserFormModel = {
   id: "",
   username: "",
-  enabled: true,
+  password: "",
   roles: ["avr-user"],
-  hasCredentials: true,
+  email: "",
+  firstName: "",
+  lastName: "",
+  enabled: true,
 };
 
 export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps) {
-  const [user, setUser] = useState<UserFormModel>(DEFAULT_FORM_STATE);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (model: UserFormModel) => {
     // Handle form submission
     // eslint-disable-next-line no-console
-    console.log("Form submitted:", user);
+    console.log("Form submitted:", model);
     await tsrClient.User.createUser({
-      body: user,
+      body: model,
     });
-    setUser(DEFAULT_FORM_STATE);
+    // setUser(DEFAULT_FORM_STATE);
     setSidebarOpen(false);
     afterUpdate?.();
   };
 
-  const theme = mui.useTheme();
+  //const theme = mui.useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDrawerOpen = () => {
     setSidebarOpen(true);
   };
@@ -47,37 +51,18 @@ export function UserCreateFormButton({ afterUpdate }: UserCreateFormButtonProps)
     setSidebarOpen(false);
   };
 
+  const onAddUser = () => {
+    navigate("/admin/users/add");
+  };
+
   return (
     <>
-      <Button variant="contained" startIcon={<Add />} color="success" onClick={handleDrawerOpen}>
+      <mui.Button variant="contained" startIcon={<icons.Add />} color="success" onClick={onAddUser}>
         Add User
-      </Button>
-      <mui.Drawer
-        sx={{
-          width: 700,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: 700,
-            boxSizing: "border-box",
-            maxWidth: "100%",
-          },
-        }}
-        //variant="persistent"
-        anchor="right"
-        onClose={handleDrawerClose}
-        open={sidebarOpen}
-      >
-        <mui.IconButton onClick={handleDrawerClose}>
-          {theme.direction === "ltr" ? <icons.ChevronLeft /> : <icons.ChevronRight />}
-        </mui.IconButton>
-
-        <UserForm value={user} onChange={setUser} onSubmit={handleSubmit} />
-      </mui.Drawer>
-      {/*<Dialog open={open} onClose={onClose}>
-        <DialogContent>
-          <UserForm value={user} onChange={setUser} onSubmit={handleSubmit} />
-        </DialogContent>
-      </Dialog>*/}
+      </mui.Button>
+      <Sidenav open={sidebarOpen} onClose={handleDrawerClose}>
+        <UserForm defaultValue={DEFAULT_USER_FORM_STATE} onSubmit={handleSubmit} />
+      </Sidenav>
     </>
   );
 }

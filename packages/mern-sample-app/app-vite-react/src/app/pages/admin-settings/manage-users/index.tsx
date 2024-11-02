@@ -1,19 +1,25 @@
-import type { PaginationOptions, UserDto } from "@org/lib-api-client";
+import type { PaginationOptions, UserDto, UserForm as UserFormModel } from "@org/lib-api-client";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 import {
   DatatableContainer,
-  ServerDatatable,
+  //ServerDatatable,
   DEFAULT_PAGINATION_OPTIONS,
+  ClientDatatable,
 } from "@org/app-vite-react/app/components/Datatable";
 import {
   FixedBadge,
   //ResponsiveTable,
   UserCreateFormButton,
+  UserForm,
 } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
+import { useConfirm } from "material-ui-confirm";
 import React, { useState } from "react";
+
+import { Sidenav } from "./components/Sidenav";
+import { useNavigate } from "react-router-dom";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -26,11 +32,40 @@ export default function ManageUsersPage() {
     queryKey: ["User.findAll"],
     staleTime: 1000,
   });
+  const confirm = useConfirm();
+  const navigate = useNavigate();
 
   const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
   });
+
+  const [selectedUsername, setSelectedUsername] = React.useState<string | undefined>(undefined);
+  const [selectedUserForm, setSelectedUserForm] = React.useState<UserFormModel | undefined>(
+    undefined,
+  );
+  React.useEffect(() => {
+    const fetchUserForm = async () => {
+      if (selectedUsername) {
+        const res = await tsrClient.User.getFormByUsername({
+          query: { username: selectedUsername },
+        });
+        if (res.status !== 200) throw new Error("Failed to fetch user form.");
+        setSelectedUserForm(res.body);
+      }
+    };
+    fetchUserForm();
+  }, [selectedUsername]);
+
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setSidebarOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setSidebarOpen(false);
+  };
 
   /*const fetchUsers = useCallback(async () => {
     const query = buildPaginationQueryParams(paginationOptions);
@@ -39,9 +74,17 @@ export default function ManageUsersPage() {
     setUserResponse(users.body);
   }, [paginationOptions]);*/
 
-  /*useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);*/
+  const handleSubmit = async (model: UserFormModel) => {
+    // Handle form submission
+    // eslint-disable-next-line no-console
+    console.log("Form submitted:", model);
+    await tsrClient.User.updateUser({
+      body: model,
+    });
+    // setUser(DEFAULT_FORM_STATE);
+    setSidebarOpen(false);
+    refetch();
+  };
 
   const badgeContent: number = 6;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -54,27 +97,56 @@ export default function ManageUsersPage() {
   };
 
   if (isPending) {
-    return <div>Loading on home page...</div>;
+    return <></>;
   }
 
   if (data?.status !== 200) {
     return <div>Error</div>;
   }
 
-  const handleDelete = async (id: string | undefined) => {
-    await tsrClient.User.deleteUser({
-      query: {
-        id: id!,
+  const handleDelete = async (user: UserDto) => {
+    confirm({
+      description: `This will permanently delete user "${user.username}".`,
+      cancellationText: "Cancel",
+      cancellationButtonProps: {
+        color: "inherit",
       },
-    });
-    refetch();
+      confirmationText: "Delete",
+      confirmationButtonProps: {
+        color: "error",
+        variant: "contained",
+      },
+    })
+      .then(async () => {
+        await tsrClient.User.deleteUser({
+          query: {
+            id: user.id!,
+          },
+        });
+        refetch();
+      })
+      .catch(() => {
+        //console.log("Deletion cancelled.")
+      });
   };
+
+  async function handleEdit(user: UserDto) {
+    //handleDrawerOpen();
+    //setSelectedUsername(user.username);
+    navigate(`/admin/users/${user.username}/edit`);
+  }
 
   return (
     <>
       {/*<mui.Typography variant="h5">Manage users</mui.Typography>*/}
 
       {/*<ResponsiveTable />*/}
+
+      <Sidenav open={sidebarOpen} onClose={handleDrawerClose}>
+        <React.Fragment key={selectedUserForm?.id}>
+          <UserForm defaultValue={selectedUserForm!} onSubmit={handleSubmit} disablePassword />
+        </React.Fragment>
+      </Sidenav>
 
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
@@ -165,30 +237,44 @@ export default function ManageUsersPage() {
           </mui.Menu>
           <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
-        <ServerDatatable<UserDto>
+        <ClientDatatable<UserDto>
           data={data.body}
-          count={data.body.length}
-          keyMapper={user => user.username}
-          paginationOptions={paginationOptions}
-          onPaginationOptionsChange={paginationOptions => setPaginationOptions(paginationOptions)}
+          //count={data.body.length}
+          //keyMapper={user => user.username}
+          //paginationOptions={paginationOptions}
+          //onPaginationOptionsChange={paginationOptions => setPaginationOptions(paginationOptions)}
           columns={[
             {
               id: "username",
               renderHeader: () => "Username",
               renderBody: user => user.username,
-              sort: "username",
+              sort: (o1, o2) => {
+                return (o1.username ?? "").localeCompare(o2.username ?? "");
+              },
+            },
+            {
+              id: "Email",
+              renderHeader: () => "Email",
+              renderBody: user => user.email || "-",
+              sort: (o1, o2) => {
+                return (o1.email ?? "").localeCompare(o2.email ?? "");
+              },
             },
             {
               id: "First name",
               renderHeader: () => "First name",
               renderBody: user => user.firstName,
-              sort: "firstName",
+              sort: (o1, o2) => {
+                return (o1.firstName ?? "").localeCompare(o2.firstName ?? "");
+              },
             },
             {
               id: "Last name",
               renderHeader: () => "Last name",
               renderBody: user => user.lastName,
-              sort: "lastName",
+              sort: (o1, o2) => {
+                return (o1.lastName ?? "").localeCompare(o2.lastName ?? "");
+              },
             },
             {
               id: "roles",
@@ -199,14 +285,24 @@ export default function ManageUsersPage() {
               id: "password",
               renderHeader: () => "Password",
               renderBody: user => (user.hasCredentials ? "Yes" : "No"),
+              sort: (o1, o2) => {
+                return (o1.hasCredentials ? "Yes" : "No").localeCompare(
+                  o2.hasCredentials ? "Yes" : "No",
+                );
+              },
             },
             {
               id: "actions",
               renderHeader: () => "Actions",
               renderBody: user => (
-                <mui.Button variant="contained" color="error" onClick={() => handleDelete(user.id)}>
-                  Delete
-                </mui.Button>
+                <mui.Box display="flex" alignItems="center" gap={1}>
+                  <mui.Button variant="contained" color="error" onClick={() => handleDelete(user)}>
+                    Delete
+                  </mui.Button>
+                  <mui.Button variant="contained" color="info" onClick={() => handleEdit(user)}>
+                    Edit
+                  </mui.Button>
+                </mui.Box>
               ),
             },
           ]}

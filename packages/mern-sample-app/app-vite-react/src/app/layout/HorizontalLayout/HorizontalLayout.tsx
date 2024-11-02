@@ -13,7 +13,7 @@ import { ButtonHoverMenu, type OriginPosition } from "./ButtonHoverMenu";
 import { isAnyRouteActive } from "../Layout";
 
 export type HorizontalNavItemProps = {
-  item: RouteTypes.NavigationRoute;
+  item: RouteTypes.NavigationRoute & { accumulatedPath: string };
   dropdownPosition?: OriginPosition;
 };
 
@@ -34,7 +34,17 @@ function HorizontalNavItem({
   const borderRadius = isMainNavButton ? 1 : undefined;
 
   if (item.hidden === true) {
-    return <></>;
+    if (item.variant === "single") return <></>;
+    return (
+      <Fragment>
+        {children.map((subItem, subIndex) => (
+          <HorizontalNavItem
+            key={subIndex}
+            item={{ ...subItem, accumulatedPath: `${item.accumulatedPath}/${subItem.path}` }}
+          />
+        ))}
+      </Fragment>
+    );
   }
 
   if (item.variant !== "single") {
@@ -70,7 +80,7 @@ function HorizontalNavItem({
       >
         {children.map((child, index) => (
           <HorizontalNavItem
-            item={child}
+            item={{ ...child, accumulatedPath: `${item.accumulatedPath}/${child.path}` }}
             key={index}
             dropdownPosition={{
               anchorX: "right",
@@ -84,7 +94,17 @@ function HorizontalNavItem({
     );
   }
 
-  const isSelected = location.pathname === item.path;
+  const removeTrailingslash = (str: string) => {
+    if (str === "/") return str;
+    return str.endsWith("/") ? str.slice(0, -1) : str;
+  };
+  const path = removeTrailingslash(
+    item.accumulatedPath.startsWith("/") ? item.accumulatedPath : `/${item.accumulatedPath}`,
+  );
+  const locationPathname = removeTrailingslash(
+    location.pathname.startsWith("/") ? location.pathname : `/${location.pathname}`,
+  );
+  const isSelected = path === "/" ? locationPathname === path : locationPathname.startsWith(path);
 
   return (
     <mui.ListItemButton
@@ -131,7 +151,11 @@ export function HorizontalLayout({
               isAuthorized = item.secure(sigUser.value);
             }
             return (
-              <Fragment key={index}>{isAuthorized && <HorizontalNavItem item={item} />}</Fragment>
+              <Fragment key={index}>
+                {isAuthorized && (
+                  <HorizontalNavItem item={{ ...item, accumulatedPath: item.path }} />
+                )}
+              </Fragment>
             );
           })}
         </mui.List>

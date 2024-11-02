@@ -101,7 +101,8 @@ export function KeycloakProvider({ children }: PropsWithChildren) {
       }}
     >
       <KeycloakImpl>
-        <StrictMode>{children}</StrictMode>
+        {/*<StrictMode>{children}</StrictMode>*/}
+        {children}
       </KeycloakImpl>
     </ReactKeycloakProvider>
   );

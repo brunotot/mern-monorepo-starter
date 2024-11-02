@@ -19,7 +19,7 @@ const IOC_KEY = "withMorgan";
 @inject(IOC_KEY)
 export class WithMorgan implements MorganMiddleware {
   middleware(): RequestHandler[] {
-    return [morgan("combined", { stream: createStream(log) })];
+    return [morgan("dev", { stream: createStream(log) })];
   }
 }
 

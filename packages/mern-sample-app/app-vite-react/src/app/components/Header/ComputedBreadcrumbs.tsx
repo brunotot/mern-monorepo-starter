@@ -1,12 +1,33 @@
+import type { TODO } from "@org/lib-commons";
+
+import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { type UIMatch, useMatches } from "react-router-dom";
 
-function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): string[] {
-  const crumbs: string[] = [];
+type Crumb = {
+  match: UIMatch<unknown, unknown>;
+  label: string;
+};
+
+function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): /*Crumb[]*/ TODO[] {
+  const crumbs: Crumb[] = [];
+
+  console.log(matches);
 
   for (const match of matches) {
-    if (
+    const handle: TODO = match.handle;
+    console.log(match);
+
+    if (handle?.crumb) {
+      crumbs.push({
+        match: match,
+        label: handle?.crumb?.(match.params) || undefined,
+      });
+    }
+
+    /*if (
       "handle" in match &&
       match.handle &&
       typeof match.handle === "object" &&
@@ -14,8 +35,11 @@ function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): string[] {
       match.handle.crumb &&
       typeof match.handle.crumb === "function"
     ) {
-      crumbs.push(match.handle.crumb(match.data));
-    }
+      crumbs.push({
+        match: match,
+        label: handle?.crumb?.(match.params) || undefined,
+      });
+    }*/
   }
 
   return crumbs;
@@ -56,12 +80,13 @@ export function ComputedBreadcrumbs() {
               maxWidth: "65vw",
             }}
           >
-            {crumbs[crumbs.length - 1]}
+            {crumbs[crumbs.length - 1].label}
           </mui.Box>
         </mui.Button>
         <mui.Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
           <mui.Box paddingInline={2}>
             <mui.Breadcrumbs
+              separator={<icons.NavigateNext fontSize="small" />}
               aria-label="breadcrumb"
               sx={{
                 "& .MuiBreadcrumbs-ol .MuiBreadcrumbs-li:first-child": {
@@ -75,11 +100,12 @@ export function ComputedBreadcrumbs() {
               {crumbs.map((crumb, index) => (
                 <mui.Link
                   key={index}
+                  component={RouterLink}
+                  to={crumb.match.handle?.disableLink === true ? "#" : crumb.match.pathname}
                   underline="hover"
                   color={index === crumbs.length - 1 ? "text.primary" : "inherit"}
-                  href="/"
                 >
-                  {crumb}
+                  {crumb.label}
                 </mui.Link>
               ))}
             </mui.Breadcrumbs>
@@ -90,15 +116,16 @@ export function ComputedBreadcrumbs() {
   }
 
   return (
-    <mui.Breadcrumbs aria-label="breadcrumb" data-driver="breadcrumbs">
+    <mui.Breadcrumbs aria-label="breadcrumb" data-driver="breadcrumbs" separator={<icons.NavigateNext fontSize="small" />}>
       {crumbs.map((crumb, index) => (
         <mui.Link
           key={index}
+          component={RouterLink}
+          to={crumb.match.handle?.disableLink === true ? "#" : crumb.match.pathname}
           underline="hover"
           color={index === crumbs.length - 1 ? "text.primary" : "inherit"}
-          href="/"
         >
-          {crumb}
+          {crumb.label}
         </mui.Link>
       ))}
     </mui.Breadcrumbs>

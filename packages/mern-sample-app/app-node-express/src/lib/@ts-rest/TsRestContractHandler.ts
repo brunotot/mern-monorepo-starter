@@ -7,7 +7,10 @@ import type { AppRoute } from "@org/lib-api-client";
 
 import { IocRegistry } from "@org/app-node-express/lib/ioc";
 import { MongoDatabaseService } from "@org/app-node-express/lib/mongodb";
+import { log } from "@org/app-node-express/lib/winston";
 import { getTypedError } from "@org/lib-api-client";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { type TODO } from "@org/lib-commons";
 
 export type ContractEndpointProps<Route extends AppRoute, This, Fn extends RouteHandler<Route>> = {
   contract: Route;
@@ -30,7 +33,8 @@ export function createContractHandler<
       const result = await target.call(container, data as RouteInput<Route>);
       await databaseService.commitTransaction(session);
       return result;
-    } catch (error: unknown) {
+    } catch (error: TODO) {
+      log.error(error.stack);
       await databaseService.rollbackTransaction(session);
       const typedError = getTypedError(error);
       return { status: typedError.content.status, body: typedError.content };

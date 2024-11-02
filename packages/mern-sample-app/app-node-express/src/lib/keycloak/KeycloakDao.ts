@@ -17,20 +17,7 @@ export class KeycloakDao {
     this.initRoles();
   }
 
-  private async initRoles() {
-    const res = await this.get<{ id: string; name: string }[]>(
-      `/clients/${KeycloakDao.KC_CLIENT_ID}/roles`,
-    );
-    this.ROLES = res.reduce(
-      (acc, role) => {
-        acc[role.name] = role.id;
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
-  }
-
-  protected async put<T>(path: string, body: Partial<T>): Promise<T> {
+  public async put<T>(path: string, body: Partial<T>): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
     const response = await this.doFetch(endpoint, {
@@ -45,18 +32,7 @@ export class KeycloakDao {
     return body as T;
   }
 
-  private async doFetch(endpoint: string, config: RequestInit): Promise<Response> {
-    let response: Response;
-    try {
-      response = await fetch(endpoint, config);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      throw new Error("Keycloak server is not available");
-    }
-    return response;
-  }
-
-  protected async get<T>(path: string): Promise<T> {
+  public async get<T>(path: string): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
     const response = await this.doFetch(endpoint, config);
@@ -65,7 +41,7 @@ export class KeycloakDao {
     return jsonResponse;
   }
 
-  protected async post<T>(path: string, body: T): Promise<T> {
+  public async post<T>(path: string, body: T): Promise<T> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
     const response = await this.doFetch(endpoint, {
@@ -80,7 +56,7 @@ export class KeycloakDao {
     return body;
   }
 
-  protected async delete(path: string): Promise<void> {
+  public async delete(path: string): Promise<void> {
     const endpoint = this.endpoint(path);
     const config = await this.buildConfig();
     const response = await this.doFetch(endpoint, {
@@ -88,6 +64,30 @@ export class KeycloakDao {
       method: "DELETE",
     });
     if (!response.ok) throw new Error(`Failed to DELETE data: ${response.statusText}`);
+  }
+
+  private async doFetch(endpoint: string, config: RequestInit): Promise<Response> {
+    let response: Response;
+    try {
+      response = await fetch(endpoint, config);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error("Keycloak server is not available");
+    }
+    return response;
+  }
+
+  private async initRoles() {
+    const res = await this.get<{ id: string; name: string }[]>(
+      `/clients/${KeycloakDao.KC_CLIENT_ID}/roles`,
+    );
+    this.ROLES = res.reduce(
+      (acc, role) => {
+        acc[role.name] = role.id;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   }
 
   private endpoint(path: string): string {

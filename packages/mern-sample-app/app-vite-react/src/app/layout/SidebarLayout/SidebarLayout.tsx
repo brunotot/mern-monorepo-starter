@@ -11,7 +11,7 @@ import { Fragment } from "react/jsx-runtime";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export type SidebarNavItemProps = {
-  item: RouteTypes.NavigationRoute;
+  item: RouteTypes.NavigationRoute & { accumulatedPath: string };
   indent?: number;
 };
 
@@ -27,7 +27,18 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
   };
 
   if (item.hidden === true) {
-    return <></>;
+    if (item.variant === "single") return <></>;
+    return (
+      <Fragment>
+        {children.map((subItem, subIndex) => (
+          <SidebarNavItem
+            key={subIndex}
+            item={{ ...subItem, accumulatedPath: `${item.accumulatedPath}/${subItem.path}` }}
+            indent={indent}
+          />
+        ))}
+      </Fragment>
+    );
   }
 
   if (item.variant === "group") {
@@ -45,7 +56,11 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
           {item.icon} {item.label(t)}
         </Divider>
         {children.map((subItem, subIndex) => (
-          <SidebarNavItem key={subIndex} item={subItem} indent={indent} />
+          <SidebarNavItem
+            key={subIndex}
+            item={{ ...subItem, accumulatedPath: `${item.accumulatedPath}/${subItem.path}` }}
+            indent={indent}
+          />
         ))}
       </Fragment>
     );
@@ -71,14 +86,28 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
         </ListItemButton>
         <Collapse in={open} timeout="auto" unmountOnExit>
           {children.map((subItem, subIndex) => (
-            <SidebarNavItem key={subIndex} item={subItem} indent={indent + 1} />
+            <SidebarNavItem
+              key={subIndex}
+              item={{ ...subItem, accumulatedPath: `${item.accumulatedPath}/${subItem.path}` }}
+              indent={indent + 1}
+            />
           ))}
         </Collapse>
       </Fragment>
     );
   }
 
-  const path = (item as RouteTypes.NavigationRouteItem).path;
+  const removeTrailingslash = (str: string) => {
+    if (str === "/") return str;
+    return str.endsWith("/") ? str.slice(0, -1) : str;
+  };
+  const path = removeTrailingslash(
+    item.accumulatedPath.startsWith("/") ? item.accumulatedPath : `/${item.accumulatedPath}`,
+  );
+  const locationPathname = removeTrailingslash(
+    location.pathname.startsWith("/") ? location.pathname : `/${location.pathname}`,
+  );
+  const isSelected = path === "/" ? locationPathname === path : locationPathname.startsWith(path);
 
   return (
     <ListItemButton
@@ -86,7 +115,7 @@ function SidebarNavItem({ item, indent = 0 }: SidebarNavItemProps) {
         paddingLeft: `calc(1.5rem + ${indent}rem)`,
         borderRadius: "0.5rem",
       }}
-      selected={location.pathname === path}
+      selected={isSelected}
       onClick={() => navigate(path)}
     >
       {item.icon && <ListItemIcon sx={{ minWidth: 24 }}>{item.icon}</ListItemIcon>}
@@ -109,7 +138,11 @@ export function SidebarLayout({ gutterTop = false }: { gutterTop?: boolean }) {
         if (item.secure) {
           isAuthorized = item.secure(sigUser.value);
         }
-        return <Fragment key={index}>{isAuthorized && <SidebarNavItem item={item} />}</Fragment>;
+        return (
+          <Fragment key={index}>
+            {isAuthorized && <SidebarNavItem item={{ ...item, accumulatedPath: item.path }} />}
+          </Fragment>
+        );
       })}
     </List>
   );

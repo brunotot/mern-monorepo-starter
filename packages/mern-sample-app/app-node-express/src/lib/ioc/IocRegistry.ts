@@ -4,7 +4,7 @@ import { type TODO, type NoArgsClass } from "@org/lib-commons";
 export class IocRegistry {
   private static instance: IocRegistry;
 
-  private readonly registry: Map<string, unknown>;
+  public readonly registry: Map<string, unknown>;
 
   public static getInstance() {
     IocRegistry.instance ??= new IocRegistry();
@@ -42,15 +42,36 @@ export class IocRegistry {
   }
 
   #getSortedInjectionClasses(classes: NoArgsClass[], dependencySchema: Record<string, string[]>) {
-    return [...classes].sort((classA, classB) => {
-      const nameA = IocClassMetadata.getInstance(classA).getName();
-      const nameB = IocClassMetadata.getInstance(classB).getName();
-      if (dependencySchema[nameA].length === 0) return -1;
-      if (dependencySchema[nameB].length === 0) return 1;
-      if (dependencySchema[nameA].includes(nameB)) return 1;
-      if (dependencySchema[nameB].includes(nameA)) return -1;
-      return 0;
+    const sorted: NoArgsClass[] = [];
+    const visited = new Set<string>();
+    const tempMarks = new Set<string>();
+
+    function visit(className: string) {
+      if (tempMarks.has(className)) {
+        throw new Error(`Circular dependency detected: ${className}`);
+      }
+      if (!visited.has(className)) {
+        tempMarks.add(className);
+        const dependencies = dependencySchema[className] || [];
+        dependencies.forEach(dep => visit(dep));
+        tempMarks.delete(className);
+        visited.add(className);
+
+        const classInstance = classes.find(
+          cls => IocClassMetadata.getInstance(cls).getName() === className,
+        );
+        if (classInstance) {
+          sorted.push(classInstance);
+        }
+      }
+    }
+
+    classes.forEach(classItem => {
+      const className = IocClassMetadata.getInstance(classItem).getName();
+      visit(className);
     });
+
+    return sorted;
   }
 
   #getDependencySchema(classes: NoArgsClass[]): Record<string, string[]> {

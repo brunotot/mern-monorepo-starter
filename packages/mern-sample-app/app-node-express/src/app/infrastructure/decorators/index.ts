@@ -53,4 +53,3 @@
  */
 
 export * from "./contract";
-export * from "./createContractHandler";

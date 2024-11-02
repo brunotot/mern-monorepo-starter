@@ -68,6 +68,7 @@ export class ReactApp {
     this.rootId = config.rootId;
     this.errorElement = config.errorElement;
     this.#domRoutes = this.#convertNavigationToRoutes(this.routes);
+
     this.layoutElement = config.layoutElement;
     this.providers = [...(config.providers ?? [])];
   }
@@ -121,10 +122,15 @@ export class ReactApp {
 
       // Register route for displaying breadcrumbs on menus and groups if `handle` is provided.
       if ("handle" in item && item.handle) {
-        routes.push(item);
+        //routes.push(item);
       }
+      //routes.push(...this.#convertNavigationToRoutes(item.children));
 
-      routes.push(...this.#convertNavigationToRoutes(item.children));
+      const localItem = { ...item };
+
+      localItem.children = this.#convertNavigationToRoutes(item.children) as NavigationRoute[];
+
+      routes.push(localItem);
     }
 
     return routes;
