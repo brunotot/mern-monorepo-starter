@@ -1,6 +1,6 @@
 import type { PaginationOptions, UserDto, UserForm as UserFormModel } from "@org/lib-api-client";
+import type { zod } from "@org/lib-commons";
 
-import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 import {
   DatatableContainer,
@@ -8,18 +8,20 @@ import {
   DEFAULT_PAGINATION_OPTIONS,
   ClientDatatable,
 } from "@org/app-vite-react/app/components/Datatable";
+import { DatatableFilterButton } from "@org/app-vite-react/app/components/Datatable/components/DatatableFilterButton";
 import {
-  FixedBadge,
   //ResponsiveTable,
   UserCreateFormButton,
   UserForm,
 } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
+import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
+import { z } from "@org/lib-commons";
 import { useConfirm } from "material-ui-confirm";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Sidenav } from "./components/Sidenav";
-import { useNavigate } from "react-router-dom";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -27,7 +29,28 @@ import { useNavigate } from "react-router-dom";
   return { paginationOptions: JSON.stringify(paginationOptions) };
 }*/
 
+export const UserFilters = z.object({
+  username: z.string(),
+  email: z.string(),
+});
+
+export type UserFilters = zod.infer<typeof UserFilters>;
+
+export const DEFAULT_USER_FILTERS: UserFilters = {
+  username: "",
+  email: "",
+};
+
 export default function ManageUsersPage() {
+  const {
+    control,
+    handleSubmit: handleSearch,
+    errors,
+  } = useZodForm<typeof UserFilters>({
+    schema: UserFilters,
+    defaultValue: DEFAULT_USER_FILTERS,
+  });
+
   const { data, isPending, refetch } = tsrQuery.User.findAll.useQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
@@ -59,10 +82,6 @@ export default function ManageUsersPage() {
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setSidebarOpen(true);
-  };
-
   const handleDrawerClose = () => {
     setSidebarOpen(false);
   };
@@ -74,7 +93,7 @@ export default function ManageUsersPage() {
     setUserResponse(users.body);
   }, [paginationOptions]);*/
 
-  const handleSubmit = async (model: UserFormModel) => {
+  const onSubmit = async (model: UserFormModel) => {
     // Handle form submission
     // eslint-disable-next-line no-console
     console.log("Form submitted:", model);
@@ -86,12 +105,7 @@ export default function ManageUsersPage() {
     refetch();
   };
 
-  const badgeContent: number = 6;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -103,6 +117,10 @@ export default function ManageUsersPage() {
   if (data?.status !== 200) {
     return <div>Error</div>;
   }
+
+  const onSearch = (model: UserFilters) => {
+    console.log(model);
+  };
 
   const handleDelete = async (user: UserDto) => {
     confirm({
@@ -144,97 +162,45 @@ export default function ManageUsersPage() {
 
       <Sidenav open={sidebarOpen} onClose={handleDrawerClose}>
         <React.Fragment key={selectedUserForm?.id}>
-          <UserForm defaultValue={selectedUserForm!} onSubmit={handleSubmit} disablePassword />
+          <UserForm defaultValue={selectedUserForm!} onSubmit={onSubmit} disablePassword />
         </React.Fragment>
       </Sidenav>
 
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
-          <mui.Button
-            variant="contained"
-            color="primary"
-            sx={{ paddingInline: 1 }}
-            onClick={handleClick}
-          >
-            <icons.FilterAltOutlined />
-            <mui.Box flex="1" marginRight={1}>
-              Filters
-            </mui.Box>
-            <FixedBadge value={badgeContent > 0 ? badgeContent : undefined} />
-          </mui.Button>
-          <mui.Menu
-            slotProps={{ paper: { sx: { width: "320px" } } }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-          >
-            <div>
-              <mui.Accordion disableGutters>
-                <mui.AccordionSummary>
-                  <mui.Box display="flex" gap={1} alignItems="center">
-                    <icons.FilterAlt />
-                    <mui.Typography variant="h6">Filters</mui.Typography>
-                  </mui.Box>
-                </mui.AccordionSummary>
-              </mui.Accordion>
-              <mui.Accordion disableGutters>
-                <mui.AccordionSummary
-                  expandIcon={<icons.ExpandMore />}
-                  aria-controls="panel1-content"
-                  id="panel1-header"
-                >
-                  Username
-                </mui.AccordionSummary>
-                <mui.AccordionDetails>
-                  <mui.TextField label="Search by username" placeholder="johndoe" />
-                </mui.AccordionDetails>
-              </mui.Accordion>
-              <mui.Accordion disableGutters>
-                <mui.AccordionSummary
-                  expandIcon={<icons.ExpandMore />}
-                  aria-controls="panel2-content"
-                  id="panel2-header"
-                >
-                  Email
-                </mui.AccordionSummary>
-                <mui.AccordionDetails>
-                  <mui.TextField label="Search by email" placeholder="johndoe@mail.com" />
-                </mui.AccordionDetails>
-              </mui.Accordion>
-              <mui.Accordion disableGutters sx={{ boxShadow: "none" }}>
-                <mui.AccordionSummary
-                  expandIcon={<icons.ExpandMore />}
-                  aria-controls="panel3-content"
-                  id="panel3-header"
-                >
-                  Roles
-                </mui.AccordionSummary>
-                <mui.AccordionDetails>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-                  lacus ex, sit amet blandit leo lobortis eget.
-                </mui.AccordionDetails>
-                <mui.AccordionActions>
-                  <mui.Button>Cancel</mui.Button>
-                  <mui.Button>Agree</mui.Button>
-                </mui.AccordionActions>
-              </mui.Accordion>
-              <mui.Box
-                sx={{
-                  paddingInline: 2,
-                  backgroundImage: "var(--mui-overlays-1)",
-                  paddingBottom: 2,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  backgroundColor: "var(--mui-palette-background-paper)",
-                }}
-              >
-                <mui.Button variant="contained" color="primary">
-                  Search
-                </mui.Button>
-              </mui.Box>
-            </div>
-          </mui.Menu>
+          <DatatableFilterButton
+            onSearch={handleSearch(onSearch)}
+            filters={[
+              {
+                label: "Username",
+                control: control,
+                name: "username",
+                render: ({ field }) => (
+                  <mui.TextField
+                    {...field}
+                    required
+                    label="Username"
+                    error={!!errors?.username?.message}
+                    helperText={errors?.username?.message}
+                  />
+                ),
+              },
+              {
+                label: "Email",
+                control: control,
+                name: "email",
+                render: ({ field }) => (
+                  <mui.TextField
+                    {...field}
+                    required
+                    label="Email"
+                    error={!!errors?.email?.message}
+                    helperText={errors?.email?.message}
+                  />
+                ),
+              },
+            ]}
+          />
           <UserCreateFormButton afterUpdate={refetch} />
         </mui.Box>
         <ClientDatatable<UserDto>
