@@ -3,7 +3,19 @@ import type { UserForm as UserFormModel } from "@org/lib-api-client";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { useNavigate } from "react-router-dom";
 
-import { DEFAULT_USER_FORM_STATE, UserForm } from "../../components";
+import { UserForm } from "../../components";
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const DEFAULT_USER_FORM_STATE: UserFormModel = {
+  id: "",
+  username: "",
+  password: "",
+  roles: ["avr-user"],
+  email: "",
+  firstName: "",
+  lastName: "",
+  enabled: true,
+};
 
 export default function CreateUserPage() {
   const navigate = useNavigate();
@@ -18,5 +30,7 @@ export default function CreateUserPage() {
     navigate("/admin/users");
   };
 
-  return <UserForm defaultValue={DEFAULT_USER_FORM_STATE} onSubmit={handleSubmit} />;
+  return (
+    <UserForm groups={["create"]} defaultValue={DEFAULT_USER_FORM_STATE} onSubmit={handleSubmit} />
+  );
 }

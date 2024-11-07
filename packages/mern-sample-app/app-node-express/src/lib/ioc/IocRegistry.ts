@@ -19,7 +19,7 @@ export class IocRegistry {
     return this.registry.get(name.toLowerCase()) as T;
   }
 
-  public inject<T = TODO>(nameOrContext: string | DecoratorContext): T {
+  public inject<T = TODO>(nameOrContext: string | DecoratorContext | NoArgsClass): T {
     if (typeof nameOrContext === "string") return this.#injectLocal<T>(nameOrContext);
     const containerName = IocClassMetadata.getInstance(nameOrContext).getName();
     return this.#injectLocal<T>(containerName);

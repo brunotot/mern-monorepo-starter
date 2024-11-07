@@ -1,21 +1,32 @@
 import * as mui from "@mui/material";
+import * as inputs from "@org/app-vite-react/app/forms/input";
+import { executeConstraintValidation } from "@org/app-vite-react/app/models/ConstraintViolation";
 import { useZodForm, type FormProps } from "@org/app-vite-react/lib/react-hook-form";
 import { ROLE_LIST, UserForm as UserFormModel } from "@org/lib-api-client";
-import { Controller } from "react-hook-form";
+import { z, debounce } from "@org/lib-commons";
 
-export type UserFormProps = FormProps<UserFormModel> & {
-  disableUsername?: boolean;
-  disablePassword?: boolean;
-};
+function buildSchema(groups: string[]) {
+  return groups.includes("create")
+    ? UserFormModel.merge(
+        z.object({
+          username: UserFormModel.shape.username.refine(
+            debounce(async (username: string) => {
+              return await executeConstraintValidation({
+                body: { username },
+                options: { groups },
+                schemaPath: "User.usernameShouldBeUnique",
+              });
+            }, 500),
+            "Username already exists",
+          ),
+        }),
+      )
+    : UserFormModel;
+}
 
-export function UserForm({
-  defaultValue,
-  onSubmit,
-  disablePassword = false,
-  disableUsername = false,
-}: UserFormProps) {
-  const { control, handleSubmit, errors } = useZodForm({
-    schema: UserFormModel,
+export function UserForm({ defaultValue, onSubmit, groups = [] }: FormProps<UserFormModel>) {
+  const { control, handleSubmit, errors, form } = useZodForm({
+    schema: buildSchema(groups),
     defaultValue,
   });
 
@@ -29,109 +40,62 @@ export function UserForm({
       width={300}
       margin="0 auto"
     >
-      <Controller
+      <inputs.InputText
         control={control}
         name="username"
-        render={({ field }) => (
-          <mui.TextField
-            {...field}
-            required
-            disabled={disableUsername}
-            label="Username"
-            error={!!errors?.username?.message}
-            helperText={errors?.username?.message}
-          />
-        )}
+        required
+        disabled={groups.includes("update")}
+        label="Username"
+        error={errors?.username?.message}
       />
 
-      {!disablePassword && (
-        <Controller
+      {!groups.includes("update") && (
+        <inputs.InputText
+          required
           control={control}
           name="password"
-          render={({ field }) => (
-            <mui.TextField
-              {...field}
-              required
-              label="Password"
-              type="password"
-              error={!!errors?.password?.message}
-              helperText={errors?.password?.message}
-            />
-          )}
+          label="Password"
+          error={errors?.password?.message}
+          type="password"
         />
       )}
 
-      <Controller
+      <inputs.InputText
         control={control}
         name="firstName"
-        render={({ field }) => (
-          <mui.TextField
-            {...field}
-            label="First name"
-            error={!!errors?.firstName?.message}
-            helperText={errors?.firstName?.message}
-          />
-        )}
+        label="First name"
+        error={errors?.firstName?.message}
       />
 
-      <Controller
+      <inputs.InputText
         control={control}
         name="lastName"
-        render={({ field }) => (
-          <mui.TextField
-            {...field}
-            label="Last name"
-            helperText={errors?.lastName?.message}
-            error={!!errors?.lastName?.message}
-          />
-        )}
+        label="Last name"
+        error={errors?.lastName?.message}
       />
 
-      <Controller
+      <inputs.InputText
         control={control}
         name="email"
-        render={({ field }) => (
-          <mui.TextField
-            {...field}
-            label="Email"
-            helperText={errors?.email?.message}
-            error={!!errors?.email?.message}
-          />
-        )}
+        label="Email"
+        error={errors?.email?.message}
       />
 
-      <Controller
+      <inputs.InputSelect
+        multiple
+        required
         control={control}
         name="roles"
-        render={({ field }) => (
-          <mui.Autocomplete
-            {...field}
-            multiple
-            options={ROLE_LIST}
-            getOptionLabel={option => option}
-            disableCloseOnSelect
-            value={field.value}
-            onChange={(_, value) => field.onChange(value)}
-            filterSelectedOptions
-            renderOption={(props, option) => (
-              <mui.MenuItem {...props} key={option}>
-                {option}
-              </mui.MenuItem>
-            )}
-            renderInput={params => (
-              <mui.TextField
-                {...params}
-                label="Realm roles"
-                placeholder="Roles"
-                error={!!errors?.roles?.message}
-                helperText={errors?.roles?.message}
-              />
-            )}
-          />
-        )}
+        options={ROLE_LIST}
+        label="Roles"
       />
 
-      <mui.Button type="submit" variant="contained" color="primary">
+      <mui.Button
+        disabled={form.formState.isSubmitting}
+        type="submit"
+        variant="contained"
+        color="primary"
+      >
         Submit
       </mui.Button>
     </mui.Box>

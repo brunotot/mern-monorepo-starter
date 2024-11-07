@@ -1,27 +1,17 @@
-import type { PaginationOptions, UserDto, UserForm as UserFormModel } from "@org/lib-api-client";
+import type { UserDto } from "@org/lib-api-client";
 import type { zod } from "@org/lib-commons";
 
+import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import {
-  DatatableContainer,
-  //ServerDatatable,
-  DEFAULT_PAGINATION_OPTIONS,
-  ClientDatatable,
-} from "@org/app-vite-react/app/components/Datatable";
+import { DatatableContainer, ClientDatatable } from "@org/app-vite-react/app/components/Datatable";
 import { DatatableFilterButton } from "@org/app-vite-react/app/components/Datatable/components/DatatableFilterButton";
-import {
-  //ResponsiveTable,
-  UserCreateFormButton,
-  UserForm,
-} from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
+import { InputText } from "@org/app-vite-react/app/forms";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
 import { z } from "@org/lib-commons";
 import { useConfirm } from "material-ui-confirm";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-
-import { Sidenav } from "./components/Sidenav";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -36,16 +26,18 @@ export const UserFilters = z.object({
 
 export type UserFilters = zod.infer<typeof UserFilters>;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const DEFAULT_USER_FILTERS: UserFilters = {
   username: "",
   email: "",
 };
 
 export default function ManageUsersPage() {
+  const [filters, setFilters] = React.useState<Partial<UserFilters>>({});
   const {
     control,
     handleSubmit: handleSearch,
-    errors,
+    form,
   } = useZodForm<typeof UserFilters>({
     schema: UserFilters,
     defaultValue: DEFAULT_USER_FILTERS,
@@ -55,36 +47,28 @@ export default function ManageUsersPage() {
     queryKey: ["User.findAll"],
     staleTime: 1000,
   });
+
+  const filteredData = React.useMemo(
+    () =>
+      data?.body.filter(user => {
+        const filterUsername = (filters?.username ?? "").toLowerCase();
+        const filterEmail = (filters?.email ?? "").toLowerCase();
+
+        const username = (user.username ?? "").toLowerCase();
+        const email = (user.email ?? "").toLowerCase();
+
+        return username.includes(filterUsername) && email.includes(filterEmail);
+      }) || [],
+    [data?.body, filters],
+  );
+
   const confirm = useConfirm();
   const navigate = useNavigate();
 
-  const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
+  /*const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
-  });
-
-  const [selectedUsername, setSelectedUsername] = React.useState<string | undefined>(undefined);
-  const [selectedUserForm, setSelectedUserForm] = React.useState<UserFormModel | undefined>(
-    undefined,
-  );
-  React.useEffect(() => {
-    const fetchUserForm = async () => {
-      if (selectedUsername) {
-        const res = await tsrClient.User.getFormByUsername({
-          query: { username: selectedUsername },
-        });
-        if (res.status !== 200) throw new Error("Failed to fetch user form.");
-        setSelectedUserForm(res.body);
-      }
-    };
-    fetchUserForm();
-  }, [selectedUsername]);
-
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-
-  const handleDrawerClose = () => {
-    setSidebarOpen(false);
-  };
+  });*/
 
   /*const fetchUsers = useCallback(async () => {
     const query = buildPaginationQueryParams(paginationOptions);
@@ -92,23 +76,6 @@ export default function ManageUsersPage() {
     if (users.status !== 200) throw new Error("Failed to fetch users.");
     setUserResponse(users.body);
   }, [paginationOptions]);*/
-
-  const onSubmit = async (model: UserFormModel) => {
-    // Handle form submission
-    // eslint-disable-next-line no-console
-    console.log("Form submitted:", model);
-    await tsrClient.User.updateUser({
-      body: model,
-    });
-    // setUser(DEFAULT_FORM_STATE);
-    setSidebarOpen(false);
-    refetch();
-  };
-
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   if (isPending) {
     return <></>;
@@ -119,7 +86,7 @@ export default function ManageUsersPage() {
   }
 
   const onSearch = (model: UserFilters) => {
-    console.log(model);
+    setFilters(model);
   };
 
   const handleDelete = async (user: UserDto) => {
@@ -160,51 +127,35 @@ export default function ManageUsersPage() {
 
       {/*<ResponsiveTable />*/}
 
-      <Sidenav open={sidebarOpen} onClose={handleDrawerClose}>
-        <React.Fragment key={selectedUserForm?.id}>
-          <UserForm defaultValue={selectedUserForm!} onSubmit={onSubmit} disablePassword />
-        </React.Fragment>
-      </Sidenav>
-
       <DatatableContainer>
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
           <DatatableFilterButton
+            onClear={() => form.reset()}
             onSearch={handleSearch(onSearch)}
             filters={[
               {
                 label: "Username",
-                control: control,
-                name: "username",
-                render: ({ field }) => (
-                  <mui.TextField
-                    {...field}
-                    required
-                    label="Username"
-                    error={!!errors?.username?.message}
-                    helperText={errors?.username?.message}
-                  />
-                ),
+                isActive: () => form.getValues().username?.length > 0,
+                render: () => <InputText label="Username" control={control} name="username" />,
               },
               {
                 label: "Email",
-                control: control,
-                name: "email",
-                render: ({ field }) => (
-                  <mui.TextField
-                    {...field}
-                    required
-                    label="Email"
-                    error={!!errors?.email?.message}
-                    helperText={errors?.email?.message}
-                  />
-                ),
+                isActive: () => form.getValues().email?.length > 0,
+                render: () => <InputText label="Email" control={control} name="email" />,
               },
             ]}
           />
-          <UserCreateFormButton afterUpdate={refetch} />
+          <mui.Button
+            variant="contained"
+            startIcon={<icons.Add />}
+            color="success"
+            onClick={() => navigate("/admin/users/add")}
+          >
+            Add User
+          </mui.Button>
         </mui.Box>
         <ClientDatatable<UserDto>
-          data={data.body}
+          data={filteredData}
           //count={data.body.length}
           //keyMapper={user => user.username}
           //paginationOptions={paginationOptions}

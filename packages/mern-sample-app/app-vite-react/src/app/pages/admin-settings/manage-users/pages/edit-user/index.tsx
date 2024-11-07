@@ -10,7 +10,6 @@ export default function EditUserPage() {
   const navigate = useNavigate();
 
   const { username: selectedUsername } = useParams<{ username: string }>();
-  console.log(selectedUsername);
   const [selectedUserForm, setSelectedUserForm] = React.useState<UserFormModel | undefined>(
     undefined,
   );
@@ -39,12 +38,7 @@ export default function EditUserPage() {
 
   return (
     <React.Fragment key={selectedUserForm?.id}>
-      <UserForm
-        defaultValue={selectedUserForm!}
-        onSubmit={handleSubmit}
-        disableUsername
-        disablePassword
-      />
+      <UserForm defaultValue={selectedUserForm!} onSubmit={handleSubmit} groups={["update"]} />
     </React.Fragment>
   );
 }

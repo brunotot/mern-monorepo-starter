@@ -1,24 +1,21 @@
-import type * as rhf from "react-hook-form";
-
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 
 import { DatatableFilter, type DatatableFilterProps } from "../DatatableFilter/DatatableFilter";
 
-export type DatatableFiltersProps<
-  TForm extends rhf.FieldValues,
-  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
-> = {
-  filters: DatatableFilterProps<TForm, TName>[];
+export type DatatableFiltersProps = {
+  filters: DatatableFilterProps[];
   onSearch: () => void;
 };
 
-export function DatatableFilters<
-  TForm extends rhf.FieldValues,
-  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
->({ filters, onSearch }: DatatableFiltersProps<TForm, TName>) {
+export function DatatableFilters({ filters, onSearch }: DatatableFiltersProps) {
   return (
-    <div>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        onSearch();
+      }}
+    >
       <mui.Accordion disableGutters>
         <mui.AccordionSummary>
           <mui.Box display="flex" gap={1} alignItems="center">
@@ -41,10 +38,10 @@ export function DatatableFilters<
           backgroundColor: "var(--mui-palette-background-paper)",
         }}
       >
-        <mui.Button variant="contained" onClick={onSearch} color="primary">
+        <mui.Button variant="contained" type="submit" color="primary">
           Search
         </mui.Button>
       </mui.Box>
-    </div>
+    </form>
   );
 }

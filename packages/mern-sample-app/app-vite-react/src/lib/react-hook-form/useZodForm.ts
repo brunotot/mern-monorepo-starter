@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 export type FormProps<T> = {
   defaultValue: T;
   onSubmit: (model: T) => void;
+  groups?: string[];
 };
 
 export function useZodForm<Z extends zod.ZodType<TODO, TODO>>(props: {

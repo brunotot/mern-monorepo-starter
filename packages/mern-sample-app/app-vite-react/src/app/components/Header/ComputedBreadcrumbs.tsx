@@ -14,11 +14,11 @@ type Crumb = {
 function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): /*Crumb[]*/ TODO[] {
   const crumbs: Crumb[] = [];
 
-  console.log(matches);
+  //console.log(matches);
 
   for (const match of matches) {
     const handle: TODO = match.handle;
-    console.log(match);
+    //console.log(match);
 
     if (handle?.crumb) {
       crumbs.push({
@@ -116,7 +116,11 @@ export function ComputedBreadcrumbs() {
   }
 
   return (
-    <mui.Breadcrumbs aria-label="breadcrumb" data-driver="breadcrumbs" separator={<icons.NavigateNext fontSize="small" />}>
+    <mui.Breadcrumbs
+      aria-label="breadcrumb"
+      data-driver="breadcrumbs"
+      separator={<icons.NavigateNext fontSize="small" />}
+    >
       {crumbs.map((crumb, index) => (
         <mui.Link
           key={index}

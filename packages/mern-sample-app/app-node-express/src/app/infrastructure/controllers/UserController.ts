@@ -50,7 +50,12 @@ export class UserController {
     };
   }
 
-  @contract(contracts.User.createUser, withRouteSecured(Role.Enum["avr-admin"]))
+  @contract(
+    contracts.User.createUser,
+    withRouteSecured(Role.Enum["avr-admin"]),
+    // withValidator(UserValidator, { groups: ["create"] }),
+  )
+  // @validators("User", { groups: ["create"] })
   async createUser(
     payload: RouteInput<typeof contracts.User.createUser>,
   ): RouteOutput<typeof contracts.User.createUser> {

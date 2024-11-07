@@ -1,5 +1,4 @@
 import type { DatatableFilterProps } from "../DatatableFilter/DatatableFilter";
-import type { TODO, zod } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -8,16 +7,22 @@ import React from "react";
 
 import { DatatableFilters } from "../DatatableFilters";
 
-export type DatatableFilterButtonProps<TSchema extends zod.ZodType<TODO, TODO>> = {
+export type DatatableFilterButtonProps = {
+  onClear: () => void;
   onSearch: () => void;
-  filters: DatatableFilterProps<zod.infer<TSchema>>[];
+  filters: DatatableFilterProps[];
 };
 
-export function DatatableFilterButton<TFilters extends zod.ZodType<TODO, TODO>>({
+export function DatatableFilterButton({
   onSearch: handleSearch,
+  onClear: handleClear,
   filters,
-}: DatatableFilterButtonProps<TFilters>) {
-  const badgeContent: number = 6;
+}: DatatableFilterButtonProps) {
+  const badgeContent: number = filters.reduce(
+    (acc, filter) => (filter.isActive() ? acc + 1 : acc),
+    0,
+  );
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,27 +32,51 @@ export function DatatableFilterButton<TFilters extends zod.ZodType<TODO, TODO>>(
     setAnchorEl(null);
   };
 
+  const onSearch = () => {
+    handleSearch();
+    handleClose();
+  };
+
+  const onClear = () => {
+    handleClear();
+    handleSearch();
+  };
+
   return (
     <>
-      <mui.Button
-        variant="contained"
-        color="primary"
-        sx={{ paddingInline: 1 }}
-        onClick={handleClick}
+      <mui.Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          alignItems: "center",
+        }}
       >
-        <icons.FilterAltOutlined />
-        <mui.Box flex="1" marginRight={1}>
-          Filters
-        </mui.Box>
-        <FixedBadge value={badgeContent > 0 ? badgeContent : undefined} />
-      </mui.Button>
+        <mui.Button
+          variant="contained"
+          color="primary"
+          sx={{ paddingInline: 1 }}
+          onClick={handleClick}
+        >
+          <icons.FilterAltOutlined />
+          <mui.Box flex="1" marginRight={1}>
+            Filters
+          </mui.Box>
+          <FixedBadge value={badgeContent > 0 ? badgeContent : undefined} />
+        </mui.Button>
+
+        {badgeContent > 0 && (
+          <mui.IconButton size="small" onClick={onClear}>
+            <icons.Close fontSize="small" />
+          </mui.IconButton>
+        )}
+      </mui.Box>
       <mui.Menu
         slotProps={{ paper: { sx: { width: "320px" } } }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
       >
-        <DatatableFilters onSearch={() => handleSearch()} filters={filters} />
+        <DatatableFilters onSearch={onSearch} filters={filters} />
       </mui.Menu>
     </>
   );
