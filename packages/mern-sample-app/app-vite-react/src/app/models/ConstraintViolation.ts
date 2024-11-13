@@ -14,5 +14,5 @@ export async function executeConstraintValidation({
       options: JSON.stringify(options),
     },
   });
-  return res.status !== 200 || !res.body;
+  return res.status !== 200 || !!res.body;
 }

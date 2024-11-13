@@ -8,7 +8,6 @@ import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
 import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
 import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
 import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
-import { sigSidebarPosition } from "@org/app-vite-react/app/signals/sigSidebarPosition";
 import { type NavigationRoute } from "@org/app-vite-react/server/route-typings";
 
 import { HorizontalLayout } from "./HorizontalLayout";
@@ -64,7 +63,7 @@ export function Layout({ children }: PropsWithChildren) {
           paddingInline: "0 !important",
         }}
       >
-        {sigSidebarPosition.value === "left" && SidebarComponent}
+        {SidebarComponent}
 
         <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
           <Header
@@ -88,8 +87,6 @@ export function Layout({ children }: PropsWithChildren) {
           </Container>
           <Footer />
         </Box>
-
-        {sigSidebarPosition.value === "right" && SidebarComponent}
       </Container>
     </>
   );

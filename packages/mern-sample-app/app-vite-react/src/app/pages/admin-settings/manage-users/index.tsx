@@ -6,10 +6,10 @@ import * as mui from "@mui/material";
 import { DatatableContainer, ClientDatatable } from "@org/app-vite-react/app/components/Datatable";
 import { DatatableFilterButton } from "@org/app-vite-react/app/components/Datatable/components/DatatableFilterButton";
 import { InputText } from "@org/app-vite-react/app/forms";
+import { useConfirmContext } from "@org/app-vite-react/app/provider/ConfirmProvider";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
 import { z } from "@org/lib-commons";
-import { useConfirm } from "material-ui-confirm";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -62,8 +62,24 @@ export default function ManageUsersPage() {
     [data?.body, filters],
   );
 
-  const confirm = useConfirm();
   const navigate = useNavigate();
+
+  const confirmAction = useConfirmContext();
+
+  const handleDeleteClick = (user: UserDto) => {
+    confirmAction({
+      title: "Warning",
+      message: `Are you sure You want to delete user "${user.username}"?`,
+      onConfirm: async () => {
+        await tsrClient.User.deleteUser({
+          query: {
+            id: user.id!,
+          },
+        });
+        refetch();
+      },
+    });
+  };
 
   /*const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
@@ -89,35 +105,7 @@ export default function ManageUsersPage() {
     setFilters(model);
   };
 
-  const handleDelete = async (user: UserDto) => {
-    confirm({
-      description: `This will permanently delete user "${user.username}".`,
-      cancellationText: "Cancel",
-      cancellationButtonProps: {
-        color: "inherit",
-      },
-      confirmationText: "Delete",
-      confirmationButtonProps: {
-        color: "error",
-        variant: "contained",
-      },
-    })
-      .then(async () => {
-        await tsrClient.User.deleteUser({
-          query: {
-            id: user.id!,
-          },
-        });
-        refetch();
-      })
-      .catch(() => {
-        //console.log("Deletion cancelled.")
-      });
-  };
-
-  async function handleEdit(user: UserDto) {
-    //handleDrawerOpen();
-    //setSelectedUsername(user.username);
+  function handleEdit(user: UserDto) {
     navigate(`/admin/users/${user.username}/edit`);
   }
 
@@ -213,7 +201,11 @@ export default function ManageUsersPage() {
               renderHeader: () => "Actions",
               renderBody: user => (
                 <mui.Box display="flex" alignItems="center" gap={1}>
-                  <mui.Button variant="contained" color="error" onClick={() => handleDelete(user)}>
+                  <mui.Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDeleteClick(user)}
+                  >
                     Delete
                   </mui.Button>
                   <mui.Button variant="contained" color="info" onClick={() => handleEdit(user)}>

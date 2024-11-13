@@ -1,37 +1,20 @@
+import type * as rhf from "react-hook-form";
+
 import * as mui from "@mui/material";
-import {
-  Controller,
-  type FieldPath,
-  type FieldValues,
-  type ControllerProps,
-} from "react-hook-form";
-
-export type InputControllerProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<ControllerProps<TFieldValues, TName>, "render">;
-
-export type InputProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = InputControllerProps<TFieldValues, TName> & {
-  label: string;
-  error?: string;
-  required?: boolean;
-  disabled?: boolean;
-  placeholder?: string;
-};
+import { Input, type CombinedInputProps } from "@org/app-vite-react/app/forms/input/Input/Input";
 
 export type InputTextProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = InputProps<TFieldValues, TName> & {
+  TInput,
+  TForm extends rhf.FieldValues = rhf.FieldValues,
+  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
+> = CombinedInputProps<TInput, TForm, TName> & {
   type?: React.InputHTMLAttributes<unknown>["type"];
 };
 
 export function InputText<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TInput,
+  TForm extends rhf.FieldValues = rhf.FieldValues,
+  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
 >({
   label,
   error = "",
@@ -39,14 +22,15 @@ export function InputText<
   disabled = false,
   type = "text",
   placeholder = "",
-  ...controllerProps
-}: InputTextProps<TFieldValues, TName>) {
+  ...inputProps
+}: InputTextProps<TInput, TForm, TName>) {
   return (
-    <Controller
-      {...controllerProps}
-      render={({ field }) => (
+    <Input<TInput, TForm, TName>
+      {...inputProps}
+      render={({ value, onChange }) => (
         <mui.TextField
-          {...field}
+          value={value}
+          onChange={onChange}
           placeholder={placeholder}
           type={type}
           required={required}

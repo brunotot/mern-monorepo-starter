@@ -4,8 +4,11 @@ import type { TODO } from "@org/lib-commons";
 
 import { contract } from "@org/app-node-express/app/infrastructure/decorators";
 import { withRouteSecured } from "@org/app-node-express/app/infrastructure/middleware/withRouteSecured";
+import { withValidatedBody } from "@org/app-node-express/app/infrastructure/middleware/withValidatedBody";
 import { autowired, inject } from "@org/app-node-express/lib/ioc";
 import { contracts, Role } from "@org/lib-api-client";
+
+import { VALIDATORS } from "../validators";
 
 @inject("UserController")
 export class UserController {
@@ -53,9 +56,9 @@ export class UserController {
   @contract(
     contracts.User.createUser,
     withRouteSecured(Role.Enum["avr-admin"]),
-    // withValidator(UserValidator, { groups: ["create"] }),
+    // TODO
+    withValidatedBody(/*UserForm, */ VALIDATORS.User, { groups: ["create"] }),
   )
-  // @validators("User", { groups: ["create"] })
   async createUser(
     payload: RouteInput<typeof contracts.User.createUser>,
   ): RouteOutput<typeof contracts.User.createUser> {
@@ -66,7 +69,11 @@ export class UserController {
     };
   }
 
-  @contract(contracts.User.updateUser, withRouteSecured(Role.Enum["avr-admin"]))
+  @contract(
+    contracts.User.updateUser,
+    withRouteSecured(Role.Enum["avr-admin"]),
+    withValidatedBody(VALIDATORS.User, { groups: ["update"] }),
+  )
   async updateUser(
     payload: RouteInput<typeof contracts.User.updateUser>,
   ): RouteOutput<typeof contracts.User.updateUser> {

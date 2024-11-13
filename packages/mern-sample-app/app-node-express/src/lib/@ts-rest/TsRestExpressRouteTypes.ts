@@ -7,6 +7,7 @@
  */
 
 import type { AppRoute, ServerInferResponses } from "@org/lib-api-client";
+import type { TODO } from "@org/lib-commons";
 import type { AppRouteImplementation } from "@ts-rest/express";
 import type { RequestHandler } from "express";
 
@@ -27,6 +28,11 @@ export type RouteInput<Route extends AppRoute> = Parameters<AppRouteImplementati
  * @typeParam Route - {@link https://github.com/ts-rest/ts-rest/blob/main/libs/ts-rest/core/src/lib/dsl.ts#L169 AppRoute}
  */
 export type RouteHandler<Route extends AppRoute> = (data: RouteInput<Route>) => RouteOutput<Route>;
+
+/**
+ * Represents a handler function for any route, taking any data and returning any output.
+ */
+export type UntypedRouteHandler = (data: TODO) => TODO;
 
 /**
  * Represents a factory for generating an array of Express middleware request handlers.

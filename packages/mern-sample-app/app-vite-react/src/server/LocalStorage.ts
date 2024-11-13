@@ -2,7 +2,7 @@ import type { TODO, zod } from "@org/lib-commons";
 
 import { z } from "@org/lib-commons";
 
-import { LayoutVariant, LayoutWidth, SidebarPosition, Locale } from "../app/models";
+import { LayoutVariant, LayoutWidth, Locale } from "../app/models";
 
 type LocalStorageItem<S extends zod.ZodType<TODO, TODO, TODO> = TODO> = {
   schema: () => S;
@@ -20,11 +20,6 @@ const LocalStorageData = {
     schema: () => LayoutWidth,
     serialize: (value: LayoutWidth) => (typeof value === "string" ? value : value.toString()),
     deserialize: (value: string) => (value === "false" ? false : value),
-  },
-  sidebarPosition: {
-    schema: () => SidebarPosition,
-    serialize: (value: SidebarPosition) => value,
-    deserialize: (value: string) => value as SidebarPosition,
   },
   locale: {
     schema: () => Locale,

@@ -7,7 +7,7 @@ import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutTog
 import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
 import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
 import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
-import { sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
+import { getFontFamily, sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
 import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
 import { sigThemeOpts } from "@org/app-vite-react/app/signals/sigTheme";
 
@@ -94,7 +94,10 @@ export function Header({
               />
               <InputLocaleSelect
                 value={sigLocale.value}
-                onChange={locale => (sigLocale.value = locale)}
+                onChange={locale => {
+                  sigLocale.value = locale;
+                  sigThemeOpts.value = { ...sigThemeOpts.value, fontFamily: getFontFamily(locale) };
+                }}
               />
             </mui.Box>
             <UserMenuButton />

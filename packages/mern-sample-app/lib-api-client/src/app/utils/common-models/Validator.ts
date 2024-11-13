@@ -14,7 +14,7 @@ export type Validator<T = TODO> = (model: T, options: ValidatorOptions) => Promi
 
 export const Validators = z.record(z.string(), Validator);
 
-export type Validators<T = TODO> = Record<string, Validator<T>>;
+export type Validators<T = TODO> = T extends never ? never : Record<string, Validator<T>>;
 
 export type ConstraintViolationExecOptions = {
   body: TODO;

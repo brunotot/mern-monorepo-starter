@@ -1,3 +1,4 @@
+import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 import {
   type NavigationRouteItem,
@@ -59,6 +60,7 @@ export class ReactApp {
     const rootDiv = document.getElementById(this.rootId ?? "root")!;
     const domRoot = ReactDOM.createRoot(rootDiv);
     domRoot.render(<RouterDOM.RouterProvider router={this.#createBrowserRouter()} />);
+    sigDirection.subscribe(dir => (document.documentElement.dir = dir));
   }
 
   #loadConfig(config: ReactAppConfig) {

@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material";
 import { computed, effect, signal } from "@preact/signals-react";
 
+import { getFontFamily } from "./sigLocale";
 import { LocalStorage } from "../../server/LocalStorage";
 
 type ThemeOptsInternal = NonNullable<Parameters<typeof createTheme>[0]>;
@@ -10,6 +11,7 @@ type ThemeOptsBase = Omit<ThemeOptsInternal, "cssVariables" | "colorSchemes">;
 /** @hidden */
 export type ThemeOpts = ThemeOptsBase & {
   dark: boolean;
+  fontFamily?: string;
 };
 
 /**
@@ -54,7 +56,7 @@ effect(() => {
  * ```
  */
 export const sigTheme = computed(() => {
-  const { dark, ...rest } = sigThemeOpts.value;
+  const { dark, fontFamily = getFontFamily("en"), ...rest } = sigThemeOpts.value;
 
   return createTheme({
     ...rest,
@@ -63,7 +65,7 @@ export const sigTheme = computed(() => {
     },
     typography: {
       ...rest.typography,
-      fontFamily: '"DM Sans", sans-serif',
+      fontFamily,
       allVariants: {
         fontWeight: 400,
         fontOpticalSizing: "auto",

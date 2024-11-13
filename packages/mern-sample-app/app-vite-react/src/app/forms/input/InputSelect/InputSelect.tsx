@@ -1,27 +1,34 @@
-import type { InputProps } from "../InputText";
+import type {
+  CombinedInputProps,
+  ValueType,
+} from "@org/app-vite-react/app/forms/input/Input/Input";
+import type * as rhf from "react-hook-form";
 
 import * as mui from "@mui/material";
-import { Controller, type FieldPath, type FieldValues } from "react-hook-form";
+import { Input } from "@org/app-vite-react/app/forms/input/Input/Input";
 
 export type InputSelectProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  TItem = string,
-> = InputProps<TFieldValues, TName> & {
-  options: TItem[];
+  TInput,
+  TForm extends rhf.FieldValues = rhf.FieldValues,
+  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
+> = CombinedInputProps<TInput, TForm, TName> & {
+  options: ValueType<TInput, TForm, TName>[];
   multiple?: boolean;
-} & (TItem extends object
+  startAdornment?: React.ReactNode;
+} & (ValueType<TInput, TForm, TName> extends object
     ? Required<{
-        getOptionLabel: (option: TItem) => string;
+        getOptionLabel: (option: ValueType<TInput, TForm, TName>) => string;
+        renderOption: (option: ValueType<TInput, TForm, TName>) => React.ReactNode;
       }>
     : {
-        getOptionLabel?: (option: TItem) => string;
+        getOptionLabel?: (option: ValueType<TInput, TForm, TName>) => string;
+        renderOption?: (option: ValueType<TInput, TForm, TName>) => React.ReactNode;
       });
 
 export function InputSelect<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  TItem = string,
+  TInput,
+  TForm extends rhf.FieldValues = rhf.FieldValues,
+  TName extends rhf.FieldPath<TForm> = rhf.FieldPath<TForm>,
 >({
   label,
   error = "",
@@ -30,67 +37,64 @@ export function InputSelect<
   options,
   placeholder = "",
   getOptionLabel,
+  renderOption,
   multiple = false,
-  ...controllerProps
-}: InputSelectProps<TFieldValues, TName, TItem>) {
+  startAdornment,
+  ...inputProps
+}: InputSelectProps<TInput, TForm, TName>) {
   const computedGetOptionLabel = getOptionLabel
     ? getOptionLabel
-    : (option: TItem) => option as unknown as string;
+    : (option: ValueType<TInput, TForm, TName>) => String(option);
+  const computedRenderOption = renderOption
+    ? renderOption
+    : (option: ValueType<TInput, TForm, TName>) => <>{String(option)}</>;
+
   return (
-    <Controller
-      {...controllerProps}
-      render={({ field }) => (
-        <mui.Autocomplete
-          {...field}
-          multiple={multiple}
-          disabled={disabled}
-          options={options}
-          getOptionLabel={computedGetOptionLabel}
-          disableCloseOnSelect={multiple}
-          value={field.value}
-          onChange={(_, value) => field.onChange(value)}
-          filterSelectedOptions={multiple}
-          renderOption={(props, option) => {
-            const textual = computedGetOptionLabel(option);
-            return (
-              <mui.MenuItem {...props} key={textual}>
-                {textual}
-              </mui.MenuItem>
-            );
-          }}
-          renderInput={params => (
-            <mui.TextField
-              {...params}
-              inputProps={{
-                ...params.inputProps,
-                required: field.value?.length === 0 && required,
-              }}
-              required={required}
-              label={label}
-              placeholder={placeholder}
-              error={!!error}
-              helperText={error}
-            />
-          )}
-        />
-      )}
+    <Input<TInput, TForm, TName>
+      {...inputProps}
+      render={({ value, onChange }) => {
+        return (
+          <mui.Autocomplete<ValueType<TInput, TForm, TName>, typeof multiple>
+            multiple={multiple}
+            disabled={disabled}
+            options={options}
+            getOptionLabel={o => {
+              return computedGetOptionLabel(o);
+            }}
+            disableCloseOnSelect={multiple}
+            value={value}
+            onChange={(_event, value) => onChange(value)}
+            filterSelectedOptions={multiple}
+            renderOption={(props, option) => {
+              const optionBody = computedRenderOption(option);
+              const optionLabel = computedGetOptionLabel(option);
+              return (
+                <mui.MenuItem {...props} key={optionLabel}>
+                  {optionBody}
+                </mui.MenuItem>
+              );
+            }}
+            renderInput={params => (
+              <mui.TextField
+                {...params}
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: multiple ? params.InputProps.startAdornment : startAdornment,
+                }}
+                inputProps={{
+                  ...params.inputProps,
+                  required: value?.length === 0 && required,
+                }}
+                required={required}
+                label={label}
+                placeholder={placeholder}
+                error={!!error}
+                helperText={error}
+              />
+            )}
+          />
+        );
+      }}
     />
   );
-
-  /*return (
-    <Controller
-      {...controllerProps}
-      render={({ field }) => (
-        <mui.TextField
-          {...field}
-          type={type}
-          required={required}
-          disabled={disabled}
-          label={label}
-          error={!!error}
-          helperText={error}
-        />
-      )}
-    />
-  );*/
 }

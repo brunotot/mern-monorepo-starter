@@ -7,11 +7,13 @@ import { useMemo, useState } from "react";
 
 import { Flag } from "../../components/Flag/Flag";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function getLocaleNativeName(locale: I18nLocale) {
   const name: string = new Intl.DisplayNames([locale], {
     type: "language",
   }).of(locale)!;
-  return name.charAt(0).toUpperCase() + name.slice(1);
+  const res = name.charAt(0).toUpperCase() + name.slice(1);
+  return res;
 }
 
 export type InputLocaleSelectProps = {

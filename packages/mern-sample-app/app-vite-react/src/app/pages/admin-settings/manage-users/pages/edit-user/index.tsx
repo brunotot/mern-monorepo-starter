@@ -37,8 +37,11 @@ export default function EditUserPage() {
   };
 
   return (
-    <React.Fragment key={selectedUserForm?.id}>
-      <UserForm defaultValue={selectedUserForm!} onSubmit={handleSubmit} groups={["update"]} />
-    </React.Fragment>
+    <UserForm
+      key={selectedUserForm?.id}
+      defaultValue={selectedUserForm!}
+      onSubmit={handleSubmit}
+      groups={["update"]}
+    />
   );
 }
