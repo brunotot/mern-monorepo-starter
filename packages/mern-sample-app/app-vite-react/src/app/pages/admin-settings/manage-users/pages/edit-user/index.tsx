@@ -1,5 +1,6 @@
 import type { UserForm as UserFormModel } from "@org/lib-api-client";
 
+import { useSnackbarContext } from "@org/app-vite-react/app/provider/SnackbarProvider";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,6 +9,7 @@ import { UserForm } from "../../components";
 
 export default function EditUserPage() {
   const navigate = useNavigate();
+  const snack = useSnackbarContext();
 
   const { username: selectedUsername } = useParams<{ username: string }>();
   const [selectedUserForm, setSelectedUserForm] = React.useState<UserFormModel | undefined>(
@@ -34,6 +36,10 @@ export default function EditUserPage() {
       body: model,
     });
     navigate("/admin/users");
+    snack({
+      body: "User updated successfully",
+      severity: "success",
+    });
   };
 
   return (

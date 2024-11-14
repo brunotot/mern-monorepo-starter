@@ -2,6 +2,7 @@ import type { ClientDatatableProps } from "@org/app-vite-react/app/components/Da
 import type { DtBaseOrder } from "@org/app-vite-react/app/components/Datatable/types";
 import type { MouseEvent } from "react";
 
+import * as mui from "@mui/material";
 import {
   TableContainer,
   Table,
@@ -13,14 +14,12 @@ import {
 } from "@mui/material";
 import { DtSortableCell } from "@org/app-vite-react/app/components/Datatable/components/DtSortableCell/DtSortableCell";
 import { DEFAULT_PAGINATION_OPTIONS } from "@org/app-vite-react/app/components/Datatable/types";
+import { ClientResponsiveTable } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
 import { Fragment, useMemo, useState } from "react";
 
-
-export function ClientDatatable<T>({
-  data,
-  columns,
-  disablePagination = false,
-}: ClientDatatableProps<T>) {
+export function ClientDatatable<T>(props: ClientDatatableProps<T>) {
+  const { data, columns, disablePagination = false, renderMobileRow } = props;
+  const matchesMobile = mui.useMediaQuery("(max-width:678px)");
   const [sortData, setSortData] = useState<DtBaseOrder>([]);
   const [paginationOptions, setPaginationOptions] = useState(DEFAULT_PAGINATION_OPTIONS);
 
@@ -69,6 +68,38 @@ export function ClientDatatable<T>({
     setSortData([{ id, direction: "desc" }]);
   };
 
+  const paginationComponent = disablePagination ? (
+    <></>
+  ) : (
+    <TablePagination
+      sx={{
+        "& .MuiTablePagination-spacer": { display: matchesMobile ? "none" : undefined },
+        "& .MuiTablePagination-selectLabel": { display: matchesMobile ? "none" : undefined },
+      }}
+      component="div"
+      labelRowsPerPage={"Results per page:"}
+      labelDisplayedRows={({ from, to, count }) => `${from}-${to} to ${count}`}
+      rowsPerPageOptions={[5, 10, 25, 50, 100]}
+      count={data.length}
+      page={paginationOptions.page}
+      rowsPerPage={paginationOptions.rowsPerPage}
+      showFirstButton
+      showLastButton
+      onPageChange={(_, newPage) => onPageChange(newPage)}
+      onRowsPerPageChange={e => onRowsPerPageChange(+e.target.value)}
+      classes={{ toolbar: "toolbar-class" }}
+    />
+  );
+
+  if (matchesMobile) {
+    return (
+      <>
+        <ClientResponsiveTable {...props} data={filteredData} renderRow={renderMobileRow} />
+        {paginationComponent}
+      </>
+    );
+  }
+
   return (
     <>
       <TableContainer>
@@ -112,7 +143,7 @@ export function ClientDatatable<T>({
               >
                 {columns.map(({ id, align, renderBody }) => (
                   <TableCell key={id} align={align}>
-                    {renderBody(item)}
+                    {renderBody(item, { cleanup: () => {} })}
                   </TableCell>
                 ))}
               </TableRow>
@@ -120,22 +151,7 @@ export function ClientDatatable<T>({
           </TableBody>
         </Table>
       </TableContainer>
-      {!disablePagination && (
-        <TablePagination
-          component="div"
-          labelRowsPerPage="Results per page:"
-          labelDisplayedRows={({ from, to, count }) => `${from}-${to} to ${count}`}
-          rowsPerPageOptions={[10, 25, 50, 100]}
-          count={data.length}
-          page={paginationOptions.page}
-          rowsPerPage={paginationOptions.rowsPerPage}
-          showFirstButton
-          showLastButton
-          onPageChange={(_, newPage) => onPageChange(newPage)}
-          onRowsPerPageChange={e => onRowsPerPageChange(+e.target.value)}
-          classes={{ toolbar: "toolbar-class" }}
-        />
-      )}
+      {paginationComponent}
     </>
   );
 }

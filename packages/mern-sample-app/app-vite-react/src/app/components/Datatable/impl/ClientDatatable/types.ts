@@ -10,4 +10,5 @@ export type ClientDatatableProps<T> = {
   data: T[];
   columns: DtClientColumn<T>[];
   disablePagination?: boolean;
+  renderMobileRow: (item: T) => React.ReactNode;
 };

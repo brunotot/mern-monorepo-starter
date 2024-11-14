@@ -243,9 +243,6 @@ importers:
       keycloak-js:
         specifier: ^25.0.4
         version: 25.0.6
-      material-ui-confirm:
-        specifier: ^3.0.16
-        version: 3.0.16(@mui/material@6.1.5)(react-dom@18.3.1)(react@18.3.1)
       material-ui-popup-state:
         specifier: ^5.1.0
         version: 5.3.1(@mui/material@6.1.5)(react@18.3.1)
@@ -3428,8 +3425,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /chromedriver@130.0.1:
-    resolution: {integrity: sha512-JH+OxDZ7gVv02r9oXwj4mQ8JCtj62g0fCD1LMUUYdB/4mPxn/E2ys+1IzXItoE7vXM9fGVc9R1akvXLqwwuSww==}
+  /chromedriver@131.0.0:
+    resolution: {integrity: sha512-ukYmdCox2eRsjpCYUB4AOLV1fSfWQ1ZPfcUc0PIUWZKoyjyXKEl8i4DJ14bcNzNbEvaVx2Z2pnx/nLK2CM+ruQ==}
     engines: {node: '>=18'}
     hasBin: true
     requiresBuild: true
@@ -6185,7 +6182,7 @@ packages:
     dependencies:
       jwk-to-pem: 2.0.6
     optionalDependencies:
-      chromedriver: 130.0.1
+      chromedriver: 131.0.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6431,18 +6428,6 @@ packages:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
     dev: true
-
-  /material-ui-confirm@3.0.16(@mui/material@6.1.5)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-aJoa/FM/U/86qztoljlk8FWmjSJbAMzDWCdWbDqU5WwB0WzcWPyGrhBvIqihR9uKdHKBf1YrvMjn68uOrfsXAg==}
-    peerDependencies:
-      '@mui/material': '>= 5.0.0'
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-    dependencies:
-      '@mui/material': 6.1.5(@emotion/react@11.13.3)(@emotion/styled@11.13.0)(@types/react@18.3.11)(react-dom@18.3.1)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    dev: false
 
   /material-ui-popup-state@5.3.1(@mui/material@6.1.5)(react@18.3.1):
     resolution: {integrity: sha512-mmx1DsQwF/2cmcpHvS/QkUwOQG2oAM+cDEQU0DaZVYnvwKyTB3AFgu8l1/E+LQFausmzpSJoljwQSZXkNvt7eA==}

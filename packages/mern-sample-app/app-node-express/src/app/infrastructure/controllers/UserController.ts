@@ -14,6 +14,14 @@ import { VALIDATORS } from "../validators";
 export class UserController {
   @autowired() private userService: UserService;
 
+  @contract(contracts.User.findAll, withRouteSecured(Role.Enum["avr-admin"]))
+  async findAll(): RouteOutput<typeof contracts.User.findAll> {
+    return {
+      status: 200,
+      body: await this.userService.findAll(),
+    };
+  }
+
   @contract(contracts.User.findOneByUsername, withRouteSecured(Role.Enum["avr-admin"]))
   async findOneByUsername(
     payload: RouteInput<typeof contracts.User.findOneByUsername>,
@@ -31,14 +39,6 @@ export class UserController {
     return {
       status: 200,
       body: await this.userService.getFormByUsername(payload.query.username),
-    };
-  }
-
-  @contract(contracts.User.findAll, withRouteSecured(Role.Enum["avr-admin"]))
-  async findAll(): RouteOutput<typeof contracts.User.findAll> {
-    return {
-      status: 200,
-      body: await this.userService.findAll(),
     };
   }
 

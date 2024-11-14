@@ -6,7 +6,7 @@ export type ConfirmDialogProps = ConfirmVisualProps & {
   open: boolean;
 };
 
-export function ConfirmDialog({
+function ConfirmDialog({
   title,
   message,
   open,
@@ -43,6 +43,7 @@ export type ConfirmVisualProps = {
   onConfirm: () => Promise<void>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useConfirm() {
   const [open, setOpen] = React.useState(false);
 
@@ -75,6 +76,7 @@ export const ConfirmContext = React.createContext<
   ((confirmVisualProps: ConfirmVisualProps) => void) | undefined
 >(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useConfirmContext() {
   const confirmAction = React.useContext(ConfirmContext);
   if (!confirmAction) {
