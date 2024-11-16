@@ -1,12 +1,15 @@
-import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
-import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
-import {
-  type NavigationRouteItem,
-  type NavigationRoute,
+import type {
+  NavigationRouteProtect,
+  NavigationRoute,
+  NavigationRouteItem,
 } from "@org/app-vite-react/server/route-typings";
+
+import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import * as RouterDOM from "react-router-dom";
+
+import { BoundarySuspenseGroup } from "../app/components/BoundarySuspenseGroup";
 
 export type Provider = React.FC<{ children: React.ReactNode }>;
 
@@ -32,24 +35,30 @@ type ReactAppConfig = {
   routes: NavigationRoute[];
   cssBaseline: React.FC;
   rootId?: string;
-  protectedRoute: React.FC<{
-    secure: (user: KeycloakUser | null) => boolean;
-    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
-  }>;
 };
+
+function getProtectFns(
+  oldProtectFns: NavigationRouteProtect[],
+  newProtectFn?: NavigationRouteProtect,
+) {
+  const protectFns = [...oldProtectFns];
+  if (newProtectFn) {
+    protectFns.push(newProtectFn);
+  }
+  return protectFns;
+}
 
 export class ReactApp {
   routes!: NavigationRoute[];
+
   layoutElement!: Provider;
   providers!: Provider[];
+
   errorElement!: React.FC;
+
   cssBaseline!: React.FC;
   rootId?: string;
   #domRoutes!: RouterDOM.RouteObject[];
-  #protectedRoute!: React.FC<{
-    secure: (user: KeycloakUser | null) => boolean;
-    Component: NonNullable<RouterDOM.RouteObject["Component"]>;
-  }>;
 
   constructor() {
     // NOOP
@@ -65,7 +74,6 @@ export class ReactApp {
 
   #loadConfig(config: ReactAppConfig) {
     this.routes = [...config.routes];
-    this.#protectedRoute = config.protectedRoute;
     this.cssBaseline = config.cssBaseline;
     this.rootId = config.rootId;
     this.errorElement = config.errorElement;
@@ -96,43 +104,39 @@ export class ReactApp {
     ]);
   }
 
-  #convertNavigationToRoutes(data: NavigationRoute[]): RouterDOM.RouteObject[] {
+  #convertNavigationToRoutes(
+    data: NavigationRoute[],
+    nestedProtectFns: NavigationRouteProtect[] = [],
+  ): RouterDOM.RouteObject[] {
     const routes: RouterDOM.RouteObject[] = [];
 
-    const protectComponentIfNeeded = (item: NavigationRouteItem) => {
+    const wrapComponentInBoundarySuspenseGroup = (
+      item: NavigationRouteItem,
+      protectFns: NavigationRouteProtect[],
+    ) => {
       const Component = item.Component;
-      const secure = item.secure;
-      if (!secure) return;
-
-      const ProtectedRoute = this.#protectedRoute;
-
-      // prettier-ignore
-      const ProtectedComponent = () => <ProtectedRoute
-        secure={secure} 
-        Component={Component}
-      />;
-
-      item.Component = ProtectedComponent;
+      item.Component = () => (
+        <BoundarySuspenseGroup protect={protectFns}>
+          <Component />
+        </BoundarySuspenseGroup>
+      );
     };
 
     for (const item of data) {
       if (item.variant === "single") {
-        protectComponentIfNeeded(item);
-        routes.push(item);
+        wrapComponentInBoundarySuspenseGroup(item, getProtectFns(nestedProtectFns, item.secure));
+        routes.push(item as RouterDOM.RouteObject);
         continue;
       }
 
-      // Register route for displaying breadcrumbs on menus and groups if `handle` is provided.
-      if ("handle" in item && item.handle) {
-        //routes.push(item);
-      }
-      //routes.push(...this.#convertNavigationToRoutes(item.children));
-
       const localItem = { ...item };
 
-      localItem.children = this.#convertNavigationToRoutes(item.children) as NavigationRoute[];
+      localItem.children = this.#convertNavigationToRoutes(
+        item.children,
+        getProtectFns(nestedProtectFns, item.secure),
+      ) as NavigationRoute[];
 
-      routes.push(localItem);
+      routes.push(localItem as RouterDOM.RouteObject);
     }
 
     return routes;

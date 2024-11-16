@@ -1,47 +1,35 @@
+import type { NavigationRouteHandle } from "@org/app-vite-react/server/route-typings";
 import type { TODO } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
-import { useState } from "react";
+import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { type UIMatch, useMatches } from "react-router-dom";
 
-type Crumb = {
+export type NavigationCrumb = {
   match: UIMatch<unknown, unknown>;
   label: string;
 };
 
-function convertToCrumbs(matches: UIMatch<unknown, unknown>[]): /*Crumb[]*/ TODO[] {
-  const crumbs: Crumb[] = [];
+function useNavigationCrumbs(): NavigationCrumb[] {
+  const matches: UIMatch<unknown, unknown>[] = useMatches();
+  const t = useTranslation();
 
-  //console.log(matches);
-
-  for (const match of matches) {
-    const handle: TODO = match.handle;
-    //console.log(match);
-
-    if (handle?.crumb) {
-      crumbs.push({
+  const crumbs: NavigationCrumb[] = useMemo(() => {
+    const c: NavigationCrumb[] = [];
+    for (const match of matches) {
+      const handle = match.handle as NavigationRouteHandle;
+      if (!handle?.crumb) continue;
+      c.push({
         match: match,
-        label: handle?.crumb?.(match.params) || undefined,
+        label: handle.crumb(t, match.params),
       });
     }
-
-    /*if (
-      "handle" in match &&
-      match.handle &&
-      typeof match.handle === "object" &&
-      "crumb" in match.handle &&
-      match.handle.crumb &&
-      typeof match.handle.crumb === "function"
-    ) {
-      crumbs.push({
-        match: match,
-        label: handle?.crumb?.(match.params) || undefined,
-      });
-    }*/
-  }
+    return c;
+  }, [t, matches]);
 
   return crumbs;
 }
@@ -92,9 +80,8 @@ export function LocalBreadcrumbs({
 }
 
 export function ComputedBreadcrumbs() {
+  const crumbs = useNavigationCrumbs();
   const matchesDesktop = mui.useMediaQuery("(min-width:678px)");
-  const matches = useMatches();
-  const crumbs = convertToCrumbs(matches);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
 

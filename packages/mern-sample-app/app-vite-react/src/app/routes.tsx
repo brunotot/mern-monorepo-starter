@@ -1,8 +1,5 @@
 import type { NavigationRoute } from "@org/app-vite-react/server/route-typings";
-import type { TODO } from "@org/lib-commons";
 
-//import * as icons from "@mui/icons-material";
-import { Protect } from "@org/app-vite-react/app/components/Protect";
 import ManageUsersPage from "@org/app-vite-react/app/pages/admin-settings/manage-users";
 import HomePage from "@org/app-vite-react/app/pages/home";
 import VisualPreferencesPage from "@org/app-vite-react/app/pages/visual-preferences";
@@ -13,18 +10,16 @@ import EditUserPage from "./pages/admin-settings/manage-users/pages/edit-user";
 export const routes: NavigationRoute[] = [
   {
     variant: "single",
-    label: () => "Home",
-    //icon: <icons.Dashboard fontSize="inherit" />,
+    label: t => t("dashboard"),
     path: "/",
-    Component: () => <HomePage />,
+    Component: HomePage,
     handle: {
-      crumb: () => "Home",
+      crumb: t => t("dashboard"),
     },
   },
   {
     variant: "single",
     label: () => "Visual preferences",
-    //icon: <icons.Palette fontSize="inherit" />,
     path: "visual-preferences",
     Component: VisualPreferencesPage,
     handle: {
@@ -35,9 +30,7 @@ export const routes: NavigationRoute[] = [
     label: () => "Admin settings",
     variant: "group",
     path: "admin",
-    secure: user => {
-      return !!user?.roles.some(r => ["avr-admin"].includes(r));
-    },
+    secure: user => !!user?.roles.some(r => ["avr-admin"].includes(r)),
     handle: {
       crumb: () => "Admin settings",
       disableLink: true,
@@ -53,39 +46,27 @@ export const routes: NavigationRoute[] = [
         children: [
           {
             variant: "single",
+            Component: ManageUsersPage,
             label: () => "Manage users",
             path: "",
-            Component: () => (
-              <Protect roles={["avr-admin"]}>
-                <ManageUsersPage />
-              </Protect>
-            ),
           },
           {
             variant: "single",
+            Component: CreateUserPage,
             hidden: true,
             path: "add",
             handle: {
               crumb: () => "Create user",
             },
-            Component: () => (
-              <Protect roles={["avr-admin"]}>
-                <CreateUserPage />
-              </Protect>
-            ),
           },
           {
             variant: "single",
+            Component: EditUserPage,
             hidden: true,
             path: ":username/edit",
             handle: {
-              crumb: ({ username }: TODO) => "Edit user " + username,
+              crumb: (_, params) => "Edit user " + params?.username,
             },
-            Component: () => (
-              <Protect roles={["avr-admin"]}>
-                <EditUserPage />
-              </Protect>
-            ),
           },
         ],
       },

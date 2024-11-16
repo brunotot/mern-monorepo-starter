@@ -24,8 +24,15 @@ export const UserForm = z
     description: "User Form",
   });
 
-/*UserForm.merge({
-  username: UserForm.shape.username
-})*/
+export const DEFAULT_USER_FORM_STATE: UserForm = {
+  id: "",
+  username: "",
+  password: "",
+  roles: ["avr-user"],
+  email: "",
+  firstName: "",
+  lastName: "",
+  enabled: true,
+};
 
 export type UserForm = zod.infer<typeof UserForm>;

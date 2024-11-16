@@ -1,4 +1,5 @@
-import type { Role } from "@org/lib-api-client";
+import type { KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
+import type { NavigationRouteProtectParam } from "@org/app-vite-react/server/route-typings";
 import type { ReactNode } from "react";
 
 import * as mui from "@mui/material";
@@ -6,52 +7,23 @@ import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 
 export type ProtectProps = {
   children: ReactNode;
-  roles: Role[];
+  protect?: NavigationRouteProtectParam;
 };
 
-export function Protect({ children, roles }: ProtectProps) {
-  const user = sigUser.value;
+function isAuthorized(user: KeycloakUser, protect?: NavigationRouteProtectParam): boolean {
+  if (!protect) return true;
 
-  if (!user) {
-    // Not authenticated
-    return (
-      <mui.Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        height="100%"
-        bgcolor="background.paper"
-        p={4}
-        borderRadius={2}
-        boxShadow={2}
-      >
-        <mui.Box textAlign="center">
-          <mui.Typography variant="h5" color="error" gutterBottom>
-            🔒 Restricted Access
-          </mui.Typography>
-          <mui.Typography variant="body1" color="textSecondary" gutterBottom>
-            You need to sign in to view this content.
-          </mui.Typography>
-          <mui.Button
-            variant="contained"
-            color="primary"
-            onClick={() => (window.location.href = "/login")} // Replace with your login URL
-          >
-            Sign In
-          </mui.Button>
-        </mui.Box>
-      </mui.Box>
-    );
+  if (Array.isArray(protect)) {
+    return protect.length === 0 || protect.every(p => p(user));
   }
 
-  if (user.roles.length === 0) {
-    return <>{children}</>;
-  }
+  return protect(user);
+}
 
-  const hasRole = user.roles.some(r => roles.includes(r));
+export function Protect({ children, protect }: ProtectProps) {
+  const user = sigUser.value!;
 
-  if (!hasRole) {
-    // Authenticated but lacks permissions
+  if (!isAuthorized(user, protect)) {
     return (
       <mui.Box
         display="flex"
@@ -75,6 +47,5 @@ export function Protect({ children, roles }: ProtectProps) {
     );
   }
 
-  // Authenticated and authorized
   return <>{children}</>;
 }

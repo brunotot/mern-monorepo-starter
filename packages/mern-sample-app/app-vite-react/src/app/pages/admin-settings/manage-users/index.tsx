@@ -1,20 +1,26 @@
-import type { UserDto } from "@org/lib-api-client";
 import type { zod } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { DatatableContainer, ClientDatatable } from "@org/app-vite-react/app/components/Datatable";
+import {
+  DatatableContainer,
+  DEFAULT_PAGINATION_OPTIONS,
+} from "@org/app-vite-react/app/components/Datatable";
 import { DatatableFilterButton } from "@org/app-vite-react/app/components/Datatable/components/DatatableFilterButton";
+import { Datatable } from "@org/app-vite-react/app/components/Datatable/Datatable";
 import { InputText } from "@org/app-vite-react/app/forms";
-import { useConfirmContext } from "@org/app-vite-react/app/provider/ConfirmProvider";
-import { useSnackbarContext } from "@org/app-vite-react/app/provider/SnackbarProvider";
+import { useConfirm } from "@org/app-vite-react/app/provider/ConfirmProvider";
+import { useSnackbar } from "@org/app-vite-react/app/provider/SnackbarProvider";
 import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
 import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
+import { type PaginationOptions, type UserDto } from "@org/lib-api-client";
 import { z } from "@org/lib-commons";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+import { TableRowMobile } from "./components/TableRowMobile";
 
 /*function buildPaginationQueryParams(paginationOptions: PaginationOptions): {
   paginationOptions: string;
@@ -36,6 +42,10 @@ export const DEFAULT_USER_FILTERS: UserFilters = {
 };
 
 export default function ManageUsersPage() {
+  const navigate = useNavigate();
+  const confirm = useConfirm();
+  const snack = useSnackbar();
+  const alignLeft = sigDirection.value === "rtl" ? "right" : "left";
   const [filters, setFilters] = React.useState<Partial<UserFilters>>({});
   const {
     control,
@@ -46,10 +56,16 @@ export default function ManageUsersPage() {
     defaultValue: DEFAULT_USER_FILTERS,
   });
 
-  const { data, isPending, refetch } = tsrQuery.User.findAll.useQuery({
+  const { data, refetch } = tsrQuery.User.findAll.useSuspenseQuery({
     queryKey: ["User.findAll"],
     staleTime: 1000,
   });
+
+  /*const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };*/
 
   const filteredData = React.useMemo(
     () =>
@@ -65,36 +81,16 @@ export default function ManageUsersPage() {
     [data?.body, filters],
   );
 
-  const navigate = useNavigate();
-
-  const confirmAction = useConfirmContext();
-  const snack = useSnackbarContext();
-
-  const alignLeft = sigDirection.value === "rtl" ? "right" : "left";
-
-  const onSearch = (model: UserFilters) => {
-    setFilters(model);
-  };
-
-  /*const [paginationOptions, setPaginationOptions] = useState<PaginationOptions>({
+  const [pagination, setPagination] = React.useState<PaginationOptions>({
     ...DEFAULT_PAGINATION_OPTIONS,
     order: ["username asc"],
+  });
+
+  /*const { data: userData, isPending: isPendingUsers, refetch: refetchUsers } = tsrQuery.User.findAllPaginated.useQuery({
+    queryKey: ['User.findAllPaginated', paginationOptions],
+    queryData: {query: buildPaginationQueryParams(paginationOptions)},
+    staleTime: 1000
   });*/
-
-  /*const fetchUsers = useCallback(async () => {
-    const query = buildPaginationQueryParams(paginationOptions);
-    const users = await tsrClient.User.findAllPaginated({ query });
-    if (users.status !== 200) throw new Error("Failed to fetch users.");
-    setUserResponse(users.body);
-  }, [paginationOptions]);*/
-
-  if (isPending) {
-    return <></>;
-  }
-
-  if (data?.status !== 200) {
-    return <div>Error</div>;
-  }
 
   return (
     <>
@@ -104,7 +100,7 @@ export default function ManageUsersPage() {
         <mui.Box padding={2} display="flex" alignItems="center" justifyContent="space-between">
           <DatatableFilterButton
             onClear={() => form.reset()}
-            onSearch={handleSearch(onSearch)}
+            onSearch={handleSearch(setFilters)}
             filters={[
               {
                 label: "Username",
@@ -127,32 +123,14 @@ export default function ManageUsersPage() {
             Add User
           </mui.Button>
         </mui.Box>
-        <ClientDatatable<UserDto>
+        <Datatable<UserDto>
+          sync={true}
+          pagination={pagination}
+          onPaginationChange={setPagination}
           data={filteredData}
-          //count={data.body.length}
-          //keyMapper={user => user.username}
-          //paginationOptions={paginationOptions}
-          //onPaginationOptionsChange={paginationOptions => setPaginationOptions(paginationOptions)}
+          keyMapper={({ username }) => username}
           renderMobileRow={user => (
-            <mui.Box
-              sx={{
-                height: "100%",
-                width: "100%", // Set to full width of the container
-                //backgroundColor: "rgba(255, 255, 255, 0.05)", // Lightly contrasting background
-                borderRadius: 1,
-                border: "1px solid", // Border styling
-                borderColor: "info.light", // Theme color for vibrant effect
-                padding: 2,
-                //boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.2)", // Soft shadow for depth
-              }}
-            >
-              <mui.Typography variant="h6" sx={{ fontWeight: 600 }}>
-                {user.username}
-              </mui.Typography>
-              <mui.Typography variant="body2" color="text.secondary" sx={{ marginTop: 0.5 }}>
-                {user.email || "--"}
-              </mui.Typography>
-            </mui.Box>
+            <TableRowMobile title={user.username} subtitle={user.email || "--"} />
           )}
           columns={[
             {
@@ -219,7 +197,7 @@ export default function ManageUsersPage() {
                     color="error"
                     disabled={user.username === sigUser.value?.username}
                     onClick={() => {
-                      confirmAction({
+                      confirm({
                         title: "Warning",
                         message: `Are you sure You want to delete user "${user.username}"?`,
                         onConfirm: async () => {
@@ -243,7 +221,10 @@ export default function ManageUsersPage() {
                   <mui.Button
                     variant="contained"
                     color="info"
-                    onClick={() => navigate(`/admin/users/${user.username}/edit`)}
+                    onClick={() => {
+                      navigate(`/admin/users/${user.username}/edit`);
+                      //setOpen(true);
+                    }}
                   >
                     Edit
                   </mui.Button>
@@ -252,6 +233,22 @@ export default function ManageUsersPage() {
             },
           ]}
         />
+        {/*<mui.Drawer
+          hideBackdrop
+          variant="temporary"
+          open={open}
+          anchor="right"
+          onClose={toggleDrawer(false)}
+          ModalProps={{}}
+          sx={{ left: "unset" }}
+          BackdropProps={{ invisible: true }}
+        >
+          <UserForm
+            groups={["update"]}
+            onSubmit={() => {}}
+            defaultValue={DEFAULT_USER_FORM_STATE}
+          />
+        </mui.Drawer>*/}
       </DatatableContainer>
     </>
   );

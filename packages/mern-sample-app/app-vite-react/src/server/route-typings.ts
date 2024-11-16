@@ -1,7 +1,13 @@
 import { type I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 import { type ReactNode } from "react";
-import { type RouteObject } from "react-router-dom";
+import { type RouteObject as RouteObjectDom } from "react-router-dom";
+
+type RouteObject = Omit<RouteObjectDom, "handle">;
+
+export type NavigationRouteProtect = (user: KeycloakUser | null) => boolean;
+
+export type NavigationRouteProtectParam = NavigationRouteProtect | NavigationRouteProtect[];
 
 type NavigationRouteUiHidden = {
   hidden: true;
@@ -13,9 +19,17 @@ type NavigationRouteUiVisible = {
   icon?: ReactNode;
 };
 
+export type NavigationRouteHandle =
+  | {
+      disableLink?: boolean;
+      crumb?: (translateFn: I18nTranslateFn, params: Record<string, string | undefined>) => string;
+    }
+  | undefined;
+
 export type NavigationRouteUi = {
   path: string;
-  secure?: (user: KeycloakUser | null) => boolean;
+  secure?: NavigationRouteProtect;
+  handle?: NavigationRouteHandle;
 } & (NavigationRouteUiVisible | NavigationRouteUiHidden);
 
 // prettier-ignore
@@ -28,7 +42,6 @@ export type NavigationRouteItem = RouteObject & NavigationRouteUi & {
 export type NavigationRouteItems = NavigationRouteUi & {
   variant: "menu" | "group";
   children: NavigationRoute[];
-  handle?: NonNullable<RouteObject["handle"]>;
 };
 
 export type NavigationRoute = NavigationRouteItem | NavigationRouteItems;

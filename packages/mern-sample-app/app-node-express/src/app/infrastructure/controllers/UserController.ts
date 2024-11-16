@@ -16,6 +16,14 @@ export class UserController {
 
   @contract(contracts.User.findAll, withRouteSecured(Role.Enum["avr-admin"]))
   async findAll(): RouteOutput<typeof contracts.User.findAll> {
+    /*return {
+      status: 500,
+      body: {
+        message: "Not implemented",
+        status: 500,
+        timestamp: new Date().toISOString(),
+      },
+    };*/
     return {
       status: 200,
       body: await this.userService.findAll(),

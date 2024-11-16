@@ -1,27 +1,13 @@
-import type { UserForm as UserFormModel } from "@org/lib-api-client";
-
-import { useSnackbarContext } from "@org/app-vite-react/app/provider/SnackbarProvider";
+import { useSnackbar } from "@org/app-vite-react/app/provider/SnackbarProvider";
 import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
+import { DEFAULT_USER_FORM_STATE, type UserForm as UserFormModel } from "@org/lib-api-client";
 import { useNavigate } from "react-router-dom";
 
 import { UserForm } from "../../components";
 
-// TODO: Move this to shared package.
-// eslint-disable-next-line react-refresh/only-export-components
-export const DEFAULT_USER_FORM_STATE: UserFormModel = {
-  id: "",
-  username: "",
-  password: "",
-  roles: ["avr-user"],
-  email: "",
-  firstName: "",
-  lastName: "",
-  enabled: true,
-};
-
 export default function CreateUserPage() {
   const navigate = useNavigate();
-  const snack = useSnackbarContext();
+  const snack = useSnackbar();
 
   const handleSubmit = async (model: UserFormModel) => {
     await tsrClient.User.createUser({

@@ -1,3 +1,5 @@
+import type { NavigationRouteProtect } from "@org/app-vite-react/server/route-typings";
+
 import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js/KeycloakUser";
 import { Navigate, useLocation, type RouteObject } from "react-router-dom";
 
@@ -6,7 +8,7 @@ export function KeycloakRoute({
   user,
   Component,
 }: {
-  secure: (user: KeycloakUser | null) => boolean;
+  secure: NavigationRouteProtect;
   user: KeycloakUser | null;
   Component: NonNullable<RouteObject["Component"]>;
 }) {

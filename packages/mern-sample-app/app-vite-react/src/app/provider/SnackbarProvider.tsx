@@ -35,7 +35,7 @@ function Snackbar({
 export type PartialSnackbarProps = Omit<SnackbarProps, "open" | "onClose">;
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useSnackbar() {
+function useSnackbarLocal() {
   const [open, setOpen] = React.useState(false);
 
   const onClose = () => {
@@ -65,15 +65,15 @@ export const SnackbarContext = React.createContext<
 >(undefined);
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useSnackbarContext() {
+export function useSnackbar() {
   const snack = React.useContext(SnackbarContext);
   if (!snack) {
-    throw new Error("useSnackbarContext must be used within a SnackbarProvider");
+    throw new Error("useSnackbar must be used within a SnackbarProvider");
   }
   return snack;
 }
 export function SnackbarProvider({ children }: React.PropsWithChildren) {
-  const { snackbarProps, snack } = useSnackbar();
+  const { snackbarProps, snack } = useSnackbarLocal();
 
   return (
     <SnackbarContext.Provider value={snack}>

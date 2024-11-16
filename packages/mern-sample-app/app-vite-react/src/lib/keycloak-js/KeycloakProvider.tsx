@@ -7,7 +7,7 @@ import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
 import { jwtDecode } from "jwt-decode";
 import { type KeycloakTokenParsed } from "keycloak-js";
 import React from "react";
-import { StrictMode, type PropsWithChildren } from "react";
+import { /*StrictMode,*/ type PropsWithChildren } from "react";
 
 const KeycloakImpl = ({ children }: React.PropsWithChildren) => {
   const { keycloak, initialized } = useKeycloak();

@@ -8,7 +8,13 @@ import {
 import { tsrQuery } from "../@ts-rest/tsRestApiClient";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+    },
+  },
+});
 
 export function QueryClientProvider({ children }: PropsWithChildren) {
   return (

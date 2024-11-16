@@ -3,15 +3,13 @@ import "@org/app-vite-react/lib/i18next/i18n";
 import { Layout as layoutElement } from "@org/app-vite-react/app/layout";
 import { providers } from "@org/app-vite-react/app/providers";
 import { routes } from "@org/app-vite-react/app/routes";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 import { MuiCssBaseline as cssBaseline } from "@org/app-vite-react/lib/@mui";
-import { KeycloakRoute, type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
 import { reactServer } from "@org/app-vite-react/server/server";
 import { useRouteError } from "react-router-dom";
-import { type RouteObject } from "react-router-dom";
 
 import "@org/app-vite-react/main.css";
 
+// eslint-disable-next-line react-refresh/only-export-components
 function RootErrorPage() {
   const error = useRouteError() as Error;
   return (
@@ -23,16 +21,6 @@ function RootErrorPage() {
   );
 }
 
-function ProtectedRoute({
-  secure,
-  Component,
-}: {
-  secure: (user: KeycloakUser | null) => boolean;
-  Component: NonNullable<RouteObject["Component"]>;
-}) {
-  return <KeycloakRoute user={sigUser.value} secure={secure} Component={Component} />;
-}
-
 reactServer.run({
   rootId: "root",
   routes,
@@ -40,5 +28,4 @@ reactServer.run({
   errorElement: RootErrorPage,
   layoutElement,
   cssBaseline,
-  protectedRoute: ProtectedRoute,
 });

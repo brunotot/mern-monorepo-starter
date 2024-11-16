@@ -19,22 +19,22 @@ export function ServerDatatable<T>({
   data,
   columns,
   keyMapper,
-  paginationOptions,
-  onPaginationOptionsChange,
+  pagination,
+  onPaginationChange,
   count,
 }: ServerDatatableProps<T>) {
   const sortData =
-    paginationOptions?.order.map((order: TODO) => {
+    pagination?.order.map((order: TODO) => {
       const [id, direction] = order.split(" ");
       return { id, direction } as DtBaseSortItem;
     }) ?? [];
 
   const onPageChange = (newPage: number) => {
-    onPaginationOptionsChange({ ...paginationOptions, page: newPage });
+    onPaginationChange({ ...pagination, page: newPage });
   };
 
   const onRowsPerPageChange = (newRowsPerPage: number) => {
-    onPaginationOptionsChange({ ...paginationOptions, rowsPerPage: newRowsPerPage });
+    onPaginationChange({ ...pagination, rowsPerPage: newRowsPerPage });
   };
 
   const onSortColumnClick = useCallback(
@@ -43,19 +43,19 @@ export function ServerDatatable<T>({
       //console.log(_event);
       const sortIndex = sortData.findIndex((v: TODO) => v.id === id);
       if (sortIndex < 0) {
-        onPaginationOptionsChange({ ...paginationOptions, order: [`${id} asc`] });
+        onPaginationChange({ ...pagination, order: [`${id} asc`] });
         return;
       }
       const sortProps = sortData[sortIndex];
       const oldDirection = sortProps.direction;
       if (oldDirection === "desc") {
-        onPaginationOptionsChange({ ...paginationOptions, order: [] });
+        onPaginationChange({ ...pagination, order: [] });
         return;
       }
-      onPaginationOptionsChange({ ...paginationOptions, order: [`${id} desc`] });
+      onPaginationChange({ ...pagination, order: [`${id} desc`] });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [paginationOptions, sortData],
+    [pagination, sortData],
   );
 
   return (
@@ -96,7 +96,7 @@ export function ServerDatatable<T>({
               <TableRow hover key={keyMapper(item)} role="checkbox" tabIndex={-1}>
                 {columns.map(({ id, align, renderBody }) => (
                   <TableCell key={id} align={align}>
-                    {renderBody(item)}
+                    {renderBody(item, { cleanup: () => {} })}
                   </TableCell>
                 ))}
               </TableRow>
@@ -111,8 +111,8 @@ export function ServerDatatable<T>({
         labelDisplayedRows={({ from, to, count }) => `${from}-${to} to ${count}`}
         rowsPerPageOptions={[10, 25, 50, 100]}
         count={count}
-        page={paginationOptions?.page ?? 0}
-        rowsPerPage={paginationOptions?.rowsPerPage ?? 0}
+        page={pagination?.page ?? 0}
+        rowsPerPage={pagination?.rowsPerPage ?? 0}
         showFirstButton
         showLastButton
         onPageChange={(_, newPage) => onPageChange(newPage)}

@@ -1,16 +1,16 @@
 import type { ClientDatatableProps } from "@org/app-vite-react/app/components/Datatable";
+
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
 import React, { useState } from "react";
 
-export type ClientResponsiveTableProps<T> = ClientDatatableProps<T> & {
+export type ClientResponsiveTableProps<T> = Omit<ClientDatatableProps<T>, "disablePagination"> & {
   renderRow: (item: T) => React.ReactNode;
 };
 
 export function ClientResponsiveTable<T>({
   columns,
   data,
-  disablePagination,
   renderRow,
 }: ClientResponsiveTableProps<T>) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
@@ -39,13 +39,7 @@ export function ClientResponsiveTable<T>({
             onClick={() => handleItemClick(item)}
             sx={{
               cursor: "pointer",
-              //backgroundColor: "red",
               borderRadius: 1,
-              //marginBottom: 1,
-              //padding: 2,
-              "&:hover": {
-                //backgroundColor: "rgba(255, 255, 255, 0.1)",
-              },
             }}
           >
             {renderRow(item)}
@@ -81,7 +75,7 @@ export function ClientResponsiveTable<T>({
                     justifyContent: "space-between",
                     marginBottom: 1.5,
                     paddingY: 1,
-                    borderBottom: "1px solid",
+                    borderBottom: idx < columns.length - 1 ? "1px solid" : undefined,
                     borderColor: "divider",
                   }}
                 >
@@ -101,12 +95,6 @@ export function ClientResponsiveTable<T>({
             </mui.Box>
           )}
         </mui.DialogContent>
-
-        <mui.DialogActions>
-          <mui.Button onClick={cleanup} color="primary" variant="contained">
-            Close
-          </mui.Button>
-        </mui.DialogActions>
       </mui.Dialog>
     </>
   );

@@ -44,7 +44,7 @@ export type ConfirmVisualProps = {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useConfirm() {
+function useConfirmLocal() {
   const [open, setOpen] = React.useState(false);
 
   const [confirmDialogVisualProps, setConfirmDialogVisualProps] =
@@ -77,15 +77,15 @@ export const ConfirmContext = React.createContext<
 >(undefined);
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useConfirmContext() {
+export function useConfirm() {
   const confirmAction = React.useContext(ConfirmContext);
   if (!confirmAction) {
-    throw new Error("useConfirmContext must be used within a ConfirmProvider");
+    throw new Error("useConfirm must be used within a ConfirmProvider");
   }
   return confirmAction;
 }
 export function ConfirmProvider({ children }: React.PropsWithChildren) {
-  const { confirmAction, ...confirmDialogProps } = useConfirm();
+  const { confirmAction, ...confirmDialogProps } = useConfirmLocal();
 
   return (
     <ConfirmContext.Provider value={confirmAction}>
