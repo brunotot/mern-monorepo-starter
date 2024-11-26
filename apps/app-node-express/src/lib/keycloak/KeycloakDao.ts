@@ -4,8 +4,7 @@ import { env } from "@/server/env";
 export class KeycloakDao {
   private readonly TOKEN_MANAGER: KeycloakTokenManager;
   private readonly ADMIN_API_URL: string;
-
-  public static readonly KC_CLIENT_ID = "9943a0fd-de66-4247-a7b8-c0a94a70b393";
+  private readonly KC_CLIENT_ID: string;
 
   protected ROLES: Record<string, string>;
 
@@ -13,6 +12,7 @@ export class KeycloakDao {
     const { KEYCLOAK_URL, KEYCLOAK_REALM } = env;
     this.TOKEN_MANAGER = new KeycloakTokenManager();
     this.ADMIN_API_URL = `${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}`;
+    this.KC_CLIENT_ID = env.KEYCLOAK_APP_CLIENT_ID;
     this.initRoles();
   }
 
@@ -78,7 +78,7 @@ export class KeycloakDao {
 
   private async initRoles() {
     const res = await this.get<{ id: string; name: string }[]>(
-      `/clients/${KeycloakDao.KC_CLIENT_ID}/roles`,
+      `/clients/${this.KC_CLIENT_ID}/roles`,
     );
     this.ROLES = res.reduce(
       (acc, role) => {
