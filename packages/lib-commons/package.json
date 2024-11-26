@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@org/lib-commons",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm clean && tsc && tsc-alias -p tsconfig.build.json",
+    "clean": "rimraf dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "NODE_NO_WARNINGS=1 vitest --run",
+    "test:coverage": "NODE_NO_WARNINGS=1 vitest --run --coverage"
+  },
+  "keywords": [],
+  "author": "Bruno Tot",
+  "license": "MIT",
+  "dependencies": {
+    "@anatine/zod-openapi": "^2.2.5",
+    "@org/lib-commons": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "openapi3-ts": "^4.4.0"
+  }
+}

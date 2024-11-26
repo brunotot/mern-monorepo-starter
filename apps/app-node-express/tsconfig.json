@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "types": [],
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "lib": ["ESNext.Decorators"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+
+  "references": [
+    { "path": "../../packages/lib-commons" },
+    { "path": "../../packages/lib-api-client" },
+    { "path": "../../packages/lib-mongodb" },
+    { "path": "../../packages/lib-decorators" }
+  ]
+}

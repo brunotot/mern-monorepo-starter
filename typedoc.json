@@ -1,16 +1,18 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "@org",
-  "entryPoints": ["packages/**/*"],
+  "entryPoints": ["packages/**/*", "apps/**/*"],
   "entryPointStrategy": "packages",
   "includeVersion": false,
   "excludeInternal": true,
   "pretty": true,
-  "plugin": ["typedoc-github-theme", "typedoc-plugin-remove-references"],
+  "plugin": ["typedoc-github-theme"],
+  "readme": "none",
   "navigation": {
     "includeCategories": false,
     "includeGroups": false,
     "includeFolders": true,
-    "compactFolders": false
+    "compactFolders": false,
+    "excludeReferences": true
   }
 }

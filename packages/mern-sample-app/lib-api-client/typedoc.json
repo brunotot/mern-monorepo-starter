@@ -1,6 +1,0 @@
-{
-  "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/**/*.ts"],
-  "name": "lib-api-client",
-  "exclude": ["src/*/**/index.ts"]
-}
