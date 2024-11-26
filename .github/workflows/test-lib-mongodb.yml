@@ -1,4 +1,4 @@
-name: test-lib-commons
+name: test-lib-mongodb
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-lib-commons:
+  test-lib-mongodb:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,13 +23,13 @@ jobs:
         id: changes
         with:
           filters: |
-            lib-commons:
-              - 'packages/lib-commons/**'
+            lib-mongodb:
+              - 'packages/lib-mongodb/**'
 
       - name: 🛠 Setup Git, PNPM and Node.js
-        if: steps.changes.outputs.lib-commons == 'true'
+        if: steps.changes.outputs.lib-mongodb == 'true'
         uses: ./.github/composite-actions/install
 
       - name: 🚀 Run test
-        if: steps.changes.outputs.lib-commons == 'true'
-        run: pnpm --filter lib-commons test
+        if: steps.changes.outputs.lib-mongodb == 'true'
+        run: pnpm --filter lib-mongodb test
