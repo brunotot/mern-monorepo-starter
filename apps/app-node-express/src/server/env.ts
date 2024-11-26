@@ -226,6 +226,8 @@ const ENVIRONMENT_VARS = z.object({
    */
   KEYCLOAK_TOKEN_ENDPOINT: z.string().default("/token").transform(Transform.URL),
 
+  KEYCLOAK_APP_CLIENT_ID: z.string(),
+
   /**
    * Allowed origins for CORS requests.
    * @default "*"
