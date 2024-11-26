@@ -1,4 +1,4 @@
-import type { PaginationOptions } from "@org/lib-api-client";
+import type { PaginationOptions } from "@org/lib-commons";
 import type { ReactNode } from "react";
 
 export type DtBaseColumnConfig = {
