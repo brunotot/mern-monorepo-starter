@@ -1,6 +1,5 @@
-import { z } from "@org/lib-commons";
-
 import { JsonQueryParam } from "@/app/JsonQueryParam";
+import { z } from "@/lib/zod";
 
 describe("JsonQueryParam", () => {
   const queryParamInstance = JsonQueryParam(
