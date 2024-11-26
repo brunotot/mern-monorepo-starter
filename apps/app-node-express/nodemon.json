@@ -1,0 +1,12 @@
+{
+  "ext": "ts",
+  "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "exec": "nx build && export SERVER_ENV=development && nx node",
+  "watch": [
+    "src",
+    "../../packages/lib-commons/src",
+    "../../packages/lib-api-client/src",
+    "../../packages/lib-decorators/src",
+    "../../packages/lib-mongodb/src"
+  ]
+}

@@ -1,5 +1,12 @@
-node_modules/**
-docs/**
-dist/**
-coverage/**
-packages/**/**/coverage/**
+
+*/**/.vscode/*
+!*/**/.vscode/extensions.json
+
+**/node_modules/**
+**/docs/**
+**/dist/**
+**/logs/**
+**/coverage/**
+
+.nx/cache
+.nx/workspace-data

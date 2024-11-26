@@ -24,7 +24,7 @@ jobs:
         with:
           filters: |
             app-node-express:
-              - 'packages/mern-sample-app/app-node-express/**'
+              - 'apps/app-node-express/**'
 
       - name: 🛠 Setup Git, PNPM and Node.js
         if: steps.changes.outputs.app-node-express == 'true'
@@ -32,4 +32,4 @@ jobs:
 
       - name: 🚀 Run test
         if: steps.changes.outputs.app-node-express == 'true'
-        run: pnpm run app-node-express:test
+        run: pnpm --filter app-node-express test

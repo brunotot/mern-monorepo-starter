@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "@org/lib-api-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm clean && tsc && tsc-alias -p tsconfig.build.json",
+    "clean": "rimraf dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "nx build && NODE_NO_WARNINGS=1 vitest --run",
+    "test:coverage": "nx build && NODE_NO_WARNINGS=1 vitest --run --coverage"
+  },
+  "keywords": [],
+  "author": "Bruno Tot",
+  "license": "MIT",
+  "dependencies": {
+    "@org/lib-commons": "workspace:*",
+    "@anatine/zod-openapi": "^2.2.5",
+    "@ts-rest/core": "^3.51.0",
+    "@ts-rest/open-api": "^3.51.0"
+  },
+  "devDependencies": {}
+}

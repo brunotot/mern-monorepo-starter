@@ -11,5 +11,8 @@
       "icon": "terminal-bash",
       "args": ["-i"]
     }
-  }
+  },
+  "git.terminalAuthentication": false,
+  "git.confirmSync": true,
+  "git.useCredentialHelper": false
 }

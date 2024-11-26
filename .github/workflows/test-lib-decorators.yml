@@ -1,0 +1,35 @@
+name: test-lib-decorators
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "**"
+  merge_group:
+  workflow_dispatch:
+
+jobs:
+  test-lib-decorators:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configure paths filter environment variable
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            lib-decorators:
+              - 'packages/lib-decorators/**'
+
+      - name: 🛠 Setup Git, PNPM and Node.js
+        if: steps.changes.outputs.lib-decorators == 'true'
+        uses: ./.github/composite-actions/install
+
+      - name: 🚀 Run test
+        if: steps.changes.outputs.lib-decorators == 'true'
+        run: pnpm --filter lib-decorators test

@@ -55,7 +55,6 @@
           }
         ],
         "pathGroupsExcludedImportTypes": ["type"],
-        "newlines-between": "always", // Enforce newlines between groups
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true

@@ -1,0 +1,35 @@
+name: test-lib-mongodb
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "**"
+  merge_group:
+  workflow_dispatch:
+
+jobs:
+  test-lib-mongodb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configure paths filter environment variable
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            lib-mongodb:
+              - 'packages/lib-mongodb/**'
+
+      - name: 🛠 Setup Git, PNPM and Node.js
+        if: steps.changes.outputs.lib-mongodb == 'true'
+        uses: ./.github/composite-actions/install
+
+      - name: 🚀 Run test
+        if: steps.changes.outputs.lib-mongodb == 'true'
+        run: pnpm --filter lib-mongodb test

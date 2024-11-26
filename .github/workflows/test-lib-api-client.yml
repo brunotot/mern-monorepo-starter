@@ -24,7 +24,7 @@ jobs:
         with:
           filters: |
             lib-api-client:
-              - 'packages/mern-sample-app/lib-api-client/**'
+              - 'packages/lib-api-client/**'
 
       - name: 🛠 Setup Git, PNPM and Node.js
         if: steps.changes.outputs.lib-api-client == 'true'
@@ -32,4 +32,4 @@ jobs:
 
       - name: 🚀 Run test
         if: steps.changes.outputs.lib-api-client == 'true'
-        run: pnpm run lib-api-client:test
+        run: pnpm --filter lib-api-client test

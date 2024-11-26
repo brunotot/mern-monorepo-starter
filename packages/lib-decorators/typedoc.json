@@ -1,0 +1,6 @@
+{
+  "name": "lib-decorators",
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/**/*.ts"],
+  "exclude": ["src/**/index.ts"]
+}

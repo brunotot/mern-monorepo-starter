@@ -2,79 +2,79 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "@org: test",
-      "runtimeArgs": ["run", "test"],
+      "name": "@org: install",
+      "runtimeArgs": ["install"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "console": "integratedTerminal",
-      "outputCapture": "std",
-      "autoAttachChildProcesses": false
-    },
-    {
-      "name": "@org: build",
-      "runtimeArgs": ["run", "build"],
-      "presentation": { "group": "1" },
-      // Defaults below
-      "runtimeVersion": "21.7.0",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org: clean",
-      "runtimeArgs": ["run", "clean"],
+      "runtimeArgs": ["-r", "clean"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
-      "name": "@org: reinstall",
-      "runtimeArgs": ["run", "reinstall"],
+      "name": "@org: build",
+      "runtimeArgs": ["-r", "build"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org: test",
+      "runtimeArgs": ["-r", "test"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org: lint",
-      "runtimeArgs": ["run", "lint"],
+      "runtimeArgs": ["-r", "lint"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org: lint:fix",
-      "runtimeArgs": ["run", "lint:fix"],
+      "runtimeArgs": ["-r", "lint:fix"],
       "presentation": { "group": "1" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
@@ -87,350 +87,544 @@
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org: renameProjectLabels",
+      "runtimeArgs": ["run", "renameProjectLabels"],
+      "presentation": { "group": "1" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-node-express: start",
-      "runtimeArgs": ["run", "start", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "start"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": true
     },
     {
       "name": "@org/app-node-express: dev",
-      "runtimeArgs": ["run", "dev", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "dev"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": true
     },
     {
       "name": "@org/app-node-express: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "test"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/app-node-express: test:coverage",
+      "runtimeArgs": ["--filter", "app-node-express", "test:coverage"],
+      "presentation": { "group": "3" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-node-express: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "build"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-node-express: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "clean"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-node-express: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "lint"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-node-express: lint:fix",
-      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/app-node-express"],
+      "runtimeArgs": ["--filter", "app-node-express", "lint:fix"],
       "presentation": { "group": "3" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: start",
-      "runtimeArgs": ["run", "start", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "start"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: dev",
-      "runtimeArgs": ["run", "dev", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "dev"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "test"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "build"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "clean"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "lint"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: lint:fix",
-      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/app-vite-react"],
+      "runtimeArgs": ["--filter", "app-vite-react", "lint:fix"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/app-vite-react: loadTranslationTypes",
-      "runtimeArgs": [
-        "run",
-        "loadTranslationTypes",
-        "--prefix",
-        "packages/mern-sample-app/app-vite-react"
-      ],
+      "runtimeArgs": ["--filter", "app-vite-react", "loadTranslationTypes"],
       "presentation": { "group": "4" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "test"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: test:coverage",
-      "runtimeArgs": ["run", "test:coverage", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "test:coverage"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "build"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "clean"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "lint"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-commons: lint:fix",
-      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/lib-commons"],
+      "runtimeArgs": ["--filter", "lib-commons", "lint:fix"],
       "presentation": { "group": "5" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-api-client: test",
-      "runtimeArgs": ["run", "test", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "runtimeArgs": ["--filter", "lib-api-client", "test"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/lib-api-client: test:coverage",
+      "runtimeArgs": ["--filter", "lib-api-client", "test:coverage"],
+      "presentation": { "group": "6" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-api-client: build",
-      "runtimeArgs": ["run", "build", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "runtimeArgs": ["--filter", "lib-api-client", "build"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-api-client: clean",
-      "runtimeArgs": ["run", "clean", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "runtimeArgs": ["--filter", "lib-api-client", "clean"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-api-client: lint",
-      "runtimeArgs": ["run", "lint", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "runtimeArgs": ["--filter", "lib-api-client", "lint"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false
     },
     {
       "name": "@org/lib-api-client: lint:fix",
-      "runtimeArgs": ["run", "lint:fix", "--prefix", "packages/mern-sample-app/lib-api-client"],
+      "runtimeArgs": ["--filter", "lib-api-client", "lint:fix"],
       "presentation": { "group": "6" },
       // Defaults below
       "runtimeVersion": "21.7.0",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-decorators: test",
+      "runtimeArgs": ["--filter", "lib-decorators", "test"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/lib-decorators: test:coverage",
+      "runtimeArgs": ["--filter", "lib-decorators", "test:coverage"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-decorators: build",
+      "runtimeArgs": ["--filter", "lib-decorators", "build"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-decorators: clean",
+      "runtimeArgs": ["--filter", "lib-decorators", "clean"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-decorators: lint",
+      "runtimeArgs": ["--filter", "lib-decorators", "lint"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-decorators: lint:fix",
+      "runtimeArgs": ["--filter", "lib-decorators", "lint:fix"],
+      "presentation": { "group": "7" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-mongodb: test",
+      "runtimeArgs": ["--filter", "lib-mongodb", "test"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+
+    {
+      "name": "@org/lib-mongodb: test:coverage",
+      "runtimeArgs": ["--filter", "lib-mongodb", "test:coverage"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-mongodb: build",
+      "runtimeArgs": ["--filter", "lib-mongodb", "build"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-mongodb: clean",
+      "runtimeArgs": ["--filter", "lib-mongodb", "clean"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-mongodb: lint",
+      "runtimeArgs": ["--filter", "lib-mongodb", "lint"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "@org/lib-mongodb: lint:fix",
+      "runtimeArgs": ["--filter", "lib-mongodb", "lint:fix"],
+      "presentation": { "group": "8" },
+      // Defaults below
+      "runtimeVersion": "21.7.0",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
       "console": "integratedTerminal",
       "outputCapture": "std",
       "autoAttachChildProcesses": false

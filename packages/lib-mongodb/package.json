@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@org/lib-mongodb",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm clean && tsc && tsc-alias -p tsconfig.build.json",
+    "clean": "rimraf dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "nx build && NODE_NO_WARNINGS=1 vitest --run",
+    "test:coverage": "nx build && NODE_NO_WARNINGS=1 vitest --run --coverage"
+  },
+  "keywords": [],
+  "author": "Bruno Tot",
+  "license": "MIT",
+  "dependencies": {
+    "@org/lib-commons": "workspace:*",
+    "mongodb-memory-server": "^9.2.0",
+    "mongodb": "^6.5.0"
+  }
+}
