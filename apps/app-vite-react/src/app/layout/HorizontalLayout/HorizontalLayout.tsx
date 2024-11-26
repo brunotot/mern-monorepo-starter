@@ -1,11 +1,11 @@
 import type { Breakpoint } from "@mui/material";
-import type * as RouteTypes from "@org/app-vite-react/server/route-typings";
+import type * as RouteTypes from "@/server/route-typings";
 
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
-import { reactServer } from "@org/app-vite-react/server/server";
+import { sigUser } from "@/app/signals/sigUser";
+import { useTranslation } from "@/lib/i18next";
+import { reactServer } from "@/server/server";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 

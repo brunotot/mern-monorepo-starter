@@ -1,6 +1,6 @@
 import type { ConstraintViolationExecOptions } from "@org/lib-api-client";
 
-import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
+import { tsrClient } from "@/lib/@ts-rest";
 
 export async function executeConstraintValidation({
   body,

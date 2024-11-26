@@ -1,4 +1,4 @@
-import type { ClientDatatableProps } from "@org/app-vite-react/app/components/Datatable";
+import type { ClientDatatableProps } from "@/app/components/Datatable";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";

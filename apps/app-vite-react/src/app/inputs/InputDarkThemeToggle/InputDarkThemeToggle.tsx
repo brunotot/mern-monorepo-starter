@@ -1,6 +1,6 @@
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { useTranslation } from "@/lib/i18next";
 
 export type InputDarkThemeToggleProps = {
   value: boolean;

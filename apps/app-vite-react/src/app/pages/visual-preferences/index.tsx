@@ -1,15 +1,12 @@
-import type { LayoutWidth, Locale } from "@org/app-vite-react/app/models";
+import type { LayoutWidth, Locale } from "@/app/models";
 
 import * as mui from "@mui/material";
-import * as inputs from "@org/app-vite-react/app/forms/input";
-import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
-import {
-  LAYOUT_WIDTH_OPTIONS,
-  sigLayoutWidth,
-} from "@org/app-vite-react/app/signals/sigLayoutWidth";
-import { sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
-import { sigThemeOpts } from "@org/app-vite-react/app/signals/sigTheme";
-import { I18N_LANGUAGE_LIST } from "@org/app-vite-react/lib/i18next";
+import * as inputs from "@/app/forms/input";
+import { sigLayoutVariant } from "@/app/signals/sigLayoutVariant";
+import { LAYOUT_WIDTH_OPTIONS, sigLayoutWidth } from "@/app/signals/sigLayoutWidth";
+import { sigLocale } from "@/app/signals/sigLocale";
+import { sigThemeOpts } from "@/app/signals/sigTheme";
+import { I18N_LANGUAGE_LIST } from "@/lib/i18next";
 
 import { LabelInputGroup } from "./LabelInputGroup";
 import { Flag } from "../../components/Flag/Flag";

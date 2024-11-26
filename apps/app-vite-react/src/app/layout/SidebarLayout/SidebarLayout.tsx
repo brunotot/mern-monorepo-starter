@@ -1,14 +1,14 @@
-import type * as RouteTypes from "@org/app-vite-react/server/route-typings";
+import type * as RouteTypes from "@/server/route-typings";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { isAnyRouteActive } from "@org/app-vite-react/app/layout/Layout";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
-import { reactServer } from "@org/app-vite-react/server/server";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isAnyRouteActive } from "@/app/layout/Layout";
+import { sigUser } from "@/app/signals/sigUser";
+import { useTranslation } from "@/lib/i18next";
+import { reactServer } from "@/server/server";
 
 export type SidebarNavItemProps = {
   item: RouteTypes.NavigationRoute & { accumulatedPath: string };

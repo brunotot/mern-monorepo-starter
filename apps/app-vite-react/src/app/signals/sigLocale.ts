@@ -1,6 +1,6 @@
 import type { Locale } from "../models";
 
-import * as i18n from "@org/app-vite-react/lib/i18next";
+import * as i18n from "@/lib/i18next";
 import { effect, signal } from "@preact/signals-react";
 
 import { LocalStorage } from "../../server/LocalStorage";

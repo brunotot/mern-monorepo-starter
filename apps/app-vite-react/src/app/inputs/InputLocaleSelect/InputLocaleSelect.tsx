@@ -1,8 +1,8 @@
-import type { I18nLocale } from "@org/app-vite-react/lib/i18next";
+import type { I18nLocale } from "@/lib/i18next";
 
 import { Translate } from "@mui/icons-material";
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
-import { I18N_LANGUAGE_LIST, useTranslation } from "@org/app-vite-react/lib/i18next";
+import { I18N_LANGUAGE_LIST, useTranslation } from "@/lib/i18next";
 import { useMemo, useState } from "react";
 
 import { Flag } from "../../components/Flag/Flag";

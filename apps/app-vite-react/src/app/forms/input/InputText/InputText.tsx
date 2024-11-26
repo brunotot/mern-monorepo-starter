@@ -1,7 +1,7 @@
 import type * as rhf from "react-hook-form";
 
 import * as mui from "@mui/material";
-import { Input, type CombinedInputProps } from "@org/app-vite-react/app/forms/input/Input/Input";
+import { Input, type CombinedInputProps } from "@/app/forms/input/Input/Input";
 
 export type InputTextProps<
   TInput,

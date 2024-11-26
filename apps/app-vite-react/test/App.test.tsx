@@ -1,6 +1,6 @@
 /// <reference types="@testing-library/jest-dom" />
 
-import HomePage from "@org/app-vite-react/app/pages/home";
+import HomePage from "@/app/pages/home";
 import { render, screen } from "@testing-library/react";
 
 describe("App", () => {

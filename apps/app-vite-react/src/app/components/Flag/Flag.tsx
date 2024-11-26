@@ -1,6 +1,6 @@
-import type { I18nLocale } from "@org/app-vite-react/lib/i18next";
+import type { I18nLocale } from "@/lib/i18next";
 
-import { getLocaleFlag } from "@org/app-vite-react/lib/i18next";
+import { getLocaleFlag } from "@/lib/i18next";
 import React from "react";
 
 export type FlagProps = {

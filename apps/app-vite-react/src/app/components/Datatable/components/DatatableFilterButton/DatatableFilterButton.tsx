@@ -2,7 +2,7 @@ import type { DatatableFilterProps } from "../DatatableFilter/DatatableFilter";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { FixedBadge } from "@org/app-vite-react/app/pages/admin-settings/manage-users/components";
+import { FixedBadge } from "@/app/pages/admin-settings/manage-users/components";
 import React from "react";
 
 import { DatatableFilters } from "../DatatableFilters";

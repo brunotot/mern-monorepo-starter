@@ -1,11 +1,8 @@
-import type {
-  CombinedInputProps,
-  ValueType,
-} from "@org/app-vite-react/app/forms/input/Input/Input";
+import type { CombinedInputProps, ValueType } from "@/app/forms/input/Input/Input";
 import type * as rhf from "react-hook-form";
 
 import * as mui from "@mui/material";
-import { Input } from "@org/app-vite-react/app/forms/input/Input/Input";
+import { Input } from "@/app/forms/input/Input/Input";
 
 export type InputSelectProps<
   TInput,

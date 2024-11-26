@@ -1,6 +1,6 @@
 /// <reference types="@testing-library/jest-dom" />
 
-//import { HomePage } from "@org/app-vite-react/app/pages/Home";
+//import { HomePage } from "@/app/pages/Home";
 //import { render, screen } from "@testing-library/react";
 //import { MemoryRouter } from "react-router-dom";
 

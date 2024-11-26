@@ -1,8 +1,8 @@
-import type { NavigationRoute } from "@org/app-vite-react/server/route-typings";
+import type { NavigationRoute } from "@/server/route-typings";
 
-import ManageUsersPage from "@org/app-vite-react/app/pages/admin-settings/manage-users";
-import HomePage from "@org/app-vite-react/app/pages/home";
-import VisualPreferencesPage from "@org/app-vite-react/app/pages/visual-preferences";
+import ManageUsersPage from "@/app/pages/admin-settings/manage-users";
+import HomePage from "@/app/pages/home";
+import VisualPreferencesPage from "@/app/pages/visual-preferences";
 
 import CreateUserPage from "./pages/admin-settings/manage-users/pages/create-user";
 import EditUserPage from "./pages/admin-settings/manage-users/pages/edit-user";

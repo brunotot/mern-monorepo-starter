@@ -4,6 +4,7 @@ import path from "path";
 
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 function pwd(...args: string[]): string {
   return path.resolve(__dirname, ...args);
@@ -29,12 +30,13 @@ export default defineConfig({
       reporter: ["text"],
     },
     alias: {
-      "@org/app-vite-react": pwd("src"),
-      "@org/lib-commons": pwd("../", "lib-commons", "src"),
-      "@org/lib-api-client": pwd("../", "lib-api-client", "src"),
+      "@/*": pwd("src/*"),
+      "@org/lib-commons": pwd("../../packages", "lib-commons", "src"),
+      "@org/lib-api-client": pwd("../../packages", "lib-api-client", "src"),
     },
   },
   plugins: [
+    tsconfigPaths(),
     react({
       babel: {
         plugins: [["module:@preact/signals-react-transform"]],
@@ -43,9 +45,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@org/app-vite-react": pwd("src"),
-      "@org/lib-commons": pwd("../", "lib-commons", "src"),
-      "@org/lib-api-client": pwd("../", "lib-api-client", "src"),
+      "@/*": path.resolve(__dirname, "./src/*"),
+      "@org/lib-commons": pwd("../../packages", "lib-commons", "src"),
+      "@org/lib-api-client": pwd("../../packages", "lib-api-client", "src"),
     },
   },
 });

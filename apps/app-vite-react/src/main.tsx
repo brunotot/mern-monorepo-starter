@@ -1,13 +1,13 @@
-import "@org/app-vite-react/lib/i18next/i18n";
+import "@/lib/i18next/i18n";
 
-import { Layout as layoutElement } from "@org/app-vite-react/app/layout";
-import { providers } from "@org/app-vite-react/app/providers";
-import { routes } from "@org/app-vite-react/app/routes";
-import { MuiCssBaseline as cssBaseline } from "@org/app-vite-react/lib/@mui";
-import { reactServer } from "@org/app-vite-react/server/server";
 import { useRouteError } from "react-router-dom";
+import { Layout as layoutElement } from "@/app/layout";
+import { providers } from "@/app/providers";
+import { routes } from "@/app/routes";
+import { MuiCssBaseline as cssBaseline } from "@/lib/@mui";
+import { reactServer } from "@/server/server";
 
-import "@org/app-vite-react/main.css";
+import "@/main.css";
 
 // eslint-disable-next-line react-refresh/only-export-components
 function RootErrorPage() {

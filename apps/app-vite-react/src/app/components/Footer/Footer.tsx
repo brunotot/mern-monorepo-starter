@@ -1,5 +1,5 @@
 import type { Breakpoint } from "@mui/material";
-import type { MuiSxProps } from "@org/app-vite-react/app/components/Header";
+import type { MuiSxProps } from "@/app/components/Header";
 
 import { Box, Container, Link, Typography } from "@mui/material";
 

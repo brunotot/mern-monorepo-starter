@@ -4,8 +4,8 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
-import { keycloakLogout } from "@org/app-vite-react/lib/keycloak-js";
+import { sigUser } from "@/app/signals/sigUser";
+import { keycloakLogout } from "@/lib/keycloak-js";
 import React from "react";
 
 import LogoutButton from "./LogoutButton";

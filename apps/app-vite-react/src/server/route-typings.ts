@@ -1,5 +1,5 @@
-import { type I18nTranslateFn } from "@org/app-vite-react/lib/i18next";
-import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
+import { type I18nTranslateFn } from "@/lib/i18next";
+import { type KeycloakUser } from "@/lib/keycloak-js";
 import { type ReactNode } from "react";
 import { type RouteObject as RouteObjectDom } from "react-router-dom";
 

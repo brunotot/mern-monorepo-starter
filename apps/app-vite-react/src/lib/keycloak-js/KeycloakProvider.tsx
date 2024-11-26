@@ -1,8 +1,8 @@
-import type * as KC from "@org/app-vite-react/lib/keycloak-js";
+import type * as KC from "@/lib/keycloak-js";
 import type { Role } from "@org/lib-api-client";
 
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
-import { keycloakClient } from "@org/app-vite-react/lib/keycloak-js/KeycloakClient";
+import { sigUser } from "@/app/signals/sigUser";
+import { keycloakClient } from "@/lib/keycloak-js/KeycloakClient";
 import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
 import { jwtDecode } from "jwt-decode";
 import { type KeycloakTokenParsed } from "keycloak-js";

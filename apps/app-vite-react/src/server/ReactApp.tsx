@@ -2,9 +2,9 @@ import type {
   NavigationRouteProtect,
   NavigationRoute,
   NavigationRouteItem,
-} from "@org/app-vite-react/server/route-typings";
+} from "@/server/route-typings";
 
-import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
+import { sigDirection } from "@/app/signals/sigDirection";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import * as RouterDOM from "react-router-dom";

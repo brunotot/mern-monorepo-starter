@@ -1,5 +1,5 @@
-import type { ServerDatatableProps } from "@org/app-vite-react/app/components/Datatable/impl/ServerDatatable/types";
-import type { DtBaseSortItem } from "@org/app-vite-react/app/components/Datatable/types";
+import type { ServerDatatableProps } from "@/app/components/Datatable/impl/ServerDatatable/types";
+import type { DtBaseSortItem } from "@/app/components/Datatable/types";
 import type { MouseEvent } from "react";
 
 import {
@@ -11,7 +11,7 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import { DtSortableCell } from "@org/app-vite-react/app/components/Datatable/components/DtSortableCell";
+import { DtSortableCell } from "@/app/components/Datatable/components/DtSortableCell";
 import { type TODO } from "@org/lib-commons";
 import { Fragment, useCallback } from "react";
 
