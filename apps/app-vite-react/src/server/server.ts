@@ -1,3 +1,3 @@
-import { ReactApp } from "@org/app-vite-react/server/ReactApp";
+import { ReactApp } from "@/server/ReactApp";
 
 export const reactServer = new ReactApp();

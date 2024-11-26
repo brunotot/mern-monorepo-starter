@@ -1,9 +1,9 @@
-import type { KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
-import type { NavigationRouteProtectParam } from "@org/app-vite-react/server/route-typings";
+import type { KeycloakUser } from "@/lib/keycloak-js";
+import type { NavigationRouteProtectParam } from "@/server/route-typings";
 import type { ReactNode } from "react";
 
 import * as mui from "@mui/material";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
+import { sigUser } from "@/app/signals/sigUser";
 
 export type ProtectProps = {
   children: ReactNode;

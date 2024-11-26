@@ -2,14 +2,14 @@ import type { Breakpoint, SxProps, Theme } from "@mui/material";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { InputDarkThemeToggle } from "@org/app-vite-react/app/inputs/InputDarkThemeToggle";
-import { InputLayoutToggle } from "@org/app-vite-react/app/inputs/InputLayoutToggle";
-import { InputLocaleSelect } from "@org/app-vite-react/app/inputs/InputLocaleSelect";
-import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
-import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
-import { getFontFamily, sigLocale } from "@org/app-vite-react/app/signals/sigLocale";
-import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
-import { sigThemeOpts } from "@org/app-vite-react/app/signals/sigTheme";
+import { InputDarkThemeToggle } from "@/app/inputs/InputDarkThemeToggle";
+import { InputLayoutToggle } from "@/app/inputs/InputLayoutToggle";
+import { InputLocaleSelect } from "@/app/inputs/InputLocaleSelect";
+import { sigLayoutVariant } from "@/app/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@/app/signals/sigLayoutWidth";
+import { getFontFamily, sigLocale } from "@/app/signals/sigLocale";
+import { sigSidebarOpen } from "@/app/signals/sigSidebarOpen";
+import { sigThemeOpts } from "@/app/signals/sigTheme";
 
 import { UserMenuButton } from "./UserMenuButton";
 import { Logo } from "../Logo";

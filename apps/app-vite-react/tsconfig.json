@@ -32,9 +32,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src",
     "paths": {
-      "@org/app-vite-react/*": ["*"],
-      "@org/lib-api-client": ["../../lib-api-client/src"],
-      "@org/lib-commons": ["../../lib-commons/src"]
+      "@/*": ["*"],
+      "@org/lib-api-client": ["../../../packages/lib-api-client/dist/src/index"],
+      "@org/lib-commons": ["../../../packages/lib-commons/dist/src/index"]
     }
   }
 }

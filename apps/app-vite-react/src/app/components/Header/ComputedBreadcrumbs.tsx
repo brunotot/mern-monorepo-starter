@@ -1,10 +1,10 @@
-import type { NavigationRouteHandle } from "@org/app-vite-react/server/route-typings";
+import type { NavigationRouteHandle } from "@/server/route-typings";
 import type { TODO } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { sigDirection } from "@/app/signals/sigDirection";
+import { useTranslation } from "@/lib/i18next";
 import { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { type UIMatch, useMatches } from "react-router-dom";

@@ -2,19 +2,16 @@ import type { PaginationOptions, zod } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
-import {
-  DatatableContainer,
-  DEFAULT_PAGINATION_OPTIONS,
-} from "@org/app-vite-react/app/components/Datatable";
-import { DatatableFilterButton } from "@org/app-vite-react/app/components/Datatable/components/DatatableFilterButton";
-import { Datatable } from "@org/app-vite-react/app/components/Datatable/Datatable";
-import { InputText } from "@org/app-vite-react/app/forms";
-import { useConfirm } from "@org/app-vite-react/app/provider/ConfirmProvider";
-import { useSnackbar } from "@org/app-vite-react/app/provider/SnackbarProvider";
-import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
-import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
-import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
+import { DatatableContainer, DEFAULT_PAGINATION_OPTIONS } from "@/app/components/Datatable";
+import { DatatableFilterButton } from "@/app/components/Datatable/components/DatatableFilterButton";
+import { Datatable } from "@/app/components/Datatable/Datatable";
+import { InputText } from "@/app/forms";
+import { useConfirm } from "@/app/provider/ConfirmProvider";
+import { useSnackbar } from "@/app/provider/SnackbarProvider";
+import { sigDirection } from "@/app/signals/sigDirection";
+import { sigUser } from "@/app/signals/sigUser";
+import { tsrClient, tsrQuery } from "@/lib/@ts-rest";
+import { useZodForm } from "@/lib/react-hook-form";
 import { type UserDto } from "@org/lib-api-client";
 import { z } from "@org/lib-commons";
 import React from "react";

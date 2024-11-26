@@ -1,8 +1,8 @@
 import type { UserForm as UserFormModel } from "@org/lib-api-client";
 
 import { Card } from "@mui/material";
-import { useSnackbar } from "@org/app-vite-react/app/provider/SnackbarProvider";
-import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
+import { useSnackbar } from "@/app/provider/SnackbarProvider";
+import { tsrClient } from "@/lib/@ts-rest";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 

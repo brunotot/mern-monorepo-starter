@@ -1,14 +1,14 @@
 import type { PropsWithChildren } from "react";
 
 import { Box, type Breakpoint, Container, useMediaQuery } from "@mui/material";
-import { Footer } from "@org/app-vite-react/app/components/Footer";
-import { Header } from "@org/app-vite-react/app/components/Header";
-import { Logo } from "@org/app-vite-react/app/components/Logo";
-import { Sidebar } from "@org/app-vite-react/app/components/Sidebar";
-import { sigLayoutVariant } from "@org/app-vite-react/app/signals/sigLayoutVariant";
-import { sigLayoutWidth } from "@org/app-vite-react/app/signals/sigLayoutWidth";
-import { sigSidebarOpen } from "@org/app-vite-react/app/signals/sigSidebarOpen";
-import { type NavigationRoute } from "@org/app-vite-react/server/route-typings";
+import { Footer } from "@/app/components/Footer";
+import { Header } from "@/app/components/Header";
+import { Logo } from "@/app/components/Logo";
+import { Sidebar } from "@/app/components/Sidebar";
+import { sigLayoutVariant } from "@/app/signals/sigLayoutVariant";
+import { sigLayoutWidth } from "@/app/signals/sigLayoutWidth";
+import { sigSidebarOpen } from "@/app/signals/sigSidebarOpen";
+import { type NavigationRoute } from "@/server/route-typings";
 
 import { HorizontalLayout } from "./HorizontalLayout";
 import { SidebarLayout } from "./SidebarLayout";

@@ -1,4 +1,4 @@
-import { type KeycloakUser } from "@org/app-vite-react/lib/keycloak-js";
+import { type KeycloakUser } from "@/lib/keycloak-js";
 import { signal } from "@preact/signals-react";
 
 type LocalUser = (KeycloakUser & { name: string }) | null;

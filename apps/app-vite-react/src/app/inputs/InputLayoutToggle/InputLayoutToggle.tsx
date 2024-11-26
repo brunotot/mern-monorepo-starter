@@ -1,8 +1,8 @@
-import type { LayoutVariant } from "@org/app-vite-react/app/models";
+import type { LayoutVariant } from "@/app/models";
 
 import { TableChart, ViewSidebar } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
-import { useTranslation } from "@org/app-vite-react/lib/i18next";
+import { useTranslation } from "@/lib/i18next";
 
 export type InputLayoutToggleProps = {
   value: LayoutVariant;

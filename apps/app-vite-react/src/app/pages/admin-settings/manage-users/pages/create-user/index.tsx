@@ -1,9 +1,9 @@
-import { useSnackbar } from "@org/app-vite-react/app/provider/SnackbarProvider";
-import { tsrClient } from "@org/app-vite-react/lib/@ts-rest";
 import { DEFAULT_USER_FORM_STATE, type UserForm as UserFormModel } from "@org/lib-api-client";
 import { useNavigate } from "react-router-dom";
 
 import { UserForm } from "../../components";
+import { useSnackbar } from "@/app/provider/SnackbarProvider";
+import { tsrClient } from "@/lib/@ts-rest";
 
 export default function CreateUserPage() {
   const navigate = useNavigate();

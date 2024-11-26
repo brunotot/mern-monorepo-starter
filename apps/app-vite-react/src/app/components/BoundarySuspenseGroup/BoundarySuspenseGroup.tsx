@@ -1,4 +1,4 @@
-import type { NavigationRouteProtectParam } from "@org/app-vite-react/server/route-typings";
+import type { NavigationRouteProtectParam } from "@/server/route-typings";
 
 import { LoaderSuspense } from "../LoaderSuspense";
 import { Protect } from "../Protect";

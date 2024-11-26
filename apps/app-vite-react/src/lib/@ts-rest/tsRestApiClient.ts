@@ -1,6 +1,6 @@
 import type { ClientArgs } from "@ts-rest/core";
 
-import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
+import { sigUser } from "@/app/signals/sigUser";
 import { contracts, initClient } from "@org/lib-api-client";
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 

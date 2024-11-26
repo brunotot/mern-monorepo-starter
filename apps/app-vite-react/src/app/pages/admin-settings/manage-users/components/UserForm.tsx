@@ -1,7 +1,7 @@
 import * as mui from "@mui/material";
-import * as inputs from "@org/app-vite-react/app/forms/input";
-import { executeConstraintValidation } from "@org/app-vite-react/app/models/ConstraintViolation";
-import { useZodForm, type FormProps } from "@org/app-vite-react/lib/react-hook-form";
+import * as inputs from "@/app/forms/input";
+import { executeConstraintValidation } from "@/app/models/ConstraintViolation";
+import { useZodForm, type FormProps } from "@/lib/react-hook-form";
 import { ROLE_LIST, UserForm as UserFormModel } from "@org/lib-api-client";
 import { z, debounce } from "@org/lib-commons";
 
