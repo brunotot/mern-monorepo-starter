@@ -1,4 +1,4 @@
-import type { zod } from "@org/lib-commons";
+import type { PaginationOptions, zod } from "@org/lib-commons";
 
 import * as icons from "@mui/icons-material";
 import * as mui from "@mui/material";
@@ -15,7 +15,7 @@ import { sigDirection } from "@org/app-vite-react/app/signals/sigDirection";
 import { sigUser } from "@org/app-vite-react/app/signals/sigUser";
 import { tsrClient, tsrQuery } from "@org/app-vite-react/lib/@ts-rest";
 import { useZodForm } from "@org/app-vite-react/lib/react-hook-form";
-import { type PaginationOptions, type UserDto } from "@org/lib-api-client";
+import { type UserDto } from "@org/lib-api-client";
 import { z } from "@org/lib-commons";
 import React from "react";
 import { useNavigate } from "react-router-dom";
