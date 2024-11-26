@@ -10,8 +10,8 @@
     "clean": "rimraf dist",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test": "NODE_NO_WARNINGS=1 vitest --run",
-    "test:coverage": "NODE_NO_WARNINGS=1 vitest --run --coverage"
+    "test": "nx build && NODE_NO_WARNINGS=1 vitest --run",
+    "test:coverage": "nx build && NODE_NO_WARNINGS=1 vitest --run --coverage"
   },
   "keywords": [],
   "author": "Bruno Tot",
