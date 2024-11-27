@@ -30,7 +30,7 @@
     "clean": "pnpm -r clean",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
-    "writeTypedoc": "bash assets/sh/typedoc.sh",
+    "writeTypedoc": "pnpm build && bash assets/sh/typedoc.sh",
     "renameProjectLabels": "node renameProjectLabels.js"
   },
   "devDependencies": {
